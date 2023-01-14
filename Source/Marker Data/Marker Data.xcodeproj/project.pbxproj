@@ -1,0 +1,472 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		D5F74A312972D31D00EEE2FE /* Marker_DataApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F74A302972D31D00EEE2FE /* Marker_DataApp.swift */; };
+		D5F74A332972D31D00EEE2FE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F74A322972D31D00EEE2FE /* ContentView.swift */; };
+		D5F74A352972D32100EEE2FE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5F74A342972D32100EEE2FE /* Assets.xcassets */; };
+		D5F74A382972D32100EEE2FE /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5F74A372972D32100EEE2FE /* Preview Assets.xcassets */; };
+		D5F74A412972E0A800EEE2FE /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F74A402972E0A800EEE2FE /* SettingsView.swift */; };
+		D5F74A442972E5A000EEE2FE /* FontPicker in Frameworks */ = {isa = PBXBuildFile; productRef = D5F74A432972E5A000EEE2FE /* FontPicker */; };
+		D5F74A472972FE7C00EEE2FE /* AirtableKit in Frameworks */ = {isa = PBXBuildFile; productRef = D5F74A462972FE7C00EEE2FE /* AirtableKit */; };
+		D5F74A4A2973012800EEE2FE /* AppUpdater in Frameworks */ = {isa = PBXBuildFile; productRef = D5F74A492973012800EEE2FE /* AppUpdater */; };
+		D5F74A4D2973019000EEE2FE /* Collections in Frameworks */ = {isa = PBXBuildFile; productRef = D5F74A4C2973019000EEE2FE /* Collections */; };
+		D5F74A4F2973019000EEE2FE /* DequeModule in Frameworks */ = {isa = PBXBuildFile; productRef = D5F74A4E2973019000EEE2FE /* DequeModule */; };
+		D5F74A512973019000EEE2FE /* OrderedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = D5F74A502973019000EEE2FE /* OrderedCollections */; };
+		D5F74A542973021F00EEE2FE /* SwiftUIX in Frameworks */ = {isa = PBXBuildFile; productRef = D5F74A532973021F00EEE2FE /* SwiftUIX */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		D5F74A2D2972D31C00EEE2FE /* Marker Data.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Marker Data.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D5F74A302972D31D00EEE2FE /* Marker_DataApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Marker_DataApp.swift; sourceTree = "<group>"; };
+		D5F74A322972D31D00EEE2FE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		D5F74A342972D32100EEE2FE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		D5F74A372972D32100EEE2FE /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		D5F74A392972D32100EEE2FE /* Marker_Data.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Marker_Data.entitlements; sourceTree = "<group>"; };
+		D5F74A3F2972DFD800EEE2FE /* Marker-Data-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Marker-Data-Info.plist"; sourceTree = SOURCE_ROOT; };
+		D5F74A402972E0A800EEE2FE /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D5F74A2A2972D31C00EEE2FE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D5F74A542973021F00EEE2FE /* SwiftUIX in Frameworks */,
+				D5F74A442972E5A000EEE2FE /* FontPicker in Frameworks */,
+				D5F74A4A2973012800EEE2FE /* AppUpdater in Frameworks */,
+				D5F74A512973019000EEE2FE /* OrderedCollections in Frameworks */,
+				D5F74A4F2973019000EEE2FE /* DequeModule in Frameworks */,
+				D5F74A4D2973019000EEE2FE /* Collections in Frameworks */,
+				D5F74A472972FE7C00EEE2FE /* AirtableKit in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		D5F74A242972D31C00EEE2FE = {
+			isa = PBXGroup;
+			children = (
+				D5F74A2F2972D31C00EEE2FE /* Marker Data */,
+				D5F74A2E2972D31C00EEE2FE /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		D5F74A2E2972D31C00EEE2FE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D5F74A2D2972D31C00EEE2FE /* Marker Data.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D5F74A2F2972D31C00EEE2FE /* Marker Data */ = {
+			isa = PBXGroup;
+			children = (
+				D5F74A3F2972DFD800EEE2FE /* Marker-Data-Info.plist */,
+				D5F74A302972D31D00EEE2FE /* Marker_DataApp.swift */,
+				D5F74A322972D31D00EEE2FE /* ContentView.swift */,
+				D5F74A342972D32100EEE2FE /* Assets.xcassets */,
+				D5F74A392972D32100EEE2FE /* Marker_Data.entitlements */,
+				D5F74A362972D32100EEE2FE /* Preview Content */,
+				D5F74A402972E0A800EEE2FE /* SettingsView.swift */,
+			);
+			path = "Marker Data";
+			sourceTree = "<group>";
+		};
+		D5F74A362972D32100EEE2FE /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				D5F74A372972D32100EEE2FE /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		D5F74A2C2972D31C00EEE2FE /* Marker Data */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D5F74A3C2972D32100EEE2FE /* Build configuration list for PBXNativeTarget "Marker Data" */;
+			buildPhases = (
+				D5F74A292972D31C00EEE2FE /* Sources */,
+				D5F74A2A2972D31C00EEE2FE /* Frameworks */,
+				D5F74A2B2972D31C00EEE2FE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Marker Data";
+			packageProductDependencies = (
+				D5F74A432972E5A000EEE2FE /* FontPicker */,
+				D5F74A462972FE7C00EEE2FE /* AirtableKit */,
+				D5F74A492973012800EEE2FE /* AppUpdater */,
+				D5F74A4C2973019000EEE2FE /* Collections */,
+				D5F74A4E2973019000EEE2FE /* DequeModule */,
+				D5F74A502973019000EEE2FE /* OrderedCollections */,
+				D5F74A532973021F00EEE2FE /* SwiftUIX */,
+			);
+			productName = "Marker Data";
+			productReference = D5F74A2D2972D31C00EEE2FE /* Marker Data.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D5F74A252972D31C00EEE2FE /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1420;
+				LastUpgradeCheck = 1420;
+				TargetAttributes = {
+					D5F74A2C2972D31C00EEE2FE = {
+						CreatedOnToolsVersion = 14.2;
+					};
+				};
+			};
+			buildConfigurationList = D5F74A282972D31C00EEE2FE /* Build configuration list for PBXProject "Marker Data" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = D5F74A242972D31C00EEE2FE;
+			packageReferences = (
+				D5F74A422972E5A000EEE2FE /* XCRemoteSwiftPackageReference "FontPicker" */,
+				D5F74A452972FE7C00EEE2FE /* XCRemoteSwiftPackageReference "AirtableKit" */,
+				D5F74A482973012800EEE2FE /* XCRemoteSwiftPackageReference "AppUpdater" */,
+				D5F74A4B2973019000EEE2FE /* XCRemoteSwiftPackageReference "swift-collections" */,
+				D5F74A522973021F00EEE2FE /* XCRemoteSwiftPackageReference "SwiftUIX" */,
+			);
+			productRefGroup = D5F74A2E2972D31C00EEE2FE /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D5F74A2C2972D31C00EEE2FE /* Marker Data */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		D5F74A2B2972D31C00EEE2FE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D5F74A382972D32100EEE2FE /* Preview Assets.xcassets in Resources */,
+				D5F74A352972D32100EEE2FE /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D5F74A292972D31C00EEE2FE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D5F74A412972E0A800EEE2FE /* SettingsView.swift in Sources */,
+				D5F74A332972D31D00EEE2FE /* ContentView.swift in Sources */,
+				D5F74A312972D31D00EEE2FE /* Marker_DataApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		D5F74A3A2972D32100EEE2FE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		D5F74A3B2972D32100EEE2FE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		D5F74A3D2972D32100EEE2FE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Marker Data/Marker_Data.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Marker Data/Preview Content\"";
+				DEVELOPMENT_TEAM = ZWASU9HFBU;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Marker-Data-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Marker Data";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSDesktopFolderUsageDescription = "To Use Files On The Desktop, You Must Allow Access.";
+				INFOPLIST_KEY_NSDocumentsFolderUsageDescription = "To Use Files In The Documents Folder, You Must Allow Access.";
+				INFOPLIST_KEY_NSDownloadsFolderUsageDescription = "To Use Files In The Downloads Folder, You Must Allow Access.";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 Mark Howard. All rights reserved. Original idea and code from The Acharya.";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MARKETING_VERSION = 0.2;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.TheAcharya.Marker-Data";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		D5F74A3E2972D32100EEE2FE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Marker Data/Marker_Data.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Marker Data/Preview Content\"";
+				DEVELOPMENT_TEAM = ZWASU9HFBU;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Marker-Data-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Marker Data";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSDesktopFolderUsageDescription = "To Use Files On The Desktop, You Must Allow Access.";
+				INFOPLIST_KEY_NSDocumentsFolderUsageDescription = "To Use Files In The Documents Folder, You Must Allow Access.";
+				INFOPLIST_KEY_NSDownloadsFolderUsageDescription = "To Use Files In The Downloads Folder, You Must Allow Access.";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 Mark Howard. All rights reserved. Original idea and code from The Acharya.";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MARKETING_VERSION = 0.2;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.TheAcharya.Marker-Data";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D5F74A282972D31C00EEE2FE /* Build configuration list for PBXProject "Marker Data" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D5F74A3A2972D32100EEE2FE /* Debug */,
+				D5F74A3B2972D32100EEE2FE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D5F74A3C2972D32100EEE2FE /* Build configuration list for PBXNativeTarget "Marker Data" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D5F74A3D2972D32100EEE2FE /* Debug */,
+				D5F74A3E2972D32100EEE2FE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		D5F74A422972E5A000EEE2FE /* XCRemoteSwiftPackageReference "FontPicker" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/tyagishi/FontPicker";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+		D5F74A452972FE7C00EEE2FE /* XCRemoteSwiftPackageReference "AirtableKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "http://github.com/appledeveloperacademypucrs/AirtableKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+		D5F74A482973012800EEE2FE /* XCRemoteSwiftPackageReference "AppUpdater" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mxcl/AppUpdater";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+		D5F74A4B2973019000EEE2FE /* XCRemoteSwiftPackageReference "swift-collections" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-collections.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+		D5F74A522973021F00EEE2FE /* XCRemoteSwiftPackageReference "SwiftUIX" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SwiftUIX/SwiftUIX";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D5F74A432972E5A000EEE2FE /* FontPicker */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D5F74A422972E5A000EEE2FE /* XCRemoteSwiftPackageReference "FontPicker" */;
+			productName = FontPicker;
+		};
+		D5F74A462972FE7C00EEE2FE /* AirtableKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D5F74A452972FE7C00EEE2FE /* XCRemoteSwiftPackageReference "AirtableKit" */;
+			productName = AirtableKit;
+		};
+		D5F74A492973012800EEE2FE /* AppUpdater */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D5F74A482973012800EEE2FE /* XCRemoteSwiftPackageReference "AppUpdater" */;
+			productName = AppUpdater;
+		};
+		D5F74A4C2973019000EEE2FE /* Collections */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D5F74A4B2973019000EEE2FE /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = Collections;
+		};
+		D5F74A4E2973019000EEE2FE /* DequeModule */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D5F74A4B2973019000EEE2FE /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = DequeModule;
+		};
+		D5F74A502973019000EEE2FE /* OrderedCollections */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D5F74A4B2973019000EEE2FE /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = OrderedCollections;
+		};
+		D5F74A532973021F00EEE2FE /* SwiftUIX */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D5F74A522973021F00EEE2FE /* XCRemoteSwiftPackageReference "SwiftUIX" */;
+			productName = SwiftUIX;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = D5F74A252972D31C00EEE2FE /* Project object */;
+}

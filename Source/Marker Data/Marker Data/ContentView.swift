@@ -1,0 +1,72 @@
+//
+//  ContentView.swift
+//  Marker Data
+//
+//  Created by Mark Howard on 14/01/2023.
+//
+
+import SwiftUI
+import Foundation
+
+struct ContentView: View {
+    //Is Enable Upload Toggle On
+    @State var isUploadEnabled = false
+    //Selected Export Format Tag For Picker
+    @State var selectedExportFormat = 1
+    //Selected Exclude Roles Tag For Picker
+    @State var selectedExcludeRoles = 1
+    //Selected Image Format Tag For Picker
+    @State var selectedImageFormat = 1
+    //Main View Controller
+    var body: some View {
+        VStack {
+            //Drag And Drop File Zone
+            
+            //Divide Drag And Drop Zone From Quick Actions
+            Divider()
+            //Quick Access Title
+            Text("Quick Access")
+                .bold()
+                .padding()
+            //Quick Actions
+            HStack {
+                Spacer()
+                //Enable Upload Checkbox
+                Toggle("Enable Upload", isOn: $isUploadEnabled)
+                    .toggleStyle(CheckboxToggleStyle())
+                //Choose Export Format
+                Picker("Export Format", selection: $selectedExportFormat) {
+                    Text("Notion")
+                        .tag(1)
+                    Text("Airtable")
+                        .tag(2)
+                }
+                //Choose Exclude Roles
+                Picker("Exclude Roles", selection: $selectedExcludeRoles) {
+                    Text("None")
+                        .tag(1)
+                    Text("Video")
+                        .tag(2)
+                    Text("Audio")
+                        .tag(3)
+                }
+                //Choose Image Format
+                Picker("Image Format", selection: $selectedImageFormat) {
+                    Text("PNG")
+                        .tag(1)
+                    Text("JPG")
+                        .tag(2)
+                    Text("GIF")
+                        .tag(3)
+                }
+                Spacer()
+            }
+        }
+    }
+}
+
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
+}
