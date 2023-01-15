@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Foundation
+import UniformTypeIdentifiers
 
 struct ContentView: View {
     //Is Enable Upload Toggle On
@@ -21,7 +22,24 @@ struct ContentView: View {
     var body: some View {
         VStack {
             //Drag And Drop File Zone
-            
+            VStack {
+                Spacer()
+                HStack {
+                    Spacer()
+                    //Text Prompt
+                    Text("Drop A .fcpxml(d) File Here...")
+                        .bold()
+                        .font(.title2)
+                    Spacer()
+                }
+                Spacer()
+            }
+            //Handle The Drop Of A File Or URL And Run The CLI Tool
+                .onDrop(of: [.item, .fileURL], isTargeted: nil, perform: { providers, _ in
+                    print("File Dropped")
+                    try! Process.run(Bundle.main.url(forResource: "markers-extractor-cli", withExtension: "")!, arguments: ["--version"], terminationHandler: nil)
+                    return true
+                })
             //Divide Drag And Drop Zone From Quick Actions
             Divider()
             //Quick Access Title
@@ -61,6 +79,7 @@ struct ContentView: View {
                 }
                 Spacer()
             }
+            .padding(.bottom)
         }
     }
 }

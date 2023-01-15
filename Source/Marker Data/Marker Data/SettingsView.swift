@@ -125,7 +125,7 @@ struct SettingsView: View {
                     }
                 }
                 //Define List Style As Sidebar
-                .listStyle(SidebarListStyle())
+                .listStyle(.sidebar)
                 //Show App Icon And App Title When No Setting Section Is Selected
                 VStack {
                     Image("AppsIcon")
@@ -296,15 +296,15 @@ struct SettingsView: View {
         Form {
             HStack {
                 VStack(alignment: .leading) {
-                    //Button To Save Marker Settings
+                    //Button To Export Marker Data Settings
                     Button(action: {}) {
-                        Text("Save Marker Settings")
+                        Text("Export Marker Data Configurations")
                     }
-                    //Button To Load Marker Settings
+                    //Button To Import Marker Data Settings
                     Button(action: {}) {
-                        Text("Load Marker Settings")
+                        Text("Import Marker Data Configurations")
                     }
-                    //Button To Load Default Marker Settings
+                    //Button To Load Default Marker Data Settings
                     Button(action: {}) {
                         Text("Load Defaults")
                     }
