@@ -44,13 +44,14 @@ struct Marker_DataApp: App {
             CommandGroup(replacing: .newItem) {}
             //Removes Toolbar Menu Items
             CommandGroup(replacing: .toolbar) {}
+            //NOT NEEDED - FEATURE NOT IMPLEMENTED
             //Add Custom Tools Menu
-            CommandMenu("Tools") {
+            /*CommandMenu("Tools") {
                 //Test Menu Button
                 Button(action: {}) {
                     Text("Test Menu Item")
                 }
-            }
+            }*/
             //Add Custom Databases Menu
             CommandMenu("Databases") {
                 //Upload Submenu
