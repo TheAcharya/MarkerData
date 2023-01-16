@@ -3,6 +3,18 @@
 ## Core Features
 
 ## Table of contents
+- [Demo](#demo)
+- [System Requirements](#system-requirements)
+- [Installation](#installation)
+- [Credits](#Credits)
+- [License](#License)
+- [Reporting Bugs](#reporting-bugs)
+
+## Demo
+
+## System Requirements
+
+Operating Systems: macOS Big Sur or later. <br> Final Cut Pro: 10.6.5
 
 ## Installation
 
