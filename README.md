@@ -7,7 +7,7 @@ Marker metadata extraction and conversion application for Final Cut Pro that ser
 - Created with Apple Swift programming language 
 - Native Share Destination integration with [Final Cut Pro](https://www.apple.com/final-cut-pro/)
 - Accurately extract Markers from Final Cut Pro's FCPXML/FCPXMLD to CSV
-- Native integration with [Notion](https://www.notion.so) databases
+- Native integration with [Airtable](https://www.airtable.com) & [Notion](https://www.notion.so) databases
 - Send Final Cut Pro's Marker metadata to cloud databases with a click of a button
 - Ability to batch extract and render stills or animated GIFs based on each marker's timecode
 - Ability to batch burn-in labels of each marker's metadata onto the stills or animated GIFs
