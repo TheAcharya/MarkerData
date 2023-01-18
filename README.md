@@ -18,6 +18,7 @@ Marker metadata extraction and conversion application for Final Cut Pro that ser
 - [Screenshot](#screenshot)
 - [System Requirements](#system-requirements)
 - [Installation](#installation)
+- [Use Cases](#use-cases)
 - [Credits](#Credits)
 - [License](#License)
 - [Reporting Bugs](#reporting-bugs)
@@ -31,6 +32,16 @@ Marker metadata extraction and conversion application for Final Cut Pro that ser
 macOS Big Sur or later <br> Final Cut Pro 10.6.5
 
 ## Installation
+
+## Use Cases
+- Marker Notes Database
+- VFX Database
+- ADR Database
+- Stock footage Database
+- Music Cue Sheet Database
+- Colourist’s Notes Database
+- Client Review & Tracking Database
+- Offline & Online Notes Database
 
 ## Credits
 
