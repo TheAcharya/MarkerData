@@ -4,6 +4,7 @@
 
 ## Table of contents
 - [Demo](#demo)
+- [Screenshot](#screenshot)
 - [System Requirements](#system-requirements)
 - [Installation](#installation)
 - [Credits](#Credits)
@@ -11,6 +12,8 @@
 - [Reporting Bugs](#reporting-bugs)
 
 ## Demo
+
+## Screenshot
 
 ## System Requirements
 
@@ -20,7 +23,7 @@ Operating Systems: macOS Big Sur or later. <br> Final Cut Pro: 10.6.5
 
 ## Credits
 
-Original Idea, Application Direction & Workflow by [Vigneswaran Rajkumar](https://vigneswaranrajkumar.com/)
+Original Idea, Application Direction & Workflow by [Vigneswaran Rajkumar](https://twitter.com/IAmVigneswaran)
 
 GUI Development by [Mark Howard](https://github.com/markydoodled)
 
