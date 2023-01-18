@@ -1,20 +1,16 @@
 //
 //  Marker_DataApp.swift
-//  Marker Data
-//
-//  Created by Mark Howard on 14/01/2023.
+//  Marker Data • https://github.com/TheAcharya/MarkerData
+//  Licensed under MIT License
 //
 
 import SwiftUI
 import AppUpdater
 
-//@available(macOS 13.0, *)
 @main
 struct Marker_DataApp: App {
     //Link App Delegate To SwiftUI App Lifecycle
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-    //Track Opening New Window
-    //@Environment(\.openWindow) var openWindow
     var body: some Scene {
         //Make Main Window Group To Launch Into
         WindowGroup {
@@ -28,10 +24,6 @@ struct Marker_DataApp: App {
                     appDelegate.userRequestedAnExplicitUpdateCheck()
                 }
         }
-        //Database Preferences
-        /*Window("Database Preferences", id: "database-prefs") {
-            DatabasePreferences()
-        }*/
         //Add Settings Menu Bar Item And Pass In A View
         Settings {
             SettingsView()
@@ -44,14 +36,64 @@ struct Marker_DataApp: App {
             CommandGroup(replacing: .newItem) {}
             //Removes Toolbar Menu Items
             CommandGroup(replacing: .toolbar) {}
-            //NOT NEEDED - FEATURE NOT IMPLEMENTED
-            //Add Custom Tools Menu
-            /*CommandMenu("Tools") {
-                //Test Menu Button
+            //Add Check For Updates Button
+            CommandGroup(after: .appSettings) {
                 Button(action: {}) {
-                    Text("Test Menu Item")
+                    Text("Check For Update...")
                 }
-            }*/
+            }
+            //Add Help And Debug Menu Buttons
+            CommandGroup(after: .help) {
+                //Button To Be Sent To App Website
+                Button(action: {}) {
+                    Text("Website")
+                }
+                //Button To Access The User Guide
+                Button(action: {}) {
+                    Text("User Guide")
+                }
+                //Button To Send App Feedback
+                Button(action: {}) {
+                    Text("Send Feedback")
+                }
+                //Button To Access App Discussion Page
+                Button(action: {}) {
+                    Text("Discussions")
+                }
+                //Debug Menu
+                Menu("Debug") {
+                    //Button To Open Debug Console
+                    Button(action: {}) {
+                        Text("Open Debug Console")
+                    }
+                    //Button To Open The App Log Folder
+                    Button(action: {}) {
+                        Text("Open Log Folder")
+                    }
+                }
+            }
+            //Add Custom Configurations Menu
+            CommandMenu("Configurations") {
+                //Set Default Configurations Button
+                Button(action: {}) {
+                    Text("Defaults")
+                }
+                //Button To Set Configuration Name 1
+                Button(action: {}) {
+                    Text("Name 1")
+                }
+                //Button To Set Configuration Name 2
+                Button(action: {}) {
+                    Text("Name 2")
+                }
+            }
+            //Add Custom Tools Menu
+            CommandMenu("Tools") {
+                //Button To Update Notion Icons
+                Button(action: {}) {
+                    Text("Update Notion Icons")
+                }
+            }
             //Add Custom Databases Menu
             CommandMenu("Databases") {
                 //Upload Submenu
@@ -95,10 +137,6 @@ struct Marker_DataApp: App {
                         Text("Profile C")
                     }
                 }
-                //Display Database Preferences Window
-                Button(action: {/*openWindow(id: "database-prefs")*/}) {
-                    Text("Database Preferences...")
-                }
             }
         }
     }
@@ -107,6 +145,7 @@ struct Marker_DataApp: App {
 //Init App Delegate
 class AppDelegate: NSObject, NSApplicationDelegate {
     
+    //Declare Repo To Update From
     let updater = AppUpdater(owner: "TheAcharya", repo: "MarkerData")
 
     //Function To Request App Update Check

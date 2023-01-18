@@ -1,8 +1,7 @@
 //
 //  SettingsView.swift
-//  Marker Data
-//
-//  Created by Mark Howard on 14/01/2023.
+//  Marker Data • https://github.com/TheAcharya/MarkerData
+//  Licensed under MIT License
 //
 
 import SwiftUI
@@ -39,14 +38,8 @@ struct SettingsView: View {
     @AppStorage("selectedVerticallignment") var selectedVerticalAlignment = 1
     //Default Copyright Text
     @AppStorage("copyrightText") var copyrightText = ""
-    //Is Notion Enabled
-    @AppStorage("isNotionEnabled") var isNotionEnabled = false
-    //Is Notion Merge With Existing Database On
-    @AppStorage("notionMergeWithExistingDatabase") var notionMergeWithExistingDatabase = false
-    //Regestered Notion Token
-    @AppStorage("notionToken") var notionToken = ""
-    //Regestered Notion Database URL
-    @AppStorage("notionDatabaseURL") var notionDatabaseURL = ""
+    //Init Chips View Model
+    @StateObject var viewModel = ChipsViewModel()
     //Main Settings View Controller
     var body: some View {
         if #available(macOS 13.0, *) {
@@ -68,13 +61,9 @@ struct SettingsView: View {
                     NavigationLink(destination: config) {
                         Label("Configuration", systemImage: "slider.vertical.3")
                     }
-                    Divider()
-                    //Minimisable Database Settings Section
-                    Section(header: Text("Databases")) {
-                        //Link To Notion Settings
-                        NavigationLink(destination: notion) {
-                            Label("Notion", systemImage: "lightbulb")
-                        }
+                    //Link To Database Settings
+                    NavigationLink(destination: databases) {
+                        Label("Databases", systemImage: "list.bullet")
                     }
                 }
                 //Define List Style As Sidebar
@@ -115,13 +104,9 @@ struct SettingsView: View {
                     NavigationLink(destination: config) {
                         Label("Configuration", systemImage: "slider.vertical.3")
                     }
-                    Divider()
-                    //Minimisable Database Settings Section
-                    Section(header: Text("Databases")) {
-                        //Link To Notion Settings
-                        NavigationLink(destination: notion) {
-                            Label("Notion", systemImage: "lightbulb")
-                        }
+                    //Link To Database Settings
+                    NavigationLink(destination: databases) {
+                        Label("Databases", systemImage: "list.bullet")
                     }
                 }
                 //Define List Style As Sidebar
@@ -279,14 +264,18 @@ struct SettingsView: View {
                         Text("Bottom")
                             .tag(3)
                     }
-                    //Label Tag Chips
-                    Text("INSERT LABELS HERE")
                     //Text Field To Enter Copyright
                     TextField("Copyright", text: $copyrightText)
+                    //Label Tag Chips
+                    HStack {
+                        Text("Labels")
+                        ChipsContent(viewModel: viewModel)
+                    }
                 }
                 Spacer()
             }
             .padding(.horizontal)
+            .padding(.top)
         }
         //Set Navigation Bar Title To Label
         .navigationTitle("Label")
@@ -296,6 +285,8 @@ struct SettingsView: View {
         Form {
             HStack {
                 VStack(alignment: .leading) {
+                    //Configuration Management Table
+                    //USE SWIFTUI TABLE COMPONENT
                     //Button To Export Marker Data Settings
                     Button(action: {}) {
                         Text("Export Marker Data Configurations")
@@ -316,46 +307,63 @@ struct SettingsView: View {
         //Set Navigation Bar Title To Configuration
         .navigationTitle("Configuration")
     }
-    //Notion Settings Section
-    var notion: some View {
+    //Databases Settings Section
+    var databases: some View {
         Form {
             HStack {
                 VStack(alignment: .leading) {
-                    //Toggle To Enable Notion
-                    Toggle("Enable Notion", isOn: $isNotionEnabled)
-                    //Make Toggle A Checkbox
-                        .toggleStyle(.checkbox)
-                    //Toggle To Merge With Existing Notion Database
-                    Toggle("Merge With Existing Database", isOn: $notionMergeWithExistingDatabase)
-                    //Make Toggle A Checkbox
-                        .toggleStyle(.checkbox)
-                    //Text Field To Enter Notion Token And Find Token Button
+                    //Connected Databases Table
+                    //USE SWIFTUI TABLE COMPONENT
+                    //Airtable Section
+                    Text("Airtable")
+                        .font(.title2)
                     HStack {
-                        TextField("Notion Token (Required)", text: $notionToken)
-                            .padding(.trailing)
+                        //Duplicate Airtable Template Button
+                        Button(action: {}) {
+                            Text("Duplicate Airtable Template")
+                        }
+                        .padding(.trailing)
+                        //Find User API Key Button
+                        Button(action: {}) {
+                            Text("Find API Key")
+                        }
+                        .padding(.trailing)
+                        //Find Base ID Button
+                        Button(action: {}) {
+                            Text("Find Base ID")
+                        }
+                    }
+                    //Notion Section
+                    Text("Notion")
+                        .font(.title2)
+                    HStack {
+                        //Button To Duplicate Notion Template
+                        Button(action: {}) {
+                            Text("Duplicate Notion Template Button")
+                        }
+                        .padding(.trailing)
+                        //Button To Find User Token
                         Button(action: {}) {
                             Text("Find Token")
                         }
-                    }
-                    //Text Field To Enter Database URL And Find Database Button
-                    HStack {
-                        TextField("Notion Database URL (Optional)", text: $notionDatabaseURL)
-                            .padding(.trailing)
+                        .padding(.trailing)
+                        //Button To Find Database URL
                         Button(action: {}) {
-                            Text("Find Database")
+                            Text("Find Database URL")
                         }
                     }
-                    //Button To Open Notion Template
+                    .padding(.bottom)
+                    //Button To Save Database Settings
                     Button(action: {}) {
-                        Text("Open Notion Template")
+                        Text("Save Database Settings")
                     }
-                    //Button To Save Notion Settings
+                    //Button To Export Database Settings
                     Button(action: {}) {
-                        Text("Save Notion Settings")
+                        Text("Export Database Settings")
                     }
-                    //Button To Load Notion Settings
+                    //Button To Import Database Settings
                     Button(action: {}) {
-                        Text("Load Notion Settings")
+                        Text("Import Database Settings")
                     }
                 }
                 Spacer()
@@ -371,4 +379,82 @@ struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
         SettingsView()
     }
+}
+
+//Chips View For Labels
+struct Chips: View {
+    //Chip Title
+    let titleKey: LocalizedStringKey
+    //Is It Selected
+    @State var isSelected: Bool
+    var body: some View {
+        HStack {
+            //Chip Title
+            Text(titleKey)
+            //Font Size
+                .font(.title3)
+                .lineLimit(1)
+        }
+        .padding(.all, 10)
+        //Selected And Not Selected Colours
+        .foregroundColor(isSelected ? .white : .accentColor)
+        .background(isSelected ? Color.accentColor : Color.clear)
+        .cornerRadius(10)
+        .overlay(RoundedRectangle(cornerRadius: 10)
+                    .stroke(Color.accentColor, lineWidth: 1.5))
+        .onTapGesture {
+            //Change Selected On Tap
+            isSelected.toggle()
+        }
+    }
+}
+
+struct ChipsContent: View {
+    @ObservedObject var viewModel = ChipsViewModel()
+    var body: some View {
+        //Declare View Height And Width Sizes
+        var width = CGFloat.zero
+        var height = CGFloat.zero
+        return GeometryReader { geo in
+                ZStack(alignment: .topLeading, content: {
+                ForEach(viewModel.dataObject) { chipsData in
+                    Chips(titleKey: chipsData.titleKey, isSelected: chipsData.isSelected)
+                        .padding(.all, 5)
+                        .alignmentGuide(.leading) { dimension in
+                            if (abs(width - dimension.width) > geo.size.width) {
+                                width = 0
+                                height -= dimension.height
+                            }
+                            
+                            let result = width
+                            if chipsData.id == viewModel.dataObject.last!.id {
+                                width = 0
+                            } else {
+                                width -= dimension.width
+                            }
+                            return result
+                          }
+                        .alignmentGuide(.top) { dimension in
+                            let result = height
+                            if chipsData.id == viewModel.dataObject.last!.id {
+                                height = 0
+                            }
+                            return result
+                        }
+                }
+            })
+        }
+        .padding(.all, 10)
+    }
+}
+
+struct ChipsDataModel: Identifiable {
+    let id = UUID()
+    @State var isSelected: Bool
+    let titleKey: LocalizedStringKey
+}
+
+class ChipsViewModel: ObservableObject {
+    //Define Chips To Select
+    @Published var dataObject: [ChipsDataModel] = [ChipsDataModel.init(isSelected: false, titleKey: "id"), ChipsDataModel.init(isSelected: false, titleKey: "clipName"), ChipsDataModel.init(isSelected: false, titleKey: "copyright"), ChipsDataModel.init(isSelected: false, titleKey: "clipDuration"), ChipsDataModel.init(isSelected: false, titleKey: "videoRole"), ChipsDataModel.init(isSelected: false, titleKey: "libraryName"), ChipsDataModel.init(isSelected: false, titleKey: "iconImage"), ChipsDataModel.init(isSelected: false, titleKey: "type"), ChipsDataModel.init(isSelected: false, titleKey: "checked"), ChipsDataModel.init(isSelected: false, titleKey: "audioRole"), ChipsDataModel.init(isSelected: false, titleKey: "imageFileName"), ChipsDataModel.init(isSelected: false, titleKey: "eventName"), ChipsDataModel.init(isSelected: false, titleKey: "projectName"), ChipsDataModel.init(isSelected: false, titleKey: "position"), ChipsDataModel.init(isSelected: false, titleKey: "notes")]
 }

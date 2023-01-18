@@ -1,8 +1,7 @@
 //
 //  ContentView.swift
-//  Marker Data
-//
-//  Created by Mark Howard on 14/01/2023.
+//  Marker Data • https://github.com/TheAcharya/MarkerData
+//  Licensed under MIT License
 //
 
 import SwiftUI
@@ -11,7 +10,7 @@ import UniformTypeIdentifiers
 
 struct ContentView: View {
     //Is Enable Upload Toggle On
-    @State var isUploadEnabled = false
+    @State public var isUploadEnabled = false
     //Selected Export Format Tag For Picker
     @State var selectedExportFormat = 1
     //Selected Exclude Roles Tag For Picker
@@ -26,7 +25,7 @@ struct ContentView: View {
                 Spacer()
                 HStack {
                     Spacer()
-                    //Text Prompt
+                    //Text Prompt To Drop Final Cut Pro XML File
                     Text("Drop A .fcpxml(d) File Here...")
                         .bold()
                         .font(.title2)

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D58E6A5C2977365A0021F1DC /* csv2notion in Resources */ = {isa = PBXBuildFile; fileRef = D58E6A5B2977365A0021F1DC /* csv2notion */; };
 		D5F74A312972D31D00EEE2FE /* Marker_DataApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F74A302972D31D00EEE2FE /* Marker_DataApp.swift */; };
 		D5F74A332972D31D00EEE2FE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F74A322972D31D00EEE2FE /* ContentView.swift */; };
 		D5F74A352972D32100EEE2FE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5F74A342972D32100EEE2FE /* Assets.xcassets */; };
@@ -21,7 +22,6 @@
 		D5F74A542973021F00EEE2FE /* SwiftUIX in Frameworks */ = {isa = PBXBuildFile; productRef = D5F74A532973021F00EEE2FE /* SwiftUIX */; };
 		D5F74A572974A25600EEE2FE /* markers-extractor-cli in Resources */ = {isa = PBXBuildFile; fileRef = D5F74A562974A25600EEE2FE /* markers-extractor-cli */; };
 		D5F74A582974A26200EEE2FE /* markers-extractor-cli in CopyFiles */ = {isa = PBXBuildFile; fileRef = D5F74A562974A25600EEE2FE /* markers-extractor-cli */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		D5F74A5A2974ACFE00EEE2FE /* DatabasePreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F74A592974ACFE00EEE2FE /* DatabasePreferences.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -38,6 +38,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		D58E6A5B2977365A0021F1DC /* csv2notion */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = csv2notion; sourceTree = "<group>"; };
 		D5F74A2D2972D31C00EEE2FE /* Marker Data.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Marker Data.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5F74A302972D31D00EEE2FE /* Marker_DataApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Marker_DataApp.swift; sourceTree = "<group>"; };
 		D5F74A322972D31D00EEE2FE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -47,7 +48,6 @@
 		D5F74A3F2972DFD800EEE2FE /* Marker-Data-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Marker-Data-Info.plist"; sourceTree = SOURCE_ROOT; };
 		D5F74A402972E0A800EEE2FE /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		D5F74A562974A25600EEE2FE /* markers-extractor-cli */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = "markers-extractor-cli"; sourceTree = "<group>"; };
-		D5F74A592974ACFE00EEE2FE /* DatabasePreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabasePreferences.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,7 +95,7 @@
 				D5F74A362972D32100EEE2FE /* Preview Content */,
 				D5F74A402972E0A800EEE2FE /* SettingsView.swift */,
 				D5F74A562974A25600EEE2FE /* markers-extractor-cli */,
-				D5F74A592974ACFE00EEE2FE /* DatabasePreferences.swift */,
+				D58E6A5B2977365A0021F1DC /* csv2notion */,
 			);
 			path = "Marker Data";
 			sourceTree = "<group>";
@@ -186,6 +186,7 @@
 				D5F74A382972D32100EEE2FE /* Preview Assets.xcassets in Resources */,
 				D5F74A352972D32100EEE2FE /* Assets.xcassets in Resources */,
 				D5F74A572974A25600EEE2FE /* markers-extractor-cli in Resources */,
+				D58E6A5C2977365A0021F1DC /* csv2notion in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -199,7 +200,6 @@
 				D5F74A412972E0A800EEE2FE /* SettingsView.swift in Sources */,
 				D5F74A332972D31D00EEE2FE /* ContentView.swift in Sources */,
 				D5F74A312972D31D00EEE2FE /* Marker_DataApp.swift in Sources */,
-				D5F74A5A2974ACFE00EEE2FE /* DatabasePreferences.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
