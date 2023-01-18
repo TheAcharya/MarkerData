@@ -1,9 +1,11 @@
 # Marker Data
 
+The definitive Marker extraction application for Final Cut Pro that serves as a front-end GUI for [MarkersExtractor CLI](https://github.com/TheAcharya/MarkersExtractor).
+
 ## Core Features
 
 - Created with Apple Swift programming language 
-- Native integration with [Final Cut Pro](https://www.apple.com/final-cut-pro/)
+- Native Share Destination integration with [Final Cut Pro](https://www.apple.com/final-cut-pro/)
 - Accurately extract Markers from Final Cut Pro's FCPXML/FCPXMLD to CSV
 - Native integration with [Notion](https://www.notion.so) databases
 - Send Final Cut Pro's Marker metadata to cloud databases with a click of a button
@@ -26,7 +28,7 @@
 
 ## System Requirements
 
-Operating Systems: macOS Big Sur or later. <br> Final Cut Pro: 10.6.5
+macOS Big Sur or later <br> Final Cut Pro 10.6.5
 
 ## Installation
 
