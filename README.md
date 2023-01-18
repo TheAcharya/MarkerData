@@ -1,6 +1,6 @@
 # Marker Data
 
-The definitive Marker extraction application for Final Cut Pro that serves as a front-end GUI for [MarkersExtractor CLI](https://github.com/TheAcharya/MarkersExtractor).
+Marker metadata extraction and conversion application for Final Cut Pro that serves as a front-end GUI for [MarkersExtractor CLI](https://github.com/TheAcharya/MarkersExtractor).
 
 ## Core Features
 
