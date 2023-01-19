@@ -48,7 +48,7 @@ macOS Big Sur or later <br> Final Cut Pro 10.6.5
 
 Original Idea, Application Direction & Workflow by [Vigneswaran Rajkumar](https://twitter.com/IAmVigneswaran)
 
-GUI Development by [Mark Howard](https://github.com/markydoodled)
+Prototype GUI Development by [Mark Howard](https://github.com/markydoodled)
 
 ## License
 
