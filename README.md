@@ -1,4 +1,5 @@
 # Marker Data
+[![Platforms - macOS](https://img.shields.io/badge/platforms-macOS-lightgrey.svg?style=flat)](https://www.apple.com/macos) [![License: MIT](http://img.shields.io/badge/license-MIT-lightgrey.svg?style=flat)](https://github.com/TheAcharya/MarkerData/blob/main/LICENSE)
 
 Marker metadata extraction and conversion application for Final Cut Pro that serves as a front-end GUI for [MarkersExtractor CLI](https://github.com/TheAcharya/MarkersExtractor).
 
