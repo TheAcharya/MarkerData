@@ -30,7 +30,7 @@ Marker metadata extraction and conversion application for Final Cut Pro that ser
 
 ## System Requirements
 
-macOS Big Sur or later <br> Final Cut Pro 10.6.5
+macOS Monterey or later <br> Final Cut Pro 10.6.5
 
 ## Installation
 
