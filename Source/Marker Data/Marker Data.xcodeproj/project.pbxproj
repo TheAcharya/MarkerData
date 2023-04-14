@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9B39B0CC29E19B740055F31E /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B39B0CB29E19B740055F31E /* CoreImage.framework */; };
+		9B51D21129E9A01A00DF7836 /* FolderPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B51D21029E9A01A00DF7836 /* FolderPicker.swift */; };
+		9B51D21329E9AF9300DF7836 /* FolderURLModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B51D21229E9AF9300DF7836 /* FolderURLModel.swift */; };
+		9B51D21629E9B13400DF7836 /* SettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B51D21529E9B13400DF7836 /* SettingsModel.swift */; };
 		D58E6A5C2977365A0021F1DC /* csv2notion in Resources */ = {isa = PBXBuildFile; fileRef = D58E6A5B2977365A0021F1DC /* csv2notion */; };
 		D5F74A312972D31D00EEE2FE /* Marker_DataApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F74A302972D31D00EEE2FE /* Marker_DataApp.swift */; };
 		D5F74A332972D31D00EEE2FE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F74A322972D31D00EEE2FE /* ContentView.swift */; };
@@ -38,6 +42,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		9B39B0CB29E19B740055F31E /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
+		9B39B0CE29E19C040055F31E /* MarkersExtractor */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = MarkersExtractor; path = ../../../cli/MarkersExtractor; sourceTree = "<group>"; };
+		9B51D21029E9A01A00DF7836 /* FolderPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderPicker.swift; sourceTree = "<group>"; };
+		9B51D21229E9AF9300DF7836 /* FolderURLModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderURLModel.swift; sourceTree = "<group>"; };
+		9B51D21529E9B13400DF7836 /* SettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsModel.swift; sourceTree = "<group>"; };
 		D58E6A5B2977365A0021F1DC /* csv2notion */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = csv2notion; sourceTree = "<group>"; };
 		D5F74A2D2972D31C00EEE2FE /* Marker Data.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Marker Data.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5F74A302972D31D00EEE2FE /* Marker_DataApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Marker_DataApp.swift; sourceTree = "<group>"; };
@@ -56,6 +65,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D5F74A542973021F00EEE2FE /* SwiftUIX in Frameworks */,
+				9B39B0CC29E19B740055F31E /* CoreImage.framework in Frameworks */,
 				D5F74A442972E5A000EEE2FE /* FontPicker in Frameworks */,
 				D5F74A4A2973012800EEE2FE /* AppUpdater in Frameworks */,
 				D5F74A512973019000EEE2FE /* OrderedCollections in Frameworks */,
@@ -68,11 +78,46 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9B39B0CA29E19B740055F31E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9B39B0CB29E19B740055F31E /* CoreImage.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		9B39B0CD29E19C040055F31E /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				9B39B0CE29E19C040055F31E /* MarkersExtractor */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
+		9B51D20F29E99FFD00DF7836 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				9B51D21029E9A01A00DF7836 /* FolderPicker.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		9B51D21429E9B10500DF7836 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				9B51D21229E9AF9300DF7836 /* FolderURLModel.swift */,
+				9B51D21529E9B13400DF7836 /* SettingsModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		D5F74A242972D31C00EEE2FE = {
 			isa = PBXGroup;
 			children = (
+				9B39B0CD29E19C040055F31E /* Packages */,
 				D5F74A2F2972D31C00EEE2FE /* Marker Data */,
 				D5F74A2E2972D31C00EEE2FE /* Products */,
+				9B39B0CA29E19B740055F31E /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -87,6 +132,8 @@
 		D5F74A2F2972D31C00EEE2FE /* Marker Data */ = {
 			isa = PBXGroup;
 			children = (
+				9B51D21429E9B10500DF7836 /* Models */,
+				9B51D20F29E99FFD00DF7836 /* Utilities */,
 				D5F74A3F2972DFD800EEE2FE /* Marker-Data-Info.plist */,
 				D5F74A302972D31D00EEE2FE /* Marker_DataApp.swift */,
 				D5F74A322972D31D00EEE2FE /* ContentView.swift */,
@@ -197,9 +244,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9B51D21629E9B13400DF7836 /* SettingsModel.swift in Sources */,
 				D5F74A412972E0A800EEE2FE /* SettingsView.swift in Sources */,
+				9B51D21329E9AF9300DF7836 /* FolderURLModel.swift in Sources */,
 				D5F74A332972D31D00EEE2FE /* ContentView.swift in Sources */,
 				D5F74A312972D31D00EEE2FE /* Marker_DataApp.swift in Sources */,
+				9B51D21129E9A01A00DF7836 /* FolderPicker.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -329,7 +379,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Marker Data/Preview Content\"";
-				DEVELOPMENT_TEAM = ZWASU9HFBU;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -363,7 +413,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Marker Data/Preview Content\"";
-				DEVELOPMENT_TEAM = ZWASU9HFBU;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;

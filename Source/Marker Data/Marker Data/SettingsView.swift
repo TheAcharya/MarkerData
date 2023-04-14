@@ -8,10 +8,36 @@ import SwiftUI
 import FontPicker
 
 struct SettingsView: View {
+    
+    @StateObject private var exportFolderURLModel = FolderURLModel(userDefaultsKey: "exportFolderPath")
+
     //Default Selected Export Format
-    @AppStorage("selectedExportFormat") var selectedExportFormat = 1
+    @AppStorage("selectedExportFormat") private var selectedExportFormatRawValue: Int = ExportFormat.Notion.rawValue
+        
+    private var selectedExportFormat: Binding<ExportFormat> {
+        Binding<ExportFormat>(
+            get: {
+                ExportFormat(rawValue: selectedExportFormatRawValue) ?? .Notion
+            },
+            set: {
+                selectedExportFormatRawValue = $0.rawValue
+            }
+        )
+    }
+
     //Default Selected Exclude Roles
-    @AppStorage("selectedExcludeRoles") var selectedExcludeRoles = 1
+    @AppStorage("selectedExcludeRoles") private var selectedExcludeRolesRawValues: Int  = ExcludedRoles.None.rawValue
+    
+    private var selectedExcludeRoles: Binding<ExcludedRoles> {
+        Binding<ExcludedRoles>(
+            get: {
+                ExcludedRoles(rawValue: selectedExcludeRolesRawValues) ?? .None
+            },
+            set: {
+                selectedExcludeRolesRawValues = $0.rawValue
+            }
+        )
+    }
     //Are Subframes Enabled
     @AppStorage("enabledSubframes") var enabledSubframes = false
     //Default Selected ID Naming Mode
@@ -133,32 +159,30 @@ struct SettingsView: View {
       Form {
         HStack {
             VStack(alignment: .leading) {
-                //Button To Set File Export Destination
-                Button(action: {}) {
-                    Text("Set Export Destination")
+            
+                FolderPicker(folderURL: $exportFolderURLModel.folderURL, buttonTitle: "Select Export Folder")
+                if let url = exportFolderURLModel.folderURL {
+                    Text("\(url.path)")
                 }
-                //Selected Export Path
-                Text("PATH HERE")
-                    .bold()
-                //Button To Show Export Destination In Finder
-                Button(action: {}) {
-                    Text("Reveal Destination In Finder")
-                }
+                Button("Reveal Destination In Finder") {
+                       if let url = exportFolderURLModel.folderURL {
+                           NSWorkspace.shared.open(url)
+                       }
+                   }
+                   .disabled(exportFolderURLModel.folderURL == nil)
+                
+                Divider()
                 //Picker To Change Default Export Format
-                Picker("Export Format", selection: $selectedExportFormat) {
-                    Text("Notion")
-                        .tag(1)
-                    Text("Airtable")
-                        .tag(2)
+                Picker("Export Format", selection: selectedExportFormat) {
+                    ForEach(ExportFormat.allCases, id: \.self) { exportFormat in
+                        Text(exportFormat.displayName).tag(exportFormat)
+                    }
                 }
                 //Picker To Change Default Exclude Roles
-                Picker("Exclude Roles", selection: $selectedExcludeRoles) {
-                    Text("None")
-                        .tag(1)
-                    Text("Video")
-                        .tag(2)
-                    Text("Audio")
-                        .tag(3)
+                Picker("Exclude Roles", selection: selectedExcludeRoles) {
+                    ForEach(ExcludedRoles.allCases, id: \.self) { excludedRole in
+                        Text(excludedRole.displayName).tag(excludedRole)
+                    }
                 }
                 //Toggle To Enable Subframes
                 Toggle("Enable Subframes", isOn: $enabledSubframes)

@@ -9,6 +9,9 @@ import Foundation
 import UniformTypeIdentifiers
 
 struct ContentView: View {
+    
+    
+    
     //Is Enable Upload Toggle On
     @State public var isUploadEnabled = false
     //Selected Export Format Tag For Picker
@@ -36,7 +39,15 @@ struct ContentView: View {
             //Handle The Drop Of A File Or URL And Run The CLI Tool
                 .onDrop(of: [.item, .fileURL], isTargeted: nil, perform: { providers, _ in
                     print("File Dropped")
-                    try! Process.run(Bundle.main.url(forResource: "markers-extractor-cli", withExtension: "")!, arguments: ["--version"], terminationHandler: nil)
+                    let bundlePath = Bundle.main.url(forResource: "markers-extractor-cli", withExtension: "")!
+                    print("Executing \(bundlePath)")
+                    do {
+                        //try Process.run(bundlePath, arguments: ["--version"], terminationHandler: nil)
+                        
+                        try Process.run(bundlePath, arguments: ["/Volumes/Lacie_Install_macOS_Catalina/Users/tgs/tmp/MarkersExtractor/dropbox/Scripts/Render/Marker Data Demo_V1.fcpxmld /Volumes/Lacie_Install_macOS_Catalina/Users/tgs/tmp/MarkersExtractor/dropbox/Scripts/Output --export-format notion --image-format gif --image-size-percent 50 --create-done-file --log-level debug --log /Volumes/Lacie_Install_macOS_Catalina/Users/tgs/tmp/MarkersExtractor/dropbox/Scripts/log.txt"], terminationHandler: nil)
+                    } catch {
+                        print("Error = \(error.localizedDescription)")
+                    }
                     return true
                 })
             //Divide Drag And Drop Zone From Quick Actions
