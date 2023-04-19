@@ -26,6 +26,7 @@ class FolderURLModel: ObservableObject {
     
     private func saveFolderPathToUserDefaults(folderURL: URL) {
         UserDefaults.standard.set(folderURL.path, forKey: userDefaultsKey)
+        
     }
     
     private func getFolderPathFromUserDefaults() -> URL? {

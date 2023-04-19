@@ -40,10 +40,32 @@ struct SettingsView: View {
     }
     //Are Subframes Enabled
     @AppStorage("enabledSubframes") var enabledSubframes = false
+
     //Default Selected ID Naming Mode
-    @AppStorage("selectedIDNamingMode") var selectedIDNamingMode = 1
+    @AppStorage("selectedIDNamingMode") private var selectedIDNamingModeRawValue:Int = IdNamingMode.Timecode.rawValue
+    private var selectedIDNamingMode: Binding<IdNamingMode> {
+        Binding<IdNamingMode>(
+            get: {
+                IdNamingMode(rawValue: selectedIDNamingModeRawValue) ?? .Name
+            },
+            set: {
+                selectedIDNamingModeRawValue = $0.rawValue
+            }
+        )
+    }
     //Default Selected Image Mode
-    @AppStorage("selectedImageMode") var selectedImageMode = 1
+    @AppStorage("selectedImageMode") private var selectedImageModeRawValue: Int = ImageMode.PNG.rawValue
+    private var selectedImageMode: Binding<ImageMode> {
+        Binding<ImageMode>(
+            get: {
+                ImageMode(rawValue: selectedImageModeRawValue) ?? .PNG
+            },
+            set: {
+                selectedImageModeRawValue = $0.rawValue
+            }
+        )
+    }
+    
     //Default Selected JPG Image Quality
     @AppStorage("selectedImageQuality") var selectedImageQuality = 100.0
     //Default Image Width
@@ -57,11 +79,51 @@ struct SettingsView: View {
     //Default Set GIF Length Span
     @AppStorage("selectedGIFLength") var selectedGIFLength = "2"
     //Default Selected Font
-    @State var selectedFont: NSFont = NSFont.systemFont(ofSize: 24)
+    //@State var selectedFont: NSFont = NSFont.systemFont(ofSize: 24)
+    @AppStorage("selectedFontName") private var selectedFontName: String = NSFont.systemFont(ofSize: 24).fontName
+    @AppStorage("selectedFontSize") private var selectedFontSize: Double = 24
+        
+    private var selectedFont: NSFont {
+        NSFont(name: selectedFontName, size: selectedFontSize) ?? NSFont.systemFont(ofSize: selectedFontSize)
+    }
+    
+    private func updateSelectedFont(_ newFont: NSFont) {
+        selectedFontName = newFont.fontName
+        selectedFontSize = newFont.pointSize
+    }
+    
+    private var fontBinding: Binding<NSFont> {
+        Binding<NSFont>(
+            get: { self.selectedFont },
+            set: { self.updateSelectedFont($0) }
+        )
+    }
+        
+    
     //Default Horizontal Alignment
-    @AppStorage("selectedHorizontalAlignment") var selectedHorizonalAlignment = 1
+    @AppStorage("selectedHorizontalAlignment") var selectedHorizonalAlignmentRawValue: Int = LabelHorizontalAlignment.Left.rawValue
+    private var selectedHorizonalAlignment: Binding<LabelHorizontalAlignment> {
+        Binding<LabelHorizontalAlignment>(
+            get: {
+                LabelHorizontalAlignment(rawValue: selectedHorizonalAlignmentRawValue) ?? .Left
+            },
+            set: {
+                selectedHorizonalAlignmentRawValue = $0.rawValue
+            }
+        )
+    }
     //Default Vertical Alignment
-    @AppStorage("selectedVerticallignment") var selectedVerticalAlignment = 1
+    @AppStorage("selectedVerticallignment") var selectedVerticalAlignmentRawValue: Int = LabelVerticalAlignment.Top.rawValue
+    private var selectedVerticalAlignment: Binding<LabelVerticalAlignment> {
+        Binding<LabelVerticalAlignment>(
+            get: {
+                LabelVerticalAlignment(rawValue: selectedVerticalAlignmentRawValue) ?? .Top
+            },
+            set: {
+                selectedVerticalAlignmentRawValue = $0.rawValue
+            }
+        )
+    }
     //Default Copyright Text
     @AppStorage("copyrightText") var copyrightText = ""
     //Init Chips View Model
@@ -202,22 +264,16 @@ struct SettingsView: View {
             HStack {
                 VStack(alignment: .leading) {
                     //Picker To Change Selected ID Naming Mode
-                    Picker("ID Naming Mode", selection: $selectedIDNamingMode) {
-                        Text("Timecode")
-                            .tag(1)
-                        Text("Name")
-                            .tag(2)
-                        Text("Notes")
-                            .tag(3)
+                    Picker("ID Naming Mode", selection: selectedIDNamingMode) {
+                        ForEach(IdNamingMode.allCases, id: \.self) { item in
+                            Text(item.displayName).tag(item)
+                        }
                     }
                     //Picker To Change Selected Image Mode
-                    Picker("Image Mode", selection: $selectedImageMode) {
-                        Text("PNG")
-                            .tag(1)
-                        Text("JPG")
-                            .tag(2)
-                        Text("GIF")
-                            .tag(3)
+                    Picker("Image Mode", selection: selectedImageMode) {
+                        ForEach(ImageMode.allCases, id: \.self) { item in
+                            Text(item.displayName).tag(item)
+                        }
                     }
                     //Slider To Set JPG Image Quality
                     Slider(value: $selectedImageQuality, in: 1...100, step: 1) {
@@ -239,14 +295,14 @@ struct SettingsView: View {
                         TextField("Image Height", text: $imageHeight)
                     }
                     //Slider To Set Image Size In Percentages
-                    Slider(value: $selectedImageQuality, in: 1...100, step: 1) {
+                    Slider(value: $selectedImageSize, in: 1...100, step: 1) {
                             Text("Image Size (%)")
                         } minimumValueLabel: {
                             Text("1")
                         } maximumValueLabel: {
                             Text("100")
                         } onEditingChanged: { editing in
-                            print("Changed Image Size To \(selectedImageQuality)")
+                            print("Changed Image Size To \($selectedImageSize)")
                         }
                     //Display Text To Show Current Image Size In %
                     Text("Current Image Size - \(selectedImageSize)".dropLast(2))
@@ -269,24 +325,20 @@ struct SettingsView: View {
             HStack {
                 VStack(alignment: .leading) {
                     //Button To Open Font Picker Component
-                    FontPicker("Font", selection: $selectedFont)
+                    FontPicker("Font", selection: fontBinding)
+                    Text("\(selectedFontName), size: \(Int(selectedFontSize))")
+                                    .font(Font(selectedFont))
                     //Picker To Change Horizonal Alignment
-                    Picker("Horizonal Alignment", selection: $selectedHorizonalAlignment) {
-                        Text("Left")
-                            .tag(1)
-                        Text("Center")
-                            .tag(2)
-                        Text("Right")
-                            .tag(3)
+                    Picker("Horizonal Alignment", selection: selectedHorizonalAlignment) {
+                        ForEach(LabelHorizontalAlignment.allCases, id: \.self) { item in
+                            Text(item.displayName).tag(item)
+                        }
                     }
                     //Picker To Change Vertical Alignment
-                    Picker("Vertical Alignment", selection: $selectedVerticalAlignment) {
-                        Text("Top")
-                            .tag(1)
-                        Text("Center")
-                            .tag(2)
-                        Text("Bottom")
-                            .tag(3)
+                    Picker("Vertical Alignment", selection: selectedVerticalAlignment) {
+                        ForEach(LabelVerticalAlignment.allCases, id: \.self) { item in
+                            Text(item.displayName).tag(item)
+                        }
                     }
                     //Text Field To Enter Copyright
                     TextField("Copyright", text: $copyrightText)
