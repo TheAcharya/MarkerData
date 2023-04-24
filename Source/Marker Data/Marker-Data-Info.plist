@@ -4,5 +4,11 @@
 <dict>
 	<key>com.apple.proapps.MediaAssetProtocol</key>
 	<dict/>
+	<key>NSUserSelectedFileURLsReadWrite</key>
+	<string>Please allow access to so we can read the folder that contains the .fcpxml(d) file and folder, and also the output folder.</string>
+	<key>com.apple.security.temporary-exception.files.home-relative-path.read-write</key>
+	<array>
+		<string>/</string>
+	</array>
 </dict>
 </plist>

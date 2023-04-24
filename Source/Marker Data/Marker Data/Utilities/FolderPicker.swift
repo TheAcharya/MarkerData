@@ -28,6 +28,7 @@ struct FolderPicker: NSViewRepresentable {
             panel.canChooseFiles = false
             panel.canChooseDirectories = true
             panel.allowsMultipleSelection = false
+            panel.directoryURL = URL(fileURLWithPath: NSHomeDirectory())
             
             panel.begin { response in
                 if response == .OK {

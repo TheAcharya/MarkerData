@@ -7,10 +7,11 @@
 import SwiftUI
 import Foundation
 import UniformTypeIdentifiers
+import MarkersExtractor
 
 struct ContentView: View {
     
-    
+    @StateObject private var errorViewModel = ErrorViewModel()
     
     //Is Enable Upload Toggle On
     @State public var isUploadEnabled = false
@@ -37,17 +38,61 @@ struct ContentView: View {
                 Spacer()
             }
             //Handle The Drop Of A File Or URL And Run The CLI Tool
-                .onDrop(of: [.item, .fileURL], isTargeted: nil, perform: { providers, _ in
-                    print("File Dropped")
-                    let bundlePath = Bundle.main.url(forResource: "markers-extractor-cli", withExtension: "")!
-                    print("Executing \(bundlePath)")
-                    do {
-                        //try Process.run(bundlePath, arguments: ["--version"], terminationHandler: nil)
-                        
-                        try Process.run(bundlePath, arguments: ["/Volumes/Lacie_Install_macOS_Catalina/Users/tgs/tmp/MarkersExtractor/dropbox/Scripts/Render/Marker Data Demo_V1.fcpxmld /Volumes/Lacie_Install_macOS_Catalina/Users/tgs/tmp/MarkersExtractor/dropbox/Scripts/Output --export-format notion --image-format gif --image-size-percent 50 --create-done-file --log-level debug --log /Volumes/Lacie_Install_macOS_Catalina/Users/tgs/tmp/MarkersExtractor/dropbox/Scripts/log.txt"], terminationHandler: nil)
-                    } catch {
-                        print("Error = \(error.localizedDescription)")
+                .onDrop(of: [(kUTTypeFileURL as String)], isTargeted: nil, perform: { providers, _ in
+                    for provider in providers {
+                        // Check if the provider can load a file URL
+                        if provider.canLoadObject(ofClass: URL.self) {
+                            // Load the file URL from the provider
+                            provider.loadObject(ofClass: URL.self) { url, error in
+                                if let fileURL = url as? URL {
+                                    // Handle the file URL
+                                    print("Dropped file URL: \(fileURL)")
+                                    DispatchQueue.main.async {
+                                        do {
+                                            let outputDirString_ = UserDefaults.standard.string(forKey: "exportFolderPath") ?? FileManager.default.temporaryDirectory.absoluteString
+                                            let outputDirString = outputDirString_.replacingOccurrences(of: "%20", with: " ")
+                                            let outputDirUrl = URL(string: outputDirString) ?? FileManager.default.temporaryDirectory
+                                            let fcpxmlFilePathName = fileURL.absoluteString
+                                            let fcpxmlFile: FCPXMLFile = .init(File(fileURL))
+                                            var settings = try MarkersExtractor.Settings(
+                                                fcpxml: fcpxmlFile,
+                                                outputDir: outputDirUrl)
+                                            
+                                            print("output is going to \(settings.outputDir.absoluteString)")
+                                            
+                                            
+                                            try MarkersExtractor.extract(settings)
+                                            
+                                            
+                                            print("Ok")
+                                        } catch {
+                                            DispatchQueue.main.async {
+                                                errorViewModel.errorMessage  = error.localizedDescription
+                                                print("Error: \(error.localizedDescription)")
+                                            }
+                                            
+                                        }
+                                    }
+                                } else if let error = error {
+                                    // Handle the error
+                                    print("Error loading file URL: \(error)")
+                                }
+                            }
+                        }
                     }
+                    
+                    
+
+                    
+//                    let bundlePath = Bundle.main.url(forResource: "markers-extractor-cli", withExtension: "")!
+//                    print("Executing \(bundlePath)")
+//                    do {
+//                        //try Process.run(bundlePath, arguments: ["--version"], terminationHandler: nil)
+//
+//                        try Process.run(bundlePath, arguments: ["/Volumes/Lacie_Install_macOS_Catalina/Users/tgs/tmp/MarkersExtractor/dropbox/Scripts/Render/Marker Data Demo_V1.fcpxmld /Volumes/Lacie_Install_macOS_Catalina/Users/tgs/tmp/MarkersExtractor/dropbox/Scripts/Output --export-format notion --image-format gif --image-size-percent 50 --create-done-file --log-level debug --log /Volumes/Lacie_Install_macOS_Catalina/Users/tgs/tmp/MarkersExtractor/dropbox/Scripts/log.txt"], terminationHandler: nil)
+//                    } catch {
+//                        print("Error = \(error.localizedDescription)")
+//                    }
                     return true
                 })
             //Divide Drag And Drop Zone From Quick Actions
@@ -90,7 +135,9 @@ struct ContentView: View {
                 Spacer()
             }
             .padding(.bottom)
-        }
+        }.overlay(UserAlertView(title: "Error", onDismiss: {
+                    // Perform any action you want when the user dismisses the alert.
+        }).environmentObject(errorViewModel))
     }
 }
 
