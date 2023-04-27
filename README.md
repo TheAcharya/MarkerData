@@ -1,7 +1,19 @@
-# Marker Data
-[![Platforms - macOS](https://img.shields.io/badge/platforms-macOS-lightgrey.svg?style=flat)](https://www.apple.com/macos) [![License: MIT](http://img.shields.io/badge/license-MIT-lightgrey.svg?style=flat)](https://github.com/TheAcharya/MarkerData/blob/main/LICENSE)
+<img src="assets/marker_data_app_icon.png" width="220" alt="App icon" align="left"/>
 
-Marker metadata extraction and conversion application for [Final Cut Pro](https://www.apple.com/final-cut-pro/) that uses [MarkersExtractor](https://github.com/TheAcharya/MarkersExtractor) Library and API.
+<div>
+<h2>Marker Data - for Final Cut Pro</h2>
+<!-- license -->
+<a href="https://github.com/TheAcharya/MarkerData/blob/main/LICENSE">
+<img src="http://img.shields.io/badge/license-MIT-lightgrey.svg?style=flat" alt="license"/>
+</a>
+<!-- platform -->
+<a href="https://github.com/TheAcharya/MarkerData">
+<img src="https://img.shields.io/badge/platform-macOS-lightgrey.svg?style=flat" alt="platform"/>
+</a>
+<p>
+<p>Marker metadata extraction and conversion application for <a href="https://www.apple.com/final-cut-pro/" target="_blank">Final Cut Pro</a> that uses <a href="https://github.com/TheAcharya/MarkersExtractor" target="_blank">MarkersExtractor</a> Library and API.</p>
+<a href="https://github.com/TheAcharya/MarkerData/releases"><img src="assets/macos_badge_noborder.png" width="175" alt="Download for macOS"/></a>
+</div>
 
 ## Core Features
 
