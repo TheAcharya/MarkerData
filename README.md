@@ -1,4 +1,4 @@
-<img src="assets/marker_data_app_icon.png" width="220" alt="App icon" align="left"/>
+<img src="assets/marker_data_app_icon.png" width="256" alt="App icon" align="left"/>
 
 <div>
 <h2>Marker Data - for Final Cut Pro</h2>
