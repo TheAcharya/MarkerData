@@ -33,7 +33,7 @@ class FolderURLModel: ObservableObject {
         if let savedPath = UserDefaults.standard.string(forKey: userDefaultsKey) {
             return URL(fileURLWithPath: savedPath)
         }
-        return URL(fileURLWithPath: "~/Desktop")
+        return URL(fileURLWithPath: "~/")
     }
 }
 

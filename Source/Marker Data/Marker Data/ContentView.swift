@@ -13,10 +13,13 @@ struct ContentView: View {
     
     @StateObject private var errorViewModel = ErrorViewModel()
     
+    @State private var showingOutputInfinder = false
+    @State private var completedOutputFolder: URL?=nil
+    
     //Is Enable Upload Toggle On
     @State public var isUploadEnabled = false
     //Selected Export Format Tag For Picker
-    @State var selectedExportFormat = 1
+
     //Selected Exclude Roles Tag For Picker
     @State var selectedExcludeRoles = 1
     //Selected Image Format Tag For Picker
@@ -38,33 +41,31 @@ struct ContentView: View {
                 Spacer()
             }
             //Handle The Drop Of A File Or URL And Run The CLI Tool
+            
                 .onDrop(of: [(kUTTypeFileURL as String)], isTargeted: nil, perform: { providers, _ in
+                    self.completedOutputFolder = nil
                     for provider in providers {
+                        //UserDefaults.standard.set(nil, forKey:exportFolderPathKey)
                         // Check if the provider can load a file URL
                         if provider.canLoadObject(ofClass: URL.self) {
                             // Load the file URL from the provider
-                            provider.loadObject(ofClass: URL.self) { url, error in
-                                if let fileURL = url as? URL {
+                            let _ = provider.loadObject(ofClass: URL.self) { url, error in
+                                if let fileURL = url {
                                     // Handle the file URL
-                                    print("Dropped file URL: \(fileURL)")
+                                    print("Dropped file URL: \(fileURL.absoluteString)")
                                     DispatchQueue.main.async {
                                         do {
-                                            let outputDirString_ = UserDefaults.standard.string(forKey: "exportFolderPath") ?? FileManager.default.temporaryDirectory.absoluteString
-                                            let outputDirString = outputDirString_.replacingOccurrences(of: "%20", with: " ")
-                                            let outputDirUrl = URL(string: outputDirString) ?? FileManager.default.temporaryDirectory
-                                            let fcpxmlFilePathName = fileURL.absoluteString
-                                            let fcpxmlFile: FCPXMLFile = .init(File(fileURL))
-                                            var settings = try MarkersExtractor.Settings(
-                                                fcpxml: fcpxmlFile,
-                                                outputDir: outputDirUrl)
-                                            
-                                            print("output is going to \(settings.outputDir.absoluteString)")
-                                            
-                                            
-                                            try MarkersExtractor.extract(settings)
-                                            
-                                            
+                                            let outputDirURL: URL = UserDefaults.standard.exportFolder
+                                            let settings = try MarkersExtractor.Settings(
+                                                fcpxml: .init(fileURL),
+                                                outputDir: outputDirURL
+                                            )
+                                            print("output is going to \(settings.outputDir)")
+                                            try MarkersExtractor(settings).extract()
+                                            self.completedOutputFolder = outputDirURL
+                                            showingOutputInfinder = true
                                             print("Ok")
+                                            
                                         } catch {
                                             DispatchQueue.main.async {
                                                 errorViewModel.errorMessage  = error.localizedDescription
@@ -75,24 +76,11 @@ struct ContentView: View {
                                     }
                                 } else if let error = error {
                                     // Handle the error
-                                    print("Error loading file URL: \(error)")
+                                    print("Error loading file URL: \(error.localizedDescription)")
                                 }
                             }
                         }
                     }
-                    
-                    
-
-                    
-//                    let bundlePath = Bundle.main.url(forResource: "markers-extractor-cli", withExtension: "")!
-//                    print("Executing \(bundlePath)")
-//                    do {
-//                        //try Process.run(bundlePath, arguments: ["--version"], terminationHandler: nil)
-//
-//                        try Process.run(bundlePath, arguments: ["/Volumes/Lacie_Install_macOS_Catalina/Users/tgs/tmp/MarkersExtractor/dropbox/Scripts/Render/Marker Data Demo_V1.fcpxmld /Volumes/Lacie_Install_macOS_Catalina/Users/tgs/tmp/MarkersExtractor/dropbox/Scripts/Output --export-format notion --image-format gif --image-size-percent 50 --create-done-file --log-level debug --log /Volumes/Lacie_Install_macOS_Catalina/Users/tgs/tmp/MarkersExtractor/dropbox/Scripts/log.txt"], terminationHandler: nil)
-//                    } catch {
-//                        print("Error = \(error.localizedDescription)")
-//                    }
                     return true
                 })
             //Divide Drag And Drop Zone From Quick Actions
@@ -108,36 +96,29 @@ struct ContentView: View {
                 Toggle("Enable Upload", isOn: $isUploadEnabled)
                     .toggleStyle(CheckboxToggleStyle())
                 //Choose Export Format
-                Picker("Export Format", selection: $selectedExportFormat) {
-                    Text("Notion")
-                        .tag(1)
-                    Text("Airtable")
-                        .tag(2)
-                }
+                ExportFormatPicker()
                 //Choose Exclude Roles
-                Picker("Exclude Roles", selection: $selectedExcludeRoles) {
-                    Text("None")
-                        .tag(1)
-                    Text("Video")
-                        .tag(2)
-                    Text("Audio")
-                        .tag(3)
-                }
+                ExcludedRolesPicker()
                 //Choose Image Format
-                Picker("Image Format", selection: $selectedImageFormat) {
-                    Text("PNG")
-                        .tag(1)
-                    Text("JPG")
-                        .tag(2)
-                    Text("GIF")
-                        .tag(3)
-                }
+                ImageModePicker()
                 Spacer()
             }
             .padding(.bottom)
         }.overlay(UserAlertView(title: "Error", onDismiss: {
                     // Perform any action you want when the user dismisses the alert.
         }).environmentObject(errorViewModel))
+        .alert(isPresented:$showingOutputInfinder) {
+            Alert(
+                title: Text("Extracted"),
+                message: Text("Markers successfully extracted."),
+                primaryButton: .default(Text("Show in finder")) {
+                    if let url =  completedOutputFolder {
+                        NSWorkspace.shared.open(url)
+                    }
+                },
+                secondaryButton: .default(Text("Ok"))
+            )
+        }
     }
 }
 

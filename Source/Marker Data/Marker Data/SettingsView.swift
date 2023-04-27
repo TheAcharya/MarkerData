@@ -9,35 +9,8 @@ import FontPicker
 
 struct SettingsView: View {
     
-    @StateObject private var exportFolderURLModel = FolderURLModel(userDefaultsKey: "exportFolderPath")
+    @StateObject private var exportFolderURLModel = FolderURLModel(userDefaultsKey: exportFolderPathKey)
 
-    //Default Selected Export Format
-    @AppStorage("selectedExportFormat") private var selectedExportFormatRawValue: Int = ExportFormat.Notion.rawValue
-        
-    private var selectedExportFormat: Binding<ExportFormat> {
-        Binding<ExportFormat>(
-            get: {
-                ExportFormat(rawValue: selectedExportFormatRawValue) ?? .Notion
-            },
-            set: {
-                selectedExportFormatRawValue = $0.rawValue
-            }
-        )
-    }
-
-    //Default Selected Exclude Roles
-    @AppStorage("selectedExcludeRoles") private var selectedExcludeRolesRawValues: Int  = ExcludedRoles.None.rawValue
-    
-    private var selectedExcludeRoles: Binding<ExcludedRoles> {
-        Binding<ExcludedRoles>(
-            get: {
-                ExcludedRoles(rawValue: selectedExcludeRolesRawValues) ?? .None
-            },
-            set: {
-                selectedExcludeRolesRawValues = $0.rawValue
-            }
-        )
-    }
     //Are Subframes Enabled
     @AppStorage("enabledSubframes") var enabledSubframes = false
 
@@ -235,17 +208,9 @@ struct SettingsView: View {
                 
                 Divider()
                 //Picker To Change Default Export Format
-                Picker("Export Format", selection: selectedExportFormat) {
-                    ForEach(ExportFormat.allCases, id: \.self) { exportFormat in
-                        Text(exportFormat.displayName).tag(exportFormat)
-                    }
-                }
+                ExportFormatPicker()
                 //Picker To Change Default Exclude Roles
-                Picker("Exclude Roles", selection: selectedExcludeRoles) {
-                    ForEach(ExcludedRoles.allCases, id: \.self) { excludedRole in
-                        Text(excludedRole.displayName).tag(excludedRole)
-                    }
-                }
+                ExcludedRolesPicker()
                 //Toggle To Enable Subframes
                 Toggle("Enable Subframes", isOn: $enabledSubframes)
                 //Make Toggle A Checkbox
