@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import MarkersExtractor
 
 enum ExportFormat: Int, CaseIterable {
     case Notion = 0
@@ -17,6 +18,15 @@ enum ExportFormat: Int, CaseIterable {
                 return "Notion"
             case .Airtable:
                 return "Airtable"
+        }
+    }
+    
+    var markersExtractor: ExportProfileFormat {
+        switch self {
+            case .Notion:
+                return ExportProfileFormat.notion
+            case .Airtable:
+                return ExportProfileFormat.airtable
         }
     }
 }
@@ -35,6 +45,17 @@ enum ExcludedRoles: Int, CaseIterable {
                 return "Video"
             case .Audio:
                 return "Audio"
+        }
+    }
+    
+    var markersExtractor: MarkerRoleType? {
+        switch self {
+            case .None:
+                return nil
+            case .Video:
+                return MarkerRoleType.video
+            case .Audio:
+                return MarkerRoleType.audio
         }
     }
 }
@@ -69,6 +90,17 @@ enum ImageMode: Int, CaseIterable {
                 return "JPG"
             case .GIF:
                 return "GIF"
+        }
+    }
+    
+    var markersExtractor: MarkerImageFormat {
+        switch self {
+            case .PNG:
+                return .still(.png)
+            case .JPG:
+                return .still(.jpg)
+            case .GIF:
+                return .animated(.gif)
         }
     }
 }

@@ -10,9 +10,10 @@ import AppUpdater
 @main
 struct Marker_DataApp: App {
     
-    @StateObject private var exportFormatStore = ExportFormatStore()
-    @StateObject private var excludedRolesStore = ExcludedRolesStore()
-    @StateObject private var imageModeStore = ImageModeStore()
+    @StateObject private var settingsStore = SettingsStore()
+//    @StateObject private var exportFormatStore = ExportFormatStore()
+//    @StateObject private var excludedRolesStore = ExcludedRolesStore()
+//    @StateObject private var imageModeStore = ImageModeStore()
     
     //Link App Delegate To SwiftUI App Lifecycle
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
@@ -20,9 +21,7 @@ struct Marker_DataApp: App {
         //Make Main Window Group To Launch Into
         WindowGroup {
             ContentView()
-                .environmentObject(exportFormatStore)
-                .environmentObject(excludedRolesStore)
-                .environmentObject(imageModeStore)
+                .environmentObject(settingsStore)
             //Force Dark Mode On Content View
                 .preferredColorScheme(.dark)
             //Set Main Window Min And Max Size
@@ -35,9 +34,7 @@ struct Marker_DataApp: App {
         //Add Settings Menu Bar Item And Pass In A View
         Settings {
             SettingsView()
-                .environmentObject(exportFormatStore)
-                .environmentObject(excludedRolesStore)
-                .environmentObject(imageModeStore)
+                .environmentObject(settingsStore)
             //Force Dark Mode On Settings View
                 .preferredColorScheme(.dark)
         }

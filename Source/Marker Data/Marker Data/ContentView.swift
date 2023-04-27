@@ -16,14 +16,12 @@ struct ContentView: View {
     @State private var showingOutputInfinder = false
     @State private var completedOutputFolder: URL?=nil
     
+    @EnvironmentObject var settingsStore: SettingsStore
+    
+    
     //Is Enable Upload Toggle On
     @State public var isUploadEnabled = false
-    //Selected Export Format Tag For Picker
 
-    //Selected Exclude Roles Tag For Picker
-    @State var selectedExcludeRoles = 1
-    //Selected Image Format Tag For Picker
-    @State var selectedImageFormat = 1
     //Main View Controller
     var body: some View {
         VStack {
@@ -58,7 +56,10 @@ struct ContentView: View {
                                             let outputDirURL: URL = UserDefaults.standard.exportFolder
                                             let settings = try MarkersExtractor.Settings(
                                                 fcpxml: .init(fileURL),
-                                                outputDir: outputDirURL
+                                                outputDir: outputDirURL,
+                                                exportFormat: settingsStore.selectedExportFormat.markersExtractor,
+                                                imageFormat: settingsStore.selectedImageMode.markersExtractor,
+                                                excludeRoleType: settingsStore.selectedExcludeRoles.markersExtractor
                                             )
                                             print("output is going to \(settings.outputDir)")
                                             try MarkersExtractor(settings).extract()

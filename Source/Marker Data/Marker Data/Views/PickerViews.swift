@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct ExportFormatPicker: View {
-    @EnvironmentObject var exportFormatStore: ExportFormatStore
+    @EnvironmentObject var settingsStore: SettingsStore
 
     var body: some View {
-        Picker("Export Format", selection: $exportFormatStore.selectedExportFormat) {
+        Picker("Export Format", selection: $settingsStore.selectedExportFormat) {
             ForEach(ExportFormat.allCases, id: \.self) { exportFormat in
                 Text(exportFormat.displayName).tag(exportFormat)
             }
@@ -20,10 +20,10 @@ struct ExportFormatPicker: View {
 }
 
 struct ExcludedRolesPicker: View {
-    @EnvironmentObject var excludedRolesStore: ExcludedRolesStore
+    @EnvironmentObject var settingsStore: SettingsStore
 
     var body: some View {
-        Picker("Exclude Roles", selection: $excludedRolesStore.selectedExcludeRoles) {
+        Picker("Exclude Roles", selection: $settingsStore.selectedExcludeRoles) {
             ForEach(ExcludedRoles.allCases, id: \.self) { excludedRole in
                 Text(excludedRole.displayName).tag(excludedRole)
             }
@@ -32,10 +32,10 @@ struct ExcludedRolesPicker: View {
 }
 
 struct ImageModePicker: View {
-    @EnvironmentObject var imageModeStore: ImageModeStore
+    @EnvironmentObject var settingsStore: SettingsStore
 
     var body: some View {
-        Picker("Image Mode", selection: $imageModeStore.selectedImageMode) {
+        Picker("Image Mode", selection: $settingsStore.selectedImageMode) {
             ForEach(ImageMode.allCases, id: \.self) { imageMode in
                 Text(imageMode.displayName).tag(imageMode)
             }
