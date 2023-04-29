@@ -1,4 +1,4 @@
-<img src="assets/marker_data_app_icon.png" width="256" alt="App icon" align="left"/>
+<img src="assets/marker_data_app_icon.png" width="220" alt="App icon" align="left"/>
 
 <div>
 <h2>Marker Data - for Final Cut Pro</h2>
@@ -19,12 +19,19 @@
 
 - Created with Apple Swift programming language 
 - Native Share Destination integration with Final Cut Pro
-- Accurately extract Markers from Final Cut Pro's FCPXML/FCPXMLD to CSV
+- Accurately extract Markers from Final Cut Pro's FCPXML/FCPXMLD
 - Native integration with [Airtable](https://www.airtable.com) & [Notion](https://www.notion.so) databases
 - Send Final Cut Pro's Marker metadata to cloud databases with a click of a button
 - Ability to batch extract and render stills or animated GIFs based on each Marker's timecode
 - Ability to batch burn-in labels of each Marker's metadata onto the stills or animated GIFs
 - Ability to create multiple configuration for different projects
+
+## Avaliable Extract Profiles
+
+- Notion (CSV)
+- Airtable (CSV & JSON)
+- Pro Tools (MIDI)
+- Cubase (MIDI)
 
 ## Table of contents
 - [Demo](#demo)
