@@ -17,10 +17,6 @@ struct ContentView: View {
     @State private var completedOutputFolder: URL?=nil
     
     @EnvironmentObject var settingsStore: SettingsStore
-    
-    
-    //Is Enable Upload Toggle On
-    @State public var isUploadEnabled = false
 
     //Main View Controller
     var body: some View {
@@ -51,20 +47,13 @@ struct ContentView: View {
                                 if let fileURL = url {
                                     // Handle the file URL
                                     print("Dropped file URL: \(fileURL.absoluteString)")
-                                    DispatchQueue.main.async {
+                                    DispatchQueue.global(qos: .background).async {
                                         do {
-                                            let outputDirURL: URL = UserDefaults.standard.exportFolder
-                                            let settings = try MarkersExtractor.Settings(
-                                                fcpxml: .init(fileURL),
-                                                outputDir: outputDirURL,
-                                                exportFormat: settingsStore.selectedExportFormat.markersExtractor,
-                                                imageFormat: settingsStore.selectedImageMode.markersExtractor,
-                                                excludeRoleType: settingsStore.selectedExcludeRoles.markersExtractor
-                                            )
-                                            print("output is going to \(settings.outputDir)")
+                                            let settings = try settingsStore.markersExtractorSettings(fcpxmlFileUrl: fileURL)
                                             try MarkersExtractor(settings).extract()
-                                            self.completedOutputFolder = outputDirURL
-                                            showingOutputInfinder = true
+                                            
+                                            self.completedOutputFolder = settings.outputDir
+                                            showingOutputInfinder = true // inform the user
                                             print("Ok")
                                             
                                         } catch {
@@ -94,14 +83,13 @@ struct ContentView: View {
             HStack {
                 Spacer()
                 //Enable Upload Checkbox
-                Toggle("Enable Upload", isOn: $isUploadEnabled)
+                Toggle("Enable Upload", isOn: settingsStore.$isUploadEnabled)
                     .toggleStyle(CheckboxToggleStyle())
-                //Choose Export Format
+                
                 ExportFormatPicker()
-                //Choose Exclude Roles
                 ExcludedRolesPicker()
-                //Choose Image Format
                 ImageModePicker()
+                
                 Spacer()
             }
             .padding(.bottom)
@@ -124,7 +112,8 @@ struct ContentView: View {
 }
 
 struct ContentView_Previews: PreviewProvider {
+    static let settingsStore = SettingsStore()
     static var previews: some View {
-        ContentView()
+        ContentView().environmentObject(settingsStore)
     }
 }

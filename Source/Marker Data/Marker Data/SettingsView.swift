@@ -10,95 +10,22 @@ import FontPicker
 struct SettingsView: View {
     
     @StateObject private var exportFolderURLModel = FolderURLModel(userDefaultsKey: exportFolderPathKey)
+    @EnvironmentObject var settingsStore: SettingsStore
 
-    //Are Subframes Enabled
-    @AppStorage("enabledSubframes") var enabledSubframes = false
+    //@State private var score = 0
+    
+    let intFormatter: NumberFormatter = {
+         let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+         return formatter
+     }()
+    
+    
 
-    //Default Selected ID Naming Mode
-    @AppStorage("selectedIDNamingMode") private var selectedIDNamingModeRawValue:Int = IdNamingMode.Timecode.rawValue
-    private var selectedIDNamingMode: Binding<IdNamingMode> {
-        Binding<IdNamingMode>(
-            get: {
-                IdNamingMode(rawValue: selectedIDNamingModeRawValue) ?? .Name
-            },
-            set: {
-                selectedIDNamingModeRawValue = $0.rawValue
-            }
-        )
-    }
-    //Default Selected Image Mode
-    @AppStorage("selectedImageMode") private var selectedImageModeRawValue: Int = ImageMode.PNG.rawValue
-    private var selectedImageMode: Binding<ImageMode> {
-        Binding<ImageMode>(
-            get: {
-                ImageMode(rawValue: selectedImageModeRawValue) ?? .PNG
-            },
-            set: {
-                selectedImageModeRawValue = $0.rawValue
-            }
-        )
-    }
-    
-    //Default Selected JPG Image Quality
-    @AppStorage("selectedImageQuality") var selectedImageQuality = 100.0
-    //Default Image Width
-    @AppStorage("imageWidth") var imageWidth = "1920"
-    //Default Image Height
-    @AppStorage("imageHeight") var imageHeight = "1080"
-    //Default Image Scale Size
-    @AppStorage("selectedImageSize") var selectedImageSize = 100.0
-    //Default Set GIF FPS
-    @AppStorage("selectedGIFFPS") var selectedGIFFPS = "10"
-    //Default Set GIF Length Span
-    @AppStorage("selectedGIFLength") var selectedGIFLength = "2"
-    //Default Selected Font
-    //@State var selectedFont: NSFont = NSFont.systemFont(ofSize: 24)
-    @AppStorage("selectedFontName") private var selectedFontName: String = NSFont.systemFont(ofSize: 24).fontName
-    @AppStorage("selectedFontSize") private var selectedFontSize: Double = 24
-        
-    private var selectedFont: NSFont {
-        NSFont(name: selectedFontName, size: selectedFontSize) ?? NSFont.systemFont(ofSize: selectedFontSize)
-    }
-    
-    private func updateSelectedFont(_ newFont: NSFont) {
-        selectedFontName = newFont.fontName
-        selectedFontSize = newFont.pointSize
-    }
-    
-    private var fontBinding: Binding<NSFont> {
-        Binding<NSFont>(
-            get: { self.selectedFont },
-            set: { self.updateSelectedFont($0) }
-        )
-    }
-        
-    
-    //Default Horizontal Alignment
-    @AppStorage("selectedHorizontalAlignment") var selectedHorizonalAlignmentRawValue: Int = LabelHorizontalAlignment.Left.rawValue
-    private var selectedHorizonalAlignment: Binding<LabelHorizontalAlignment> {
-        Binding<LabelHorizontalAlignment>(
-            get: {
-                LabelHorizontalAlignment(rawValue: selectedHorizonalAlignmentRawValue) ?? .Left
-            },
-            set: {
-                selectedHorizonalAlignmentRawValue = $0.rawValue
-            }
-        )
-    }
     //Default Vertical Alignment
-    @AppStorage("selectedVerticallignment") var selectedVerticalAlignmentRawValue: Int = LabelVerticalAlignment.Top.rawValue
-    private var selectedVerticalAlignment: Binding<LabelVerticalAlignment> {
-        Binding<LabelVerticalAlignment>(
-            get: {
-                LabelVerticalAlignment(rawValue: selectedVerticalAlignmentRawValue) ?? .Top
-            },
-            set: {
-                selectedVerticalAlignmentRawValue = $0.rawValue
-            }
-        )
-    }
+
     //Default Copyright Text
-    @AppStorage("copyrightText") var copyrightText = ""
+    
     //Init Chips View Model
     @StateObject var viewModel = ChipsViewModel()
     //Main Settings View Controller
@@ -185,10 +112,10 @@ struct SettingsView: View {
             }
             //Set Settings Window Static Width And Height
             .frame(width: 700, height: 400)
-            //Hide Toolbar
-            
         }
     }
+    
+    
     //General Settings Section
     var general: some View {
       Form {
@@ -212,7 +139,7 @@ struct SettingsView: View {
                 //Picker To Change Default Exclude Roles
                 ExcludedRolesPicker()
                 //Toggle To Enable Subframes
-                Toggle("Enable Subframes", isOn: $enabledSubframes)
+                Toggle("Enable Subframes", isOn: settingsStore.$enabledSubframes)
                 //Make Toggle A Checkbox
                     .toggleStyle(.checkbox)
             }
@@ -229,53 +156,53 @@ struct SettingsView: View {
             HStack {
                 VStack(alignment: .leading) {
                     //Picker To Change Selected ID Naming Mode
-                    Picker("ID Naming Mode", selection: selectedIDNamingMode) {
+                    Picker("ID Naming Mode", selection: $settingsStore.selectedIDNamingMode) {
                         ForEach(IdNamingMode.allCases, id: \.self) { item in
                             Text(item.displayName).tag(item)
                         }
                     }
                     //Picker To Change Selected Image Mode
-                    Picker("Image Mode", selection: selectedImageMode) {
+                    Picker("Image Mode", selection: $settingsStore.selectedImageMode) {
                         ForEach(ImageMode.allCases, id: \.self) { item in
                             Text(item.displayName).tag(item)
                         }
                     }
                     //Slider To Set JPG Image Quality
-                    Slider(value: $selectedImageQuality, in: 1...100, step: 1) {
+                    Slider(value: $settingsStore.selectedImageQuality, in: 1...100, step: 1) {
                             Text("Image Quality")
                         } minimumValueLabel: {
                             Text("1")
                         } maximumValueLabel: {
                             Text("100")
                         } onEditingChanged: { editing in
-                            print("Changed JPG Quality To \(selectedImageQuality)")
+                            print("Changed JPG Quality To \(settingsStore.selectedImageQuality)")
                         }
                     //Display Text To Show The Current Image Quality
-                    Text("Current Image Quality - \(selectedImageQuality)".dropLast(2))
+                    Text("Current Image Quality - \(settingsStore.selectedImageQuality)".dropLast(2))
                         .bold()
                     //Text Fields To Set Image Width And Height
                     HStack {
-                        TextField("Image Width", text: $imageWidth)
+                        TextField("Image Width", value: $settingsStore.imageWidth, formatter: intFormatter)
                             .padding(.trailing)
-                        TextField("Image Height", text: $imageHeight)
+                        TextField("Image Height", value: $settingsStore.imageHeight, formatter: intFormatter)
                     }
                     //Slider To Set Image Size In Percentages
-                    Slider(value: $selectedImageSize, in: 1...100, step: 1) {
+                    Slider(value: $settingsStore.selectedImageSize, in: 1...100, step: 1) {
                             Text("Image Size (%)")
                         } minimumValueLabel: {
                             Text("1")
                         } maximumValueLabel: {
                             Text("100")
                         } onEditingChanged: { editing in
-                            print("Changed Image Size To \($selectedImageSize)")
+                            print("Changed Image Size To \($settingsStore.selectedImageSize)")
                         }
                     //Display Text To Show Current Image Size In %
-                    Text("Current Image Size - \(selectedImageSize)".dropLast(2))
+                    Text("Current Image Size - \(settingsStore.selectedImageSize)".dropLast(2))
                         .bold()
                     //Text Field To Set GIF FPS Rate
-                    TextField("GIF FPS", text: $selectedGIFFPS)
+                    TextField("GIF FPS", value: $settingsStore.selectedGIFFPS, formatter: intFormatter)
                     //Text Field To Set GIF Time Span
-                    TextField("GIF Span (Sec)", text: $selectedGIFLength)
+                    TextField("GIF Span (Sec)", value: $settingsStore.selectedGIFLength, formatter: intFormatter)
                 }
                 Spacer()
             }
@@ -290,23 +217,23 @@ struct SettingsView: View {
             HStack {
                 VStack(alignment: .leading) {
                     //Button To Open Font Picker Component
-                    FontPicker("Font", selection: fontBinding)
-                    Text("\(selectedFontName), size: \(Int(selectedFontSize))")
-                                    .font(Font(selectedFont))
+                    //FontPicker("Font", selection: fontBinding)
+                    //Text("\($settingsStore.selectedFontName), size: \(Int($settingsStore.selectedFontSize))")
+                        //.font(Font(settingsStore.selectedFont))
                     //Picker To Change Horizonal Alignment
-                    Picker("Horizonal Alignment", selection: selectedHorizonalAlignment) {
+                    Picker("Horizonal Alignment", selection: $settingsStore.selectedHorizonalAlignment) {
                         ForEach(LabelHorizontalAlignment.allCases, id: \.self) { item in
                             Text(item.displayName).tag(item)
                         }
                     }
                     //Picker To Change Vertical Alignment
-                    Picker("Vertical Alignment", selection: selectedVerticalAlignment) {
+                    Picker("Vertical Alignment", selection: $settingsStore.selectedVerticalAlignment) {
                         ForEach(LabelVerticalAlignment.allCases, id: \.self) { item in
                             Text(item.displayName).tag(item)
                         }
                     }
                     //Text Field To Enter Copyright
-                    TextField("Copyright", text: $copyrightText)
+                    TextField("Copyright", text: $settingsStore.copyrightText)
                     //Label Tag Chips
                     HStack {
                         Text("Labels")
@@ -417,8 +344,9 @@ struct SettingsView: View {
 }
 
 struct SettingsView_Previews: PreviewProvider {
+    static let settingsStore = SettingsStore()
     static var previews: some View {
-        SettingsView()
+        SettingsView().environmentObject(settingsStore)
     }
 }
 

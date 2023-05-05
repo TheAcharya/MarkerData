@@ -75,6 +75,17 @@ enum IdNamingMode: Int, CaseIterable {
                 return "Notes"
         }
     }
+    
+    var markersExtractor: MarkerIDMode {
+        switch self {
+            case .Timecode:
+                return MarkerIDMode.projectTimecode
+            case .Name:
+                return MarkerIDMode.name
+            case .Notes:
+                return MarkerIDMode.notes
+        }
+    }
 }
 
 enum ImageMode: Int, CaseIterable {
@@ -120,6 +131,17 @@ enum LabelHorizontalAlignment: Int, CaseIterable {
                 return "Right"
         }
     }
+    
+    var markersExtractor: MarkerLabelProperties.AlignHorizontal {
+        switch self {
+            case .Left:
+                return .left
+            case .Center:
+                return .center
+            case .Right:
+                return .right
+        }
+    }
 }
 
 enum LabelVerticalAlignment: Int, CaseIterable {
@@ -135,6 +157,17 @@ enum LabelVerticalAlignment: Int, CaseIterable {
                 return "Center"
             case .Bottom:
                 return "Bottom"
+        }
+    }
+    var markersExtractor: MarkerLabelProperties.AlignVertical {
+        switch self {
+        
+            case .Top:
+                return .top
+            case .Center:
+                return .center
+            case .Bottom:
+                return .bottom
         }
     }
 }

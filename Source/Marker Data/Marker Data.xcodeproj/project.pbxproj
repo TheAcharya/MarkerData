@@ -495,8 +495,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/TheAcharya/MarkersExtractor.git";
 			requirement = {
-				kind = exactVersion;
-				version = "0.2.0-alpha-20230425.0";
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.2.0;
 			};
 		};
 		D5F74A422972E5A000EEE2FE /* XCRemoteSwiftPackageReference "FontPicker" */ = {
