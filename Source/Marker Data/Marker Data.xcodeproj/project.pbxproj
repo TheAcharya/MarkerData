@@ -7,8 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9B25815E2A07A286002CED07 /* GeneralSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B25815D2A07A286002CED07 /* GeneralSettingsView.swift */; };
 		9B35FE6529F92DC60035B760 /* UserDefaults+Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B35FE6429F92DC60035B760 /* UserDefaults+Settings.swift */; };
 		9B35FE6829F94C110035B760 /* PickerViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B35FE6729F94C110035B760 /* PickerViews.swift */; };
+		9B4D90D82A0BAE3900FE7603 /* ImageSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B4D90D72A0BAE3900FE7603 /* ImageSettingsView.swift */; };
+		9B4D90DA2A0BAF9E00FE7603 /* LabelSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B4D90D92A0BAF9E00FE7603 /* LabelSettingsView.swift */; };
+		9B4D90DC2A0BB07500FE7603 /* ConfigurationSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B4D90DB2A0BB07500FE7603 /* ConfigurationSettingsView.swift */; };
+		9B4D90DE2A0BB11000FE7603 /* DatabaseSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B4D90DD2A0BB11000FE7603 /* DatabaseSettingsView.swift */; };
 		9B51D21129E9A01A00DF7836 /* FolderPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B51D21029E9A01A00DF7836 /* FolderPicker.swift */; };
 		9B51D21329E9AF9300DF7836 /* FolderURLModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B51D21229E9AF9300DF7836 /* FolderURLModel.swift */; };
 		9B51D21629E9B13400DF7836 /* SettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B51D21529E9B13400DF7836 /* SettingsModel.swift */; };
@@ -44,9 +49,14 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		9B25815D2A07A286002CED07 /* GeneralSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingsView.swift; sourceTree = "<group>"; };
 		9B35FE6429F92DC60035B760 /* UserDefaults+Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Settings.swift"; sourceTree = "<group>"; };
 		9B35FE6729F94C110035B760 /* PickerViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerViews.swift; sourceTree = "<group>"; };
 		9B39B0CB29E19B740055F31E /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
+		9B4D90D72A0BAE3900FE7603 /* ImageSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSettingsView.swift; sourceTree = "<group>"; };
+		9B4D90D92A0BAF9E00FE7603 /* LabelSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelSettingsView.swift; sourceTree = "<group>"; };
+		9B4D90DB2A0BB07500FE7603 /* ConfigurationSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationSettingsView.swift; sourceTree = "<group>"; };
+		9B4D90DD2A0BB11000FE7603 /* DatabaseSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseSettingsView.swift; sourceTree = "<group>"; };
 		9B51D21029E9A01A00DF7836 /* FolderPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderPicker.swift; sourceTree = "<group>"; };
 		9B51D21229E9AF9300DF7836 /* FolderURLModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderURLModel.swift; sourceTree = "<group>"; };
 		9B51D21529E9B13400DF7836 /* SettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsModel.swift; sourceTree = "<group>"; };
@@ -85,9 +95,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9B25815C2A079FBC002CED07 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				D5F74A402972E0A800EEE2FE /* SettingsView.swift */,
+				9B25815D2A07A286002CED07 /* GeneralSettingsView.swift */,
+				9B4D90D72A0BAE3900FE7603 /* ImageSettingsView.swift */,
+				9B4D90D92A0BAF9E00FE7603 /* LabelSettingsView.swift */,
+				9B4D90DB2A0BB07500FE7603 /* ConfigurationSettingsView.swift */,
+				9B4D90DD2A0BB11000FE7603 /* DatabaseSettingsView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
 		9B35FE6629F94BF30035B760 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				9B25815C2A079FBC002CED07 /* Settings */,
 				9B35FE6729F94C110035B760 /* PickerViews.swift */,
 			);
 			path = Views;
@@ -153,7 +177,6 @@
 				D5F74A342972D32100EEE2FE /* Assets.xcassets */,
 				D5F74A392972D32100EEE2FE /* Marker_Data.entitlements */,
 				D5F74A362972D32100EEE2FE /* Preview Content */,
-				D5F74A402972E0A800EEE2FE /* SettingsView.swift */,
 			);
 			path = "Marker Data";
 			sourceTree = "<group>";
@@ -256,15 +279,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				9B51D21629E9B13400DF7836 /* SettingsModel.swift in Sources */,
+				9B4D90D82A0BAE3900FE7603 /* ImageSettingsView.swift in Sources */,
 				D5F74A412972E0A800EEE2FE /* SettingsView.swift in Sources */,
+				9B25815E2A07A286002CED07 /* GeneralSettingsView.swift in Sources */,
 				9B51D21329E9AF9300DF7836 /* FolderURLModel.swift in Sources */,
 				9BACA4D129FA9B5100EF6837 /* SettingsStore.swift in Sources */,
+				9B4D90DE2A0BB11000FE7603 /* DatabaseSettingsView.swift in Sources */,
 				9B653ABB29F2C2E700C64999 /* UserAlertView.swift in Sources */,
 				9B35FE6829F94C110035B760 /* PickerViews.swift in Sources */,
 				D5F74A332972D31D00EEE2FE /* ContentView.swift in Sources */,
 				9B35FE6529F92DC60035B760 /* UserDefaults+Settings.swift in Sources */,
+				9B4D90DA2A0BAF9E00FE7603 /* LabelSettingsView.swift in Sources */,
 				9B653ABD29F2C64600C64999 /* ErrorViewModel.swift in Sources */,
 				D5F74A312972D31D00EEE2FE /* Marker_DataApp.swift in Sources */,
+				9B4D90DC2A0BB07500FE7603 /* ConfigurationSettingsView.swift in Sources */,
 				9B51D21129E9A01A00DF7836 /* FolderPicker.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
