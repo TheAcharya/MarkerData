@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 import Combine
 import MarkersExtractor
+import AppKit
 
 class SettingsStore: ObservableObject {
     func markersExtractorSettings(fcpxmlFileUrl: URL) throws -> MarkersExtractor.Settings {
@@ -31,11 +32,11 @@ class SettingsStore: ObservableObject {
             excludeRoleType: self.selectedExcludeRoles.markersExtractor,
            // imageLabels: []
             imageLabelCopyright: self.copyrightText,
-//            imageLabelFont: String = Defaults.imageLabelFont,
-//            imageLabelFontMaxSize: Int = Defaults.imageLabelFontMaxSize,
+            imageLabelFont: self.selectedFontNameType.markersExtractor,
+            imageLabelFontMaxSize: self.selectedFontSize,
 //            imageLabelFontOpacity: Int = Defaults.imageLabelFontOpacity,
-//            imageLabelFontColor: String = Defaults.imageLabelFontColor,
-//            imageLabelFontStrokeColor: String = Defaults.imageLabelFontStrokeColor,
+            imageLabelFontColor: self.selectedFontHexColor,
+            imageLabelFontStrokeColor: self.selectedStrokeHexColor,
 //            imageLabelFontStrokeWidth: Int? = Defaults.imageLabelFontStrokeWidth,
             imageLabelAlignHorizontal: self.selectedHorizonalAlignment.markersExtractor,
             imageLabelAlignVertical: self.selectedVerticalAlignment.markersExtractor
@@ -91,18 +92,88 @@ class SettingsStore: ObservableObject {
     //Default Set GIF Length Span
     @AppStorage("selectedGIFLength") var selectedGIFLength: TimeInterval = 2
     //Default Selected Font
-    @AppStorage("selectedFontName") var selectedFontName: String = NSFont.init(name: "Menlo-Regular", size: 30)!.fontName
-    @AppStorage("selectedFontSize") var selectedFontSize: Double = 30
+    @AppStorage("selectedFontNameType") private var selectedFontNameTypeRawValue: Int = FontNameType.Menlo.rawValue
+    var selectedFontNameType: FontNameType {
+        get { FontNameType(rawValue: selectedFontNameTypeRawValue) ?? .Menlo }
+        set { selectedFontNameTypeRawValue = newValue.rawValue }
+    }
     
-//    var selectedFont: NSFont {
-//        NSFont(name: selectedFontName, size: selectedFontSize) ?? NSFont.systemFont(ofSize: selectedFontSize)
-//    }
-//
-//    func updateSelectedFont(_ newFont: NSFont) {
-//        selectedFontName = newFont.fontName
-//        selectedFontSize = newFont.pointSize
-//    }
+    @AppStorage("selectedFontStyleType") private var selectedFontStyleTypeRawValue: Int = FontStyleType.Regular.rawValue
+    var selectedFontStyleType: FontStyleType {
+        get { FontStyleType(rawValue: selectedFontStyleTypeRawValue) ?? .Regular }
+        set { selectedFontStyleTypeRawValue = newValue.rawValue }
+    }
     
+    var selectFontNameStyle: String {
+        let name = self.selectedFontNameType.markersExtractor + "-" + selectedFontStyleType.markersExtractor
+        return name
+    }
+    
+    @AppStorage("selectedFontSize") var selectedFontSize: Int = 30
+    @AppStorage("selectedStrokeSize") var selectedStrokeSize: Int = 0
+    
+    
+    @AppStorage("selectedFontColorRed") var selectedFontColorRed: Double = 1.0
+    @AppStorage("selectedFontColorGreen") var selectedFontColorGreen: Double = 1.0
+    @AppStorage("selectedFontColorBlue") var selectedFontColorBlue: Double = 1.0
+    @AppStorage("selectedFontColorOpacity") var selectedFontColorOpacity: Double = 100.0
+    var selectedFontColor: Color {
+        get { Color(red: selectedFontColorRed, green: selectedFontColorGreen, blue: selectedFontColorBlue, opacity: selectedFontColorOpacity) }
+        set {
+            var r: CGFloat = 0
+            var g: CGFloat = 0
+            var b: CGFloat = 0
+            var o: CGFloat = 0
+            NSColor(newValue).getRed(&r, green: &g, blue: &b, alpha:&o)
+            
+            selectedFontColorRed = Double(r)
+            selectedFontColorGreen = Double(g)
+            selectedFontColorBlue = Double(b)
+            selectedFontColorOpacity = Double(o)
+            
+            print("color = \(selectedFontHexColor)")
+        }
+    }
+    var selectedFontHexColor: String {
+        let hex = String(format:  "#%02X%02X%02X", Int(selectedFontColorRed*255), Int(selectedFontColorGreen*255), Int(selectedFontColorBlue*255))
+        return hex
+    }
+    var selectedFontOpacityHexColor: String {
+        let hex = String(format:  "#%02", Int(selectedFontColorOpacity*255))
+        return hex
+    }
+    
+    @AppStorage("selectedStrokeColorRed") var selectedStrokeColorRed: Double = 1.0
+    @AppStorage("selectedStrokeColorGreen") var selectedStrokeColorGreen: Double = 1.0
+    @AppStorage("selectedStrokeColorBlue") var selectedStrokeColorBlue: Double = 1.0
+    @AppStorage("selectedStrokeColorOpacity") var selectedStrokeColorOpacity: Double = 100.0
+    var selectedStrokeColor: Color {
+        get { Color(red: selectedStrokeColorRed, green: selectedStrokeColorGreen, blue: selectedStrokeColorBlue, opacity: selectedStrokeColorOpacity) }
+        set {
+            var r: CGFloat = 0
+            var g: CGFloat = 0
+            var b: CGFloat = 0
+            var o: CGFloat = 0
+            NSColor(newValue).getRed(&r, green: &g, blue: &b, alpha:&o)
+            
+            selectedStrokeColorRed = Double(r)
+            selectedStrokeColorGreen = Double(g)
+            selectedStrokeColorBlue = Double(b)
+            selectedStrokeColorOpacity = Double(o)
+        }
+    }
+    var selectedStrokeHexColor: String {
+        let hex = String(format:  "#%02X%02X%02X", Int(selectedStrokeColorRed*255), Int(selectedStrokeColorGreen*255), Int(selectedStrokeColorBlue*255))
+        return hex
+    }
+    var selectedStrokeOpacityHexColor: String {
+        let hex = String(format:  "#%02", Int(selectedStrokeColorOpacity*255))
+        return hex
+    }
+
+    
+
+
     @AppStorage("selectedHorizontalAlignment") private var selectedHorizonalAlignmentRawValue: Int = LabelHorizontalAlignment.Left.rawValue
     var selectedHorizonalAlignment: LabelHorizontalAlignment {
         get { LabelHorizontalAlignment(rawValue: selectedHorizonalAlignmentRawValue) ?? .Left }
@@ -114,6 +185,12 @@ class SettingsStore: ObservableObject {
         get { LabelVerticalAlignment(rawValue: selectedVerticalAlignmentRawValue) ?? .Top }
         set { selectedVerticalAlignmentRawValue = newValue.rawValue }
     }
+    
+    
+    @AppStorage("overlays") var overlaysText = ""
     @AppStorage("copyrightText") var copyrightText = ""
+    
+    @AppStorage("hideLabelNames") var hideLabelNames = false
+    
     
 }

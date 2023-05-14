@@ -9,43 +9,160 @@ import SwiftUI
 
 struct LabelSettingsView: View {
     @EnvironmentObject var settingsStore: SettingsStore
+    let intFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        return formatter
+    }()
+    
+    var fontSizeBinding: Binding<String> {
+        .init(get: {
+            "\(settingsStore.selectedFontSize)"
+        }, set: {
+            settingsStore.selectedFontSize = Int($0) ?? settingsStore.selectedFontSize
+        })
+    }
+    
+    var strokeSizeBinding: Binding<String> {
+        .init(get: {
+            "\(settingsStore.selectedStrokeSize)"
+        }, set: {
+            settingsStore.selectedStrokeSize = Int($0) ?? settingsStore.selectedStrokeSize
+        })
+    }
+
+    
     var body: some View {
         Form {
-            HStack {
-                VStack(alignment: .leading) {
-                    //Button To Open Font Picker Component
-                    //FontPicker("Font", selection: fontBinding)
-                    //Text("\($settingsStore.selectedFontName), size: \(Int($settingsStore.selectedFontSize))")
-                        //.font(Font(settingsStore.selectedFont))
-                    //Picker To Change Horizonal Alignment
-                    Picker("Horizonal Alignment", selection: $settingsStore.selectedHorizonalAlignment) {
-                        ForEach(LabelHorizontalAlignment.allCases, id: \.self) { item in
-                            Text(item.displayName).tag(item)
-                        }
+            
+            VStack {
+                Group {
+                    Text("Font")
+                        .font(.headline)
+                    HStack {
+                        Text("Type face:")
+                            .frame(maxWidth: .infinity, alignment: .trailing)
+                        FontNamePicker()
+                            .frame(width: 150, alignment: .leading)
+                        Spacer(minLength: 200)
                     }
-                    //Picker To Change Vertical Alignment
-                    Picker("Vertical Alignment", selection: $settingsStore.selectedVerticalAlignment) {
-                        ForEach(LabelVerticalAlignment.allCases, id: \.self) { item in
-                            Text(item.displayName).tag(item)
-                        }
+                    HStack {
+                        Text("Style:")
+                            .frame(maxWidth: .infinity, alignment: .trailing)
+                        FontStylePicker()
+                            .frame(width: 150, alignment: .leading)
+                        Spacer(minLength: 200)
                     }
-                    //Text Field To Enter Copyright
-                    TextField("Copyright", text: $settingsStore.copyrightText)
-                    //Label Tag Chips
-//                    HStack {
-//                        Text("Labels")
-//                        ChipsContent(viewModel: viewModel)
-//                    }
+                    HStack {
+                        Text("Size:")
+                            .frame(maxWidth: .infinity, alignment: .trailing)
+                        Group {
+                            TextField("", text: fontSizeBinding)
+                                .frame(width: 50, alignment: .leading)
+                            Stepper("", value: $settingsStore.selectedFontSize, in: 6...100).padding(.leading, -10.0).frame(alignment: .leading)
+                        }
+                        Spacer(minLength: 280)
+                    }
+                    
+                    HStack {
+                        Text("Colour & Opacity:")
+                            .frame(maxWidth: .infinity, alignment: .trailing)
+                        ColorPicker("", selection: $settingsStore.selectedFontColor).frame(width: 50, alignment: .leading)
+                        
+                        Spacer(minLength: 300)
+                    }
                 }
-                Spacer()
+               
+                Group {
+                    Divider()
+                    Text("Stroke")
+                        .font(.headline)
+                    HStack {
+                        Text("Size:")
+                            .frame(maxWidth: .infinity, alignment: .trailing)
+                        Group {
+                            TextField("", text: strokeSizeBinding)
+                                .frame(width: 50, alignment: .leading)
+                            Stepper("", value: $settingsStore.selectedStrokeSize, in: 0...100).padding(.leading, -10.0).frame(alignment: .leading)
+                        }
+                        Spacer(minLength: 280)
+                    }
+                    HStack {
+                        Text("Colour & Opacity:")
+                            .frame(maxWidth: .infinity, alignment: .trailing)
+                        ColorPicker("", selection: $settingsStore.selectedStrokeColor).frame(width: 50, alignment: .leading)
+                        Spacer(minLength: 300)
+                    }
+                }
+                
+                Group {
+                    Divider()
+                    Text("Alignment")
+                        .font(.headline)
+                    HStack {
+                        Text("Horizontal:")
+                            .frame(maxWidth: .infinity, alignment: .trailing)
+                        Picker("", selection: $settingsStore.selectedHorizonalAlignment) {
+                            ForEach(LabelHorizontalAlignment.allCases, id: \.self) { item in
+                                Text(item.displayName).tag(item)
+                            }
+                        }
+                        .frame(width: 150, alignment: .leading)
+                        Spacer(minLength: 200)
+                    }
+                    HStack {
+                        Text("Vertical:")
+                            .frame(maxWidth: .infinity, alignment: .trailing)
+                        Picker("", selection: $settingsStore.selectedVerticalAlignment) {
+                            ForEach(LabelVerticalAlignment.allCases, id: \.self) { item in
+                                Text(item.displayName).tag(item)
+                            }
+                        }
+                        .frame(width: 150, alignment: .leading)
+                        Spacer(minLength: 200)
+                    }
+                }
+                
+               
+                Group {
+                    Divider()
+                    Text("Labels")
+                        .font(.headline)
+
+                    HStack {
+                        Text("Overlays:")
+                            .frame(maxWidth: .infinity, alignment: .trailing)
+                        TextField("", text: $settingsStore.overlaysText)
+                        .frame(width: 250, alignment: .leading)
+                        Spacer(minLength: 100)
+                    }
+                    HStack {
+                        Text("Copyright:")
+                            .frame(maxWidth: .infinity, alignment: .trailing)
+                        TextField("", text: $settingsStore.copyrightText)
+                        .frame(width: 250, alignment: .leading)
+                        Spacer(minLength: 100)
+                    }
+                    HStack {
+                        Text("Hide Label Names:")
+                            .frame(maxWidth: .infinity, alignment: .trailing)
+                        Spacer(minLength: 15)
+                        Toggle("", isOn: settingsStore.$hideLabelNames)
+                            .toggleStyle(CheckboxToggleStyle())
+                            .frame(alignment: .leading)
+                        Spacer(minLength: 325)
+                    }
+                }
             }
-            .padding(.horizontal)
-            .padding(.top)
+            
         }
-        //Set Navigation Bar Title To Label
-        .navigationTitle("Label")
+        
     }
+    
 }
+        
+            
+
 
 struct LabelSettingsView_Previews: PreviewProvider {
     static let settingsStore = SettingsStore()

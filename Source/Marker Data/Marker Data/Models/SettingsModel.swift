@@ -172,3 +172,70 @@ enum LabelVerticalAlignment: Int, CaseIterable {
     }
 }
 
+enum FontNameType: Int, CaseIterable {
+    case Menlo = 0
+    case Arial
+    case Helvetica
+    case SourceCodePro
+    case CourierNew
+    
+    var displayName : String {
+        switch self {
+            case .Menlo:
+                return "Menlo"
+            case .Arial:
+                return "Arial"
+            case .Helvetica:
+                return "Helvetica"
+            case .SourceCodePro:
+                return "Source Code Pro"
+            case .CourierNew:
+                return "Courier New"
+        }
+    }
+    var markersExtractor: String {
+        switch self {
+            case .Menlo:
+                return "Menlo-Regular"
+            case .Arial:
+                return "Arial"
+            case .Helvetica:
+                return "Helvetica"
+            case .SourceCodePro:
+                return "Source Code Pro"
+            case .CourierNew:
+                return "Courier New"
+        }
+    }
+}
+
+enum FontStyleType: Int, CaseIterable {
+    case Regular = 0
+    case Italic
+    case Bold
+
+    var displayName : String {
+        switch self {
+            case .Regular:
+                return "Regular"
+            case .Italic:
+                return "Italic"
+            case .Bold:
+                return  "Bold"
+        }
+    }
+    
+    var markersExtractor: String {
+        switch (self) {
+                
+            case .Regular:
+                return "Regular"
+            case .Italic:
+                return "Italic"
+            case .Bold:
+                return "Bold"
+        }
+    }
+    
+}
+

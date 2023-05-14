@@ -42,3 +42,29 @@ struct ImageModePicker: View {
         }
     }
 }
+
+struct FontNamePicker: View {
+    @EnvironmentObject var settingsStore: SettingsStore
+
+    var body: some View {
+        Picker("", selection: $settingsStore.selectedFontNameType) {
+            ForEach(FontNameType.allCases, id: \.self) { fontNameType in
+                Text(fontNameType.displayName).tag(fontNameType)
+            }
+            
+        }
+    }
+}
+
+struct FontStylePicker: View {
+    @EnvironmentObject var settingsStore: SettingsStore
+
+    var body: some View {
+        Picker("", selection: $settingsStore.selectedFontStyleType) {
+            ForEach(FontStyleType.allCases, id: \.self) { fontStyleType in
+                Text(fontStyleType.displayName).tag(fontStyleType)
+            }
+            
+        }
+    }
+}

@@ -50,7 +50,7 @@ struct SettingsView: View {
                 }
             }
             //Set Settings Window Static Width And Height
-            .frame(width: 700, height: 400)
+            .frame(width: 700, height: 500)
             //Hide Toolbar
             .toolbar(.hidden)
         } else {
@@ -92,7 +92,7 @@ struct SettingsView: View {
                 }
             }
             //Set Settings Window Static Width And Height
-            .frame(width: 700, height: 400)
+            .frame(width: 700, height: 500)
         }
     }
 
