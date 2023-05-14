@@ -37,6 +37,7 @@ struct LabelSettingsView: View {
             
             VStack {
                 Group {
+                    
                     Text("Font")
                         .font(.headline)
                     HStack {
@@ -147,7 +148,7 @@ struct LabelSettingsView: View {
                         Text("Hide Label Names:")
                             .frame(maxWidth: .infinity, alignment: .trailing)
                         Spacer(minLength: 15)
-                        Toggle("", isOn: settingsStore.$hideLabelNames)
+                        Toggle("", isOn: $settingsStore.hideLabelNames)
                             .toggleStyle(CheckboxToggleStyle())
                             .frame(alignment: .leading)
                         Spacer(minLength: 325)

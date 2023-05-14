@@ -11,11 +11,12 @@ struct ExportFormatPicker: View {
     @EnvironmentObject var settingsStore: SettingsStore
 
     var body: some View {
-        Picker("Export Format", selection: $settingsStore.selectedExportFormat) {
+        Picker("", selection: $settingsStore.selectedExportFormat) {
             ForEach(ExportFormat.allCases, id: \.self) { exportFormat in
                 Text(exportFormat.displayName).tag(exportFormat)
             }
         }
+        .labelsHidden()
     }
 }
 
@@ -23,11 +24,11 @@ struct ExcludedRolesPicker: View {
     @EnvironmentObject var settingsStore: SettingsStore
 
     var body: some View {
-        Picker("Exclude Roles", selection: $settingsStore.selectedExcludeRoles) {
+        Picker("", selection: $settingsStore.selectedExcludeRoles) {
             ForEach(ExcludedRoles.allCases, id: \.self) { excludedRole in
                 Text(excludedRole.displayName).tag(excludedRole)
             }
-        }
+        }.labelsHidden()
     }
 }
 

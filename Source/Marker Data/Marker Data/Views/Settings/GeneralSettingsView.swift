@@ -12,35 +12,102 @@ struct GeneralSettingsView: View {
     @EnvironmentObject var settingsStore: SettingsStore
     
     var body: some View {
-      Form {
-        HStack {
-            VStack(alignment: .leading) {
-    
-                FolderPicker(folderURL: $exportFolderURLModel.folderURL, buttonTitle: "Select Export Folder")
-                if let url = exportFolderURLModel.folderURL {
-                    Text("\(url.path)")
+        Form {
+            VStack {
+                Group {
+                    Text("Export  Destination")
+                        .font(.headline)
+                    HStack {
+                        Text("Set:")
+                            .frame(maxWidth: .infinity, alignment: .trailing)
+                        FolderPicker(folderURL: $exportFolderURLModel.folderURL, buttonTitle: "Select Location")
+                            .padding(.leading, 5)
+                            .frame(width: 150, alignment: .leading)
+                        Spacer(minLength: 200)
+                    }
+                    HStack {
+                        Text("")
+                            .frame(maxWidth: .infinity, alignment: .trailing)
+                        Text("\(exportFolderURLModel.folderURL?.path ?? "")")
+                            .frame(width: 145, alignment: .leading)
+                            .border(.black)
+                            .lineLimit(1)
+                        Button {
+                            if let url = exportFolderURLModel.folderURL {
+                               NSWorkspace.shared.open(url)
+                           }
+                        } label: {
+                            Image(systemName: "arrow.up.right.square")
+                        }.frame(width: 40, alignment: .leading)
+                        .disabled(exportFolderURLModel.folderURL == nil)
+                        Spacer(minLength: 150)
+                    }
+                    HStack {
+                        Text("Folder Format:")
+                            .frame(maxWidth: .infinity, alignment: .trailing)
+                        Picker("", selection: $settingsStore.selectedFolderFormat) {
+                            ForEach(UserFolderFormat.allCases, id: \.self) { item in
+                                Text(item.displayName).tag(item)
+                            }
+                        }
+                        .labelsHidden()
+                        .frame(width: 150, alignment: .leading)
+                        Spacer(minLength: 200)
+                    }
                 }
-                Button("Reveal Destination In Finder") {
-                       if let url = exportFolderURLModel.folderURL {
-                           NSWorkspace.shared.open(url)
-                       }
-                   }
-                   .disabled(exportFolderURLModel.folderURL == nil)
-    
-                Divider()
-                //Picker To Change Default Export Format
-                ExportFormatPicker()
-                //Picker To Change Default Exclude Roles
-                ExcludedRolesPicker()
-                //Toggle To Enable Subframes
-                Toggle("Enable Subframes", isOn: settingsStore.$enabledSubframes)
-                //Make Toggle A Checkbox
-                    .toggleStyle(.checkbox)
+                Group {
+                    Divider()
+                    Text("Extraction Profile")
+                        .font(.headline)
+                    HStack {
+                        Text("Profile:")
+                            .frame(maxWidth: .infinity, alignment: .trailing)
+                        ExportFormatPicker()
+                        .frame(width: 150, alignment: .leading)
+                        Spacer(minLength: 200)
+                    }
+                    
+                    HStack {
+                        Text("Exclude Roles:")
+                            .frame(maxWidth: .infinity, alignment: .trailing)
+                        ExcludedRolesPicker()
+                        .frame(width: 150, alignment: .leading)
+                        Spacer(minLength: 200)
+                    }
+                    
+                    HStack {
+                        Text("Enable SubFrame:")
+                            .frame(maxWidth: .infinity, alignment: .trailing)
+                        Spacer(minLength: 10)
+                        Toggle("", isOn: $settingsStore.enabledSubframes)
+                            .toggleStyle(CheckboxToggleStyle())
+                            .frame(alignment: .leading)
+                        Spacer(minLength: 330)
+                    }
+                    
+                    HStack {
+                        Text("Clip Boundaries:")
+                            .frame(maxWidth: .infinity, alignment: .trailing)
+                        Spacer(minLength: 10)
+                        Toggle("", isOn: $settingsStore.enabledClipBoundaries)
+                            .toggleStyle(CheckboxToggleStyle())
+                            .frame(alignment: .leading)
+                        Spacer(minLength: 330)
+                    }
+                    
+                    HStack {
+                        Text("No Media:")
+                            .frame(maxWidth: .infinity, alignment: .trailing)
+                        Spacer(minLength: 10)
+                        Toggle("", isOn: $settingsStore.enabledNoMedia)
+                            .toggleStyle(CheckboxToggleStyle())
+                            .frame(alignment: .leading)
+                        Spacer(minLength: 330)
+                    }
+                }
             }
-            Spacer()
         }
-        .padding(.horizontal)
-      }
+
     //Set Navigation Bar Title To General
       .navigationTitle("General")
     }

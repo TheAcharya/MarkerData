@@ -51,6 +51,12 @@ class SettingsStore: ObservableObject {
         
     }
     
+    @AppStorage("selectedFolderFormat") private var selectedFolderFormatRawValue: Int = UserFolderFormat.Medium.rawValue
+    var selectedFolderFormat: UserFolderFormat{
+        get { UserFolderFormat(rawValue: selectedFolderFormatRawValue) ?? .Medium }
+        set { selectedFolderFormatRawValue = newValue.rawValue }
+    }
+    
     @AppStorage("selectedExportFormat") private var selectedExportFormatRawValue: Int = ExportFormat.Notion.rawValue
     var selectedExportFormat: ExportFormat {
         get { ExportFormat(rawValue: selectedExportFormatRawValue) ?? .Notion }
@@ -72,6 +78,11 @@ class SettingsStore: ObservableObject {
     
     //Are Subframes Enabled
     @AppStorage("enabledSubframes") var enabledSubframes = false
+    
+    @AppStorage("enabledClipBoundaries") var enabledClipBoundaries = false
+    @AppStorage("enabledNoMedia") var enabledNoMedia = false
+    
+    
     
     @AppStorage("selectedIDNamingMode") private var selectedIDNamingModeRawValue:Int = IdNamingMode.Timecode.rawValue
     var selectedIDNamingMode: IdNamingMode {

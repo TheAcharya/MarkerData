@@ -236,6 +236,33 @@ enum FontStyleType: Int, CaseIterable {
                 return "Bold"
         }
     }
-    
 }
 
+
+ enum UserFolderFormat: Int, CaseIterable {
+    case Short
+    case Medium
+    case Long
+     
+     var displayName : String  {
+         switch (self) {
+             case .Short:
+                 return "Short"
+             case .Medium:
+                 return "Medium"
+             case .Long:
+                 return "Long"
+         }
+     }
+     
+     var markersExtractor: ExportFolderFormat {
+         switch (self) {
+             case .Short:
+                 return .short
+             case .Medium:
+                 return .medium
+             case .Long:
+                 return .long
+         }
+     }
+}
