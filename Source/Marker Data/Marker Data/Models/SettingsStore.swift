@@ -24,8 +24,8 @@ class SettingsStore: ObservableObject {
             imageWidth: self.imageWidth,
             imageHeight: self.imageHeight,
             imageSizePercent: Int(self.selectedImageSize),
-            gifFPS: self.selectedGIFFPS,
-            gifSpan: self.selectedGIFLength,
+            gifFPS: Double(self.selectedGIFFPS),
+            gifSpan: TimeInterval(self.selectedGIFLength),
             idNamingMode: self.selectedIDNamingMode.markersExtractor,
             //includeOutsideClipBoundaries:  self.
 
@@ -91,17 +91,17 @@ class SettingsStore: ObservableObject {
     }
     
     //Default Selected JPG Image Quality
-    @AppStorage("selectedImageQuality") var selectedImageQuality = 100.0
+    @AppStorage("selectedImageQuality") var selectedImageQuality: Int = 100
     //Default Image Width
     @AppStorage("imageWidth") var imageWidth: Int = 1920
     //Default Image Height
     @AppStorage("imageHeight") var imageHeight: Int = 1080
     //Default Image Scale Size
-    @AppStorage("selectedImageSize") var selectedImageSize: Double = 100.0
+    @AppStorage("selectedImageSize") var selectedImageSize: Int = 100
     //Default Set GIF FPS
-    @AppStorage("selectedGIFFPS") var selectedGIFFPS:Double = 10
+    @AppStorage("selectedGIFFPS") var selectedGIFFPS: Int = 10
     //Default Set GIF Length Span
-    @AppStorage("selectedGIFLength") var selectedGIFLength: TimeInterval = 2
+    @AppStorage("selectedGIFLength") var selectedGIFLength: Int = 2
     //Default Selected Font
     @AppStorage("selectedFontNameType") private var selectedFontNameTypeRawValue: Int = FontNameType.Menlo.rawValue
     var selectedFontNameType: FontNameType {
