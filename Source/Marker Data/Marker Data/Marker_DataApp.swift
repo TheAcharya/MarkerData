@@ -11,17 +11,15 @@ import AppUpdater
 struct Marker_DataApp: App {
     
     @StateObject private var settingsStore = SettingsStore()
-//    @StateObject private var exportFormatStore = ExportFormatStore()
-//    @StateObject private var excludedRolesStore = ExcludedRolesStore()
-//    @StateObject private var imageModeStore = ImageModeStore()
     
     //Link App Delegate To SwiftUI App Lifecycle
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     var body: some Scene {
         //Make Main Window Group To Launch Into
         WindowGroup {
-            ContentView()
-                .environmentObject(settingsStore)
+            let progress = Progress(totalUnitCount: 100)
+            let progressPublisher = ProgressPublisher(progress: progress)
+            ContentView(progressPublisher: progressPublisher).environmentObject(settingsStore)
             //Force Dark Mode On Content View
                 .preferredColorScheme(.dark)
             //Set Main Window Min And Max Size

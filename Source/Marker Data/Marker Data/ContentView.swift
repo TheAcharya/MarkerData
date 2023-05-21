@@ -13,6 +13,8 @@ struct ContentView: View {
     
     @StateObject private var errorViewModel = ErrorViewModel()
     
+    @ObservedObject var progressPublisher: ProgressPublisher
+    
     @State private var showingOutputInfinder = false
     @State private var completedOutputFolder: URL?=nil
     
@@ -27,16 +29,21 @@ struct ContentView: View {
                 HStack {
                     Spacer()
                     //Text Prompt To Drop Final Cut Pro XML File
-                    Text("Drop A .fcpxml(d) File Here...")
+                    Text("Drag and Drop FCP XML")
                         .bold()
                         .font(.title2)
                     Spacer()
                 }
                 Spacer()
             }
-            //Handle The Drop Of A File Or URL And Run The CLI Tool
+            //Handle The Drop Of A File Or URL And Run The CLI Tool Library
             
                 .onDrop(of: [(kUTTypeFileURL as String)], isTargeted: nil, perform: { providers, _ in
+                    
+                    DispatchQueue.main.async {
+                        progressPublisher.showProgress = true
+                        progressPublisher.updateProgressTo(progressMessage: "Received file", percentageCompleted: 1)
+                    }
                     self.completedOutputFolder = nil
                     for provider in providers {
                         //UserDefaults.standard.set(nil, forKey:exportFolderPathKey)
@@ -47,17 +54,24 @@ struct ContentView: View {
                                 if let fileURL = url {
                                     // Handle the file URL
                                     print("Dropped file URL: \(fileURL.absoluteString)")
+                                    progressPublisher.updateProgressTo(
+                                        progressMessage: "Begin to process file \(fileURL.absoluteString) ", percentageCompleted: 2)
                                     DispatchQueue.global(qos: .background).async {
                                         do {
                                             let settings = try settingsStore.markersExtractorSettings(fcpxmlFileUrl: fileURL)
+                                            progressPublisher.updateProgressTo(
+                                                progressMessage: "Extraction in progress...", percentageCompleted: 2)
                                             try MarkersExtractor(settings).extract()
-                                            
+                                            progressPublisher.updateProgressTo(
+                                                progressMessage: "Extraction successful", percentageCompleted: 100)
                                             self.completedOutputFolder = settings.outputDir
                                             showingOutputInfinder = true // inform the user
                                             print("Ok")
                                             
                                         } catch {
                                             DispatchQueue.main.async {
+                                                progressPublisher.markasFailed(errorMessage: "Error: \(error.localizedDescription)")
+                                                
                                                 errorViewModel.errorMessage  = error.localizedDescription
                                                 print("Error: \(error.localizedDescription)")
                                             }
@@ -66,13 +80,20 @@ struct ContentView: View {
                                     }
                                 } else if let error = error {
                                     // Handle the error
-                                    print("Error loading file URL: \(error.localizedDescription)")
+                                    DispatchQueue.main.async {
+                                        progressPublisher.markasFailed(errorMessage: "Error: \(error.localizedDescription)")
+                                        errorViewModel.errorMessage  = error.localizedDescription
+                                        print("Error: \(error.localizedDescription)")
+                                    }
                                 }
                             }
                         }
                     }
                     return true
                 })
+            if progressPublisher.showProgress {
+                ProgressView(progressPublisher.message, value: progressPublisher.progress.fractionCompleted, total: 1)            }
+            
             //Divide Drag And Drop Zone From Quick Actions
             Divider()
             //Quick Access Title
@@ -83,13 +104,11 @@ struct ContentView: View {
             HStack {
                 Spacer()
                 //Enable Upload Checkbox
-                Toggle("Enable Upload", isOn: settingsStore.$isUploadEnabled)
-                    .toggleStyle(CheckboxToggleStyle())
-                
                 ExportFormatPicker()
+                Toggle("Upload", isOn: $settingsStore.isUploadEnabled)
+                    .toggleStyle(CheckboxToggleStyle())
                 ExcludedRolesPicker()
                 ImageModePicker()
-                
                 Spacer()
             }
             .padding(.bottom)
@@ -114,6 +133,8 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static let settingsStore = SettingsStore()
     static var previews: some View {
-        ContentView().environmentObject(settingsStore)
+        let progress = Progress(totalUnitCount: 100)
+        let progressPublisher = ProgressPublisher(progress: progress)
+        ContentView(progressPublisher: progressPublisher).environmentObject(settingsStore)
     }
 }

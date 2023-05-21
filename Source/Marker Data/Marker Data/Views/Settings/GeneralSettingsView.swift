@@ -63,6 +63,7 @@ struct GeneralSettingsView: View {
                         Text("Profile:")
                             .frame(maxWidth: .infinity, alignment: .trailing)
                         ExportFormatPicker()
+                        .labelsHidden()
                         .frame(width: 150, alignment: .leading)
                         Spacer(minLength: 200)
                     }
@@ -71,6 +72,7 @@ struct GeneralSettingsView: View {
                         Text("Exclude Roles:")
                             .frame(maxWidth: .infinity, alignment: .trailing)
                         ExcludedRolesPicker()
+                        .labelsHidden()
                         .frame(width: 150, alignment: .leading)
                         Spacer(minLength: 200)
                     }

@@ -70,11 +70,8 @@ struct ImageSettingsView: View {
                         Text("Image Format:")
                             .frame(maxWidth: .infinity, alignment: .trailing)
                         //Picker To Change Selected ID Naming Mode
-                        Picker("", selection: $settingsStore.selectedImageMode) {
-                            ForEach(ImageMode.allCases, id: \.self) { item in
-                                Text(item.displayName).tag(item)
-                            }
-                        }.labelsHidden()
+                        ImageModePicker()
+                            .labelsHidden()
                             .frame(width: 150, alignment: .leading)
                         Spacer(minLength: 200)
                     }

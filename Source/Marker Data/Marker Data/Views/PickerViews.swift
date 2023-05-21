@@ -11,12 +11,11 @@ struct ExportFormatPicker: View {
     @EnvironmentObject var settingsStore: SettingsStore
 
     var body: some View {
-        Picker("", selection: $settingsStore.selectedExportFormat) {
+        Picker("Profiles", selection: $settingsStore.selectedExportFormat) {
             ForEach(ExportFormat.allCases, id: \.self) { exportFormat in
                 Text(exportFormat.displayName).tag(exportFormat)
             }
         }
-        .labelsHidden()
     }
 }
 
@@ -24,11 +23,11 @@ struct ExcludedRolesPicker: View {
     @EnvironmentObject var settingsStore: SettingsStore
 
     var body: some View {
-        Picker("", selection: $settingsStore.selectedExcludeRoles) {
+        Picker("Exclude Roles", selection: $settingsStore.selectedExcludeRoles) {
             ForEach(ExcludedRoles.allCases, id: \.self) { excludedRole in
                 Text(excludedRole.displayName).tag(excludedRole)
             }
-        }.labelsHidden()
+        }
     }
 }
 
@@ -36,7 +35,7 @@ struct ImageModePicker: View {
     @EnvironmentObject var settingsStore: SettingsStore
 
     var body: some View {
-        Picker("Image Mode", selection: $settingsStore.selectedImageMode) {
+        Picker("Image Format", selection: $settingsStore.selectedImageMode) {
             ForEach(ImageMode.allCases, id: \.self) { imageMode in
                 Text(imageMode.displayName).tag(imageMode)
             }

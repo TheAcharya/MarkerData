@@ -27,23 +27,22 @@ class SettingsStore: ObservableObject {
             gifFPS: Double(self.selectedGIFFPS),
             gifSpan: TimeInterval(self.selectedGIFLength),
             idNamingMode: self.selectedIDNamingMode.markersExtractor,
-            //includeOutsideClipBoundaries:  self.
-
+            includeOutsideClipBoundaries:  self.enabledClipBoundaries,
             excludeRoleType: self.selectedExcludeRoles.markersExtractor,
            // imageLabels: []
             imageLabelCopyright: self.copyrightText,
             imageLabelFont: self.selectedFontNameType.markersExtractor,
             imageLabelFontMaxSize: self.selectedFontSize,
-//            imageLabelFontOpacity: Int = Defaults.imageLabelFontOpacity,
+            imageLabelFontOpacity: Int(self.selectedFontColorOpacity),
             imageLabelFontColor: self.selectedFontHexColor,
             imageLabelFontStrokeColor: self.selectedStrokeHexColor,
-//            imageLabelFontStrokeWidth: Int? = Defaults.imageLabelFontStrokeWidth,
+            imageLabelFontStrokeWidth: self.markersExtractorStrokeWidth,
             imageLabelAlignHorizontal: self.selectedHorizonalAlignment.markersExtractor,
-            imageLabelAlignVertical: self.selectedVerticalAlignment.markersExtractor
-            //imageLabelHideNames: Bool = Defaults.imageLabelHideNames,
+            imageLabelAlignVertical: self.selectedVerticalAlignment.markersExtractor,
+            imageLabelHideNames: self.hideLabelNames,
             //createDoneFile: Bool = Defaults.createDoneFile,
             //doneFilename: String = Defaults.doneFilename,
-            //exportFolderFormat: ExportFolderFormat = Defaults.exportFolderFormat
+            exportFolderFormat: self.selectedFolderFormat.markersExtractor
             
         )
         
@@ -122,6 +121,13 @@ class SettingsStore: ObservableObject {
     
     @AppStorage("selectedFontSize") var selectedFontSize: Int = 30
     @AppStorage("selectedStrokeSize") var selectedStrokeSize: Int = 0
+    var markersExtractorStrokeWidth: Int? {
+        if selectedStrokeSize == 0 {
+            return nil
+        }
+        
+        return selectedStrokeSize
+    }
     
     
     @AppStorage("selectedFontColorRed") var selectedFontColorRed: Double = 1.0

@@ -21,8 +21,8 @@
 		9B61B44E29F03B14003EC14A /* MarkersExtractor in Frameworks */ = {isa = PBXBuildFile; productRef = 9B61B44D29F03B14003EC14A /* MarkersExtractor */; };
 		9B653ABB29F2C2E700C64999 /* UserAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B653ABA29F2C2E700C64999 /* UserAlertView.swift */; };
 		9B653ABD29F2C64600C64999 /* ErrorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B653ABC29F2C64600C64999 /* ErrorViewModel.swift */; };
+		9B7BA03B2A128E9E0014E168 /* ProgressPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B7BA03A2A128E9E0014E168 /* ProgressPublisher.swift */; };
 		9BACA4D129FA9B5100EF6837 /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BACA4D029FA9B5100EF6837 /* SettingsStore.swift */; };
-		9BF3FB3D2A0E729D00C9EE1D /* TestList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF3FB3C2A0E729D00C9EE1D /* TestList.swift */; };
 		D5F74A312972D31D00EEE2FE /* Marker_DataApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F74A302972D31D00EEE2FE /* Marker_DataApp.swift */; };
 		D5F74A332972D31D00EEE2FE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F74A322972D31D00EEE2FE /* ContentView.swift */; };
 		D5F74A352972D32100EEE2FE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5F74A342972D32100EEE2FE /* Assets.xcassets */; };
@@ -65,8 +65,8 @@
 		9B61B44329F0387C003EC14A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		9B653ABA29F2C2E700C64999 /* UserAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAlertView.swift; sourceTree = "<group>"; };
 		9B653ABC29F2C64600C64999 /* ErrorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorViewModel.swift; sourceTree = "<group>"; };
+		9B7BA03A2A128E9E0014E168 /* ProgressPublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressPublisher.swift; sourceTree = "<group>"; };
 		9BACA4D029FA9B5100EF6837 /* SettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStore.swift; sourceTree = "<group>"; };
-		9BF3FB3C2A0E729D00C9EE1D /* TestList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestList.swift; sourceTree = "<group>"; };
 		D5F74A2D2972D31C00EEE2FE /* Marker Data.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Marker Data.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5F74A302972D31D00EEE2FE /* Marker_DataApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Marker_DataApp.swift; sourceTree = "<group>"; };
 		D5F74A322972D31D00EEE2FE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -106,7 +106,6 @@
 				9B4D90D92A0BAF9E00FE7603 /* LabelSettingsView.swift */,
 				9B4D90DB2A0BB07500FE7603 /* ConfigurationSettingsView.swift */,
 				9B4D90DD2A0BB11000FE7603 /* DatabaseSettingsView.swift */,
-				9BF3FB3C2A0E729D00C9EE1D /* TestList.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -144,9 +143,10 @@
 			isa = PBXGroup;
 			children = (
 				9B51D21229E9AF9300DF7836 /* FolderURLModel.swift */,
-				9B51D21529E9B13400DF7836 /* SettingsModel.swift */,
 				9B653ABC29F2C64600C64999 /* ErrorViewModel.swift */,
+				9B51D21529E9B13400DF7836 /* SettingsModel.swift */,
 				9BACA4D029FA9B5100EF6837 /* SettingsStore.swift */,
+				9B7BA03A2A128E9E0014E168 /* ProgressPublisher.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -290,11 +290,11 @@
 				9B4D90DE2A0BB11000FE7603 /* DatabaseSettingsView.swift in Sources */,
 				9B653ABB29F2C2E700C64999 /* UserAlertView.swift in Sources */,
 				9B35FE6829F94C110035B760 /* PickerViews.swift in Sources */,
+				9B7BA03B2A128E9E0014E168 /* ProgressPublisher.swift in Sources */,
 				D5F74A332972D31D00EEE2FE /* ContentView.swift in Sources */,
 				9B35FE6529F92DC60035B760 /* UserDefaults+Settings.swift in Sources */,
 				9B4D90DA2A0BAF9E00FE7603 /* LabelSettingsView.swift in Sources */,
 				9B653ABD29F2C64600C64999 /* ErrorViewModel.swift in Sources */,
-				9BF3FB3D2A0E729D00C9EE1D /* TestList.swift in Sources */,
 				D5F74A312972D31D00EEE2FE /* Marker_DataApp.swift in Sources */,
 				9B4D90DC2A0BB07500FE7603 /* ConfigurationSettingsView.swift in Sources */,
 				9B51D21129E9A01A00DF7836 /* FolderPicker.swift in Sources */,
