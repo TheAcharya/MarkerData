@@ -49,7 +49,7 @@
 
 ## System Requirements
 
-macOS Monterey or later <br> Final Cut Pro 10.6.5
+macOS Monterey 12.6.6 or later <br> Final Cut Pro 10.6.6
 
 ## Installation
 
