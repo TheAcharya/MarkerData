@@ -1,7 +1,7 @@
 <img src="assets/marker_data_app_icon.png" width="220" alt="App icon" align="left"/>
 
 <div>
-<h2>Marker Data</h2>
+<h1>Marker Data</h1>
 <!-- license -->
 <a href="https://github.com/TheAcharya/MarkerData/blob/main/LICENSE">
 <img src="http://img.shields.io/badge/license-MIT-lightgrey.svg?style=flat" alt="license"/>
