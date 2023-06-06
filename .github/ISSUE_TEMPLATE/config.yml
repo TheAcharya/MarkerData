@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Feature request
+    url: https://github.com/TheAcharya/MarkerData/discussions
+    about: Suggest new features or improvements.
+  - name: I need help setting up or troubleshooting
+    url: https://github.com/TheAcharya/MarkerData/discussions
+    about: Questions not answered in the documentation, discussions forum, or example projects.
