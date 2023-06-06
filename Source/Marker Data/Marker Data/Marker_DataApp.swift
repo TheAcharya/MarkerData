@@ -11,6 +11,7 @@ import AppUpdater
 struct Marker_DataApp: App {
     
     @StateObject private var settingsStore = SettingsStore()
+    let persistenceController = PersistenceController.shared
     
     //Link App Delegate To SwiftUI App Lifecycle
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
@@ -19,7 +20,9 @@ struct Marker_DataApp: App {
         WindowGroup {
             let progress = Progress(totalUnitCount: 100)
             let progressPublisher = ProgressPublisher(progress: progress)
-            ContentView(progressPublisher: progressPublisher).environmentObject(settingsStore)
+            ContentView(progressPublisher: progressPublisher)
+                .environmentObject(settingsStore)
+                .environment(\.managedObjectContext, persistenceController.container.viewContext)
             //Force Dark Mode On Content View
                 .preferredColorScheme(.dark)
             //Set Main Window Min And Max Size
@@ -33,8 +36,10 @@ struct Marker_DataApp: App {
         Settings {
             SettingsView()
                 .environmentObject(settingsStore)
+                .environment(\.managedObjectContext, persistenceController.container.viewContext)
             //Force Dark Mode On Settings View
                 .preferredColorScheme(.dark)
+            
         }
         
         //Customise Menu Bar Commands

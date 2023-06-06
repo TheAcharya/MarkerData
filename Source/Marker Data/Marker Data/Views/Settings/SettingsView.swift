@@ -5,13 +5,15 @@
 //
 
 import SwiftUI
-import FontPicker
 
 struct SettingsView: View {
+    
+    @Environment(\.managedObjectContext)  var viewContext
     
     //Main Settings View Controller
     var body: some View {
         if #available(macOS 13.0, *) {
+           
             NavigationSplitView {
                 List {
                     //Link To General Settings
@@ -27,7 +29,7 @@ struct SettingsView: View {
                         Label("Label", systemImage: "tag")
                     }
                     //Link To Configuration Settings
-                    NavigationLink(destination: ConfigurationSettingsView()) {
+                    NavigationLink(destination: ConfigurationSettingsView().environment(\.managedObjectContext, viewContext)) {
                         Label("Configuration", systemImage: "slider.vertical.3")
                     }
                     //Link To Database Settings
