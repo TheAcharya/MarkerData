@@ -73,9 +73,7 @@ Maintained by [Steffan Andrews](https://github.com/orchetect) ([0.2.0 ...](https
 
 **Graphical User Interface**
 
-Maintained by [Theo Scott](https://github.com/theogscott) (1.0.0 ...)
-
-Initial Prototype Development by [Mark Howard](https://github.com/markydoodled)
+Maintained by (1.0.0 ...)
 
 **App Icon**
 
