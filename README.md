@@ -71,9 +71,9 @@ Original Idea, Application Direction and Workflow by [Vigneswaran Rajkumar](http
 
 Maintained by [Steffan Andrews](https://github.com/orchetect) ([0.2.0 ...](https://github.com/TheAcharya/MarkersExtractor))
 
-**Graphical User Interface**
+**Graphical User Interface and UI/UX Logic**
 
-Maintained by (1.0.0 ...)
+Maintained by [Peter Schorn](https://github.com/Peter-Schorn) (1.0.0 ...)
 
 **App Icon**
 
