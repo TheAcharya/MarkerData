@@ -1,8 +1,8 @@
 //
-//  Configuration+Extensions.swift
-//  Marker Data
+//  Marker Data • https://github.com/TheAcharya/MarkerData
+//  Licensed under MIT License
 //
-//  Created by Theo S on 29/05/2023.
+//  Maintained by Peter Schorn
 //
 
 import Foundation

@@ -1,8 +1,8 @@
 //
-//  ExportFormatPicker.swift
-//  Marker Data
+//  Marker Data • https://github.com/TheAcharya/MarkerData
+//  Licensed under MIT License
 //
-//  Created by Theo S on 26/04/2023.
+//  Maintained by Peter Schorn
 //
 
 import SwiftUI
