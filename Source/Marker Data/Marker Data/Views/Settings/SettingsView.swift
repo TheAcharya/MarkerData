@@ -52,31 +52,26 @@ struct SettingsView: View {
                 }
                 //Link To Configuration Settings
                 NavigationLink(destination: ConfigurationSettingsView().environment(\.managedObjectContext, viewContext)) {
-                    Label("Configuration", systemImage: "slider.vertical.3")
+                    Label("Configuration", systemImage: "briefcase")
                 }
                 //Link To Database Settings
                 NavigationLink(destination: DatabaseSettingsView()) {
-                    Label("Databases", systemImage: "list.bullet")
+                    Label("Databases", systemImage: "server.rack")
+                }
+                NavigationLink(destination: AboutView()) {
+                    Label("About", systemImage: "info.circle")
                 }
             }
             // MARK: Vertical padding between sidebar list items
             .padding(.vertical, 5)
         }
         //Define List Style As Sidebar
-        .listStyle(.sidebar)
+        // .listStyle(.sidebar)
     }
 
     var detailView: some View {
         // Show App Icon And App Title When No Setting Section Is Selected
-        VStack {
-            Image("AppsIcon")
-                .resizable()
-                .cornerRadius(25)
-                .frame(width: 150, height: 150)
-            Text("Marker Data")
-                .bold()
-                .font(.title)
-        }
+        AboutView()
     }
     
 }
