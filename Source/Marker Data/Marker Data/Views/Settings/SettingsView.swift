@@ -13,92 +13,72 @@ struct SettingsView: View {
     
     //Main Settings View Controller
     var body: some View {
-        if #available(macOS 13.0, *) {
-           
-            NavigationSplitView {
-                List {
-                    //Link To General Settings
-                    NavigationLink(destination: GeneralSettingsView()) {
-                        Label("General", systemImage: "gearshape")
-                    }
-                    //Link To Image Settings
-                    NavigationLink(destination: ImageSettingsView()) {
-                        Label("Image", systemImage: "photo")
-                    }
-                    //Link To Label Settings
-                    NavigationLink(destination: LabelSettingsView()) {
-                        Label("Label", systemImage: "tag")
-                    }
-                    //Link To Configuration Settings
-                    NavigationLink(destination: ConfigurationSettingsView().environment(\.managedObjectContext, viewContext)) {
-                        Label("Configuration", systemImage: "slider.vertical.3")
-                    }
-                    //Link To Database Settings
-                    NavigationLink(destination: DatabaseSettingsView()) {
-                        Label("Databases", systemImage: "list.bullet")
-                    }
-                }
-                //Define List Style As Sidebar
-                .listStyle(.sidebar)
-            } detail: {
-                //Show App Icon And App Title When No Setting Section Is Selected
-                VStack {
-                    Image("AppsIcon")
-                        .resizable()
-                        .cornerRadius(25)
-                        .frame(width: 150, height: 150)
-                    Text("Marker Data")
-                        .bold()
-                        .font(.title)
+        Group {
+            if #available(macOS 13.0, *) {
+                NavigationSplitView(
+                    sidebar: { sidebareView },
+                    detail: { detailView }
+                )
+                // only available in macOS 13+
+                .toolbar(.hidden)
+            } else {
+                // Fallback On Earlier Versions
+                NavigationView {
+                    sidebareView
+                    
+                    //Show App Icon And App Title When No Setting Section Is Selected
+                    detailView
                 }
             }
-            //Set Settings Window Static Width And Height
-            .frame(width: 700, height: 500)
-            //Hide Toolbar
-            .toolbar(.hidden)
-        } else {
-            // Fallback On Earlier Versions
-            NavigationView {
-                List {
-                    //Link To General Settings
-                    NavigationLink(destination: GeneralSettingsView()) {
-                        Label("General", systemImage: "gearshape")
-                    }
-                    //Link To Image Settings
-                    NavigationLink(destination: ImageSettingsView()) {
-                        Label("Image", systemImage: "photo")
-                    }
-                    //Link To Label Settings
-                    NavigationLink(destination: LabelSettingsView()) {
-                        Label("Label", systemImage: "tag")
-                    }
-                    //Link To Configuration Settings
-                    NavigationLink(destination: ConfigurationSettingsView()) {
-                        Label("Configuration", systemImage: "slider.vertical.3")
-                    }
-                    //Link To Database Settings
-                    NavigationLink(destination: DatabaseSettingsView()) {
-                        Label("Databases", systemImage: "list.bullet")
-                    }
-                }
-                //Define List Style As Sidebar
-                .listStyle(.sidebar)
-                //Show App Icon And App Title When No Setting Section Is Selected
-                VStack {
-                    Image("AppsIcon")
-                        .resizable()
-                        .cornerRadius(25)
-                        .frame(width: 150, height: 150)
-                    Text("Marker Data")
-                        .bold()
-                        .font(.title)
-                }
-            }
-            //Set Settings Window Static Width And Height
-            .frame(width: 700, height: 500)
         }
+        // Set Settings Window Static Width And Height
+        .frame(width: 700, height: 500)
+    }
+    
+    var sidebareView: some View {
+        List {
+            Group {
+                //Link To General Settings
+                NavigationLink(destination: GeneralSettingsView()) {
+                    Label("General", systemImage: "gearshape")
+                }
+                //Link To Image Settings
+                NavigationLink(destination: ImageSettingsView()) {
+                    Label("Image", systemImage: "photo")
+                }
+                //Link To Label Settings
+                NavigationLink(destination: LabelSettingsView()) {
+                    Label("Label", systemImage: "tag")
+                }
+                //Link To Configuration Settings
+                NavigationLink(destination: ConfigurationSettingsView().environment(\.managedObjectContext, viewContext)) {
+                    Label("Configuration", systemImage: "slider.vertical.3")
+                }
+                //Link To Database Settings
+                NavigationLink(destination: DatabaseSettingsView()) {
+                    Label("Databases", systemImage: "list.bullet")
+                }
+            }
+            // MARK: Vertical padding between sidebar list items
+            .padding(.vertical, 5)
+        }
+        //Define List Style As Sidebar
+        .listStyle(.sidebar)
     }
 
+    var detailView: some View {
+        // Show App Icon And App Title When No Setting Section Is Selected
+        VStack {
+            Image("AppsIcon")
+                .resizable()
+                .cornerRadius(25)
+                .frame(width: 150, height: 150)
+            Text("Marker Data")
+                .bold()
+                .font(.title)
+        }
+    }
+    
 }
 
 struct SettingsView_Previews: PreviewProvider {
@@ -107,6 +87,7 @@ struct SettingsView_Previews: PreviewProvider {
         SettingsView().environmentObject(settingsStore)
     }
 }
+
 /*
 //Chips View For Labels
 struct Chips: View {

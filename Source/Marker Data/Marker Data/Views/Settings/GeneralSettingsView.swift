@@ -109,16 +109,29 @@ struct GeneralSettingsView: View {
                 }
             }
         }
+        .overlay(alignment: .bottomTrailing) {
+            Button(action: { }, label: {
+                Image(systemName: "questionmark.circle.fill")
+            })
+        }
+        .navigationTitle("General")
+        // .overlay({
+            // Button(action: { }, label: {
+            //     Image(systemName: "questionmark.circle.fill")
+            // })
+        // }, alignment: .bottomTrailing)
 
     //Set Navigation Bar Title To General
-      .navigationTitle("General")
     }
 }
 
-
 struct GeneralSettingsView_Previews: PreviewProvider {
     static let settingsStore = SettingsStore()
+    
     static var previews: some View {
-        GeneralSettingsView().environmentObject(settingsStore)
+        GeneralSettingsView()
+            .environmentObject(settingsStore)
+            .padding()
     }
+    
 }
