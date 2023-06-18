@@ -84,7 +84,7 @@ struct GeneralSettingsView: View {
                     }
                     
                     HStack {
-                        Text("Enable SubFrames:")
+                        Text("Enable Subframes:")
                             .frame(maxWidth: .infinity, alignment: .trailing)
                         Spacer(minLength: 10)
                         Toggle("", isOn: $settingsStore.enabledSubframes)
