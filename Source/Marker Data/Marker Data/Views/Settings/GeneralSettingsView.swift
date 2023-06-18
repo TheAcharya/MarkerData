@@ -21,7 +21,7 @@ struct GeneralSettingsView: View {
         Form {
             VStack {
                 Group {
-                    Text("Export  Destination")
+                    Text("Export Destination")
                         .font(.headline)
                     HStack {
                         Text("Set:")
@@ -84,7 +84,7 @@ struct GeneralSettingsView: View {
                     }
                     
                     HStack {
-                        Text("Enable SubFrame:")
+                        Text("Enable SubFrames:")
                             .frame(maxWidth: .infinity, alignment: .trailing)
                         Spacer(minLength: 10)
                         Toggle("", isOn: $settingsStore.enabledSubframes)

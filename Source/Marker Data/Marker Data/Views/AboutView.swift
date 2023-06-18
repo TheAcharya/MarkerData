@@ -36,6 +36,7 @@ struct AboutView: View {
             Text("Acknowledgments & Credits")
             
         }
+        .navigationTitle("About")
         
     }
     

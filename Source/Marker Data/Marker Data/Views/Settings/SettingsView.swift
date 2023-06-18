@@ -52,7 +52,7 @@ struct SettingsView: View {
                 }
                 //Link To Configuration Settings
                 NavigationLink(destination: ConfigurationSettingsView().environment(\.managedObjectContext, viewContext)) {
-                    Label("Configuration", systemImage: "briefcase")
+                    Label("Configurations", systemImage: "briefcase")
                 }
                 //Link To Database Settings
                 NavigationLink(destination: DatabaseSettingsView()) {
