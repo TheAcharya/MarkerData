@@ -101,7 +101,7 @@ struct ImageSettingsView: View {
                     }
                     
                     HStack {
-                        Text("Size(%):")
+                        Text("Size (%):")
                             .frame(maxWidth: .infinity, alignment: .trailing)
                         Group {
                             TextField("", text: imageSizeBinding)
