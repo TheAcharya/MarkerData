@@ -57,6 +57,9 @@ struct Marker_DataApp: App {
         
         //Customise Menu Bar Commands
         .commands {
+            
+            SidebarCommands()
+
             //Removes New Window Menu Item
             CommandGroup(replacing: .newItem) {}
             //Removes Toolbar Menu Items

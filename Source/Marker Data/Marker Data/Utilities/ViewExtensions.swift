@@ -9,6 +9,10 @@ import SwiftUI
 
 extension View {
     
+    func eraseToAnyView() -> AnyView {
+        AnyView(self)
+    }
+
     func modify<Content: View>(
         @ViewBuilder _ content: (Self) -> Content
     ) -> some View {

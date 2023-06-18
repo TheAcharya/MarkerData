@@ -10,6 +10,7 @@
 		47411FDA2A3EA121005890FE /* HelpButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47411FD92A3EA121005890FE /* HelpButton.swift */; };
 		47411FDC2A3EA140005890FE /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47411FDB2A3EA140005890FE /* ViewExtensions.swift */; };
 		47411FDE2A3EA1BA005890FE /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47411FDD2A3EA1BA005890FE /* AboutView.swift */; };
+		47411FE42A3EC6AF005890FE /* IONavigation in Frameworks */ = {isa = PBXBuildFile; productRef = 47411FE32A3EC6AF005890FE /* IONavigation */; };
 		9B244B3E2A24AB5D005620D8 /* MarkerData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9B9CA0F32A1A9ADD004E337A /* MarkerData.xcdatamodeld */; };
 		9B25815E2A07A286002CED07 /* GeneralSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B25815D2A07A286002CED07 /* GeneralSettingsView.swift */; };
 		9B35FE6529F92DC60035B760 /* UserDefaults+Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B35FE6429F92DC60035B760 /* UserDefaults+Settings.swift */; };
@@ -93,6 +94,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9B61B44229F03866003EC14A /* libswiftCoreGraphics.tbd in Frameworks */,
+				47411FE42A3EC6AF005890FE /* IONavigation in Frameworks */,
 				9B61B44E29F03B14003EC14A /* MarkersExtractor in Frameworks */,
 				D5F74A542973021F00EEE2FE /* SwiftUIX in Frameworks */,
 				D5F74A4A2973012800EEE2FE /* AppUpdater in Frameworks */,
@@ -248,6 +250,7 @@
 				D5F74A502973019000EEE2FE /* OrderedCollections */,
 				D5F74A532973021F00EEE2FE /* SwiftUIX */,
 				9B61B44D29F03B14003EC14A /* MarkersExtractor */,
+				47411FE32A3EC6AF005890FE /* IONavigation */,
 			);
 			productName = "Marker Data";
 			productReference = D5F74A2D2972D31C00EEE2FE /* Marker Data.app */;
@@ -283,6 +286,7 @@
 				D5F74A4B2973019000EEE2FE /* XCRemoteSwiftPackageReference "swift-collections" */,
 				D5F74A522973021F00EEE2FE /* XCRemoteSwiftPackageReference "SwiftUIX" */,
 				9B61B44C29F03B14003EC14A /* XCRemoteSwiftPackageReference "MarkersExtractor" */,
+				47411FE22A3EC6AF005890FE /* XCRemoteSwiftPackageReference "IONavigation" */,
 			);
 			productRefGroup = D5F74A2E2972D31C00EEE2FE /* Products */;
 			projectDirPath = "";
@@ -557,6 +561,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		47411FE22A3EC6AF005890FE /* XCRemoteSwiftPackageReference "IONavigation" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Peter-Schorn/IONavigation";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 		9B61B44C29F03B14003EC14A /* XCRemoteSwiftPackageReference "MarkersExtractor" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/TheAcharya/MarkersExtractor.git";
@@ -600,6 +612,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		47411FE32A3EC6AF005890FE /* IONavigation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 47411FE22A3EC6AF005890FE /* XCRemoteSwiftPackageReference "IONavigation" */;
+			productName = IONavigation;
+		};
 		9B61B44D29F03B14003EC14A /* MarkersExtractor */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 9B61B44C29F03B14003EC14A /* XCRemoteSwiftPackageReference "MarkersExtractor" */;
