@@ -41,7 +41,7 @@ struct LabelSettingsView: View {
                     Text("Font")
                         .font(.headline)
                     HStack {
-                        Text("Type face:")
+                        Text("Typeface:")
                             .frame(maxWidth: .infinity, alignment: .trailing)
                         FontNamePicker()
                             .frame(width: 150, alignment: .leading)
