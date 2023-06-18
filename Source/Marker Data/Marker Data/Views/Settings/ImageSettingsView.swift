@@ -182,8 +182,8 @@ struct ImageSettingsView: View {
                 }.disabled(settingsStore.selectedImageMode != .GIF)
             }
         }
-        //Set Navgation Bar Title To Image
-        .navigationTitle("Image")
+        .overlayHelpButton(url: settingsStore.imageSettingsURL)
+        .navigationTitle("Image Settings")
     }
 }
 

@@ -157,7 +157,8 @@ struct LabelSettingsView: View {
             }
             
         }
-        
+        .overlayHelpButton(url: settingsStore.labelSettingsURL)
+        .navigationTitle("Label Settings")
     }
     
 }

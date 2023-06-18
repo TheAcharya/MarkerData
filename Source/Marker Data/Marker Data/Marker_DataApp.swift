@@ -11,9 +11,18 @@ import AppUpdater
 @main
 struct Marker_DataApp: App {
     
+    // @Environment(\.openWindow) var openWindow
+
     @StateObject private var settingsStore = SettingsStore()
+    
     let persistenceController = PersistenceController.shared
     
+    let appName: String = {
+        Bundle.main.object(
+            forInfoDictionaryKey: "CFBundleDisplayName"
+        ) as! String
+    }()
+
     //Link App Delegate To SwiftUI App Lifecycle
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     var body: some Scene {
@@ -28,17 +37,20 @@ struct Marker_DataApp: App {
                 .preferredColorScheme(.dark)
             //Set Main Window Min And Max Size
                 .frame(minWidth: 750, idealWidth: 750, maxWidth: .infinity, minHeight: 400, idealHeight: 400, maxHeight: .infinity, alignment: .center)
-            //Run Code On View Appear On Screen
+            // Run Code On View Appear On Screen
                 .onAppear() {
                     appDelegate.userRequestedAnExplicitUpdateCheck()
                 }
         }
-        //Add Settings Menu Bar Item And Pass In A View
+        // Add Settings Menu Bar Item And Pass In A View
         Settings {
             SettingsView()
                 .environmentObject(settingsStore)
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
-            //Force Dark Mode On Settings View
+                .environment(
+                    \.managedObjectContext,
+                     persistenceController.container.viewContext
+                )
+                // Force Dark Mode On Settings View
                 .preferredColorScheme(.dark)
             
         }
@@ -100,13 +112,6 @@ struct Marker_DataApp: App {
                     Text("Name 2")
                 }
             }
-            //Add Custom Tools Menu
-            CommandMenu("Tools") {
-                //Button To Update Notion Icons
-                Button(action: {}) {
-                    Text("Update Notion Icons")
-                }
-            }
             //Add Custom Databases Menu
             CommandMenu("Databases") {
                 //Upload Submenu
@@ -152,7 +157,20 @@ struct Marker_DataApp: App {
                 }
             }
         }
+        // .modify { scene in
+        //     if #available(macOS 13.0, *) {
+        //         scene.commandsReplaced {
+        //             CommandGroup(replacing: .appInfo) {
+        //                 Button("About \(appName)") {
+        //                     print("About")
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
+        
     }
+    
 }
 
 //Init App Delegate

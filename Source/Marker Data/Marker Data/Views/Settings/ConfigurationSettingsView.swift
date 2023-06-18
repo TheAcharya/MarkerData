@@ -9,6 +9,7 @@ import SwiftUI
 import CoreData
 
 struct ConfigurationSettingsView: View {
+    
     @EnvironmentObject var settingsStore: SettingsStore
     
     @Environment(\.managedObjectContext)  var viewContext
@@ -67,51 +68,46 @@ struct ConfigurationSettingsView: View {
         }
     }
     
-   
-
-    
-    
-    
     var body: some View {
-//        Form {
-            HStack {
-                VStack(alignment: .leading) {
-                    Spacer()
-                    Table(configurations, sortOrder: $sortOrder)  {
-                        TableColumn("Configuration Name", value: \.name!) { configuration in Text(configuration.name ?? "Unknown name").tag(configuration.objectID)
-                            
-                        }
-
-                        TableColumn("Active", value: \.isActiveString!)
-                    }
-  
-            
-                    Button(action: {}) {
-                        Text("Export Marker Data Configurations")
-                    }
-                    //Button To Import Marker Data Settings
-                    Button(action: {}) {
-                        Text("Import Marker Data Configurations")
-                    }
-                    //Button To Load Default Marker Data Settings
-                    Button(action: {}) {
-                        Text("Load Defaults")
-                    }
-                }
+        HStack {
+            VStack(alignment: .leading) {
                 Spacer()
+                Table(configurations, sortOrder: $sortOrder)  {
+                TableColumn("Configuration Name", value: \.name!) { configuration in
+                    Text(configuration.name ?? "Unknown name").tag(configuration.objectID)
+                }
+                    
+                    TableColumn("Active", value: \.isActiveString!)
+                }
+                
+                
+                Button(action: {}) {
+                    Text("Export Marker Data Configurations")
+                }
+                //Button To Import Marker Data Settings
+                Button(action: {}) {
+                    Text("Import Marker Data Configurations")
+                }
+                //Button To Load Default Marker Data Settings
+                Button(action: {}) {
+                    Text("Load Defaults")
+                }
             }
-            .padding(.horizontal)
             Spacer()
-//        }
-        //Set Navigation Bar Title To Configuration
-        //.navigationTitle("Configuration")
+        }
+        .padding(.horizontal)
+        Spacer()
+            .navigationTitle("Configuration Settings")
     }
 }
 
-//struct ConfigurationSettingsView_Previews: PreviewProvider {
-//    static let settingsStore = SettingsStore()
-//    static var previews: some View {
-//        ConfigurationSettingsView().environmentObject(settingsStore)
-//            .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
-//    }
-//}
+struct ConfigurationSettingsView_Previews: PreviewProvider {
+    static let settingsStore = SettingsStore()
+    static var previews: some View {
+        ConfigurationSettingsView().environmentObject(settingsStore)
+            // .environment(
+            //     \.managedObjectContext,
+            //      PersistenceController.preview.container.viewContext
+            // )
+    }
+}

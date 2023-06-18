@@ -8,7 +8,9 @@
 import SwiftUI
 
 struct DatabaseSettingsView: View {
+    
     @EnvironmentObject var settingsStore: SettingsStore
+    
     var body: some View {
         Form {
             HStack {
@@ -71,9 +73,11 @@ struct DatabaseSettingsView: View {
             }
             .padding(.horizontal)
         }
-        //Set Navigation Bar Title To Notion
-        .navigationTitle("Notion")
+        .overlayHelpButton(url: settingsStore.databaseSettingsURL)
+        .navigationTitle("Database Settings")
+        
     }
+    
 }
 
 struct DatabaseSettingsView_Previews: PreviewProvider {

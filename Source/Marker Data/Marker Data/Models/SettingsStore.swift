@@ -12,44 +12,54 @@ import MarkersExtractor
 import AppKit
 
 class SettingsStore: ObservableObject {
-    func markersExtractorSettings(fcpxmlFileUrl: URL) throws -> MarkersExtractor.Settings {
-        let outputDirURL: URL = UserDefaults.standard.exportFolder
-        let settings = try MarkersExtractor.Settings(
-            fcpxml: .init(fcpxmlFileUrl),
-            outputDir: outputDirURL,
-            exportFormat: self.selectedExportFormat.markersExtractor,
-            enableSubframes: self.enabledSubframes,
-            imageFormat: self.selectedImageMode.markersExtractor,
-            imageQuality: Int(self.selectedImageQuality),
-            imageWidth: self.imageWidth,
-            imageHeight: self.imageHeight,
-            imageSizePercent: Int(self.selectedImageSize),
-            gifFPS: Double(self.selectedGIFFPS),
-            gifSpan: TimeInterval(self.selectedGIFLength),
-            idNamingMode: self.selectedIDNamingMode.markersExtractor,
-            includeOutsideClipBoundaries:  self.enabledClipBoundaries,
-            excludeRoleType: self.selectedExcludeRoles.markersExtractor,
-           // imageLabels: []
-            imageLabelCopyright: self.copyrightText,
-            imageLabelFont: self.selectedFontNameType.markersExtractor,
-            imageLabelFontMaxSize: self.selectedFontSize,
-            imageLabelFontOpacity: Int(self.selectedFontColorOpacity),
-            imageLabelFontColor: self.selectedFontHexColor,
-            imageLabelFontStrokeColor: self.selectedStrokeHexColor,
-            imageLabelFontStrokeWidth: self.markersExtractorStrokeWidth,
-            imageLabelAlignHorizontal: self.selectedHorizonalAlignment.markersExtractor,
-            imageLabelAlignVertical: self.selectedVerticalAlignment.markersExtractor,
-            imageLabelHideNames: self.hideLabelNames,
-            //createDoneFile: Bool = Defaults.createDoneFile,
-            //doneFilename: String = Defaults.doneFilename,
-            exportFolderFormat: self.selectedFolderFormat.markersExtractor
-            
-        )
+    
+    enum SettingsSection: String, Hashable, Identifiable {
         
-        return settings
+        case general
+        case image
+        case label
+        case configuration
+        case database
+        case about
         
+        var id: String {
+            self.rawValue
+        }
+
     }
     
+    // func test<T: RawRepresentable>(_ t: T) where T.RawValue == String {
+    //     if Bool.random() {
+    //         self.test(SettingsSection.general)
+    //     }
+    // }
+
+    // MARK: Documentation Links
+    
+    let generalSettingsURL = URL(
+        string: "https://markerdata.theacharya.co/user-guide/general/"
+    )!
+    
+    let imageSettingsURL =  URL(
+        string: "https://markerdata.theacharya.co/user-guide/image/"
+    )!
+    
+    let labelSettingsURL =  URL(
+        string: "https://markerdata.theacharya.co/user-guide/label/"
+    )!
+    
+    let configurationSettingsURL =  URL(
+        string: "https://markerdata.theacharya.co/user-guide/configurations/"
+    )!
+    
+    let databaseSettingsURL =  URL(
+        string: "https://markerdata.theacharya.co/user-guide/databases/"
+    )!
+    
+    // MARK: settings selection
+    @AppStorage("settingsSection") var settingsSection: SettingsSection?
+    // @Published var settingsSection: SettingsSection? = .configuration
+
     @AppStorage("selectedFolderFormat") private var selectedFolderFormatRawValue: Int = UserFolderFormat.Medium.rawValue
     var selectedFolderFormat: UserFolderFormat{
         get { UserFolderFormat(rawValue: selectedFolderFormatRawValue) ?? .Medium }
@@ -188,9 +198,6 @@ class SettingsStore: ObservableObject {
         return hex
     }
 
-    
-
-
     @AppStorage("selectedHorizontalAlignment") private var selectedHorizonalAlignmentRawValue: Int = LabelHorizontalAlignment.Left.rawValue
     var selectedHorizonalAlignment: LabelHorizontalAlignment {
         get { LabelHorizontalAlignment(rawValue: selectedHorizonalAlignmentRawValue) ?? .Left }
@@ -209,5 +216,42 @@ class SettingsStore: ObservableObject {
     
     @AppStorage("hideLabelNames") var hideLabelNames = false
     
+    func markersExtractorSettings(fcpxmlFileUrl: URL) throws -> MarkersExtractor.Settings {
+        let outputDirURL: URL = UserDefaults.standard.exportFolder
+        let settings = try MarkersExtractor.Settings(
+            fcpxml: .init(fcpxmlFileUrl),
+            outputDir: outputDirURL,
+            exportFormat: self.selectedExportFormat.markersExtractor,
+            enableSubframes: self.enabledSubframes,
+            imageFormat: self.selectedImageMode.markersExtractor,
+            imageQuality: Int(self.selectedImageQuality),
+            imageWidth: self.imageWidth,
+            imageHeight: self.imageHeight,
+            imageSizePercent: Int(self.selectedImageSize),
+            gifFPS: Double(self.selectedGIFFPS),
+            gifSpan: TimeInterval(self.selectedGIFLength),
+            idNamingMode: self.selectedIDNamingMode.markersExtractor,
+            includeOutsideClipBoundaries:  self.enabledClipBoundaries,
+            excludeRoleType: self.selectedExcludeRoles.markersExtractor,
+           // imageLabels: []
+            imageLabelCopyright: self.copyrightText,
+            imageLabelFont: self.selectedFontNameType.markersExtractor,
+            imageLabelFontMaxSize: self.selectedFontSize,
+            imageLabelFontOpacity: Int(self.selectedFontColorOpacity),
+            imageLabelFontColor: self.selectedFontHexColor,
+            imageLabelFontStrokeColor: self.selectedStrokeHexColor,
+            imageLabelFontStrokeWidth: self.markersExtractorStrokeWidth,
+            imageLabelAlignHorizontal: self.selectedHorizonalAlignment.markersExtractor,
+            imageLabelAlignVertical: self.selectedVerticalAlignment.markersExtractor,
+            imageLabelHideNames: self.hideLabelNames,
+            //createDoneFile: Bool = Defaults.createDoneFile,
+            //doneFilename: String = Defaults.doneFilename,
+            exportFolderFormat: self.selectedFolderFormat.markersExtractor
+            
+        )
+        
+        return settings
+        
+    }
     
 }

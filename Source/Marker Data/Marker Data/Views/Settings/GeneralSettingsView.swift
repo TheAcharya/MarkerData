@@ -8,8 +8,14 @@
 import SwiftUI
 
 struct GeneralSettingsView: View {
-    @StateObject private var exportFolderURLModel = FolderURLModel(userDefaultsKey: exportFolderPathKey)
+
+    @Environment(\.openURL) var openURL
+
     @EnvironmentObject var settingsStore: SettingsStore
+    
+    @StateObject private var exportFolderURLModel = FolderURLModel(
+        userDefaultsKey: exportFolderPathKey
+    )
     
     var body: some View {
         Form {
@@ -109,20 +115,11 @@ struct GeneralSettingsView: View {
                 }
             }
         }
-        .overlay(alignment: .bottomTrailing) {
-            Button(action: { }, label: {
-                Image(systemName: "questionmark.circle.fill")
-            })
-        }
+        .overlayHelpButton(url: settingsStore.generalSettingsURL)
         .navigationTitle("General")
-        // .overlay({
-            // Button(action: { }, label: {
-            //     Image(systemName: "questionmark.circle.fill")
-            // })
-        // }, alignment: .bottomTrailing)
-
-    //Set Navigation Bar Title To General
+        
     }
+    
 }
 
 struct GeneralSettingsView_Previews: PreviewProvider {
