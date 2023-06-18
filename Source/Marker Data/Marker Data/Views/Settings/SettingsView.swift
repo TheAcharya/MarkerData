@@ -51,7 +51,7 @@ struct SettingsView: View {
                     Label("Label", systemImage: "tag")
                 }
                 //Link To Configuration Settings
-                NavigationLink(destination: ConfigurationSettingsView().environment(\.managedObjectContext, viewContext)) {
+                NavigationLink(destination: ConfigurationSettingsView()) {
                     Label("Configurations", systemImage: "briefcase")
                 }
                 //Link To Database Settings
@@ -64,6 +64,13 @@ struct SettingsView: View {
             }
             // MARK: Vertical padding between sidebar list items
             .padding(.vertical, 5)
+        }
+        .modify { view in
+            if #available(macOS 13.0, *) {
+                view.navigationSplitViewColumnWidth(
+                    min: 190, ideal: 190, max: 190
+                )
+            }
         }
         //Define List Style As Sidebar
         // .listStyle(.sidebar)

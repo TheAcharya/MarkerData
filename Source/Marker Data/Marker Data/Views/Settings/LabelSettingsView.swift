@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import ColorWell
 
 struct LabelSettingsView: View {
     @EnvironmentObject var settingsStore: SettingsStore
@@ -40,6 +41,7 @@ struct LabelSettingsView: View {
                     
                     Text("Font")
                         .font(.headline)
+                    
                     HStack {
                         Text("Typeface:")
                             .frame(maxWidth: .infinity, alignment: .trailing)
@@ -68,7 +70,10 @@ struct LabelSettingsView: View {
                     HStack {
                         Text("Colour & Opacity:")
                             .frame(maxWidth: .infinity, alignment: .trailing)
-                        ColorPicker("", selection: $settingsStore.selectedFontColor).frame(width: 50, alignment: .leading)
+                        
+                        // MARK: Color Picker
+                        
+                        ColorWellView("", color: $settingsStore.selectedFontColor)
                         
                         Spacer(minLength: 300)
                     }
@@ -91,7 +96,11 @@ struct LabelSettingsView: View {
                     HStack {
                         Text("Colour & Opacity:")
                             .frame(maxWidth: .infinity, alignment: .trailing)
-                        ColorPicker("", selection: $settingsStore.selectedStrokeColor).frame(width: 50, alignment: .leading)
+                        
+                        // MARK: Color Picker
+                        
+                        ColorWellView("", color: $settingsStore.selectedStrokeColor)
+                        
                         Spacer(minLength: 300)
                     }
                 }
@@ -169,6 +178,8 @@ struct LabelSettingsView: View {
 struct LabelSettingsView_Previews: PreviewProvider {
     static let settingsStore = SettingsStore()
     static var previews: some View {
-        LabelSettingsView().environmentObject(settingsStore)
+        LabelSettingsView()
+            .environmentObject(settingsStore)
+            .frame(width: 500, height: 500)
     }
 }

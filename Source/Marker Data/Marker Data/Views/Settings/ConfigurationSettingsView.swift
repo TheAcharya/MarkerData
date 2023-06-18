@@ -12,7 +12,7 @@ struct ConfigurationSettingsView: View {
     
     @EnvironmentObject var settingsStore: SettingsStore
     
-    @Environment(\.managedObjectContext)  var viewContext
+    @Environment(\.managedObjectContext) var viewContext
     @State private var showPopover: Bool = false
     //@State private var selection = Set<Configuration>()
     @State private var selectedItems = Set<UUID>()
