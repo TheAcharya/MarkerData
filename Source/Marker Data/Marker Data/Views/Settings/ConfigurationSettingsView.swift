@@ -69,36 +69,50 @@ struct ConfigurationSettingsView: View {
     }
     
     var body: some View {
-        HStack {
-            VStack(alignment: .leading) {
-                Spacer()
-                Table(configurations, sortOrder: $sortOrder)  {
-                TableColumn("Configuration Name", value: \.name!) { configuration in
-                    Text(configuration.name ?? "Unknown name").tag(configuration.objectID)
-                }
-                    
-                    TableColumn("Active", value: \.isActiveString!)
-                }
-                
-                
-                Button(action: {}) {
-                    Text("Export Marker Data Configurations")
-                }
-                //Button To Import Marker Data Settings
-                Button(action: {}) {
-                    Text("Import Marker Data Configurations")
-                }
-                //Button To Load Default Marker Data Settings
-                Button(action: {}) {
-                    Text("Load Defaults")
-                }
-            }
+        
+        
+        Form() {
+            
+            tableView
+            
+            mainButtons
+            
             Spacer()
+                .frame(height: 40)
         }
-        .padding(.horizontal)
-        Spacer()
-            .navigationTitle("Configuration Settings")
+        .padding()
+        .overlayHelpButton(url: settingsStore.configurationSettingsURL)
+        .navigationTitle("Configuration Settings")
+        
     }
+    
+    var tableView: some View {
+        Table(configurations, sortOrder: $sortOrder)  {
+            TableColumn("Configuration Name", value: \.name!) { configuration in
+                Text(configuration.name ?? "Unknown name")
+                    .tag(configuration.objectID)
+            }
+            TableColumn("Active", value: \.isActiveString!)
+        }
+    }
+    
+    var mainButtons: some View {
+        VStack {
+            Button(action: {}) {
+                Text("Export Marker Data Configurations")
+            }
+            //Button To Import Marker Data Settings
+            Button(action: {}) {
+                Text("Import Marker Data Configurations")
+            }
+            //Button To Load Default Marker Data Settings
+            Button(action: {}) {
+                Text("Load Defaults")
+            }
+        }
+        .padding(.vertical)
+    }
+
 }
 
 struct ConfigurationSettingsView_Previews: PreviewProvider {
