@@ -11,7 +11,7 @@
 <img src="https://img.shields.io/badge/platform-macOS-lightgrey.svg?style=flat" alt="platform"/>
 </a>
 <p>
-<p>Marker metadata extraction and conversion application for <a href="https://www.apple.com/final-cut-pro/" target="_blank">Final Cut Pro</a> that uses <a href="https://github.com/TheAcharya/MarkersExtractor" target="_blank">MarkersExtractor</a> Library and API.</p>
+<p>Marker metadata extraction and conversion application for <a href="https://www.apple.com/final-cut-pro/" target="_blank">Final Cut Pro</a> that uses <a href="https://github.com/TheAcharya/MarkersExtractor" target="_blank">MarkersExtractor</a> API Library.</p>
 <a href="https://github.com/TheAcharya/MarkerData/releases"><img src="assets/macos_badge_noborder.png" width="175" alt="Download for macOS"/></a>
 </div>
 
@@ -67,13 +67,13 @@ macOS Monterey 12.6.6 or later <br> Final Cut Pro 10.6.6
 
 Original Idea, Application Direction and Workflow by [Vigneswaran Rajkumar](https://twitter.com/IAmVigneswaran)
 
-**MarkersExtractor Library and API**
-
-Maintained by [Steffan Andrews](https://github.com/orchetect) ([0.2.0 ...](https://github.com/TheAcharya/MarkersExtractor))
-
 **Graphical User Interface and UI/UX Logic**
 
 Maintained by [Peter Schorn](https://github.com/Peter-Schorn) (1.0.0 ...)
+
+**MarkersExtractor API Library**
+
+Maintained by [Steffan Andrews](https://github.com/orchetect) ([0.2.0 ...](https://github.com/TheAcharya/MarkersExtractor))
 
 **App Icon**
 
