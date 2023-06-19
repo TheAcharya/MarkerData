@@ -140,10 +140,11 @@ class SettingsStore: ObservableObject {
     }
     
     
-    @AppStorage("selectedFontColorRed") var selectedFontColorRed: Double = 1.0
-    @AppStorage("selectedFontColorGreen") var selectedFontColorGreen: Double = 1.0
-    @AppStorage("selectedFontColorBlue") var selectedFontColorBlue: Double = 1.0
-    @AppStorage("selectedFontColorOpacity") var selectedFontColorOpacity: Double = 100.0
+    @AppStorage("selectedFontColorRed") var selectedFontColorRed: Double = 1
+    @AppStorage("selectedFontColorGreen") var selectedFontColorGreen: Double = 1
+    @AppStorage("selectedFontColorBlue") var selectedFontColorBlue: Double = 1
+    @AppStorage("selectedFontColorOpacity") var selectedFontColorOpacity: Double = 1
+    
     var selectedFontColor: Color {
         get { Color(red: selectedFontColorRed, green: selectedFontColorGreen, blue: selectedFontColorBlue, opacity: selectedFontColorOpacity) }
         set {
@@ -170,10 +171,11 @@ class SettingsStore: ObservableObject {
         return hex
     }
     
-    @AppStorage("selectedStrokeColorRed") var selectedStrokeColorRed: Double = 1.0
-    @AppStorage("selectedStrokeColorGreen") var selectedStrokeColorGreen: Double = 1.0
-    @AppStorage("selectedStrokeColorBlue") var selectedStrokeColorBlue: Double = 1.0
-    @AppStorage("selectedStrokeColorOpacity") var selectedStrokeColorOpacity: Double = 100.0
+    @AppStorage("selectedStrokeColorRed") var selectedStrokeColorRed: Double = 1
+    @AppStorage("selectedStrokeColorGreen") var selectedStrokeColorGreen: Double = 1
+    @AppStorage("selectedStrokeColorBlue") var selectedStrokeColorBlue: Double = 1
+    @AppStorage("selectedStrokeColorOpacity") var selectedStrokeColorOpacity: Double = 1
+    
     var selectedStrokeColor: Color {
         get { Color(red: selectedStrokeColorRed, green: selectedStrokeColorGreen, blue: selectedStrokeColorBlue, opacity: selectedStrokeColorOpacity) }
         set {

@@ -12,6 +12,8 @@
 		47411FDE2A3EA1BA005890FE /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47411FDD2A3EA1BA005890FE /* AboutView.swift */; };
 		47411FE42A3EC6AF005890FE /* IONavigation in Frameworks */ = {isa = PBXBuildFile; productRef = 47411FE32A3EC6AF005890FE /* IONavigation */; };
 		47411FE72A3ED709005890FE /* ColorWell in Frameworks */ = {isa = PBXBuildFile; productRef = 47411FE62A3ED709005890FE /* ColorWell */; };
+		4741202E2A3EFC42005890FE /* Miscellaneous Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4741202D2A3EFC42005890FE /* Miscellaneous Utilities.swift */; };
+		474120302A3F0509005890FE /* LabeledSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4741202F2A3F0509005890FE /* LabeledSlider.swift */; };
 		9B244B3E2A24AB5D005620D8 /* MarkerData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9B9CA0F32A1A9ADD004E337A /* MarkerData.xcdatamodeld */; };
 		9B25815E2A07A286002CED07 /* GeneralSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B25815D2A07A286002CED07 /* GeneralSettingsView.swift */; };
 		9B35FE6529F92DC60035B760 /* UserDefaults+Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B35FE6429F92DC60035B760 /* UserDefaults+Settings.swift */; };
@@ -59,6 +61,8 @@
 		47411FD92A3EA121005890FE /* HelpButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpButton.swift; sourceTree = "<group>"; };
 		47411FDB2A3EA140005890FE /* ViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
 		47411FDD2A3EA1BA005890FE /* AboutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
+		4741202D2A3EFC42005890FE /* Miscellaneous Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Miscellaneous Utilities.swift"; sourceTree = "<group>"; };
+		4741202F2A3F0509005890FE /* LabeledSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabeledSlider.swift; sourceTree = "<group>"; };
 		9B244B3F2A24B495005620D8 /* Configuration+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Configuration+Extensions.swift"; sourceTree = "<group>"; };
 		9B25815D2A07A286002CED07 /* GeneralSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingsView.swift; sourceTree = "<group>"; };
 		9B35FE6429F92DC60035B760 /* UserDefaults+Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Settings.swift"; sourceTree = "<group>"; };
@@ -138,6 +142,7 @@
 				9B25815C2A079FBC002CED07 /* Settings */,
 				9B35FE6729F94C110035B760 /* PickerViews.swift */,
 				47411FDD2A3EA1BA005890FE /* AboutView.swift */,
+				4741202F2A3F0509005890FE /* LabeledSlider.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -159,6 +164,7 @@
 				9B51D21029E9A01A00DF7836 /* FolderPicker.swift */,
 				9B653ABA29F2C2E700C64999 /* UserAlertView.swift */,
 				9B35FE6429F92DC60035B760 /* UserDefaults+Settings.swift */,
+				4741202D2A3EFC42005890FE /* Miscellaneous Utilities.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -318,7 +324,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4741202E2A3EFC42005890FE /* Miscellaneous Utilities.swift in Sources */,
 				9B244B3E2A24AB5D005620D8 /* MarkerData.xcdatamodeld in Sources */,
+				474120302A3F0509005890FE /* LabeledSlider.swift in Sources */,
 				47411FDC2A3EA140005890FE /* ViewExtensions.swift in Sources */,
 				47411FDE2A3EA1BA005890FE /* AboutView.swift in Sources */,
 				9B51D21629E9B13400DF7836 /* SettingsModel.swift in Sources */,

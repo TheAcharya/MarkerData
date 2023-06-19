@@ -16,7 +16,7 @@ struct SettingsView: View {
         Group {
             if #available(macOS 13.0, *) {
                 NavigationSplitView(
-                    sidebar: { sidebareView },
+                    sidebar: { sidebarView },
                     detail: { detailView }
                 )
                 // only available in macOS 13+
@@ -24,7 +24,7 @@ struct SettingsView: View {
             } else {
                 // Fallback On Earlier Versions
                 NavigationView {
-                    sidebareView
+                    sidebarView
                     
                     //Show App Icon And App Title When No Setting Section Is Selected
                     detailView
@@ -35,7 +35,7 @@ struct SettingsView: View {
         .frame(width: 700, height: 500)
     }
     
-    var sidebareView: some View {
+    var sidebarView: some View {
         List {
             Group {
                 //Link To General Settings
@@ -71,9 +71,12 @@ struct SettingsView: View {
                     min: 190, ideal: 190, max: 190
                 )
             }
+            else {
+                view
+            }
         }
         //Define List Style As Sidebar
-        // .listStyle(.sidebar)
+        .listStyle(.sidebar)
     }
 
     var detailView: some View {

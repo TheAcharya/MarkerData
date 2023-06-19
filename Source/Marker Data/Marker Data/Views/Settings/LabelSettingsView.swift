@@ -75,6 +75,12 @@ struct LabelSettingsView: View {
                         
                         ColorWellView("", color: $settingsStore.selectedFontColor)
                         
+                        Slider(
+                            value: $settingsStore.selectedFontColorOpacity,
+                            in: 0...1
+                        )
+                        Text(settingsStore.selectedFontColorOpacity, format: .percent)
+                        
                         Spacer(minLength: 300)
                     }
                 }
@@ -101,6 +107,12 @@ struct LabelSettingsView: View {
                         
                         ColorWellView("", color: $settingsStore.selectedStrokeColor)
                         
+                        Slider(
+                            value: $settingsStore.selectedStrokeColorOpacity,
+                            in: 0...1
+                        )
+                        Text(settingsStore.selectedStrokeColorOpacity, format: .percent)
+
                         Spacer(minLength: 300)
                     }
                 }
@@ -175,11 +187,14 @@ struct LabelSettingsView: View {
             
 
 
+@available(macOS 13.0, *)
 struct LabelSettingsView_Previews: PreviewProvider {
     static let settingsStore = SettingsStore()
+    
     static var previews: some View {
         LabelSettingsView()
             .environmentObject(settingsStore)
-            .frame(width: 500, height: 500)
+            // .frame(width: 500, height: 500)
     }
+    
 }
