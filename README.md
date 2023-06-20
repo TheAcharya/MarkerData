@@ -1,4 +1,4 @@
-<img src="assets/marker_data_app_icon.png" width="220" alt="App icon" align="left"/>
+<img src="assets/marker_data_app_icon.png" width="200" alt="App icon" align="left"/>
 
 <div>
 <h1>Marker Data</h1>
