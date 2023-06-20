@@ -12,6 +12,7 @@
 </a>
 <p>
 <p>Marker Data allows users to extract, convert and create databases from <a href="https://www.apple.com/final-cut-pro/" target="_blank">Final Cut Pro</a>’s Maker metadata effortlessly.
+
 <a href="https://github.com/TheAcharya/MarkerData/releases"><img src="assets/macos_badge_noborder.png" width="175" alt="Download for macOS"/></a>
 </div>
 
