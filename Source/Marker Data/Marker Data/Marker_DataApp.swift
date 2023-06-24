@@ -60,6 +60,17 @@ struct Marker_DataApp: App {
             
             SidebarCommands()
 
+            CommandGroup(replacing: .appInfo) {
+                Button("About \(appName)") {
+                    print("Open About in settings")
+                    if #available(macOS 13, *) {
+                        NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
+                    } else {
+                        NSApp.sendAction(Selector(("showPreferencesWindow:")), to: nil, from: nil)
+                    }
+                }
+            }
+
             //Removes New Window Menu Item
             CommandGroup(replacing: .newItem) {}
             //Removes Toolbar Menu Items
@@ -171,7 +182,7 @@ struct Marker_DataApp: App {
         //         }
         //     }
         // }
-        
+
     }
     
 }
