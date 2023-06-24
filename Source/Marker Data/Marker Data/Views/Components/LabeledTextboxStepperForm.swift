@@ -38,12 +38,25 @@ struct LabeledTextboxStepperForm<Value, Label, Format>: View where
     }
     
     var body: some View {
-        TextField(value: $value, format: format, label: label)
-            .padding(.trailing, 20)
-            .frame(width: (textFieldWidth ?? 100) + 20)
-            .overlay(alignment: .trailing) {
-                Stepper("", value: $value)
-            }
+        HStack {
+            label()
+            TextField(
+                "",
+                value: $value,
+                format: format
+            )
+            .multilineTextAlignment(.center)
+            .textFieldStyle(.roundedBorder)
+            .controlLeadingAlignmentGuide()
+            .frame(width: textFieldWidth)
+            Stepper(
+                "",
+                value: $value,
+                in: range
+            )
+            .padding(.leading, -10)
+        }
+
     }
 }
 

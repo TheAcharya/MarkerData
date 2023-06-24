@@ -15,27 +15,25 @@ struct ColorPickerOpacitySliderForm: View {
     @Binding var opacity: Double
     
     var body: some View {
-        VStack {
-            HStack {
-                Text("Color & Opacity:")
+        HStack {
 
-                ColorWellView(color: $color)
-                    // .border(.green)
-                    .controlLeadingAlignmentGuide()
-                
-                Slider(value: $opacity, in: 0...1)
-                    .frame(width: 75)
+            Text("Color & Opacity:")
 
-                TextField(
-                    "",
-                    value: $opacity,
-                    format: .percent
-                )
-                .multilineTextAlignment(.trailing)
-                .textFieldStyle(.roundedBorder)
-                .frame(width: 60)
+            ColorWellView(color: $color)
+            // .border(.green)
+                .controlLeadingAlignmentGuide()
 
-            }
+            Slider(value: $opacity, in: 0...1)
+                .frame(width: 75)
+
+            TextField(
+                "",
+                value: $opacity,
+                format: .percent.precision(.fractionLength(0))
+            )
+            .multilineTextAlignment(.center)
+            .textFieldStyle(.roundedBorder)
+            .frame(width: 60)
 
         }
     }
@@ -126,9 +124,9 @@ struct ColorPickerOpacitySliderForm_Previews: PreviewProvider {
             // )
             
         }
-            .border(Color.green)
-            .padding()
-            .frame(width: 500, height: 500)
+        .border(Color.green)
+        .padding()
+        .frame(width: 500, height: 500)
     }
     
 }
