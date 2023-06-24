@@ -13,7 +13,8 @@
 		47411FE42A3EC6AF005890FE /* IONavigation in Frameworks */ = {isa = PBXBuildFile; productRef = 47411FE32A3EC6AF005890FE /* IONavigation */; };
 		47411FE72A3ED709005890FE /* ColorWell in Frameworks */ = {isa = PBXBuildFile; productRef = 47411FE62A3ED709005890FE /* ColorWell */; };
 		4741202E2A3EFC42005890FE /* Miscellaneous Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4741202D2A3EFC42005890FE /* Miscellaneous Utilities.swift */; };
-		474120302A3F0509005890FE /* LabeledSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4741202F2A3F0509005890FE /* LabeledSlider.swift */; };
+		474595372A40113000EF100D /* LabeledTextboxStepperForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 474595362A40113000EF100D /* LabeledTextboxStepperForm.swift */; };
+		474595582A40254E00EF100D /* ColorPickerOpacitySliderForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 474595572A40254E00EF100D /* ColorPickerOpacitySliderForm.swift */; };
 		9B244B3E2A24AB5D005620D8 /* MarkerData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9B9CA0F32A1A9ADD004E337A /* MarkerData.xcdatamodeld */; };
 		9B25815E2A07A286002CED07 /* GeneralSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B25815D2A07A286002CED07 /* GeneralSettingsView.swift */; };
 		9B35FE6529F92DC60035B760 /* UserDefaults+Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B35FE6429F92DC60035B760 /* UserDefaults+Settings.swift */; };
@@ -62,7 +63,8 @@
 		47411FDB2A3EA140005890FE /* ViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
 		47411FDD2A3EA1BA005890FE /* AboutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		4741202D2A3EFC42005890FE /* Miscellaneous Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Miscellaneous Utilities.swift"; sourceTree = "<group>"; };
-		4741202F2A3F0509005890FE /* LabeledSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabeledSlider.swift; sourceTree = "<group>"; };
+		474595362A40113000EF100D /* LabeledTextboxStepperForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabeledTextboxStepperForm.swift; sourceTree = "<group>"; };
+		474595572A40254E00EF100D /* ColorPickerOpacitySliderForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickerOpacitySliderForm.swift; sourceTree = "<group>"; };
 		9B244B3F2A24B495005620D8 /* Configuration+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Configuration+Extensions.swift"; sourceTree = "<group>"; };
 		9B25815D2A07A286002CED07 /* GeneralSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingsView.swift; sourceTree = "<group>"; };
 		9B35FE6429F92DC60035B760 /* UserDefaults+Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Settings.swift"; sourceTree = "<group>"; };
@@ -122,6 +124,15 @@
 			path = Buttons;
 			sourceTree = "<group>";
 		};
+		474595352A40110F00EF100D /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				474595362A40113000EF100D /* LabeledTextboxStepperForm.swift */,
+				474595572A40254E00EF100D /* ColorPickerOpacitySliderForm.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
 		9B25815C2A079FBC002CED07 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
@@ -138,11 +149,11 @@
 		9B35FE6629F94BF30035B760 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				474595352A40110F00EF100D /* Components */,
 				47411FD82A3EA121005890FE /* Buttons */,
 				9B25815C2A079FBC002CED07 /* Settings */,
 				9B35FE6729F94C110035B760 /* PickerViews.swift */,
 				47411FDD2A3EA1BA005890FE /* AboutView.swift */,
-				4741202F2A3F0509005890FE /* LabeledSlider.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -326,7 +337,6 @@
 			files = (
 				4741202E2A3EFC42005890FE /* Miscellaneous Utilities.swift in Sources */,
 				9B244B3E2A24AB5D005620D8 /* MarkerData.xcdatamodeld in Sources */,
-				474120302A3F0509005890FE /* LabeledSlider.swift in Sources */,
 				47411FDC2A3EA140005890FE /* ViewExtensions.swift in Sources */,
 				47411FDE2A3EA1BA005890FE /* AboutView.swift in Sources */,
 				9B51D21629E9B13400DF7836 /* SettingsModel.swift in Sources */,
@@ -344,10 +354,12 @@
 				9B4D90DA2A0BAF9E00FE7603 /* LabelSettingsView.swift in Sources */,
 				9B653ABD29F2C64600C64999 /* ErrorViewModel.swift in Sources */,
 				D5F74A312972D31D00EEE2FE /* Marker_DataApp.swift in Sources */,
+				474595582A40254E00EF100D /* ColorPickerOpacitySliderForm.swift in Sources */,
 				47411FDA2A3EA121005890FE /* HelpButton.swift in Sources */,
 				9B4D90DC2A0BB07500FE7603 /* ConfigurationSettingsView.swift in Sources */,
 				9B51D21129E9A01A00DF7836 /* FolderPicker.swift in Sources */,
 				9B9CA1172A1A9BBB004E337A /* PersistenceController.swift in Sources */,
+				474595372A40113000EF100D /* LabeledTextboxStepperForm.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

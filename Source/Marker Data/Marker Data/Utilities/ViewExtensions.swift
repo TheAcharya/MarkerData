@@ -23,6 +23,20 @@ extension View {
         self.modifier(OverlayHelpButton(url: url))
     }
 
+    /**
+
+     ```
+     self.alignmentGuide(.controlAlignment) { d in
+         d[.leading]
+     }
+     ```
+     */
+    func controlLeadingAlignmentGuide() -> some View {
+        self.alignmentGuide(.controlAlignment) { d in
+            d[.leading]
+        }
+    }
+
 }
 
 struct OverlayHelpButton: ViewModifier {

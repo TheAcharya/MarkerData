@@ -59,7 +59,7 @@ struct ImageSettingsView: View {
                             .frame(maxWidth: .infinity, alignment: .trailing)
                         //Picker To Change Selected ID Naming Mode
                         Picker("", selection: $settingsStore.selectedIDNamingMode) {
-                            ForEach(IdNamingMode.allCases, id: \.self) { item in
+                            ForEach(IdNamingMode.allCases) { item in
                                 Text(item.displayName).tag(item)
                             }
                         }.labelsHidden()

@@ -8,10 +8,15 @@
 import Foundation
 import MarkersExtractor
 
-enum ExportFormat: Int, CaseIterable {
+enum ExportFormat: Int, CaseIterable, Identifiable {
+
     case Notion = 0
     case Airtable
-    
+
+    var id: Int {
+        self.rawValue
+    }
+
     var displayName : String {
         switch self {
             case .Notion:
@@ -31,14 +36,19 @@ enum ExportFormat: Int, CaseIterable {
     }
 }
 
-enum ExcludedRoles: Int, CaseIterable {
+enum ExcludedRoles: Int, CaseIterable, Identifiable {
+
     case None = 0
     case Video
     case Audio
-    
+
+    var id: Int {
+        self.rawValue
+    }
+
     var displayName : String {
         switch self {
-           
+
             case .None:
                 return "None"
             case .Video:
@@ -60,11 +70,16 @@ enum ExcludedRoles: Int, CaseIterable {
     }
 }
 
-enum IdNamingMode: Int, CaseIterable {
+enum IdNamingMode: Int, CaseIterable, Identifiable {
+
     case Timecode = 0
     case Name
     case Notes
-    
+
+    var id: Int {
+        self.rawValue
+    }
+
     var displayName : String {
         switch self {
             case .Timecode:
@@ -88,11 +103,16 @@ enum IdNamingMode: Int, CaseIterable {
     }
 }
 
-enum ImageMode: Int, CaseIterable {
+enum ImageMode: Int, CaseIterable, Identifiable {
+
     case PNG = 0
     case JPG
     case GIF
-    
+
+    var id: Int {
+        self.rawValue
+    }
+
     var displayName : String {
         switch self {
             case .PNG:
@@ -116,11 +136,16 @@ enum ImageMode: Int, CaseIterable {
     }
 }
 
-enum LabelHorizontalAlignment: Int, CaseIterable {
+enum LabelHorizontalAlignment: Int, CaseIterable, Identifiable {
+
     case Left = 0
     case Center
     case Right
-    
+
+    var id: Int {
+        self.rawValue
+    }
+
     var displayName : String {
         switch self {
             case .Left:
@@ -144,11 +169,16 @@ enum LabelHorizontalAlignment: Int, CaseIterable {
     }
 }
 
-enum LabelVerticalAlignment: Int, CaseIterable {
+enum LabelVerticalAlignment: Int, CaseIterable, Identifiable {
+
     case Top = 0
     case Center
     case Bottom
-    
+
+    var id: Int {
+        self.rawValue
+    }
+
     var displayName : String {
         switch self {
             case .Top:
@@ -161,7 +191,7 @@ enum LabelVerticalAlignment: Int, CaseIterable {
     }
     var markersExtractor: MarkerLabelProperties.AlignVertical {
         switch self {
-        
+
             case .Top:
                 return .top
             case .Center:
@@ -172,13 +202,18 @@ enum LabelVerticalAlignment: Int, CaseIterable {
     }
 }
 
-enum FontNameType: Int, CaseIterable {
+enum FontNameType: Int, CaseIterable, Identifiable {
+
     case Menlo = 0
     case Arial
     case Helvetica
     case SourceCodePro
     case CourierNew
-    
+
+    var id: Int {
+        self.rawValue
+    }
+
     var displayName : String {
         switch self {
             case .Menlo:
@@ -193,6 +228,7 @@ enum FontNameType: Int, CaseIterable {
                 return "Courier New"
         }
     }
+
     var markersExtractor: String {
         switch self {
             case .Menlo:
@@ -207,12 +243,18 @@ enum FontNameType: Int, CaseIterable {
                 return "Courier New"
         }
     }
+
 }
 
-enum FontStyleType: Int, CaseIterable {
+enum FontStyleType: Int, CaseIterable, Identifiable {
+
     case Regular = 0
     case Italic
     case Bold
+
+    var id: Int {
+        self.rawValue
+    }
 
     var displayName : String {
         switch self {
@@ -239,30 +281,35 @@ enum FontStyleType: Int, CaseIterable {
 }
 
 
- enum UserFolderFormat: Int, CaseIterable {
+enum UserFolderFormat: Int, CaseIterable, Identifiable {
+
     case Short
     case Medium
     case Long
-     
-     var displayName : String  {
-         switch (self) {
-             case .Short:
-                 return "Short"
-             case .Medium:
-                 return "Medium"
-             case .Long:
-                 return "Long"
-         }
-     }
-     
-     var markersExtractor: ExportFolderFormat {
-         switch (self) {
-             case .Short:
-                 return .short
-             case .Medium:
-                 return .medium
-             case .Long:
-                 return .long
-         }
-     }
+
+    var id: Int {
+        self.rawValue
+    }
+
+    var displayName : String  {
+        switch (self) {
+            case .Short:
+                return "Short"
+            case .Medium:
+                return "Medium"
+            case .Long:
+                return "Long"
+        }
+    }
+
+    var markersExtractor: ExportFolderFormat {
+        switch (self) {
+            case .Short:
+                return .short
+            case .Medium:
+                return .medium
+            case .Long:
+                return .long
+        }
+    }
 }

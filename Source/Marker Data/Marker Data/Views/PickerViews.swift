@@ -8,11 +8,12 @@
 import SwiftUI
 
 struct ExportFormatPicker: View {
+    
     @EnvironmentObject var settingsStore: SettingsStore
 
     var body: some View {
         Picker("Profiles", selection: $settingsStore.selectedExportFormat) {
-            ForEach(ExportFormat.allCases, id: \.self) { exportFormat in
+            ForEach(ExportFormat.allCases) { exportFormat in
                 Text(exportFormat.displayName).tag(exportFormat)
             }
         }
@@ -20,11 +21,12 @@ struct ExportFormatPicker: View {
 }
 
 struct ExcludedRolesPicker: View {
+    
     @EnvironmentObject var settingsStore: SettingsStore
 
     var body: some View {
         Picker("Exclude Roles", selection: $settingsStore.selectedExcludeRoles) {
-            ForEach(ExcludedRoles.allCases, id: \.self) { excludedRole in
+            ForEach(ExcludedRoles.allCases) { excludedRole in
                 Text(excludedRole.displayName).tag(excludedRole)
             }
         }
@@ -32,11 +34,12 @@ struct ExcludedRolesPicker: View {
 }
 
 struct ImageModePicker: View {
+    
     @EnvironmentObject var settingsStore: SettingsStore
 
     var body: some View {
         Picker("Image Format", selection: $settingsStore.selectedImageMode) {
-            ForEach(ImageMode.allCases, id: \.self) { imageMode in
+            ForEach(ImageMode.allCases) { imageMode in
                 Text(imageMode.displayName).tag(imageMode)
             }
         }
@@ -44,14 +47,14 @@ struct ImageModePicker: View {
 }
 
 struct FontNamePicker: View {
+    
     @EnvironmentObject var settingsStore: SettingsStore
 
     var body: some View {
         Picker("", selection: $settingsStore.selectedFontNameType) {
-            ForEach(FontNameType.allCases, id: \.self) { fontNameType in
+            ForEach(FontNameType.allCases) { fontNameType in
                 Text(fontNameType.displayName).tag(fontNameType)
             }
-            
         }
     }
 }
@@ -61,10 +64,9 @@ struct FontStylePicker: View {
 
     var body: some View {
         Picker("", selection: $settingsStore.selectedFontStyleType) {
-            ForEach(FontStyleType.allCases, id: \.self) { fontStyleType in
+            ForEach(FontStyleType.allCases) { fontStyleType in
                 Text(fontStyleType.displayName).tag(fontStyleType)
             }
-            
         }
     }
 }

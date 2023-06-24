@@ -32,8 +32,131 @@ struct LabelSettingsView: View {
         })
     }
 
-    
     var body: some View {
+        VStack(alignment: .controlAlignment) {
+
+            Text("Font")
+                .font(.headline)
+
+            Group {
+
+                HStack {
+                    Text("Typeface:")
+
+                    FontNamePicker()
+                        .padding(.leading, -8)
+                        .controlLeadingAlignmentGuide()
+                        .frame(width: 150)
+                        // .border(.green)
+                }
+
+                HStack {
+                    Text("Style:")
+                    FontStylePicker()
+                        .padding(.leading, -8)
+                        .controlLeadingAlignmentGuide()
+                        .frame(width: 150)
+                        // .border(.green)
+                }
+
+
+                HStack {
+                    Text("Size:")
+                    TextField(
+                        "",
+                        value: settingsStore.$selectedFontSize,
+                        format: .number
+                    )
+                    .multilineTextAlignment(.trailing)
+                    .textFieldStyle(.roundedBorder)
+                    .controlLeadingAlignmentGuide()
+                    .frame(width: 50)
+                    Stepper(
+                        "",
+                        value: settingsStore.$selectedFontSize,
+                        in: 6...100
+                    )
+                    .padding(.leading, -10)
+                    // .border(.green)
+                }
+
+                ColorPickerOpacitySliderForm(
+                    color: $settingsStore.selectedFontColor,
+                    opacity: settingsStore.$selectedFontColorOpacity
+                )
+
+            }
+
+            Divider()
+                .padding(.vertical, 10)
+
+            Text("Stroke")
+                .font(.headline)
+
+            VStack {
+
+                HStack {
+                    Text("Size:")
+                    TextField(
+                        "",
+                        value: settingsStore.$selectedStrokeSize,
+                        format: .number
+                    )
+                    .multilineTextAlignment(.trailing)
+                    .textFieldStyle(.roundedBorder)
+                    .controlLeadingAlignmentGuide()
+                    .frame(width: 50)
+                    Stepper(
+                        "",
+                        value: settingsStore.$selectedStrokeSize,
+                        in: 6...100
+                    )
+                    .padding(.leading, -10)
+                    // .border(.green)
+                }
+
+                ColorPickerOpacitySliderForm(
+                    color: $settingsStore.selectedStrokeColor,
+                    opacity: settingsStore.$selectedStrokeColorOpacity
+                )
+
+            }
+
+            Divider()
+                .padding(.vertical, 10)
+
+            Text("Alignment")
+                .font(.headline)
+
+            // VStack {
+                HStack {
+                    Text("Horizontal:")
+                    Picker("", selection: $settingsStore.selectedHorizonalAlignment) {
+                        ForEach(LabelHorizontalAlignment.allCases) { item in
+                            Text(item.displayName).tag(item)
+                        }
+                    }
+                    .padding(.leading, -8)
+                    .controlLeadingAlignmentGuide()
+                    .frame(width: 150)
+                }
+                HStack {
+                    Text("Vertical:")
+                    Picker("", selection: $settingsStore.selectedVerticalAlignment) {
+                        ForEach(LabelVerticalAlignment.allCases) { item in
+                            Text(item.displayName).tag(item)
+                        }
+                    }
+                    .padding(.leading, -8)
+                    .controlLeadingAlignmentGuide()
+                    .frame(width: 150)
+                }
+            // }
+
+        }
+    }
+    
+    var bodyOld: some View {
         Form {
             
             VStack {
@@ -49,6 +172,7 @@ struct LabelSettingsView: View {
                             .frame(width: 150, alignment: .leading)
                         Spacer(minLength: 200)
                     }
+                    
                     HStack {
                         Text("Style:")
                             .frame(maxWidth: .infinity, alignment: .trailing)
@@ -56,6 +180,7 @@ struct LabelSettingsView: View {
                             .frame(width: 150, alignment: .leading)
                         Spacer(minLength: 200)
                     }
+                    
                     HStack {
                         Text("Size:")
                             .frame(maxWidth: .infinity, alignment: .trailing)
@@ -125,7 +250,7 @@ struct LabelSettingsView: View {
                         Text("Horizontal:")
                             .frame(maxWidth: .infinity, alignment: .trailing)
                         Picker("", selection: $settingsStore.selectedHorizonalAlignment) {
-                            ForEach(LabelHorizontalAlignment.allCases, id: \.self) { item in
+                            ForEach(LabelHorizontalAlignment.allCases) { item in
                                 Text(item.displayName).tag(item)
                             }
                         }
@@ -136,7 +261,7 @@ struct LabelSettingsView: View {
                         Text("Vertical:")
                             .frame(maxWidth: .infinity, alignment: .trailing)
                         Picker("", selection: $settingsStore.selectedVerticalAlignment) {
-                            ForEach(LabelVerticalAlignment.allCases, id: \.self) { item in
+                            ForEach(LabelVerticalAlignment.allCases) { item in
                                 Text(item.displayName).tag(item)
                             }
                         }
@@ -183,9 +308,6 @@ struct LabelSettingsView: View {
     }
     
 }
-        
-            
-
 
 @available(macOS 13.0, *)
 struct LabelSettingsView_Previews: PreviewProvider {

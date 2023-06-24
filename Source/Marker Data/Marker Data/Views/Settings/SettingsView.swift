@@ -81,7 +81,8 @@ struct SettingsView: View {
 
     var detailView: some View {
         // Show App Icon And App Title When No Setting Section Is Selected
-        AboutView()
+        // AboutView()
+        LabelSettingsView()
     }
     
 }

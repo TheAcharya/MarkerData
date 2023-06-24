@@ -52,7 +52,7 @@ struct GeneralSettingsView: View {
                         Text("Folder Format:")
                             .frame(maxWidth: .infinity, alignment: .trailing)
                         Picker("", selection: $settingsStore.selectedFolderFormat) {
-                            ForEach(UserFolderFormat.allCases, id: \.self) { item in
+                            ForEach(UserFolderFormat.allCases) { item in
                                 Text(item.displayName).tag(item)
                             }
                         }
