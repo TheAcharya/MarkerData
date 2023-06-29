@@ -39,11 +39,20 @@ struct FolderPicker: NSViewRepresentable {
     }
     
     func makeNSView(context: Context) -> NSButton {
-        let button = NSButton(title: buttonTitle, target: context.coordinator, action: #selector(Coordinator.openFolderPicker))
+
+        let button = NSButton(
+            title: buttonTitle,
+            target: context.coordinator,
+            action: #selector(Coordinator.openFolderPicker)
+        )
+
+        button.sizeToFit()
+
         return button
     }
     
     func updateNSView(_ nsView: NSButton, context: Context) {
         nsView.title = buttonTitle
     }
+
 }

@@ -26,13 +26,13 @@ extension View {
     /**
 
      ```
-     self.alignmentGuide(.controlAlignment) { d in
+     self.alignmentGuide(.formControlAlignment) { d in
          d[.leading]
      }
      ```
      */
-    func controlLeadingAlignmentGuide() -> some View {
-        self.alignmentGuide(.controlAlignment) { d in
+    func formControlLeadingAlignmentGuide() -> some View {
+        self.alignmentGuide(.formControlAlignment) { d in
             d[.leading]
         }
     }
@@ -66,4 +66,13 @@ extension Scene {
         content(self)
     }
 
+}
+
+extension HorizontalAlignment {
+    private enum ControlAlignment: AlignmentID {
+        static func defaultValue(in context: ViewDimensions) -> CGFloat {
+            return context[HorizontalAlignment.center]
+        }
+    }
+    static let formControlAlignment = HorizontalAlignment(ControlAlignment.self)
 }

@@ -47,7 +47,7 @@ struct LabeledTextboxStepperForm<Value, Label, Format>: View where
             )
             .multilineTextAlignment(.center)
             .textFieldStyle(.roundedBorder)
-            .controlLeadingAlignmentGuide()
+            .formControlLeadingAlignmentGuide()
             .frame(width: textFieldWidth)
             Stepper(
                 "",

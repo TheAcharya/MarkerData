@@ -33,7 +33,7 @@ struct LabelSettingsView: View {
     }
 
     var body: some View {
-        VStack(alignment: .controlAlignment) {
+        VStack(alignment: .formControlAlignment) {
 
             Text("Font")
                 .font(.headline)
@@ -45,7 +45,7 @@ struct LabelSettingsView: View {
 
                     FontNamePicker()
                         .padding(.leading, -8)
-                        .controlLeadingAlignmentGuide()
+                        .formControlLeadingAlignmentGuide()
                         .frame(width: 150)
                         // .border(.green)
                 }
@@ -54,7 +54,7 @@ struct LabelSettingsView: View {
                     Text("Style:")
                     FontStylePicker()
                         .padding(.leading, -8)
-                        .controlLeadingAlignmentGuide()
+                        .formControlLeadingAlignmentGuide()
                         .frame(width: 150)
                         // .border(.green)
                 }
@@ -114,7 +114,7 @@ struct LabelSettingsView: View {
                         }
                     }
                     .padding(.leading, -8)
-                    .controlLeadingAlignmentGuide()
+                    .formControlLeadingAlignmentGuide()
                     .frame(width: 150)
                 }
                 HStack {
@@ -125,7 +125,7 @@ struct LabelSettingsView: View {
                         }
                     }
                     .padding(.leading, -8)
-                    .controlLeadingAlignmentGuide()
+                    .formControlLeadingAlignmentGuide()
                     .frame(width: 150)
                 }
 

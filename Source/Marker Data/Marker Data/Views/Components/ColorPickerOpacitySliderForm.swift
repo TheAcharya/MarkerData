@@ -21,7 +21,7 @@ struct ColorPickerOpacitySliderForm: View {
 
             ColorWellView(color: $color)
             // .border(.green)
-                .controlLeadingAlignmentGuide()
+                .formControlLeadingAlignmentGuide()
 
             Slider(value: $opacity, in: 0...1)
                 .frame(width: 75)
@@ -58,7 +58,7 @@ struct ColorPickerOpacitySliderForm_Previews: PreviewProvider {
     static let verticalSpacing: CGFloat = 10
 
     static var previews: some View {
-        VStack(alignment: .controlAlignment) {
+        VStack(alignment: .formControlAlignment) {
             
             // HStack {
             //     // Text("")
@@ -77,7 +77,7 @@ struct ColorPickerOpacitySliderForm_Previews: PreviewProvider {
             HStack {
                 Text("Color and opacity:")
                 ColorWellView(color: .constant(.red))
-                    .alignmentGuide(.controlAlignment) { d in
+                    .alignmentGuide(.formControlAlignment) { d in
                         d[.leading]
                     }
                 Slider(value: .constant(0))
@@ -85,14 +85,14 @@ struct ColorPickerOpacitySliderForm_Previews: PreviewProvider {
             }
             
             Toggle("toggle", isOn: .constant(true))
-                .alignmentGuide(.controlAlignment) { d in
+                .alignmentGuide(.formControlAlignment) { d in
                     d[.leading]
                 }
 
             HStack {
                 Text("Enter the Label man:")
                 TextField("", text: .constant(""))
-                    .alignmentGuide(.controlAlignment) { d in
+                    .alignmentGuide(.formControlAlignment) { d in
                         d[.leading]
                     }
                     .frame(width: 150)
@@ -101,7 +101,7 @@ struct ColorPickerOpacitySliderForm_Previews: PreviewProvider {
             HStack {
                 Text("Label:")
                 TextField("", text: .constant(""))
-                    .alignmentGuide(.controlAlignment) { d in
+                    .alignmentGuide(.formControlAlignment) { d in
                         d[.leading]
                     }
                     .frame(width: 150)
@@ -129,13 +129,4 @@ struct ColorPickerOpacitySliderForm_Previews: PreviewProvider {
         .frame(width: 500, height: 500)
     }
     
-}
-
-extension HorizontalAlignment {
-    private enum ControlAlignment: AlignmentID {
-        static func defaultValue(in context: ViewDimensions) -> CGFloat {
-            return context[HorizontalAlignment.center]
-        }
-    }
-    static let controlAlignment = HorizontalAlignment(ControlAlignment.self)
 }

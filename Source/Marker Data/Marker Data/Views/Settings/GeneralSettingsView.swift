@@ -18,100 +18,107 @@ struct GeneralSettingsView: View {
     )
     
     var body: some View {
-        Form {
-            VStack {
-                Group {
-                    Text("Export Destination")
-                        .font(.headline)
-                    HStack {
-                        Text("Set:")
-                            .frame(maxWidth: .infinity, alignment: .trailing)
-                        FolderPicker(folderURL: $exportFolderURLModel.folderURL, buttonTitle: "Select Location")
-                            .padding(.leading, 5)
-                            .frame(width: 150, alignment: .leading)
-                        Spacer(minLength: 200)
-                    }
-                    HStack {
-                        Text("")
-                            .frame(maxWidth: .infinity, alignment: .trailing)
-                        Text("\(exportFolderURLModel.folderURL?.path ?? "")")
-                            .frame(width: 145, alignment: .leading)
-                            .border(.black)
-                            .lineLimit(1)
-                        Button {
-                            if let url = exportFolderURLModel.folderURL {
-                               NSWorkspace.shared.open(url)
-                           }
-                        } label: {
-                            Image(systemName: "arrow.up.right.square")
-                        }.frame(width: 40, alignment: .leading)
-                        .disabled(exportFolderURLModel.folderURL == nil)
-                        Spacer(minLength: 150)
-                    }
-                    HStack {
-                        Text("Folder Format:")
-                            .frame(maxWidth: .infinity, alignment: .trailing)
-                        Picker("", selection: $settingsStore.selectedFolderFormat) {
-                            ForEach(UserFolderFormat.allCases) { item in
-                                Text(item.displayName).tag(item)
-                            }
-                        }
-                        .labelsHidden()
-                        .frame(width: 150, alignment: .leading)
-                        Spacer(minLength: 200)
-                    }
+        VStack(alignment: .formControlAlignment) {
+            Group {
+
+                Text("Export Destination")
+                    .font(.headline)
+
+                HStack {
+
+                    Text("\(exportFolderURLModel.folderURL?.path ?? "")")
+                        .lineLimit(1)
+                        .frame(width: 150)
+                        .border(.black)
+                        .padding(.trailing, 3)
+
+
+                    FolderPicker(
+                        folderURL: $exportFolderURLModel.folderURL,
+                        buttonTitle: "Choose…"
+                    )
+                    .formControlLeadingAlignmentGuide()
+                    .frame(width: 50)
+                    .padding(.leading, 10)
+                    // .border(.green)
+
+
                 }
-                Group {
-                    Divider()
-                    Text("Extraction Profile")
-                        .font(.headline)
-                    HStack {
-                        Text("Profile:")
-                            .frame(maxWidth: .infinity, alignment: .trailing)
-                        ExportFormatPicker()
+
+                HStack {
+
+                    Text("Folder Format:")
+                        // .border(.green)
+
+                    Picker("", selection: $settingsStore.selectedFolderFormat) {
+                        ForEach(UserFolderFormat.allCases) { item in
+                            Text(item.displayName).tag(item)
+                        }
+                    }
+                    .labelsHidden()
+                    .frame(width: 150)
+                    .formControlLeadingAlignmentGuide()
+
+                }
+
+            }
+            Group {
+
+                Divider()
+
+                Text("Extraction Profile")
+                    .font(.headline)
+
+                HStack {
+
+                    Text("Profile:")
+
+                    ExportFormatPicker()
                         .labelsHidden()
-                        .frame(width: 150, alignment: .leading)
-                        Spacer(minLength: 200)
-                    }
-                    
-                    HStack {
-                        Text("Exclude Roles:")
-                            .frame(maxWidth: .infinity, alignment: .trailing)
-                        ExcludedRolesPicker()
+                        .frame(width: 150)
+                        .formControlLeadingAlignmentGuide()
+
+                }
+
+                HStack {
+
+                    Text("Exclude Roles:")
+
+                    ExcludedRolesPicker()
                         .labelsHidden()
-                        .frame(width: 150, alignment: .leading)
-                        Spacer(minLength: 200)
-                    }
-                    
-                    HStack {
-                        Text("Enable Subframes:")
-                            .frame(maxWidth: .infinity, alignment: .trailing)
-                        Spacer(minLength: 10)
-                        Toggle("", isOn: $settingsStore.enabledSubframes)
-                            .toggleStyle(CheckboxToggleStyle())
-                            .frame(alignment: .leading)
-                        Spacer(minLength: 330)
-                    }
-                    
-                    HStack {
-                        Text("Clip Boundaries:")
-                            .frame(maxWidth: .infinity, alignment: .trailing)
-                        Spacer(minLength: 10)
-                        Toggle("", isOn: $settingsStore.enabledClipBoundaries)
-                            .toggleStyle(CheckboxToggleStyle())
-                            .frame(alignment: .leading)
-                        Spacer(minLength: 330)
-                    }
-                    
-                    HStack {
-                        Text("No Media:")
-                            .frame(maxWidth: .infinity, alignment: .trailing)
-                        Spacer(minLength: 10)
-                        Toggle("", isOn: $settingsStore.enabledNoMedia)
-                            .toggleStyle(CheckboxToggleStyle())
-                            .frame(alignment: .leading)
-                        Spacer(minLength: 330)
-                    }
+                        .frame(width: 150)
+                        .formControlLeadingAlignmentGuide()
+
+                }
+
+                HStack {
+
+                    Text("Enable Subframes:")
+
+                    Toggle("", isOn: $settingsStore.enabledSubframes)
+                        .toggleStyle(CheckboxToggleStyle())
+                        .formControlLeadingAlignmentGuide()
+
+                }
+
+                HStack {
+
+                    Text("Clip Boundaries:")
+
+                    Toggle("", isOn: $settingsStore.enabledClipBoundaries)
+                        .toggleStyle(CheckboxToggleStyle())
+                        .formControlLeadingAlignmentGuide()
+
+                }
+
+                HStack {
+
+                    Text("No Media:")
+
+                    Toggle("", isOn: $settingsStore.enabledNoMedia)
+                        .toggleStyle(CheckboxToggleStyle())
+                        .formControlLeadingAlignmentGuide()
+
                 }
             }
         }
