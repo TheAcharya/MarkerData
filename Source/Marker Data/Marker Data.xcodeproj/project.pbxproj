@@ -7,11 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		471493FB2A4D217A000B3D07 /* ColorWell in Frameworks */ = {isa = PBXBuildFile; productRef = 471493FA2A4D217A000B3D07 /* ColorWell */; };
 		47411FDA2A3EA121005890FE /* HelpButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47411FD92A3EA121005890FE /* HelpButton.swift */; };
 		47411FDC2A3EA140005890FE /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47411FDB2A3EA140005890FE /* ViewExtensions.swift */; };
 		47411FDE2A3EA1BA005890FE /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47411FDD2A3EA1BA005890FE /* AboutView.swift */; };
 		47411FE42A3EC6AF005890FE /* IONavigation in Frameworks */ = {isa = PBXBuildFile; productRef = 47411FE32A3EC6AF005890FE /* IONavigation */; };
-		47411FE72A3ED709005890FE /* ColorWell in Frameworks */ = {isa = PBXBuildFile; productRef = 47411FE62A3ED709005890FE /* ColorWell */; };
 		4741202E2A3EFC42005890FE /* Miscellaneous Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4741202D2A3EFC42005890FE /* Miscellaneous Utilities.swift */; };
 		474595372A40113000EF100D /* LabeledTextboxStepperForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 474595362A40113000EF100D /* LabeledTextboxStepperForm.swift */; };
 		474595582A40254E00EF100D /* ColorPickerOpacitySliderForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 474595572A40254E00EF100D /* ColorPickerOpacitySliderForm.swift */; };
@@ -104,7 +104,7 @@
 				47411FE42A3EC6AF005890FE /* IONavigation in Frameworks */,
 				9B61B44E29F03B14003EC14A /* MarkersExtractor in Frameworks */,
 				D5F74A542973021F00EEE2FE /* SwiftUIX in Frameworks */,
-				47411FE72A3ED709005890FE /* ColorWell in Frameworks */,
+				471493FB2A4D217A000B3D07 /* ColorWell in Frameworks */,
 				D5F74A4A2973012800EEE2FE /* AppUpdater in Frameworks */,
 				D5F74A512973019000EEE2FE /* OrderedCollections in Frameworks */,
 				D5F74A4F2973019000EEE2FE /* DequeModule in Frameworks */,
@@ -270,7 +270,7 @@
 				D5F74A532973021F00EEE2FE /* SwiftUIX */,
 				9B61B44D29F03B14003EC14A /* MarkersExtractor */,
 				47411FE32A3EC6AF005890FE /* IONavigation */,
-				47411FE62A3ED709005890FE /* ColorWell */,
+				471493FA2A4D217A000B3D07 /* ColorWell */,
 			);
 			productName = "Marker Data";
 			productReference = D5F74A2D2972D31C00EEE2FE /* Marker Data.app */;
@@ -307,7 +307,7 @@
 				D5F74A522973021F00EEE2FE /* XCRemoteSwiftPackageReference "SwiftUIX" */,
 				9B61B44C29F03B14003EC14A /* XCRemoteSwiftPackageReference "MarkersExtractor" */,
 				47411FE22A3EC6AF005890FE /* XCRemoteSwiftPackageReference "IONavigation" */,
-				47411FE52A3ED709005890FE /* XCRemoteSwiftPackageReference "ColorWell" */,
+				471493F92A4D217A000B3D07 /* XCRemoteSwiftPackageReference "ColorWell" */,
 			);
 			productRefGroup = D5F74A2E2972D31C00EEE2FE /* Products */;
 			projectDirPath = "";
@@ -585,17 +585,17 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		47411FE22A3EC6AF005890FE /* XCRemoteSwiftPackageReference "IONavigation" */ = {
+		471493F92A4D217A000B3D07 /* XCRemoteSwiftPackageReference "ColorWell" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Peter-Schorn/IONavigation";
+			repositoryURL = "https://github.com/Peter-Schorn/ColorWell";
 			requirement = {
 				branch = main;
 				kind = branch;
 			};
 		};
-		47411FE52A3ED709005890FE /* XCRemoteSwiftPackageReference "ColorWell" */ = {
+		47411FE22A3EC6AF005890FE /* XCRemoteSwiftPackageReference "IONavigation" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/jordanbaird/ColorWell";
+			repositoryURL = "https://github.com/Peter-Schorn/IONavigation";
 			requirement = {
 				branch = main;
 				kind = branch;
@@ -644,15 +644,15 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		471493FA2A4D217A000B3D07 /* ColorWell */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 471493F92A4D217A000B3D07 /* XCRemoteSwiftPackageReference "ColorWell" */;
+			productName = ColorWell;
+		};
 		47411FE32A3EC6AF005890FE /* IONavigation */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 47411FE22A3EC6AF005890FE /* XCRemoteSwiftPackageReference "IONavigation" */;
 			productName = IONavigation;
-		};
-		47411FE62A3ED709005890FE /* ColorWell */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 47411FE52A3ED709005890FE /* XCRemoteSwiftPackageReference "ColorWell" */;
-			productName = ColorWell;
 		};
 		9B61B44D29F03B14003EC14A /* MarkersExtractor */ = {
 			isa = XCSwiftPackageProductDependency;
