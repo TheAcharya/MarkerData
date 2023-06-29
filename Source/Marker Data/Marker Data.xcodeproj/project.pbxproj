@@ -597,8 +597,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/jordanbaird/ColorWell";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.2.2;
+				branch = main;
+				kind = branch;
 			};
 		};
 		9B61B44C29F03B14003EC14A /* XCRemoteSwiftPackageReference "MarkersExtractor" */ = {
