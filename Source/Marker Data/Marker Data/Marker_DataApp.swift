@@ -62,12 +62,26 @@ struct Marker_DataApp: App {
 
             CommandGroup(replacing: .appInfo) {
                 Button("About \(appName)") {
+
                     print("Open About in settings")
+
+                    settingsStore.settingsSection = .about
+
                     if #available(macOS 13, *) {
-                        NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
+                        NSApp.sendAction(
+                            Selector(("showSettingsWindow:")),
+                            to: nil,
+                            from: nil
+                        )
                     } else {
-                        NSApp.sendAction(Selector(("showPreferencesWindow:")), to: nil, from: nil)
+                        NSApp.sendAction(
+                            Selector(("showPreferencesWindow:")),
+                            to: nil,
+                            from: nil
+                        )
                     }
+
+
                 }
             }
 

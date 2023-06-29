@@ -13,21 +13,6 @@ import AppKit
 
 class SettingsStore: ObservableObject {
     
-    enum SettingsSection: String, Hashable, Identifiable {
-        
-        case general
-        case image
-        case label
-        case configuration
-        case database
-        case about
-        
-        var id: String {
-            self.rawValue
-        }
-
-    }
-    
     // func test<T: RawRepresentable>(_ t: T) where T.RawValue == String {
     //     if Bool.random() {
     //         self.test(SettingsSection.general)
@@ -58,7 +43,6 @@ class SettingsStore: ObservableObject {
     
     // MARK: settings selection
     @AppStorage("settingsSection") var settingsSection: SettingsSection?
-    // @Published var settingsSection: SettingsSection? = .configuration
 
     @AppStorage("selectedFolderFormat") private var selectedFolderFormatRawValue: Int = UserFolderFormat.Medium.rawValue
     var selectedFolderFormat: UserFolderFormat{

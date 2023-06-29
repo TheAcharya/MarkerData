@@ -9,7 +9,9 @@ import SwiftUI
 
 struct SettingsView: View {
     
-    @Environment(\.managedObjectContext)  var viewContext
+    @Environment(\.managedObjectContext) var viewContext
+
+    @EnvironmentObject var settingsStore: SettingsStore
     
     //Main Settings View Controller
     var body: some View {
@@ -34,57 +36,78 @@ struct SettingsView: View {
         // Set Settings Window Static Width And Height
         .frame(width: 700, height: 500)
     }
-    
+
     var sidebarView: some View {
-        List {
+        List(
+            SettingsSection.allCases,
+            selection: $settingsStore.settingsSection
+        ) { section in
+
             Group {
-                //Link To General Settings
-                NavigationLink(destination: GeneralSettingsView()) {
-                    Label("General", systemImage: "gearshape")
-                }
-                //Link To Image Settings
-                NavigationLink(destination: ImageSettingsView()) {
-                    Label("Image", systemImage: "photo")
-                }
-                //Link To Label Settings
-                NavigationLink(destination: LabelSettingsView()) {
-                    Label("Label", systemImage: "tag")
-                }
-                //Link To Configuration Settings
-                NavigationLink(destination: ConfigurationSettingsView()) {
-                    Label("Configurations", systemImage: "briefcase")
-                }
-                //Link To Database Settings
-                NavigationLink(destination: DatabaseSettingsView()) {
-                    Label("Databases", systemImage: "server.rack")
-                }
-                NavigationLink(destination: AboutView()) {
-                    Label("About", systemImage: "info.circle")
+                switch section {
+                    case .general:
+                        Label("General", systemImage: "gearshape")
+                            .tag(SettingsSection.general)
+
+                    case .image:
+                        Label("Image", systemImage: "photo")
+                            .tag(SettingsSection.image)
+
+                    case .label:
+                        Label("Label", systemImage: "tag")
+                            .tag(SettingsSection.label)
+
+                    case .configurations:
+                        Label("Configurations", systemImage: "briefcase")
+                            .tag(SettingsSection.configurations)
+
+                    case .databases:
+                        Label("Databases", systemImage: "server.rack")
+                            .tag(SettingsSection.databases)
+
+                    case .about:
+                        Label("About", systemImage: "info.circle")
+                            .tag(SettingsSection.about)
+
                 }
             }
-            // MARK: Vertical padding between sidebar list items
             .padding(.vertical, 5)
+
         }
+        .listStyle(.sidebar)
         .modify { view in
             if #available(macOS 13.0, *) {
-                view.navigationSplitViewColumnWidth(
-                    min: 190, ideal: 190, max: 190
-                )
+                view
+                    .navigationSplitViewColumnWidth(190)
             }
             else {
                 view
             }
         }
-        //Define List Style As Sidebar
-        .listStyle(.sidebar)
+
     }
 
-    var detailView: some View {
+    @ViewBuilder var detailView: some View {
         // Show App Icon And App Title When No Setting Section Is Selected
-        AboutView()
+        // AboutView()
         // LabelSettingsView()
         // ImageSettingsView()
+        switch settingsStore.settingsSection {
+            case .general:
+                GeneralSettingsView()
+            case .image:
+                ImageSettingsView()
+            case .label:
+                LabelSettingsView()
+            case .configurations:
+                ConfigurationSettingsView()
+            case .databases:
+                DatabaseSettingsView()
+            case .about, nil:
+                AboutView()
+        }
     }
+
     
 }
 
