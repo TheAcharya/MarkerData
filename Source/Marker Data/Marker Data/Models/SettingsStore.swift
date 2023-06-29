@@ -83,18 +83,29 @@ class SettingsStore: ObservableObject {
         set { selectedIDNamingModeRawValue = newValue.rawValue }
     }
     
+
     //Default Selected JPG Image Quality
     @AppStorage("selectedImageQuality") var selectedImageQuality: Int = 100
+
     //Default Image Width
     @AppStorage("imageWidth") var imageWidth: Int?  // 1920
+
+    @AppStorage("imageWidthEnabled") var imageWidthEnabled = true
+
     //Default Image Height
     @AppStorage("imageHeight") var imageHeight: Int?  // 1080
+
+    @AppStorage("imageHeightEnabled") var imageHeightEnabled = true
+
     //Default Image Scale Size
     @AppStorage("selectedImageSize") var selectedImageSize: Int = 100
+
     //Default Set GIF FPS
     @AppStorage("selectedGIFFPS") var selectedGIFFPS: Int = 10
+
     //Default Set GIF Length Span
     @AppStorage("selectedGIFLength") var selectedGIFLength: Int = 2
+
     //Default Selected Font
     @AppStorage("selectedFontNameType") private var selectedFontNameTypeRawValue: Int = FontNameType.Menlo.rawValue
     var selectedFontNameType: FontNameType {

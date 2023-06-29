@@ -71,6 +71,8 @@ struct ImageSettingsView: View {
                     .frame(width: 75)
                     .formControlLeadingAlignmentGuide()
 
+                    Toggle("", isOn: settingsStore.$imageWidthEnabled)
+
                 }
 
                 HStack {
@@ -86,6 +88,8 @@ struct ImageSettingsView: View {
                     .labelsHidden()
                     .frame(width: 75)
                     .formControlLeadingAlignmentGuide()
+
+                    Toggle("", isOn: settingsStore.$imageHeightEnabled)
 
                 }
 
