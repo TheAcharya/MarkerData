@@ -26,20 +26,13 @@ struct GeneralSettingsView: View {
 
                 HStack {
 
-                    Text("\(exportFolderURLModel.folderURL?.path ?? "")")
-                        .lineLimit(1)
-                        .frame(width: 150)
-                        .border(.black)
-                        .padding(.trailing, 3)
-
-
                     FolderPicker(
-                        folderURL: $exportFolderURLModel.folderURL,
-                        buttonTitle: "Choose…"
+                        url: $exportFolderURLModel.folderURL,
+                        title: "Choose…"
                     )
-                    .formControlLeadingAlignmentGuide()
-                    .frame(width: 50)
-                    .padding(.leading, 10)
+                    // .formControlLeadingAlignmentGuide()
+                    .frame(width: 150)
+                    // .padding(.leading, 10)
                     // .border(.green)
 
 

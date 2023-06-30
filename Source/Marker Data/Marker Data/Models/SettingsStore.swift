@@ -40,7 +40,25 @@ class SettingsStore: ObservableObject {
     let databaseSettingsURL =  URL(
         string: "https://markerdata.theacharya.co/user-guide/databases/"
     )!
-    
+
+    let exportDestinationOpenPanel: NSOpenPanel = {
+        let panel = NSOpenPanel()
+        panel.canChooseFiles = false
+        panel.canChooseDirectories = true
+        panel.allowsMultipleSelection = false
+        return panel
+    }()
+
+    init() {
+        self.folderPickerDropDelegate.objectWillChange
+            .sink(receiveValue: self.objectWillChange.send)
+            .store(in: &self.cancellables)
+    }
+
+    @Published var folderPickerDropDelegate = FolderPickerDropDelegate()
+
+    private var cancellables: Set<AnyCancellable> = []
+
     // MARK: settings selection
     @AppStorage("settingsSection") var settingsSection: SettingsSection?
 
