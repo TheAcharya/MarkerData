@@ -28,9 +28,9 @@ struct FolderPicker: View {
     }
 
     var isDragging: Bool {
-        true
+        // true
         // false
-        // settingsStore.folderPickerDropDelegate.isDragging
+        settingsStore.folderPickerDropDelegate.isDragging
     }
 
     var body: some View {
@@ -49,10 +49,6 @@ struct FolderPicker: View {
 
             RoundedRectangle(cornerRadius: 3)
                 .inset(by: -3)
-                // .strokeBorder(
-                //     isDragging ? Color.accentColor : .clear,
-                //     lineWidth: 2
-                // )
                 .foregroundColor(.clear)
                 .contentShape(Rectangle())
                 .onTapGesture(perform: presentPanel)
@@ -63,10 +59,17 @@ struct FolderPicker: View {
         .background(Color.gray)
         .cornerRadius(5)
         .help(urlString)
+        .overlay {
+            if isDragging {
+                RoundedRectangle(cornerRadius: 5)
+                    .inset(by: -2.5)
+                    .strokeBorder(
+                        Color.accentColor.opacity(0.5),
+                        lineWidth: 3
+                    )
+            }
+        }
         .formControlLeadingAlignmentGuide()
-        // .alignmentGuide(.formControlAlignment) { d in
-        //     d[.leading] + 2
-        // }
         .onDrop(
             of: FolderPickerDropDelegate.allowedTypes,
             delegate: settingsStore.folderPickerDropDelegate
