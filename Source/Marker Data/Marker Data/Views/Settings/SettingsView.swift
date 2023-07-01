@@ -112,10 +112,14 @@ struct SettingsView: View {
 }
 
 struct SettingsView_Previews: PreviewProvider {
-    static let settingsStore = SettingsStore()
+
+    @StateObject static private var settingsStore = SettingsStore()
+
     static var previews: some View {
-        SettingsView().environmentObject(settingsStore)
+        SettingsView()
+            .environmentObject(settingsStore)
     }
+
 }
 
 /*

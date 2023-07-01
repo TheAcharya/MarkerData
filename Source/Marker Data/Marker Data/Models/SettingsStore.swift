@@ -50,14 +50,22 @@ class SettingsStore: ObservableObject {
     }()
 
     init() {
+
         self.folderPickerDropDelegate.objectWillChange
             .sink(receiveValue: self.objectWillChange.send)
             .store(in: &self.cancellables)
+
+        if let url = self.exportFolderURL {
+            self.exportDestinationOpenPanel.directoryURL = url
+        }
+
     }
+
+    private var cancellables: Set<AnyCancellable> = []
 
     @Published var folderPickerDropDelegate = FolderPickerDropDelegate()
 
-    private var cancellables: Set<AnyCancellable> = []
+    @AppStorage("exportFolderURL") var exportFolderURL: URL?
 
     // MARK: settings selection
     @AppStorage("settingsSection") var settingsSection: SettingsSection?

@@ -13,10 +13,6 @@ struct GeneralSettingsView: View {
 
     @EnvironmentObject var settingsStore: SettingsStore
     
-    @StateObject private var exportFolderURLModel = FolderURLModel(
-        userDefaultsKey: exportFolderPathKey
-    )
-    
     var body: some View {
         VStack(alignment: .formControlAlignment) {
             Group {
@@ -26,15 +22,13 @@ struct GeneralSettingsView: View {
 
                 HStack {
 
+                    Text("Destination:")
+                        .fixedSize(horizontal: true, vertical: false)
+
                     FolderPicker(
-                        url: $exportFolderURLModel.folderURL,
+                        url: settingsStore.$exportFolderURL,
                         title: "Choose…"
                     )
-                    // .formControlLeadingAlignmentGuide()
-                    .frame(width: 150)
-                    // .padding(.leading, 10)
-                    // .border(.green)
-
 
                 }
 
@@ -123,7 +117,8 @@ struct GeneralSettingsView: View {
 }
 
 struct GeneralSettingsView_Previews: PreviewProvider {
-    static let settingsStore = SettingsStore()
+
+    @StateObject static private var settingsStore = SettingsStore()
     
     static var previews: some View {
         GeneralSettingsView()

@@ -28,64 +28,64 @@ struct FolderPicker: View {
     }
 
     var isDragging: Bool {
-        // true
-        settingsStore.folderPickerDropDelegate.isDragging
+        true
+        // false
+        // settingsStore.folderPickerDropDelegate.isDragging
     }
 
     var body: some View {
-        HStack {
+        ZStack {
 
-            Text("Destination:")
-                .fixedSize(horizontal: true, vertical: false)
+            HStack(spacing: 0) {
 
+                FolderPickerTextViewRepresentable(
+                    url: $url
+                )
 
-            ZStack {
-
-                HStack(spacing: 0) {
-
-                    FolderPickerTextViewRepresentable(
-                        url: $url
-                    )
-
-                    Image(systemName: "folder.fill")
-                        .padding(.trailing, 3)
-
-                }
-
-                RoundedRectangle(cornerRadius: 3)
-                    .inset(by: -3)
-                    .strokeBorder(
-                        isDragging ? Color.accentColor : .clear,
-                        lineWidth: 2
-                    )
-                    .foregroundColor(.clear)
-                    .contentShape(Rectangle())
-                    .onTapGesture(perform: presentPanel)
+                Image(systemName: "folder.fill")
+                    .padding(.trailing, 3)
 
             }
-            .padding(3)
-            .frame(width: 200, height: 20)
-            .background(Color.gray)
-            .cornerRadius(5)
-            .help(urlString)
-            .formControlLeadingAlignmentGuide()
-            .onDrop(
-                of: FolderPickerDropDelegate.allowedTypes,
-                delegate: settingsStore.folderPickerDropDelegate
-            )
-            .onReceive(
-                settingsStore.folderPickerDropDelegate.droppedURLSubject
-            ) { url in
-                self.url = url
-            }
 
+            RoundedRectangle(cornerRadius: 3)
+                .inset(by: -3)
+                // .strokeBorder(
+                //     isDragging ? Color.accentColor : .clear,
+                //     lineWidth: 2
+                // )
+                .foregroundColor(.clear)
+                .contentShape(Rectangle())
+                .onTapGesture(perform: presentPanel)
 
         }
+        .padding(3)
+        .frame(width: 200, height: 20)
+        .background(Color.gray)
+        .cornerRadius(5)
+        .help(urlString)
+        .formControlLeadingAlignmentGuide()
+        // .alignmentGuide(.formControlAlignment) { d in
+        //     d[.leading] + 2
+        // }
+        .onDrop(
+            of: FolderPickerDropDelegate.allowedTypes,
+            delegate: settingsStore.folderPickerDropDelegate
+        )
+        .onReceive(
+            settingsStore.folderPickerDropDelegate.droppedURLSubject
+        ) { url in
+            self.url = url
+        }
+
     }
 
     func presentPanel() {
 
         print("FolderPicker.presentPanel")
+
+        if let url = self.settingsStore.exportFolderURL {
+            self.settingsStore.exportDestinationOpenPanel.directoryURL = url
+        }
 
         self.settingsStore.exportDestinationOpenPanel.begin { response in
             if response == .OK {
@@ -106,6 +106,8 @@ struct FolderPicker: View {
 }
 
 struct FolderPickerTextViewRepresentable: NSViewRepresentable {
+
+    static let placeholderText = "Choose a Folder…"
 
     @Binding var url: URL?
 
@@ -135,8 +137,12 @@ struct FolderPickerTextViewRepresentable: NSViewRepresentable {
 
         if let url = self.url {
             self.textView.string = url.path
-            context.coordinator.drawCustomGlyphs()
         }
+        else {
+            self.textView.string = Self.placeholderText
+        }
+
+        context.coordinator.drawCustomGlyphs()
 
         return self.textView
     }
@@ -144,18 +150,15 @@ struct FolderPickerTextViewRepresentable: NSViewRepresentable {
     func updateNSView(_ textView: NSTextView, context: Context) {
 
         if let url = self.url {
-
             textView.string = url.path
 
-            var range = NSRange()
-            range.location = 0
-            range.length = url.path.count - 1
-
-
+            // var range = NSRange()
+            // range.location = 0
+            // range.length = url.path.count - 1
 
         }
         else {
-            textView.string = ""
+            textView.string = Self.placeholderText
         }
     }
 
@@ -183,8 +186,16 @@ struct FolderPickerTextViewRepresentable: NSViewRepresentable {
 class FolderPickerDropDelegate: ObservableObject, DropDelegate {
 
     static let allowedTypes: [UTType] = [
-        .url, .aliasFile
+        .url, .aliasFile, .text
     ]
+
+    /// Types for which it is known at compile time that all values thereof
+    /// are allowed
+    static var staticallyAllowedTypes: [UTType] {
+        Self.allowedTypes.filter { type in
+            type != .text
+        }
+    }
 
     @Published var isDragging = false
 
@@ -219,12 +230,14 @@ class FolderPickerDropDelegate: ObservableObject, DropDelegate {
 
     func performDrop(info: DropInfo) -> Bool {
 
-        let progress = info.itemProviders(for: [.url]).first(
+        if let urlProvider = info.itemProviders(for: [.url]).first(
             where: { $0.canLoadObject(ofClass: URL.self) }
-        )?
-            .loadObject(ofClass: URL.self, completionHandler: { url, error in
-                if let url = url {
+        ) {
 
+            let _ = urlProvider.loadObject(
+                ofClass: URL.self
+            ) { url, error in
+                if let url = url {
                     DispatchQueue.main.async {
                         self.droppedURLSubject.send(url)
                     }
@@ -235,11 +248,42 @@ class FolderPickerDropDelegate: ObservableObject, DropDelegate {
                 else {
                     print("url and error are nil")
                 }
-            })
+            }
 
-        print("performDrop:", progress ?? "nil")
+            return true
 
-        return progress != nil
+        }
+        else if let textProvider = info.itemProviders(for: [.text]).first(
+            where: { $0.canLoadObject(ofClass: String.self) }
+        ) {
+
+            let _ = textProvider.loadObject(
+                ofClass: String.self
+            ) { string, error in
+                if let string = string {
+
+                    let url = URL(fileURLWithPath: string)
+
+                    DispatchQueue.main.async {
+                        self.droppedURLSubject.send(url)
+                    }
+
+                }
+                else if let error = error {
+                    print("performDrop error: \(error)")
+                }
+                else {
+                    print("url and error are nil")
+                }
+            }
+
+            return true
+
+        }
+        else {
+            return false
+        }
+
     }
 
 }

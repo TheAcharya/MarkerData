@@ -24,7 +24,6 @@
 		9B4D90DC2A0BB07500FE7603 /* ConfigurationSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B4D90DB2A0BB07500FE7603 /* ConfigurationSettingsView.swift */; };
 		9B4D90DE2A0BB11000FE7603 /* DatabaseSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B4D90DD2A0BB11000FE7603 /* DatabaseSettingsView.swift */; };
 		9B51D21129E9A01A00DF7836 /* FolderPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B51D21029E9A01A00DF7836 /* FolderPicker.swift */; };
-		9B51D21329E9AF9300DF7836 /* FolderURLModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B51D21229E9AF9300DF7836 /* FolderURLModel.swift */; };
 		9B51D21629E9B13400DF7836 /* SettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B51D21529E9B13400DF7836 /* SettingsModel.swift */; };
 		9B61B44229F03866003EC14A /* libswiftCoreGraphics.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B61B44129F03866003EC14A /* libswiftCoreGraphics.tbd */; };
 		9B61B44E29F03B14003EC14A /* MarkersExtractor in Frameworks */ = {isa = PBXBuildFile; productRef = 9B61B44D29F03B14003EC14A /* MarkersExtractor */; };
@@ -75,7 +74,6 @@
 		9B4D90DB2A0BB07500FE7603 /* ConfigurationSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationSettingsView.swift; sourceTree = "<group>"; };
 		9B4D90DD2A0BB11000FE7603 /* DatabaseSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseSettingsView.swift; sourceTree = "<group>"; };
 		9B51D21029E9A01A00DF7836 /* FolderPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderPicker.swift; sourceTree = "<group>"; };
-		9B51D21229E9AF9300DF7836 /* FolderURLModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderURLModel.swift; sourceTree = "<group>"; };
 		9B51D21529E9B13400DF7836 /* SettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsModel.swift; sourceTree = "<group>"; };
 		9B61B44129F03866003EC14A /* libswiftCoreGraphics.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libswiftCoreGraphics.tbd; path = usr/lib/swift/libswiftCoreGraphics.tbd; sourceTree = SDKROOT; };
 		9B61B44329F0387C003EC14A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -192,7 +190,6 @@
 		9B51D21429E9B10500DF7836 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				9B51D21229E9AF9300DF7836 /* FolderURLModel.swift */,
 				9B653ABC29F2C64600C64999 /* ErrorViewModel.swift */,
 				9B51D21529E9B13400DF7836 /* SettingsModel.swift */,
 				9BACA4D029FA9B5100EF6837 /* SettingsStore.swift */,
@@ -351,7 +348,6 @@
 				9B4D90D82A0BAE3900FE7603 /* ImageSettingsView.swift in Sources */,
 				D5F74A412972E0A800EEE2FE /* SettingsView.swift in Sources */,
 				9B25815E2A07A286002CED07 /* GeneralSettingsView.swift in Sources */,
-				9B51D21329E9AF9300DF7836 /* FolderURLModel.swift in Sources */,
 				9BACA4D129FA9B5100EF6837 /* SettingsStore.swift in Sources */,
 				9B4D90DE2A0BB11000FE7603 /* DatabaseSettingsView.swift in Sources */,
 				9B653ABB29F2C2E700C64999 /* UserAlertView.swift in Sources */,
