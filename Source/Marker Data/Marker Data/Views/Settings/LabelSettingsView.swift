@@ -6,146 +6,68 @@
 //
 
 import SwiftUI
-import ColorWell
 
 struct LabelSettingsView: View {
-    @EnvironmentObject var settingsStore: SettingsStore
-    let intFormatter: NumberFormatter = {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .decimal
-        return formatter
-    }()
-    
-    var fontSizeBinding: Binding<String> {
-        .init(get: {
-            "\(settingsStore.selectedFontSize)"
-        }, set: {
-            settingsStore.selectedFontSize = Int($0) ?? settingsStore.selectedFontSize
-        })
+
+    enum Section: String, CaseIterable, Identifiable {
+        case general, token
+
+        var id: String { self.rawValue }
+
     }
-    
-    var strokeSizeBinding: Binding<String> {
-        .init(get: {
-            "\(settingsStore.selectedStrokeSize)"
-        }, set: {
-            settingsStore.selectedStrokeSize = Int($0) ?? settingsStore.selectedStrokeSize
-        })
-    }
+
+    @State private var section = Section.token
 
     var body: some View {
-        VStack(alignment: .formControlAlignment) {
 
-            Text("Font")
-                .font(.headline)
+        VStack {
+            Picker("", selection: $section) {
+                ForEach(Section.allCases) { section in
+                    Text(section.rawValue)
+                        .tag(section)
+                }
+            }
+            .pickerStyle(.segmented)
+            .frame(width: 200)
+            .padding(10)
+            // .border(.green)
 
             Group {
-
-                HStack {
-                    Text("Typeface:")
-
-                    FontNamePicker()
-                        .padding(.leading, -8)
-                        .formControlLeadingAlignmentGuide()
-                        .frame(width: 150)
-                        // .border(.green)
+                switch section {
+                    case .general:
+                        GeneralLabelSettingsView()
+                    case .token:
+                        TokenLabelSettingsView()
                 }
-
-                HStack {
-                    Text("Style:")
-                    FontStylePicker()
-                        .padding(.leading, -8)
-                        .formControlLeadingAlignmentGuide()
-                        .frame(width: 150)
-                        // .border(.green)
-                }
-
-
-                LabeledTextboxStepperForm(
-                    label: "Size:",
-                    value: settingsStore.$selectedFontSize,
-                    in: 6...100,
-                    format: .number,
-                    textFieldWidth: 50
-                )
-
-                ColorPickerOpacitySliderForm(
-                    color: $settingsStore.selectedFontColor,
-                    opacity: settingsStore.$selectedFontColorOpacity
-                )
-
             }
+            // .border(.green)
 
-            Divider()
-                .padding(.vertical, 10)
-
-            Text("Stroke")
-                .font(.headline)
-
-            Group {
-
-                LabeledTextboxStepperForm(
-                    label: "Size:",
-                    value: settingsStore.$selectedStrokeSize,
-                    in: 6...100,
-                    format: .number,
-                    textFieldWidth: 50
-                )
-
-                ColorPickerOpacitySliderForm(
-                    color: $settingsStore.selectedStrokeColor,
-                    opacity: settingsStore.$selectedStrokeColorOpacity
-                )
-
-            }
-
-            Divider()
-                .padding(.vertical, 10)
-
-            Text("Alignment")
-                .font(.headline)
-
-            Group {
-
-                HStack {
-                    Text("Horizontal:")
-                    Picker("", selection: $settingsStore.selectedHorizonalAlignment) {
-                        ForEach(LabelHorizontalAlignment.allCases) { item in
-                            Text(item.displayName).tag(item)
-                        }
-                    }
-                    .padding(.leading, -8)
-                    .formControlLeadingAlignmentGuide()
-                    .frame(width: 150)
-                }
-                HStack {
-                    Text("Vertical:")
-                    Picker("", selection: $settingsStore.selectedVerticalAlignment) {
-                        ForEach(LabelVerticalAlignment.allCases) { item in
-                            Text(item.displayName).tag(item)
-                        }
-                    }
-                    .padding(.leading, -8)
-                    .formControlLeadingAlignmentGuide()
-                    .frame(width: 150)
-                }
-
-            }
+            Spacer()
 
         }
-        .overlayHelpButton(url: settingsStore.labelSettingsURL)
-        .navigationTitle("Label Settings")
+
+        // TabView {
+        //     GeneralLabelSettingsView()
+        //         .tabItem {
+        //             Text("General")
+        //         }
+        //
+        //     TokenLabelSettingsView()
+        //         .tabItem {
+        //             Text("Token")
+        //         }
+        // }
+        // .tabViewStyle(.automatic)
     }
-    
+
 }
 
-@available(macOS 13.0, *)
 struct LabelSettingsView_Previews: PreviewProvider {
-    static let settingsStore = SettingsStore()
-    
+
+    @StateObject static private var settingsStore = SettingsStore()
+
     static var previews: some View {
         LabelSettingsView()
             .environmentObject(settingsStore)
-            // .frame(width: 500, height: 500)
     }
-    
 }

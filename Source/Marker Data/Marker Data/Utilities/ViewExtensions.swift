@@ -37,6 +37,12 @@ extension View {
         }
     }
 
+    func onHover(isHovering: Binding<Bool>) -> some View {
+        self.onHover { hovering in
+            isHovering.wrappedValue = hovering
+        }
+    }
+
 }
 
 struct OverlayHelpButton: ViewModifier {

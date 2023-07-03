@@ -88,10 +88,6 @@ struct SettingsView: View {
     }
 
     @ViewBuilder var detailView: some View {
-        // Show App Icon And App Title When No Setting Section Is Selected
-        // AboutView()
-        // LabelSettingsView()
-        // ImageSettingsView()
         switch settingsStore.settingsSection {
             case .general:
                 GeneralSettingsView()
@@ -121,84 +117,3 @@ struct SettingsView_Previews: PreviewProvider {
     }
 
 }
-
-/*
-//Chips View For Labels
-struct Chips: View {
-    //Chip Title
-    let titleKey: LocalizedStringKey
-    //Is It Selected
-    @State var isSelected: Bool
-    var body: some View {
-        HStack {
-            //Chip Title
-            Text(titleKey)
-            //Font Size
-                .font(.title3)
-                .lineLimit(1)
-        }
-        .padding(.all, 10)
-        //Selected And Not Selected Colours
-        .foregroundColor(isSelected ? .white : .accentColor)
-        .background(isSelected ? Color.accentColor : Color.clear)
-        .cornerRadius(10)
-        .overlay(RoundedRectangle(cornerRadius: 10)
-                    .stroke(Color.accentColor, lineWidth: 1.5))
-        .onTapGesture {
-            //Change Selected On Tap
-            isSelected.toggle()
-        }
-    }
-}
-
-struct ChipsContent: View {
-    @ObservedObject var viewModel = ChipsViewModel()
-    var body: some View {
-        //Declare View Height And Width Sizes
-        var width = CGFloat.zero
-        var height = CGFloat.zero
-        return GeometryReader { geo in
-                ZStack(alignment: .topLeading, content: {
-                ForEach(viewModel.dataObject) { chipsData in
-                    Chips(titleKey: chipsData.titleKey, isSelected: chipsData.isSelected)
-                        .padding(.all, 5)
-                        .alignmentGuide(.leading) { dimension in
-                            if (abs(width - dimension.width) > geo.size.width) {
-                                width = 0
-                                height -= dimension.height
-                            }
-                            
-                            let result = width
-                            if chipsData.id == viewModel.dataObject.last!.id {
-                                width = 0
-                            } else {
-                                width -= dimension.width
-                            }
-                            return result
-                          }
-                        .alignmentGuide(.top) { dimension in
-                            let result = height
-                            if chipsData.id == viewModel.dataObject.last!.id {
-                                height = 0
-                            }
-                            return result
-                        }
-                }
-            })
-        }
-        .padding(.all, 10)
-    }
-}
-
-struct ChipsDataModel: Identifiable {
-    let id = UUID()
-    @State var isSelected: Bool
-    let titleKey: LocalizedStringKey
-}
-
-class ChipsViewModel: ObservableObject {
-    //Define Chips To Select
-    @Published var dataObject: [ChipsDataModel] = [ChipsDataModel.init(isSelected: false, titleKey: "id"), ChipsDataModel.init(isSelected: false, titleKey: "clipName"), ChipsDataModel.init(isSelected: false, titleKey: "copyright"), ChipsDataModel.init(isSelected: false, titleKey: "clipDuration"), ChipsDataModel.init(isSelected: false, titleKey: "videoRole"), ChipsDataModel.init(isSelected: false, titleKey: "libraryName"), ChipsDataModel.init(isSelected: false, titleKey: "iconImage"), ChipsDataModel.init(isSelected: false, titleKey: "type"), ChipsDataModel.init(isSelected: false, titleKey: "checked"), ChipsDataModel.init(isSelected: false, titleKey: "audioRole"), ChipsDataModel.init(isSelected: false, titleKey: "imageFileName"), ChipsDataModel.init(isSelected: false, titleKey: "eventName"), ChipsDataModel.init(isSelected: false, titleKey: "projectName"), ChipsDataModel.init(isSelected: false, titleKey: "position"), ChipsDataModel.init(isSelected: false, titleKey: "notes")]
-}
-
-*/
