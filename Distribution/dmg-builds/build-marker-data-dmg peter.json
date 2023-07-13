@@ -13,7 +13,7 @@
     { "x": 605, "y": 230, "type": "file", "path": "../dmg-builds/latest-build/Uninstall Marker Data.app" }
   ],
   "code-sign": {
-    "signing-identity" : "The Acharya",
+    "signing-identity" : "Apple Distribution: Peter Schorn",
     "identifier" : "com.TheAcharya.Marker-Data"
   }
 }
