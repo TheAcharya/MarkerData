@@ -13,8 +13,10 @@ struct Marker_DataApp: App {
     
     // @Environment(\.openWindow) var openWindow
 
-    @StateObject private var settingsStore = SettingsStore()
-    
+    @StateObject private var settingsStore: SettingsStore
+    @StateObject private var progressPublisher: ProgressPublisher
+    @StateObject private var extractionModel: ExtractionModel
+
     let persistenceController = PersistenceController.shared
     
     let appName: String = {
@@ -23,24 +25,51 @@ struct Marker_DataApp: App {
         ) as! String
     }()
 
+    init() {
+        let settingsStore = SettingsStore()
+
+        let progress = Progress(totalUnitCount: 0)
+        let progressPublisher = ProgressPublisher(progress: progress)
+
+        let extractionModel = ExtractionModel(
+            settingsStore: settingsStore,
+            progressPublisher: progressPublisher
+        )
+        self._settingsStore = StateObject(wrappedValue: settingsStore)
+        self._progressPublisher = StateObject(wrappedValue: progressPublisher)
+        self._extractionModel = StateObject(wrappedValue: extractionModel)
+    }
+
     //Link App Delegate To SwiftUI App Lifecycle
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     var body: some Scene {
         //Make Main Window Group To Launch Into
         WindowGroup {
-            let progress = Progress(totalUnitCount: 100)
-            let progressPublisher = ProgressPublisher(progress: progress)
-            ContentView(progressPublisher: progressPublisher)
-                .environmentObject(settingsStore)
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
-            //Force Dark Mode On Content View
-                .preferredColorScheme(.dark)
-            //Set Main Window Min And Max Size
-                .frame(minWidth: 750, idealWidth: 750, maxWidth: .infinity, minHeight: 400, idealHeight: 400, maxHeight: .infinity, alignment: .center)
+
+            // MARK: ContentView
+            ContentView(
+                extractionModel: self.extractionModel,
+                progressPublisher: progressPublisher
+            )
+            .environmentObject(settingsStore)
+            .environment(\.managedObjectContext, persistenceController.container.viewContext)
+            // Force Dark Mode On Content View
+            .preferredColorScheme(.dark)
+            // Set Main Window Min And Max Size
+            .frame(
+                minWidth: 750,
+                idealWidth: 750,
+                maxWidth: .infinity,
+                minHeight: 400,
+                idealHeight: 400,
+                maxHeight: .infinity,
+                alignment: .center
+            )
             // Run Code On View Appear On Screen
-                .onAppear() {
-                    appDelegate.userRequestedAnExplicitUpdateCheck()
-                }
+            .onAppear() {
+                appDelegate.userRequestedAnExplicitUpdateCheck()
+            }
+
         }
         // Add Settings Menu Bar Item And Pass In A View
         Settings {

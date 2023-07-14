@@ -12,14 +12,15 @@ import MarkersExtractor
 
 struct ContentView: View {
     
-    @StateObject private var errorViewModel = ErrorViewModel()
-    
-    @ObservedObject var progressPublisher: ProgressPublisher
-    
-    @State private var showingOutputInfinder = false
-    @State private var completedOutputFolder: URL?=nil
-    
     @EnvironmentObject var settingsStore: SettingsStore
+
+    @StateObject private var errorViewModel = ErrorViewModel()
+
+    @ObservedObject var extractionModel: ExtractionModel
+    @ObservedObject var progressPublisher: ProgressPublisher
+
+    @State private var showingOutputInfinder = false
+    @State private var completedOutputFolder: URL? = nil
 
     //Main View Controller
     var body: some View {
@@ -38,60 +39,78 @@ struct ContentView: View {
                 Spacer()
             }
             //Handle The Drop Of A File Or URL And Run The CLI Tool Library
-            
-                .onDrop(of: [(kUTTypeFileURL as String)], isTargeted: nil, perform: { providers, _ in
-                    
-                    DispatchQueue.main.async {
-                        progressPublisher.showProgress = true
-                        progressPublisher.updateProgressTo(progressMessage: "Received file", percentageCompleted: 1)
-                    }
-                    self.completedOutputFolder = nil
-                    for provider in providers {
-                        //UserDefaults.standard.set(nil, forKey:exportFolderPathKey)
-                        // Check if the provider can load a file URL
-                        if provider.canLoadObject(ofClass: URL.self) {
-                            // Load the file URL from the provider
-                            let _ = provider.loadObject(ofClass: URL.self) { url, error in
-                                if let fileURL = url {
-                                    // Handle the file URL
-                                    print("Dropped file URL: \(fileURL.absoluteString)")
-                                    progressPublisher.updateProgressTo(
-                                        progressMessage: "Begin to process file \(fileURL.absoluteString) ", percentageCompleted: 2)
-                                    DispatchQueue.global(qos: .background).async {
-                                        do {
-                                            let settings = try settingsStore.markersExtractorSettings(fcpxmlFileUrl: fileURL)
-                                            progressPublisher.updateProgressTo(
-                                                progressMessage: "Extraction in progress...", percentageCompleted: 2)
-                                            try MarkersExtractor(settings).extract()
-                                            progressPublisher.updateProgressTo(
-                                                progressMessage: "Extraction successful", percentageCompleted: 100)
-                                            self.completedOutputFolder = settings.outputDir
-                                            showingOutputInfinder = true // inform the user
-                                            print("Ok")
-                                            
-                                        } catch {
-                                            DispatchQueue.main.async {
-                                                progressPublisher.markasFailed(errorMessage: "Error: \(error.localizedDescription)")
-                                                
-                                                errorViewModel.errorMessage  = error.localizedDescription
-                                                print("Error: \(error.localizedDescription)")
-                                            }
-                                            
-                                        }
-                                    }
-                                } else if let error = error {
-                                    // Handle the error
-                                    DispatchQueue.main.async {
-                                        progressPublisher.markasFailed(errorMessage: "Error: \(error.localizedDescription)")
-                                        errorViewModel.errorMessage  = error.localizedDescription
-                                        print("Error: \(error.localizedDescription)")
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    return true
-                })
+            .onDrop(
+                of: ExtractionModel.supportedContentTypes,
+                delegate: extractionModel
+            )
+
+            // .onDrop(of: [(kUTTypeFileURL as String)], isTargeted: nil, perform: { providers, _ in
+            //
+            //     DispatchQueue.main.async {
+            //         progressPublisher.showProgress = true
+            //         progressPublisher.updateProgressTo(progressMessage: "Received file", percentageCompleted: 1)
+            //     }
+            //     self.completedOutputFolder = nil
+            //     for provider in providers {
+            //         //UserDefaults.standard.set(nil, forKey:exportFolderPathKey)
+            //         // Check if the provider can load a file URL
+            //         if provider.canLoadObject(ofClass: URL.self) {
+            //             // Load the file URL from the provider
+            //             let _ = provider.loadObject(ofClass: URL.self) { url, error in
+            //                 if let fileURL = url {
+            //                     // Handle the file URL
+            //                     print("Dropped file URL: \(fileURL.absoluteString)")
+            //                     progressPublisher.updateProgressTo(
+            //                         progressMessage: "Begin to process file \(fileURL.absoluteString) ",
+            //                         percentageCompleted: 2
+            //                     )
+            //                     DispatchQueue.global(qos: .background).async {
+            //                         do {
+            //                             let settings = try settingsStore.markersExtractorSettings(
+            //                                 fcpxmlFileUrl: fileURL
+            //                             )
+            //                             progressPublisher.updateProgressTo(
+            //                                 progressMessage: "Extraction in progress...",
+            //                                 percentageCompleted: 2
+            //                             )
+            //                             try MarkersExtractor(settings).extract()
+            //                             progressPublisher.updateProgressTo(
+            //                                 progressMessage: "Extraction successful",
+            //                                 percentageCompleted: 100
+            //                             )
+            //                             self.completedOutputFolder = settings.outputDir
+            //                             showingOutputInfinder = true // inform the user
+            //                             print("Ok")
+            // 
+            //                         } catch {
+            //                             DispatchQueue.main.async {
+            //                                 progressPublisher.markasFailed(
+            //                                     errorMessage: "Error: \(error.localizedDescription)"
+            //                                 )
+            //
+            //                                 errorViewModel.errorMessage  = error.localizedDescription
+            //                                 print("Error: \(error.localizedDescription)")
+            //                             }
+            // 
+            //                         }
+            //                     }
+            //                 } else if let error = error {
+            //                     // Handle the error
+            //                     DispatchQueue.main.async {
+            //                         progressPublisher.markasFailed(
+            //                             errorMessage: "Error: \(error.localizedDescription)"
+            //                         )
+            //                         errorViewModel.errorMessage  = error.localizedDescription
+            //                         print("Error: \(error.localizedDescription)")
+            //                     }
+            //                 }
+            //             }
+            //         }
+            //     }
+            //     return true
+            // })
+
+
             if progressPublisher.showProgress {
                 ProgressView(progressPublisher.message, value: progressPublisher.progress.fractionCompleted, total: 1)            }
             
@@ -132,10 +151,23 @@ struct ContentView: View {
 }
 
 struct ContentView_Previews: PreviewProvider {
-    static let settingsStore = SettingsStore()
+
+    @StateObject static private var settingsStore = SettingsStore()
+
+    @StateObject static private var progressPublisher = ProgressPublisher(
+        progress: Progress(totalUnitCount: 100)
+    )
+
+    @StateObject static private var extractionModel = ExtractionModel(
+        settingsStore: Self.settingsStore,
+        progressPublisher: progressPublisher
+    )
+
     static var previews: some View {
-        let progress = Progress(totalUnitCount: 100)
-        let progressPublisher = ProgressPublisher(progress: progress)
-        ContentView(progressPublisher: progressPublisher).environmentObject(settingsStore)
+        ContentView(
+            extractionModel: extractionModel,
+            progressPublisher: progressPublisher
+        )
+        .environmentObject(settingsStore)
     }
 }
