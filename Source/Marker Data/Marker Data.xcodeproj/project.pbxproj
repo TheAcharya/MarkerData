@@ -14,6 +14,7 @@
 		4741202E2A3EFC42005890FE /* Miscellaneous Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4741202D2A3EFC42005890FE /* Miscellaneous Utilities.swift */; };
 		474595372A40113000EF100D /* LabeledTextboxStepperForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 474595362A40113000EF100D /* LabeledTextboxStepperForm.swift */; };
 		474595582A40254E00EF100D /* ColorPickerOpacitySliderForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 474595572A40254E00EF100D /* ColorPickerOpacitySliderForm.swift */; };
+		4765797B2A626D92009A1256 /* MarkersExtractor in Frameworks */ = {isa = PBXBuildFile; productRef = 4765797A2A626D92009A1256 /* MarkersExtractor */; };
 		4779AF592A4FC06C00F1B48B /* LabelSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4779AF582A4FC06C00F1B48B /* LabelSettingsView.swift */; };
 		4779AF5B2A4FC15C00F1B48B /* TokenLabelSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4779AF5A2A4FC15B00F1B48B /* TokenLabelSettingsView.swift */; };
 		47F5CDF82A60CA43005D9A98 /* ExtractionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F5CDF72A60CA43005D9A98 /* ExtractionModel.swift */; };
@@ -28,7 +29,6 @@
 		9B51D21129E9A01A00DF7836 /* FolderPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B51D21029E9A01A00DF7836 /* FolderPicker.swift */; };
 		9B51D21629E9B13400DF7836 /* SettingsModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B51D21529E9B13400DF7836 /* SettingsModels.swift */; };
 		9B61B44229F03866003EC14A /* libswiftCoreGraphics.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B61B44129F03866003EC14A /* libswiftCoreGraphics.tbd */; };
-		9B61B44E29F03B14003EC14A /* MarkersExtractor in Frameworks */ = {isa = PBXBuildFile; productRef = 9B61B44D29F03B14003EC14A /* MarkersExtractor */; };
 		9B653ABB29F2C2E700C64999 /* UserAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B653ABA29F2C2E700C64999 /* UserAlertView.swift */; };
 		9B653ABD29F2C64600C64999 /* ErrorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B653ABC29F2C64600C64999 /* ErrorViewModel.swift */; };
 		9B7BA03B2A128E9E0014E168 /* ProgressPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B7BA03A2A128E9E0014E168 /* ProgressPublisher.swift */; };
@@ -103,7 +103,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9B61B44229F03866003EC14A /* libswiftCoreGraphics.tbd in Frameworks */,
-				9B61B44E29F03B14003EC14A /* MarkersExtractor in Frameworks */,
+				4765797B2A626D92009A1256 /* MarkersExtractor in Frameworks */,
 				471493FB2A4D217A000B3D07 /* ColorWell in Frameworks */,
 				D5F74A4A2973012800EEE2FE /* AppUpdater in Frameworks */,
 				D5F74A512973019000EEE2FE /* OrderedCollections in Frameworks */,
@@ -285,8 +285,8 @@
 				D5F74A4C2973019000EEE2FE /* Collections */,
 				D5F74A4E2973019000EEE2FE /* DequeModule */,
 				D5F74A502973019000EEE2FE /* OrderedCollections */,
-				9B61B44D29F03B14003EC14A /* MarkersExtractor */,
 				471493FA2A4D217A000B3D07 /* ColorWell */,
+				4765797A2A626D92009A1256 /* MarkersExtractor */,
 			);
 			productName = "Marker Data";
 			productReference = D5F74A2D2972D31C00EEE2FE /* Marker Data.app */;
@@ -320,8 +320,8 @@
 				D5F74A452972FE7C00EEE2FE /* XCRemoteSwiftPackageReference "AirtableKit" */,
 				D5F74A482973012800EEE2FE /* XCRemoteSwiftPackageReference "AppUpdater" */,
 				D5F74A4B2973019000EEE2FE /* XCRemoteSwiftPackageReference "swift-collections" */,
-				9B61B44C29F03B14003EC14A /* XCRemoteSwiftPackageReference "MarkersExtractor" */,
 				471493F92A4D217A000B3D07 /* XCRemoteSwiftPackageReference "ColorWell" */,
+				476579792A626D92009A1256 /* XCRemoteSwiftPackageReference "MarkersExtractor" */,
 			);
 			productRefGroup = D5F74A2E2972D31C00EEE2FE /* Products */;
 			projectDirPath = "";
@@ -609,12 +609,12 @@
 				kind = branch;
 			};
 		};
-		9B61B44C29F03B14003EC14A /* XCRemoteSwiftPackageReference "MarkersExtractor" */ = {
+		476579792A626D92009A1256 /* XCRemoteSwiftPackageReference "MarkersExtractor" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/TheAcharya/MarkersExtractor.git";
+			repositoryURL = "https://github.com/Peter-Schorn/MarkersExtractor";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.2.0;
+				branch = async;
+				kind = branch;
 			};
 		};
 		D5F74A452972FE7C00EEE2FE /* XCRemoteSwiftPackageReference "AirtableKit" */ = {
@@ -649,9 +649,9 @@
 			package = 471493F92A4D217A000B3D07 /* XCRemoteSwiftPackageReference "ColorWell" */;
 			productName = ColorWell;
 		};
-		9B61B44D29F03B14003EC14A /* MarkersExtractor */ = {
+		4765797A2A626D92009A1256 /* MarkersExtractor */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 9B61B44C29F03B14003EC14A /* XCRemoteSwiftPackageReference "MarkersExtractor" */;
+			package = 476579792A626D92009A1256 /* XCRemoteSwiftPackageReference "MarkersExtractor" */;
 			productName = MarkersExtractor;
 		};
 		D5F74A462972FE7C00EEE2FE /* AirtableKit */ = {
