@@ -53,13 +53,11 @@ class ExtractionModel: ObservableObject, DropDelegate {
             for: Self.supportedContentTypes
         )
 
-        DispatchQueue.main.async {
-            self.progressPublisher.showProgress = true
-            self.progressPublisher.updateProgressTo(
-                progressMessage: "Received file",
-                percentageCompleted: 1
-            )
-        }
+        self.progressPublisher.showProgress = true
+        self.progressPublisher.updateProgressTo(
+            progressMessage: "Received file",
+            percentageCompleted: 1
+        )
         self.completedOutputFolder = nil
 
         for provider in providers {
@@ -69,39 +67,8 @@ class ExtractionModel: ObservableObject, DropDelegate {
                 // Load the file URL from the provider
                 let _ = provider.loadObject(ofClass: URL.self) { url, error in
                     if let fileURL = url {
-                        // Handle the file URL
-                        print("Dropped file URL: \(fileURL.absoluteString)")
-                        self.progressPublisher.updateProgressTo(
-                            progressMessage: "Begin to process file \(fileURL.absoluteString) ",
-                            percentageCompleted: 2
-                        )
-                        DispatchQueue.main.async {
-                            do {
-                                let settings = try self.settingsStore.markersExtractorSettings(
-                                    fcpxmlFileUrl: fileURL
-                                )
-                                self.progressPublisher.updateProgressTo(
-                                    progressMessage: "Extraction in progress...",
-                                    percentageCompleted: 2
-                                )
-                                try MarkersExtractor(settings).extract()
-                                self.progressPublisher.updateProgressTo(
-                                    progressMessage: "Extraction successful",
-                                    percentageCompleted: 100
-                                )
-                                self.completedOutputFolder = settings.outputDir
-                                self.showOutputInFinder = true // inform the user
-                                print("Ok")
-
-                            } catch {
-
-                                self.progressPublisher.markasFailed(
-                                    errorMessage: "Error: \(error.localizedDescription)"
-                                )
-
-                                self.errorViewModel.errorMessage  = error.localizedDescription
-                                print("Error: \(error.localizedDescription)")
-                            }
+                        Task {
+                            await self.performExtraction(fileURL)
                         }
                     } else if let error = error {
                         // Handle the error
@@ -127,6 +94,41 @@ class ExtractionModel: ObservableObject, DropDelegate {
         )
     }
 
+    func performExtraction(_ url: URL) async {
 
+        // Handle the file URL
+        print("Dropped file URL: \(url.absoluteString)")
+        self.progressPublisher.updateProgressTo(
+            progressMessage: "Begin to process file \(url.absoluteString) ",
+            percentageCompleted: 2
+        )
+
+        do {
+            let settings = try self.settingsStore.markersExtractorSettings(
+                fcpxmlFileUrl: url
+            )
+            self.progressPublisher.updateProgressTo(
+                progressMessage: "Extraction in progress...",
+                percentageCompleted: 2
+            )
+            try await MarkersExtractor(settings).extract()
+            self.progressPublisher.updateProgressTo(
+                progressMessage: "Extraction successful",
+                percentageCompleted: 100
+            )
+            self.completedOutputFolder = settings.outputDir
+            self.showOutputInFinder = true // inform the user
+            print("Ok")
+
+        } catch {
+
+            self.progressPublisher.markasFailed(
+                errorMessage: "Error: \(error.localizedDescription)"
+            )
+
+            self.errorViewModel.errorMessage  = error.localizedDescription
+            print("Error: \(error.localizedDescription)")
+        }
+    }
 
 }

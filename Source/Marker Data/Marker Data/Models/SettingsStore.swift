@@ -240,6 +240,15 @@ class SettingsStore: ObservableObject {
     @AppStorage("hideLabelNames") var hideLabelNames = false
     
     func markersExtractorSettings(fcpxmlFileUrl: URL) throws -> MarkersExtractor.Settings {
+
+        let imageLabels: [ExportField] = [
+            .clipName,
+            .clipDuration,
+            .name,
+            .id,
+            .projectName
+        ]
+
         let outputDirURL: URL = UserDefaults.standard.exportFolder
         let settings = try MarkersExtractor.Settings(
             fcpxml: .init(fcpxmlFileUrl),
@@ -256,7 +265,7 @@ class SettingsStore: ObservableObject {
             idNamingMode: self.selectedIDNamingMode.markersExtractor,
             includeOutsideClipBoundaries:  self.enabledClipBoundaries,
             excludeRoleType: self.selectedExcludeRoles.markersExtractor,
-           // imageLabels: []
+            imageLabels: imageLabels,
             imageLabelCopyright: self.copyrightText,
             imageLabelFont: self.selectedFontNameType.markersExtractor,
             imageLabelFontMaxSize: self.selectedFontSize,

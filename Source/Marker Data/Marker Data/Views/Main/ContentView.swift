@@ -19,9 +19,6 @@ struct ContentView: View {
     @ObservedObject var extractionModel: ExtractionModel
     @ObservedObject var progressPublisher: ProgressPublisher
 
-    @State private var showingOutputInfinder = false
-    @State private var completedOutputFolder: URL? = nil
-
     //Main View Controller
     var body: some View {
         VStack {
@@ -112,7 +109,12 @@ struct ContentView: View {
 
 
             if progressPublisher.showProgress {
-                ProgressView(progressPublisher.message, value: progressPublisher.progress.fractionCompleted, total: 1)            }
+                ProgressView(
+                    progressPublisher.message,
+                    value: progressPublisher.progress.fractionCompleted,
+                    total: 1
+                )
+            }
             
             //Divide Drag And Drop Zone From Quick Actions
             Divider()
@@ -132,21 +134,37 @@ struct ContentView: View {
                 Spacer()
             }
             .padding(.bottom)
-        }.overlay(UserAlertView(title: "Error", onDismiss: {
-                    // Perform any action you want when the user dismisses the alert.
-        }).environmentObject(errorViewModel))
-        .alert(isPresented:$showingOutputInfinder) {
-            Alert(
-                title: Text("Extracted"),
-                message: Text("Markers successfully extracted."),
-                primaryButton: .default(Text("Show in finder")) {
-                    if let url =  completedOutputFolder {
-                        NSWorkspace.shared.open(url)
-                    }
-                },
-                secondaryButton: .default(Text("Ok"))
-            )
         }
+        .overlay(UserAlertView(title: "Error", onDismiss: {
+                    // Perform any action you want when the user dismisses the alert.
+        })
+        .environmentObject(extractionModel.errorViewModel))
+        .alert(
+            "Extracted",
+            isPresented: $extractionModel.showOutputInFinder
+        ) {
+            Button("Show in finder") {
+                if let url = extractionModel.completedOutputFolder {
+                    NSWorkspace.shared.open(url)
+                }
+            }
+            Button("Ok") { }
+        } message: {
+            Text("Markers successfully extracted.")
+        }
+        // .alert(isPresented: $extractionModel.showOutputInFinder) {
+        //     Alert(
+        //         title: Text("Extracted"),
+        //         message: Text("Markers successfully extracted."),
+        //         primaryButton: .default(Text("Show in finder")) {
+        //             if let url = extractionModel.completedOutputFolder {
+        //                 NSWorkspace.shared.open(url)
+        //             }
+        //         },
+        //         secondaryButton: .default(Text("Ok"))
+        //     )
+        // }
+
     }
 }
 
