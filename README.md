@@ -70,7 +70,7 @@ Original Idea, Application Direction and Workflow by [Vigneswaran Rajkumar](http
 
 **Graphical User Interface and UI/UX Logic**
 
-Maintained by [Peter Schorn](https://github.com/Peter-Schorn) (1.0.0 ...)
+Maintained by [Milán Várady](https://github.com/milanvarady) (1.0.0 ...)
 
 **MarkersExtractor API Library**
 
