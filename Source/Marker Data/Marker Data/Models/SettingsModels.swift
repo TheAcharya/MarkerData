@@ -314,17 +314,18 @@ enum UserFolderFormat: Int, CaseIterable, Identifiable {
     }
 }
 
-enum SettingsSection: String, CaseIterable, Identifiable {
-
-    case general
-    case image
-    case label
-    case configurations
-    case databases
-    case about
-
-    var id: String {
-        self.rawValue
-    }
-
-}
+// TODO: remove this. Moved to content view.
+//enum SettingsSection: String, CaseIterable, Identifiable {
+//
+//    case general
+//    case image
+//    case label
+//    case configurations
+//    case databases
+//    case about
+//
+//    var id: String {
+//        self.rawValue
+//    }
+//
+//}

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		417389632AC86BE600984FD8 /* ExtractionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417389622AC86BE600984FD8 /* ExtractionView.swift */; };
 		471493FB2A4D217A000B3D07 /* ColorWell in Frameworks */ = {isa = PBXBuildFile; productRef = 471493FA2A4D217A000B3D07 /* ColorWell */; };
 		47411FDA2A3EA121005890FE /* HelpButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47411FD92A3EA121005890FE /* HelpButton.swift */; };
 		47411FDC2A3EA140005890FE /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47411FDB2A3EA140005890FE /* ViewExtensions.swift */; };
@@ -59,6 +60,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		417389622AC86BE600984FD8 /* ExtractionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractionView.swift; sourceTree = "<group>"; };
 		47411FD92A3EA121005890FE /* HelpButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpButton.swift; sourceTree = "<group>"; };
 		47411FDB2A3EA140005890FE /* ViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
 		47411FDD2A3EA1BA005890FE /* AboutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
@@ -120,6 +122,7 @@
 			isa = PBXGroup;
 			children = (
 				D5F74A322972D31D00EEE2FE /* ContentView.swift */,
+				417389622AC86BE600984FD8 /* ExtractionView.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -171,10 +174,10 @@
 			isa = PBXGroup;
 			children = (
 				47136CBE2A51079E00AB9C92 /* Main */,
+				9B25815C2A079FBC002CED07 /* Settings */,
 				47B21A6E2A4DF96D004FECFA /* Other */,
 				474595352A40110F00EF100D /* Components */,
 				47411FD82A3EA121005890FE /* Buttons */,
-				9B25815C2A079FBC002CED07 /* Settings */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -352,6 +355,7 @@
 				4741202E2A3EFC42005890FE /* Miscellaneous Utilities.swift in Sources */,
 				9B244B3E2A24AB5D005620D8 /* MarkerData.xcdatamodeld in Sources */,
 				47411FDC2A3EA140005890FE /* ViewExtensions.swift in Sources */,
+				417389632AC86BE600984FD8 /* ExtractionView.swift in Sources */,
 				47411FDE2A3EA1BA005890FE /* AboutView.swift in Sources */,
 				9B51D21629E9B13400DF7836 /* SettingsModels.swift in Sources */,
 				9B4D90D82A0BAE3900FE7603 /* ImageSettingsView.swift in Sources */,
@@ -526,7 +530,7 @@
 					"$(inherited)",
 					"$(SDKROOT)/usr/lib/swift",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.TheAcharya.Marker-Data";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -567,7 +571,7 @@
 					"$(inherited)",
 					"$(SDKROOT)/usr/lib/swift",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.TheAcharya.Marker-Data";
 				PRODUCT_NAME = "$(TARGET_NAME)";

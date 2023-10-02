@@ -68,7 +68,7 @@ class SettingsStore: ObservableObject {
     @AppStorage("exportFolderURL") var exportFolderURL: URL?
 
     // MARK: settings selection
-    @AppStorage("settingsSection") var settingsSection: SettingsSection?
+//    @AppStorage("settingsSection") var settingsSection: SettingsSection?
 
     @AppStorage("selectedFolderFormat") private var selectedFolderFormatRawValue: Int = UserFolderFormat.Medium.rawValue
     var selectedFolderFormat: UserFolderFormat{
@@ -238,6 +238,9 @@ class SettingsStore: ObservableObject {
     @AppStorage("copyrightText") var copyrightText = ""
     
     @AppStorage("hideLabelNames") var hideLabelNames = false
+    
+    // TODO: I added this
+    var labels: [ExportField: Bool] = Dictionary(uniqueKeysWithValues: ExportField.allCases.lazy.map { ($0, false) })
     
     func markersExtractorSettings(fcpxmlFileUrl: URL) throws -> MarkersExtractor.Settings {
 

@@ -10,7 +10,6 @@ import AppUpdater
 
 @main
 struct Marker_DataApp: App {
-    
     // @Environment(\.openWindow) var openWindow
 
     @StateObject private var settingsStore: SettingsStore
@@ -73,14 +72,14 @@ struct Marker_DataApp: App {
         }
         // Add Settings Menu Bar Item And Pass In A View
         Settings {
-            SettingsView()
-                .environmentObject(settingsStore)
-                .environment(
-                    \.managedObjectContext,
-                     persistenceController.container.viewContext
-                )
-                // Force Dark Mode On Settings View
-                .preferredColorScheme(.dark)
+//            SettingsView()
+//                .environmentObject(settingsStore)
+//                .environment(
+//                    \.managedObjectContext,
+//                     persistenceController.container.viewContext
+//                )
+//                // Force Dark Mode On Settings View
+//                .preferredColorScheme(.dark)
             
         }
         
@@ -89,30 +88,30 @@ struct Marker_DataApp: App {
             
             SidebarCommands()
 
-            CommandGroup(replacing: .appInfo) {
-                Button("About \(appName)") {
-
-                    print("Open About in settings")
-
-                    settingsStore.settingsSection = .about
-
-                    if #available(macOS 13, *) {
-                        NSApp.sendAction(
-                            Selector(("showSettingsWindow:")),
-                            to: nil,
-                            from: nil
-                        )
-                    } else {
-                        NSApp.sendAction(
-                            Selector(("showPreferencesWindow:")),
-                            to: nil,
-                            from: nil
-                        )
-                    }
-
-
-                }
-            }
+//            CommandGroup(replacing: .appInfo) {
+//                Button("About \(appName)") {
+//
+//                    print("Open About in settings")
+//
+//                    settingsStore.settingsSection = .about
+//
+//                    if #available(macOS 13, *) {
+//                        NSApp.sendAction(
+//                            Selector(("showSettingsWindow:")),
+//                            to: nil,
+//                            from: nil
+//                        )
+//                    } else {
+//                        NSApp.sendAction(
+//                            Selector(("showPreferencesWindow:")),
+//                            to: nil,
+//                            from: nil
+//                        )
+//                    }
+//
+//
+//                }
+//            }
 
             //Removes New Window Menu Item
             CommandGroup(replacing: .newItem) {}
