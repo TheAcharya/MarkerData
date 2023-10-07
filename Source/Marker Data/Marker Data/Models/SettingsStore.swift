@@ -160,66 +160,40 @@ class SettingsStore: ObservableObject {
         return selectedStrokeSize
     }
     
+    // Font color and opacity
+    var selectedFontColor: Color {
+        get {
+            guard let hexString: String = UserDefaults.standard.string(forKey: "selectedFontColor") else {
+                return .white
+            }
+            
+            return Color(hex: hexString)
+        }
+        
+        set(newColor) {
+            UserDefaults.standard.set(newColor.hex, forKey: "selectedFontColor")
+        }
+    }
     
-    @AppStorage("selectedFontColorRed") var selectedFontColorRed: Double = 1
-    @AppStorage("selectedFontColorGreen") var selectedFontColorGreen: Double = 1
-    @AppStorage("selectedFontColorBlue") var selectedFontColorBlue: Double = 1
     @AppStorage("selectedFontColorOpacity") var selectedFontColorOpacity: Double = 1
     
-    var selectedFontColor: Color {
-        get { Color(red: selectedFontColorRed, green: selectedFontColorGreen, blue: selectedFontColorBlue, opacity: selectedFontColorOpacity) }
-        set {
-            var r: CGFloat = 0
-            var g: CGFloat = 0
-            var b: CGFloat = 0
-            var o: CGFloat = 0
-            NSColor(newValue).getRed(&r, green: &g, blue: &b, alpha:&o)
+    // Stroke color and opacity
+    var selectedStrokeColor: Color {
+        get {
+            guard let hexString: String = UserDefaults.standard.string(forKey: "selectedStrokeColor") else {
+                return .white
+            }
             
-            selectedFontColorRed = Double(r)
-            selectedFontColorGreen = Double(g)
-            selectedFontColorBlue = Double(b)
-            selectedFontColorOpacity = Double(o)
-            
-            print("color = \(selectedFontHexColor)")
+            return Color(hex: hexString)
+        }
+        
+        set(newColor) {
+            UserDefaults.standard.set(newColor.hex, forKey: "selectedStrokeColor")
         }
     }
-    var selectedFontHexColor: String {
-        let hex = String(format:  "#%02X%02X%02X", Int(selectedFontColorRed*255), Int(selectedFontColorGreen*255), Int(selectedFontColorBlue*255))
-        return hex
-    }
-    var selectedFontOpacityHexColor: String {
-        let hex = String(format:  "#%02", Int(selectedFontColorOpacity*255))
-        return hex
-    }
     
-    @AppStorage("selectedStrokeColorRed") var selectedStrokeColorRed: Double = 1
-    @AppStorage("selectedStrokeColorGreen") var selectedStrokeColorGreen: Double = 1
-    @AppStorage("selectedStrokeColorBlue") var selectedStrokeColorBlue: Double = 1
     @AppStorage("selectedStrokeColorOpacity") var selectedStrokeColorOpacity: Double = 1
     
-    var selectedStrokeColor: Color {
-        get { Color(red: selectedStrokeColorRed, green: selectedStrokeColorGreen, blue: selectedStrokeColorBlue, opacity: selectedStrokeColorOpacity) }
-        set {
-            var r: CGFloat = 0
-            var g: CGFloat = 0
-            var b: CGFloat = 0
-            var o: CGFloat = 0
-            NSColor(newValue).getRed(&r, green: &g, blue: &b, alpha:&o)
-            
-            selectedStrokeColorRed = Double(r)
-            selectedStrokeColorGreen = Double(g)
-            selectedStrokeColorBlue = Double(b)
-            selectedStrokeColorOpacity = Double(o)
-        }
-    }
-    var selectedStrokeHexColor: String {
-        let hex = String(format:  "#%02X%02X%02X", Int(selectedStrokeColorRed*255), Int(selectedStrokeColorGreen*255), Int(selectedStrokeColorBlue*255))
-        return hex
-    }
-    var selectedStrokeOpacityHexColor: String {
-        let hex = String(format:  "#%02", Int(selectedStrokeColorOpacity*255))
-        return hex
-    }
 
     @AppStorage("selectedHorizontalAlignment") private var selectedHorizonalAlignmentRawValue: Int = LabelHorizontalAlignment.Left.rawValue
     var selectedHorizonalAlignment: LabelHorizontalAlignment {
@@ -233,25 +207,42 @@ class SettingsStore: ObservableObject {
         set { selectedVerticalAlignmentRawValue = newValue.rawValue }
     }
     
+    var overlays: [ExportField] {
+        get {
+            // Safely get name array of overlay options
+            guard let nameArray: [String] = UserDefaults.standard.stringArray(forKey: "selectedOverlays") else {
+                return []
+            }
+            
+            // Convert to array with optional types
+            let optionalOverlayArray: [ExportField?] = nameArray.map { ExportField(rawValue: $0) }
+            
+            // Remove nil elements
+            let overlayArray = optionalOverlayArray.compactMap { $0 }
+            
+            return overlayArray
+        }
+        
+        set(newOverlays) {
+            let nameArray = newOverlays.map { $0.rawValue }
+            
+            UserDefaults.standard.set(nameArray, forKey: "selectedOverlays")
+        }
+    }
     
-    @AppStorage("overlays") var overlaysText = ""
+    func flipOverlayState(overlay: ExportField) {
+        if self.overlays.contains(overlay) {
+            self.overlays = self.overlays.filter { $0 != overlay }
+        } else {
+            self.overlays = self.overlays + [overlay]
+        }
+    }
+    
     @AppStorage("copyrightText") var copyrightText = ""
     
     @AppStorage("hideLabelNames") var hideLabelNames = false
     
-    // TODO: I added this
-    var labels: [ExportField: Bool] = Dictionary(uniqueKeysWithValues: ExportField.allCases.lazy.map { ($0, false) })
-    
     func markersExtractorSettings(fcpxmlFileUrl: URL) throws -> MarkersExtractor.Settings {
-
-        let imageLabels: [ExportField] = [
-            .clipName,
-            .clipDuration,
-            .name,
-            .id,
-            .projectName
-        ]
-
         let outputDirURL: URL = UserDefaults.standard.exportFolder
         let settings = try MarkersExtractor.Settings(
             fcpxml: .init(fcpxmlFileUrl),
@@ -268,13 +259,13 @@ class SettingsStore: ObservableObject {
             idNamingMode: self.selectedIDNamingMode.markersExtractor,
             includeOutsideClipBoundaries:  self.enabledClipBoundaries,
             excludeRoleType: self.selectedExcludeRoles.markersExtractor,
-            imageLabels: imageLabels,
+            imageLabels: self.overlays,
             imageLabelCopyright: self.copyrightText,
             imageLabelFont: self.selectedFontNameType.markersExtractor,
             imageLabelFontMaxSize: self.selectedFontSize,
             imageLabelFontOpacity: Int(self.selectedFontColorOpacity),
-            imageLabelFontColor: self.selectedFontHexColor,
-            imageLabelFontStrokeColor: self.selectedStrokeHexColor,
+            imageLabelFontColor: self.selectedFontColor.hex,
+            imageLabelFontStrokeColor: self.selectedStrokeColor.hex,
             imageLabelFontStrokeWidth: self.markersExtractorStrokeWidth,
             imageLabelAlignHorizontal: self.selectedHorizonalAlignment.markersExtractor,
             imageLabelAlignVertical: self.selectedVerticalAlignment.markersExtractor,

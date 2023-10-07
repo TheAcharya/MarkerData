@@ -35,6 +35,8 @@ struct GeneralLabelSettingsView: View {
             settingsStore.selectedStrokeSize = Int($0) ?? settingsStore.selectedStrokeSize
         })
     }
+    
+    @State var testColor: Color = .white
 
     var body: some View {
         VStack(alignment: .formControlAlignment) {
@@ -76,7 +78,6 @@ struct GeneralLabelSettingsView: View {
                     color: $settingsStore.selectedFontColor,
                     opacity: settingsStore.$selectedFontColorOpacity
                 )
-
             }
 
             Divider()
@@ -136,7 +137,6 @@ struct GeneralLabelSettingsView: View {
             }
 
         }
-        .overlayHelpButton(url: settingsStore.labelSettingsURL)
         .navigationTitle("Label Settings")
     }
     

@@ -314,6 +314,25 @@ enum UserFolderFormat: Int, CaseIterable, Identifiable {
     }
 }
 
+struct OverlayItem: Identifiable, Equatable {
+    let overlay: ExportField
+    
+    var name: String {
+        overlay.name
+    }
+    
+    var isSelected: Bool
+    
+    mutating func flipSelection(settingsStore: SettingsStore) {
+        settingsStore.flipOverlayState(overlay: self.overlay)
+        self.isSelected = !self.isSelected
+    }
+    
+    var id: ExportField {
+        self.overlay
+    }
+}
+
 // TODO: remove this. Moved to content view.
 //enum SettingsSection: String, CaseIterable, Identifiable {
 //
