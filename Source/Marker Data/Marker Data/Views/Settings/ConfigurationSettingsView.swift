@@ -69,10 +69,7 @@ struct ConfigurationSettingsView: View {
     }
     
     var body: some View {
-        
-        
         Form() {
-            
             tableView
             
             mainButtons
@@ -97,17 +94,24 @@ struct ConfigurationSettingsView: View {
     }
     
     var mainButtons: some View {
-        VStack {
-            Button(action: {}) {
-                Text("Export Marker Data Configurations")
+        HStack {
+            Button {
+                
+            } label: {
+                Image(systemName: "plus")
             }
-            //Button To Import Marker Data Settings
-            Button(action: {}) {
-                Text("Import Marker Data Configurations")
+            
+            
+            Button {
+                
+            } label: {
+                Image(systemName: "minus")
             }
-            //Button To Load Default Marker Data Settings
-            Button(action: {}) {
-                Text("Load Defaults")
+            
+            Button {
+                
+            } label: {
+                Label("Restore Defaults", systemImage: "gearshape.arrow.triangle.2.circlepath")
             }
         }
         .padding(.vertical)

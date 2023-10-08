@@ -1,13 +1,14 @@
 //
-//  ExtractionView.swift
+//  ExtractView.swift
 //  Marker Data
 //
 //  Created by Milán Várady on 30/09/2023.
 //
 
 import SwiftUI
+import FilePicker
 
-struct ExtractionView: View {
+struct ExtractView: View {
     @StateObject private var errorViewModel = ErrorViewModel()
 
     @ObservedObject var extractionModel: ExtractionModel
@@ -15,19 +16,48 @@ struct ExtractionView: View {
    
     @EnvironmentObject var settingsStore: SettingsStore
     
+    @State var showMoreQuickSettings = false
+    @State var emptyExportDestination = false
+    
     var body: some View {
         VStack {
             //Drag And Drop File Zone
-            VStack {
+            HStack {
                 Spacer()
-                HStack {
+                
+                VStack {
                     Spacer()
+                    
                     //Text Prompt To Drop Final Cut Pro XML File
-                    Text("Drag and Drop FCP XML")
-                        .bold()
-                        .font(.title2)
+                    Label("Drag and Drop FCP XML", systemImage: "cursorarrow.rays")
+                        .font(.system(size: 32, weight: .bold))
+                        .foregroundStyle(.linearGradient(Gradient(colors: [.blue, .purple]), startPoint: .leading, endPoint: .trailing))
+                    
+                    Text("OR")
+                        .font(.system(size: 16, weight: .bold))
+                        .padding(.top, 8)
+                        .padding(.bottom, 18)
+                    
+                    FilePicker(types: [.fcpxml, .fcpxmld], allowMultiple: false) { urls in
+                        if !urls.isEmpty {
+                            Task {
+                                await extractionModel.performExtraction(urls[0])
+                            }
+                        }
+                    } label: {
+                        Label("Choose File", systemImage: "folder")
+                            .font(.system(size: 18, weight: .bold))
+                            .padding(8)
+                            .frame(width: 150, height: 36)
+                            .contentShape(Rectangle())
+                    }
+                    .buttonStyle(.plain)
+                    .background(Color.accentColor)
+                    .clipShape(RoundedRectangle(cornerRadius: 6))
+                    
                     Spacer()
                 }
+                
                 Spacer()
             }
             //Handle The Drop Of A File Or URL And Run The CLI Tool Library
@@ -111,24 +141,92 @@ struct ExtractionView: View {
                 )
             }
             
-            //Divide Drag And Drop Zone From Quick Actions
-            Divider()
-            //Quick Access Title
-            Text("Quick Access")
-                .bold()
-                .padding()
-            //Quick Actions
             HStack {
-                Spacer()
-                //Enable Upload Checkbox
-                ExportFormatPicker()
-                Toggle("Upload", isOn: $settingsStore.isUploadEnabled)
-                    .toggleStyle(CheckboxToggleStyle())
-                ExcludedRolesPicker()
-                ImageModePicker()
+                VStack(alignment: .leading) {
+                    //Divide Drag And Drop Zone From Quick Actions
+                    Divider()
+                    
+                    //Quick Settings Title
+                    Text("Quick Settings")
+                        .font(.title2)
+                        .bold()
+                    
+                    // Always visible quick settings
+                    HStack {
+                        Text("Export Destination: ")
+                        
+                        FolderPicker(
+                            url: settingsStore.$exportFolderURL,
+                            title: "Choose…"
+                        )
+                        .onChange(of: settingsStore.exportFolderURL) { newURL in
+                            if let exportURL = settingsStore.exportFolderURL {
+                                withAnimation {
+                                    emptyExportDestination = exportURL.absoluteString.isEmpty
+                                }
+                            }
+                        }
+                        .onAppear {
+                            if let exportURL = settingsStore.exportFolderURL {
+                                print(exportURL.absoluteString)
+                                emptyExportDestination = exportURL.absoluteString.isEmpty
+                            } else {
+                                emptyExportDestination = true
+                            }
+                        }
+                        
+                        if emptyExportDestination {
+                            Text("Please select an export destination!")
+                                .foregroundStyle(.red)
+                        }
+                        
+                        Divider()
+                            .padding(.horizontal, 3)
+                            .frame(maxHeight: 16)
+                        
+                        ExportFormatPicker()
+                            .frame(maxWidth: 300)
+                    }
+                    
+                    HStack {
+                        Button {
+                            withAnimation {
+                                showMoreQuickSettings = !showMoreQuickSettings
+                            }
+                        } label: {
+                            Label(
+                                showMoreQuickSettings ? "Show Less" : "Show More",
+                                systemImage: showMoreQuickSettings ? "chevron.down" : "chevron.up"
+                            )
+                            .font(.system(.body, weight: .light))
+                            .foregroundStyle(Color.accentColor)
+                        }
+                        .buttonStyle(.plain)
+                        
+                        if showMoreQuickSettings {
+                            // Divider line
+                            Rectangle()
+                                .fill(.tertiary)
+                                .frame(height: 1)
+                        }
+                    }
+                    
+                    // Hidden quick settings
+                    if showMoreQuickSettings {
+                        HStack {
+                            Toggle("Upload", isOn: $settingsStore.isUploadEnabled)
+                                .toggleStyle(CheckboxToggleStyle())
+                            
+                            ExcludedRolesPicker()
+                            
+                            ImageModePicker()
+                        }
+                    }
+                }
+                
                 Spacer()
             }
-            .padding(.bottom)
+            .padding()
         }
         .overlay(UserAlertView(title: "Error", onDismiss: {
                     // Perform any action you want when the user dismisses the alert.
@@ -174,7 +272,7 @@ struct ExtractionView: View {
         progressPublisher: progressPublisher
     )
 
-    return ExtractionView(
+    return ExtractView(
         extractionModel: extractionModel,
         progressPublisher: progressPublisher
     )

@@ -9,7 +9,9 @@
 /* Begin PBXBuildFile section */
 		4100D5DE2AD052010081F0EC /* OverlaySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4100D5DD2AD052010081F0EC /* OverlaySettingsView.swift */; };
 		4100D5E42AD1616D0081F0EC /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4100D5E32AD1616D0081F0EC /* ColorExtension.swift */; };
-		417389632AC86BE600984FD8 /* ExtractionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417389622AC86BE600984FD8 /* ExtractionView.swift */; };
+		4100D5E72AD19C980081F0EC /* FilePicker in Frameworks */ = {isa = PBXBuildFile; productRef = 4100D5E62AD19C980081F0EC /* FilePicker */; };
+		4100D5EC2AD1A1F80081F0EC /* UTTypeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4100D5EB2AD1A1F80081F0EC /* UTTypeExtension.swift */; };
+		417389632AC86BE600984FD8 /* ExtractView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417389622AC86BE600984FD8 /* ExtractView.swift */; };
 		47411FDA2A3EA121005890FE /* HelpButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47411FD92A3EA121005890FE /* HelpButton.swift */; };
 		47411FDC2A3EA140005890FE /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47411FDB2A3EA140005890FE /* ViewExtensions.swift */; };
 		47411FDE2A3EA1BA005890FE /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47411FDD2A3EA1BA005890FE /* AboutView.swift */; };
@@ -62,7 +64,8 @@
 /* Begin PBXFileReference section */
 		4100D5DD2AD052010081F0EC /* OverlaySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlaySettingsView.swift; sourceTree = "<group>"; };
 		4100D5E32AD1616D0081F0EC /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
-		417389622AC86BE600984FD8 /* ExtractionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractionView.swift; sourceTree = "<group>"; };
+		4100D5EB2AD1A1F80081F0EC /* UTTypeExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UTTypeExtension.swift; sourceTree = "<group>"; };
+		417389622AC86BE600984FD8 /* ExtractView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractView.swift; sourceTree = "<group>"; };
 		47411FD92A3EA121005890FE /* HelpButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpButton.swift; sourceTree = "<group>"; };
 		47411FDB2A3EA140005890FE /* ViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
 		47411FDD2A3EA1BA005890FE /* AboutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
@@ -105,6 +108,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4100D5E72AD19C980081F0EC /* FilePicker in Frameworks */,
 				9B61B44229F03866003EC14A /* libswiftCoreGraphics.tbd in Frameworks */,
 				4765797B2A626D92009A1256 /* MarkersExtractor in Frameworks */,
 				D5F74A4A2973012800EEE2FE /* AppUpdater in Frameworks */,
@@ -133,6 +137,7 @@
 			children = (
 				47411FDB2A3EA140005890FE /* ViewExtensions.swift */,
 				4100D5E32AD1616D0081F0EC /* ColorExtension.swift */,
+				4100D5EB2AD1A1F80081F0EC /* UTTypeExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -141,7 +146,7 @@
 			isa = PBXGroup;
 			children = (
 				D5F74A322972D31D00EEE2FE /* ContentView.swift */,
-				417389622AC86BE600984FD8 /* ExtractionView.swift */,
+				417389622AC86BE600984FD8 /* ExtractView.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -178,8 +183,8 @@
 			children = (
 				47411FDD2A3EA1BA005890FE /* AboutView.swift */,
 				D5F74A402972E0A800EEE2FE /* SettingsView.swift */,
-				4100D5DC2AD051DB0081F0EC /* Label */,
 				9B25815D2A07A286002CED07 /* GeneralSettingsView.swift */,
+				4100D5DC2AD051DB0081F0EC /* Label */,
 				9B4D90D72A0BAE3900FE7603 /* ImageSettingsView.swift */,
 				9B4D90DB2A0BB07500FE7603 /* ConfigurationSettingsView.swift */,
 				9B4D90DD2A0BB11000FE7603 /* DatabaseSettingsView.swift */,
@@ -306,6 +311,7 @@
 				D5F74A4E2973019000EEE2FE /* DequeModule */,
 				D5F74A502973019000EEE2FE /* OrderedCollections */,
 				4765797A2A626D92009A1256 /* MarkersExtractor */,
+				4100D5E62AD19C980081F0EC /* FilePicker */,
 			);
 			productName = "Marker Data";
 			productReference = D5F74A2D2972D31C00EEE2FE /* Marker Data.app */;
@@ -340,6 +346,7 @@
 				D5F74A482973012800EEE2FE /* XCRemoteSwiftPackageReference "AppUpdater" */,
 				D5F74A4B2973019000EEE2FE /* XCRemoteSwiftPackageReference "swift-collections" */,
 				476579792A626D92009A1256 /* XCRemoteSwiftPackageReference "MarkersExtractor" */,
+				4100D5E52AD19C980081F0EC /* XCRemoteSwiftPackageReference "FilePicker" */,
 			);
 			productRefGroup = D5F74A2E2972D31C00EEE2FE /* Products */;
 			projectDirPath = "";
@@ -370,9 +377,10 @@
 				4741202E2A3EFC42005890FE /* Miscellaneous Utilities.swift in Sources */,
 				9B244B3E2A24AB5D005620D8 /* MarkerData.xcdatamodeld in Sources */,
 				47411FDC2A3EA140005890FE /* ViewExtensions.swift in Sources */,
-				417389632AC86BE600984FD8 /* ExtractionView.swift in Sources */,
+				417389632AC86BE600984FD8 /* ExtractView.swift in Sources */,
 				47411FDE2A3EA1BA005890FE /* AboutView.swift in Sources */,
 				9B51D21629E9B13400DF7836 /* SettingsModels.swift in Sources */,
+				4100D5EC2AD1A1F80081F0EC /* UTTypeExtension.swift in Sources */,
 				4100D5DE2AD052010081F0EC /* OverlaySettingsView.swift in Sources */,
 				9B4D90D82A0BAE3900FE7603 /* ImageSettingsView.swift in Sources */,
 				D5F74A412972E0A800EEE2FE /* SettingsView.swift in Sources */,
@@ -627,6 +635,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		4100D5E52AD19C980081F0EC /* XCRemoteSwiftPackageReference "FilePicker" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/markrenaud/FilePicker";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.1;
+			};
+		};
 		476579792A626D92009A1256 /* XCRemoteSwiftPackageReference "MarkersExtractor" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Peter-Schorn/MarkersExtractor";
@@ -662,6 +678,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		4100D5E62AD19C980081F0EC /* FilePicker */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4100D5E52AD19C980081F0EC /* XCRemoteSwiftPackageReference "FilePicker" */;
+			productName = FilePicker;
+		};
 		4765797A2A626D92009A1256 /* MarkersExtractor */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 476579792A626D92009A1256 /* XCRemoteSwiftPackageReference "MarkersExtractor" */;

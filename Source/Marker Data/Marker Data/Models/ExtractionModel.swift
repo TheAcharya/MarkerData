@@ -7,11 +7,7 @@ import UniformTypeIdentifiers
 
 class ExtractionModel: ObservableObject, DropDelegate {
 
-    static let supportedContentTypes: [UTType] = [
-        .fileURL,
-        .aliasFile
-        // .data
-    ]
+    static let supportedContentTypes: [UTType] = [.fcpxml, .fcpxmld]
 
     @Published var dropPoint: CGPoint? = nil
     @Published var isDropping = false
@@ -38,7 +34,10 @@ class ExtractionModel: ObservableObject, DropDelegate {
 
     func dropUpdated(info: DropInfo) -> DropProposal? {
         self.dropPoint = info.location
-        return DropProposal(operation: .copy)
+        
+        let isFileSupported = info.hasItemsConforming(to: Self.supportedContentTypes)
+        
+        return isFileSupported ? DropProposal(operation: .copy) : DropProposal(operation: .forbidden)
     }
 
     func dropExited(info: DropInfo) {

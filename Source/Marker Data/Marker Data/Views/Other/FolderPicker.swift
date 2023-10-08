@@ -22,64 +22,69 @@ struct FolderPicker: View {
 
     let title: String
 
-
     var urlString: String {
         self.url?.path ?? ""
     }
 
     var isDragging: Bool {
-        // true
-        // false
         settingsStore.folderPickerDropDelegate.isDragging
     }
 
     var body: some View {
-        ZStack {
-
-            HStack(spacing: 0) {
-
-                FolderPickerTextViewRepresentable(
-                    url: $url
-                )
-
-                Image(systemName: "folder.fill")
-                    .padding(.trailing, 3)
-
-            }
-
-            RoundedRectangle(cornerRadius: 3)
-                .inset(by: -3)
-                .foregroundColor(.clear)
-                .contentShape(Rectangle())
-                .onTapGesture(perform: presentPanel)
-
-        }
-        .padding(3)
-        .frame(width: 200, height: 20)
-        .background(Color.gray)
-        .cornerRadius(5)
-        .help(urlString)
-        .overlay {
-            if isDragging {
-                RoundedRectangle(cornerRadius: 5)
-                    .inset(by: -2.5)
-                    .strokeBorder(
-                        Color.accentColor.opacity(0.5),
-                        lineWidth: 3
+        HStack {
+            ZStack {
+                
+                HStack(spacing: 0) {
+                    
+                    FolderPickerTextViewRepresentable(
+                        url: $url
                     )
+                    
+                    Image(systemName: "folder.fill")
+                        .padding(.trailing, 3)
+                    
+                }
+                
+                RoundedRectangle(cornerRadius: 3)
+                    .inset(by: -3)
+                    .foregroundColor(.clear)
+                    .contentShape(Rectangle())
+                    .onTapGesture(perform: presentPanel)
+                
             }
+            .padding(3)
+            .frame(width: 200, height: 20)
+            .background(Color.gray)
+            .cornerRadius(5)
+            .help(urlString)
+            .overlay {
+                if isDragging {
+                    RoundedRectangle(cornerRadius: 5)
+                        .inset(by: -2.5)
+                        .strokeBorder(
+                            Color.accentColor.opacity(0.5),
+                            lineWidth: 3
+                        )
+                }
+            }
+            .onDrop(
+                of: FolderPickerDropDelegate.allowedTypes,
+                delegate: settingsStore.folderPickerDropDelegate
+            )
+            .onReceive(
+                settingsStore.folderPickerDropDelegate.droppedURLSubject
+            ) { url in
+                self.url = url
+            }
+            
+            Button {
+                settingsStore.exportFolderURL = URL(string: "")
+            } label: {
+                Image(systemName: "trash")
+            }
+            .buttonStyle(.plain)
         }
         .formControlLeadingAlignmentGuide()
-        .onDrop(
-            of: FolderPickerDropDelegate.allowedTypes,
-            delegate: settingsStore.folderPickerDropDelegate
-        )
-        .onReceive(
-            settingsStore.folderPickerDropDelegate.droppedURLSubject
-        ) { url in
-            self.url = url
-        }
-
     }
 
     func presentPanel() {

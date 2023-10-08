@@ -21,7 +21,6 @@ struct GeneralSettingsView: View {
                     .font(.headline)
 
                 HStack {
-
                     Text("Destination:")
                         .fixedSize(horizontal: true, vertical: false)
 
@@ -29,7 +28,6 @@ struct GeneralSettingsView: View {
                         url: settingsStore.$exportFolderURL,
                         title: "Choose…"
                     )
-
                 }
 
                 HStack {

@@ -66,7 +66,7 @@ struct ContentView: View {
         } detail: {
             switch sidebarSelection {
             case .extract:
-                ExtractionView(
+                ExtractView(
                     extractionModel: extractionModel,
                     progressPublisher: progressPublisher
                 )
