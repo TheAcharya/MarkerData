@@ -328,6 +328,10 @@ struct OverlayItem: Identifiable, Equatable {
         self.isSelected = !self.isSelected
     }
     
+    mutating func removeSelection() {
+        self.isSelected = false
+    }
+    
     var id: ExportField {
         self.overlay
     }
