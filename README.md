@@ -1,4 +1,4 @@
-<img src="assets/marker_data_app_icon.png" width="200" alt="App icon" align="left"/>
+<img src="https://github.com/TheAcharya/MarkerData/blob/main/assets/marker_data_app_icon.png?raw=true" width="200" alt="App icon" align="left"/>
 
 <div>
 <h1>Marker Data</h1>
