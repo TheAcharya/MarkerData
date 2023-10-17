@@ -14,6 +14,8 @@
 <p>Marker Data allows users to extract, convert & create databases from <a href="https://www.apple.com/final-cut-pro/" target="_blank">Final Cut Pro</a>’s Maker metadata effortlessly. Marker Data uses <a href="https://github.com/TheAcharya/MarkersExtractor" target="_blank">MarkersExtractor</a> API Library.</p>
 
 <a href="https://github.com/TheAcharya/MarkerData/releases"><img src="assets/macos_badge_noborder.png" width="175" alt="Download for macOS"/></a>
+
+<br>
 </div>
 
 ## Core Features
@@ -72,7 +74,7 @@ Original Idea, Application Direction and Workflow by [Vigneswaran Rajkumar](http
 
 Maintained by [Milán Várady](https://github.com/milanvarady) (1.0.0 ...)
 
-**MarkersExtractor API Library**
+**MarkersExtractor (CLI & API)**
 
 Maintained by [Steffan Andrews](https://github.com/orchetect) ([0.2.0 ...](https://github.com/TheAcharya/MarkersExtractor))
 
