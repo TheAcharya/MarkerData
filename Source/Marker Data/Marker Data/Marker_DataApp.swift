@@ -10,37 +10,37 @@ import AppUpdater
 
 @main
 struct Marker_DataApp: App {
-    // @Environment(\.openWindow) var openWindow
-
-    @StateObject private var settingsStore: SettingsStore
+    @StateObject private var settings: SettingsContainer
     @StateObject private var progressPublisher: ProgressPublisher
     @StateObject private var extractionModel: ExtractionModel
+    @StateObject var configurationsModel: ConfigurationsModel
 
     let persistenceController = PersistenceController.shared
     
-    let appName: String = {
-        Bundle.main.object(
-            forInfoDictionaryKey: "CFBundleDisplayName"
-        ) as! String
-    }()
+    /// Controlled from the menu bar
+    @State var selectedConfiguration: String
 
     init() {
-        let settingsStore = SettingsStore()
-
+        let settings = SettingsContainer()
+        
         let progress = Progress(totalUnitCount: 0)
         let progressPublisher = ProgressPublisher(progress: progress)
-
+        
         let extractionModel = ExtractionModel(
-            settingsStore: settingsStore,
+            settings: settings,
             progressPublisher: progressPublisher
         )
-        self._settingsStore = StateObject(wrappedValue: settingsStore)
+        
+        let configurationsModel = ConfigurationsModel()
+        
+        self._settings = StateObject(wrappedValue: settings)
         self._progressPublisher = StateObject(wrappedValue: progressPublisher)
         self._extractionModel = StateObject(wrappedValue: extractionModel)
+        self._configurationsModel = StateObject(wrappedValue: configurationsModel)
+        
+        self._selectedConfiguration = State(wrappedValue: configurationsModel.activeConfiguration)
     }
-
-    //Link App Delegate To SwiftUI App Lifecycle
-    @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    
     var body: some Scene {
         //Make Main Window Group To Launch Into
         WindowGroup {
@@ -50,7 +50,8 @@ struct Marker_DataApp: App {
                 extractionModel: self.extractionModel,
                 progressPublisher: progressPublisher
             )
-            .environmentObject(settingsStore)
+            .environmentObject(settings)
+            .environmentObject(configurationsModel)
             .environment(\.managedObjectContext, persistenceController.container.viewContext)
             // Force Dark Mode On Content View
             .preferredColorScheme(.dark)
@@ -64,185 +65,36 @@ struct Marker_DataApp: App {
                 maxHeight: .infinity,
                 alignment: .center
             )
-            // Run Code On View Appear On Screen
-            .onAppear() {
-                appDelegate.userRequestedAnExplicitUpdateCheck()
+            // Change configuration (controlled from the menu bar)
+            .onChange(of: selectedConfiguration) { newConfig in
+                do {
+                    try configurationsModel.loadConfiguration(configurationName: newConfig, settings: settings)
+                } catch {
+                    print("Failed to load configuration: \(newConfig)")
+                }
             }
-
-        }
-        // Add Settings Menu Bar Item And Pass In A View
-        Settings {
-//            SettingsView()
-//                .environmentObject(settingsStore)
-//                .environment(
-//                    \.managedObjectContext,
-//                     persistenceController.container.viewContext
-//                )
-//                // Force Dark Mode On Settings View
-//                .preferredColorScheme(.dark)
-            
+            .onChange(of: configurationsModel.activeConfiguration) {
+                selectedConfiguration = $0
+            }
         }
         
-        //Customise Menu Bar Commands
+        // Customise Menu Bar Commands
         .commands {
+            // Removes New Window Menu Item
+            CommandGroup(replacing: .newItem) {}
+            // Removes Toolbar Menu Items
+            CommandGroup(replacing: .toolbar) {}
             
             SidebarCommands()
-
-//            CommandGroup(replacing: .appInfo) {
-//                Button("About \(appName)") {
-//
-//                    print("Open About in settings")
-//
-//                    settingsStore.settingsSection = .about
-//
-//                    if #available(macOS 13, *) {
-//                        NSApp.sendAction(
-//                            Selector(("showSettingsWindow:")),
-//                            to: nil,
-//                            from: nil
-//                        )
-//                    } else {
-//                        NSApp.sendAction(
-//                            Selector(("showPreferencesWindow:")),
-//                            to: nil,
-//                            from: nil
-//                        )
-//                    }
-//
-//
-//                }
-//            }
-
-            //Removes New Window Menu Item
-            CommandGroup(replacing: .newItem) {}
-            //Removes Toolbar Menu Items
-            CommandGroup(replacing: .toolbar) {}
-            //Add Check For Updates Button
-            CommandGroup(after: .appSettings) {
-                Button(action: {}) {
-                    Text("Check For Update...")
-                }
-            }
-            //Add Help And Debug Menu Buttons
-            CommandGroup(after: .help) {
-                //Button To Be Sent To App Website
-                Button(action: {}) {
-                    Text("Website")
-                }
-                //Button To Access The User Guide
-                Button(action: {}) {
-                    Text("User Guide")
-                }
-                //Button To Send App Feedback
-                Button(action: {}) {
-                    Text("Send Feedback")
-                }
-                //Button To Access App Discussion Page
-                Button(action: {}) {
-                    Text("Discussions")
-                }
-                //Debug Menu
-                Menu("Debug") {
-                    //Button To Open Debug Console
-                    Button(action: {}) {
-                        Text("Open Debug Console")
-                    }
-                    //Button To Open The App Log Folder
-                    Button(action: {}) {
-                        Text("Open Log Folder")
-                    }
-                }
-            }
-            //Add Custom Configurations Menu
-            CommandMenu("Configurations") {
-                //Set Default Configurations Button
-                Button(action: {}) {
-                    Text("Defaults")
-                }
-                //Button To Set Configuration Name 1
-                Button(action: {}) {
-                    Text("Name 1")
-                }
-                //Button To Set Configuration Name 2
-                Button(action: {}) {
-                    Text("Name 2")
-                }
-            }
-            //Add Custom Databases Menu
-            CommandMenu("Databases") {
-                //Upload Submenu
-                Menu("Upload") {
-                    //Button To Enable Upload
-                    Button(action: {}) {
-                        Text("Enable")
-                    }
-                    //Button To Disable Upload
-                    Button(action: {}) {
-                        Text("Disable")
-                    }
-                }
-                //Airtable Submenu
-                Menu("Airtable") {
-                    //Select Profile A Button
-                    Button(action: {}) {
-                        Text("Profile A")
-                    }
-                    //Select Profile B Button
-                    Button(action: {}) {
-                        Text("Profile B")
-                    }
-                    //Select Profile C Button
-                    Button(action: {}) {
-                        Text("Profile C")
-                    }
-                }
-                //Notion Submenu
-                Menu("Notion") {
-                    //Select Profile A Button
-                    Button(action: {}) {
-                        Text("Profile A")
-                    }
-                    //Select Profile B Button
-                    Button(action: {}) {
-                        Text("Profile B")
-                    }
-                    //Select Profile C Button
-                    Button(action: {}) {
-                        Text("Profile C")
-                    }
-                }
-            }
-        }
-        // .modify { scene in
-        //     if #available(macOS 13.0, *) {
-        //         scene.commandsReplaced {
-        //             CommandGroup(replacing: .appInfo) {
-        //                 Button("About \(appName)") {
-        //                     print("About")
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
-
-    }
-    
-}
-
-//Init App Delegate
-class AppDelegate: NSObject, NSApplicationDelegate {
-    
-    //Declare Repo To Update From
-    let updater = AppUpdater(owner: "TheAcharya", repo: "MarkerData")
-
-    //Function To Request App Update Check
-    func userRequestedAnExplicitUpdateCheck() {
-        updater.check().catch(policy: .allErrors) { error in
-            if error.isCancelled {
-                print("Cancelled")
-            } else {
-                print("\(error.localizedDescription)")
-            }
+            
+            ConfigurationCommands(
+                configurationsModel: configurationsModel,
+                settings: settings,
+                selectedConfiguration: $selectedConfiguration
+            )
+            
+            DatabaseCommands()
+            HelpCommands()
         }
     }
 }

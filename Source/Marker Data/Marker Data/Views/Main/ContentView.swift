@@ -15,8 +15,6 @@ struct ContentView: View {
 
     @ObservedObject var extractionModel: ExtractionModel
     @ObservedObject var progressPublisher: ProgressPublisher
-   
-    @EnvironmentObject var settingsStore: SettingsStore
     
     /// Currently selected item in the sidebar
     @State var sidebarSelection: MainViews = .extract
@@ -89,14 +87,14 @@ struct ContentView: View {
 }
 
 #Preview {
-    @StateObject  var settingsStore = SettingsStore()
+    @StateObject var settings = SettingsContainer()
 
     @StateObject var progressPublisher = ProgressPublisher(
         progress: Progress(totalUnitCount: 100)
     )
 
     @StateObject var extractionModel = ExtractionModel(
-        settingsStore: settingsStore,
+        settings: settings,
         progressPublisher: progressPublisher
     )
 
@@ -104,5 +102,5 @@ struct ContentView: View {
         extractionModel: extractionModel,
         progressPublisher: progressPublisher
     )
-    .environmentObject(settingsStore)
+    .environmentObject(settings)
 }

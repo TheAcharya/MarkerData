@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct LabelSettingsView: View {
-    @EnvironmentObject var settingsStore: SettingsStore
+    @EnvironmentObject var settings: SettingsContainer
 
     enum Section: String, CaseIterable, Identifiable {
         case general, token
@@ -20,33 +20,6 @@ struct LabelSettingsView: View {
     @State private var section = Section.token
 
     var body: some View {
-
-//        VStack {
-//            Picker("", selection: $section) {
-//                ForEach(Section.allCases) { section in
-//                    Text(section.rawValue)
-//                        .tag(section)
-//                }
-//            }
-//            .pickerStyle(.segmented)
-//            .frame(width: 200)
-//            .padding(10)
-//            // .border(.green)
-//
-//            Group {
-//                switch section {
-//                    case .general:
-//                        GeneralLabelSettingsView()
-//                    case .token:
-//                        TokenLabelSettingsView()
-//                }
-//            }
-//            // .border(.green)
-//
-//            Spacer()
-//
-//        }
-
          TabView {
              GeneralLabelSettingsView()
                  .tabItem {
@@ -59,16 +32,16 @@ struct LabelSettingsView: View {
                  }
          }
          .padding(.top)
-         .overlayHelpButton(url: settingsStore.labelSettingsURL)
+         .overlayHelpButton(url: settings.labelSettingsURL)
     }
 
 }
 
 struct LabelSettingsView_Previews: PreviewProvider {
-    @StateObject static private var settingsStore = SettingsStore()
+    @StateObject static private var settings = SettingsContainer()
 
     static var previews: some View {
         LabelSettingsView()
-            .environmentObject(settingsStore)
+            .environmentObject(settings)
     }
 }

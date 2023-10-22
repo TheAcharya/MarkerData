@@ -323,8 +323,8 @@ struct OverlayItem: Identifiable, Equatable {
     
     var isSelected: Bool
     
-    mutating func flipSelection(settingsStore: SettingsStore) {
-        settingsStore.flipOverlayState(overlay: self.overlay)
+    mutating func flipSelection(settings: SettingsContainer) {
+        settings.store.flipOverlayState(overlay: self.overlay)
         self.isSelected = !self.isSelected
     }
     

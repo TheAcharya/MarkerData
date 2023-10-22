@@ -11,7 +11,17 @@
 		4100D5E42AD1616D0081F0EC /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4100D5E32AD1616D0081F0EC /* ColorExtension.swift */; };
 		4100D5E72AD19C980081F0EC /* FilePicker in Frameworks */ = {isa = PBXBuildFile; productRef = 4100D5E62AD19C980081F0EC /* FilePicker */; };
 		4100D5EC2AD1A1F80081F0EC /* UTTypeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4100D5EB2AD1A1F80081F0EC /* UTTypeExtension.swift */; };
+		414262BB2AD2E1AC00FC6CFC /* URLExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414262BA2AD2E1AC00FC6CFC /* URLExtension.swift */; };
+		414262BD2AD2E24A00FC6CFC /* BundleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414262BC2AD2E24A00FC6CFC /* BundleExtension.swift */; };
+		414262C02AD5CE3200FC6CFC /* ConfigurationErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414262BF2AD5CE3200FC6CFC /* ConfigurationErrors.swift */; };
+		414262C22AD5D34D00FC6CFC /* ConfigurationsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414262C12AD5D34D00FC6CFC /* ConfigurationsModel.swift */; };
+		414262C52ADAC6EC00FC6CFC /* DefaultConfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = 414262C42ADAC6EC00FC6CFC /* DefaultConfiguration.json */; };
 		417389632AC86BE600984FD8 /* ExtractView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417389622AC86BE600984FD8 /* ExtractView.swift */; };
+		41C538942AE1AFF200E8A8A1 /* SettingsContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C538932AE1AFF200E8A8A1 /* SettingsContainer.swift */; };
+		41C538992AE3062000E8A8A1 /* HelpCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C538982AE3062000E8A8A1 /* HelpCommands.swift */; };
+		41C5389B2AE3067900E8A8A1 /* ConfigurationCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C5389A2AE3067900E8A8A1 /* ConfigurationCommands.swift */; };
+		41C5389D2AE306C000E8A8A1 /* DatabaseCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C5389C2AE306C000E8A8A1 /* DatabaseCommands.swift */; };
+		41C538A22AE420EA00E8A8A1 /* ColorWellKit in Frameworks */ = {isa = PBXBuildFile; productRef = 41C538A12AE420EA00E8A8A1 /* ColorWellKit */; };
 		47411FDA2A3EA121005890FE /* HelpButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47411FD92A3EA121005890FE /* HelpButton.swift */; };
 		47411FDC2A3EA140005890FE /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47411FDB2A3EA140005890FE /* ViewExtensions.swift */; };
 		47411FDE2A3EA1BA005890FE /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47411FDD2A3EA1BA005890FE /* AboutView.swift */; };
@@ -65,7 +75,16 @@
 		4100D5DD2AD052010081F0EC /* OverlaySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlaySettingsView.swift; sourceTree = "<group>"; };
 		4100D5E32AD1616D0081F0EC /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
 		4100D5EB2AD1A1F80081F0EC /* UTTypeExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UTTypeExtension.swift; sourceTree = "<group>"; };
+		414262BA2AD2E1AC00FC6CFC /* URLExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLExtension.swift; sourceTree = "<group>"; };
+		414262BC2AD2E24A00FC6CFC /* BundleExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleExtension.swift; sourceTree = "<group>"; };
+		414262BF2AD5CE3200FC6CFC /* ConfigurationErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationErrors.swift; sourceTree = "<group>"; };
+		414262C12AD5D34D00FC6CFC /* ConfigurationsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationsModel.swift; sourceTree = "<group>"; };
+		414262C42ADAC6EC00FC6CFC /* DefaultConfiguration.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DefaultConfiguration.json; sourceTree = "<group>"; };
 		417389622AC86BE600984FD8 /* ExtractView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractView.swift; sourceTree = "<group>"; };
+		41C538932AE1AFF200E8A8A1 /* SettingsContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsContainer.swift; sourceTree = "<group>"; };
+		41C538982AE3062000E8A8A1 /* HelpCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpCommands.swift; sourceTree = "<group>"; };
+		41C5389A2AE3067900E8A8A1 /* ConfigurationCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationCommands.swift; sourceTree = "<group>"; };
+		41C5389C2AE306C000E8A8A1 /* DatabaseCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseCommands.swift; sourceTree = "<group>"; };
 		47411FD92A3EA121005890FE /* HelpButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpButton.swift; sourceTree = "<group>"; };
 		47411FDB2A3EA140005890FE /* ViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
 		47411FDD2A3EA1BA005890FE /* AboutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
@@ -110,6 +129,7 @@
 			files = (
 				4100D5E72AD19C980081F0EC /* FilePicker in Frameworks */,
 				9B61B44229F03866003EC14A /* libswiftCoreGraphics.tbd in Frameworks */,
+				41C538A22AE420EA00E8A8A1 /* ColorWellKit in Frameworks */,
 				4765797B2A626D92009A1256 /* MarkersExtractor in Frameworks */,
 				D5F74A4A2973012800EEE2FE /* AppUpdater in Frameworks */,
 				D5F74A512973019000EEE2FE /* OrderedCollections in Frameworks */,
@@ -138,8 +158,46 @@
 				47411FDB2A3EA140005890FE /* ViewExtensions.swift */,
 				4100D5E32AD1616D0081F0EC /* ColorExtension.swift */,
 				4100D5EB2AD1A1F80081F0EC /* UTTypeExtension.swift */,
+				414262BA2AD2E1AC00FC6CFC /* URLExtension.swift */,
+				414262BC2AD2E24A00FC6CFC /* BundleExtension.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		414262BE2AD5CE1900FC6CFC /* Errors */ = {
+			isa = PBXGroup;
+			children = (
+				414262BF2AD5CE3200FC6CFC /* ConfigurationErrors.swift */,
+			);
+			path = Errors;
+			sourceTree = "<group>";
+		};
+		414262C32ADAC6B100FC6CFC /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				414262C42ADAC6EC00FC6CFC /* DefaultConfiguration.json */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		41C538922AE1AFC600E8A8A1 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				41C538932AE1AFF200E8A8A1 /* SettingsContainer.swift */,
+				9BACA4D029FA9B5100EF6837 /* SettingsStore.swift */,
+				9B51D21529E9B13400DF7836 /* SettingsModels.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		41C538952AE3018100E8A8A1 /* Commands */ = {
+			isa = PBXGroup;
+			children = (
+				41C538982AE3062000E8A8A1 /* HelpCommands.swift */,
+				41C5389A2AE3067900E8A8A1 /* ConfigurationCommands.swift */,
+				41C5389C2AE306C000E8A8A1 /* DatabaseCommands.swift */,
+			);
+			path = Commands;
 			sourceTree = "<group>";
 		};
 		47136CBE2A51079E00AB9C92 /* Main */ = {
@@ -199,6 +257,7 @@
 				9B25815C2A079FBC002CED07 /* Settings */,
 				47B21A6E2A4DF96D004FECFA /* Other */,
 				474595352A40110F00EF100D /* Components */,
+				41C538952AE3018100E8A8A1 /* Commands */,
 				47411FD82A3EA121005890FE /* Buttons */,
 			);
 			path = Views;
@@ -227,12 +286,13 @@
 		9B51D21429E9B10500DF7836 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				41C538922AE1AFC600E8A8A1 /* Settings */,
 				9B9CA1152A1A9B97004E337A /* Core Data */,
 				9B653ABC29F2C64600C64999 /* ErrorViewModel.swift */,
-				9B51D21529E9B13400DF7836 /* SettingsModels.swift */,
-				9BACA4D029FA9B5100EF6837 /* SettingsStore.swift */,
 				9B7BA03A2A128E9E0014E168 /* ProgressPublisher.swift */,
 				47F5CDF72A60CA43005D9A98 /* ExtractionModel.swift */,
+				414262C12AD5D34D00FC6CFC /* ConfigurationsModel.swift */,
+				414262BE2AD5CE1900FC6CFC /* Errors */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -271,6 +331,7 @@
 				9B35FE6629F94BF30035B760 /* Views */,
 				9B51D21429E9B10500DF7836 /* Models */,
 				9B51D20F29E99FFD00DF7836 /* Utilities */,
+				414262C32ADAC6B100FC6CFC /* Resources */,
 				D5F74A3F2972DFD800EEE2FE /* Marker-Data-Info.plist */,
 				D5F74A342972D32100EEE2FE /* Assets.xcassets */,
 				D5F74A392972D32100EEE2FE /* Marker_Data.entitlements */,
@@ -312,6 +373,7 @@
 				D5F74A502973019000EEE2FE /* OrderedCollections */,
 				4765797A2A626D92009A1256 /* MarkersExtractor */,
 				4100D5E62AD19C980081F0EC /* FilePicker */,
+				41C538A12AE420EA00E8A8A1 /* ColorWellKit */,
 			);
 			productName = "Marker Data";
 			productReference = D5F74A2D2972D31C00EEE2FE /* Marker Data.app */;
@@ -347,6 +409,7 @@
 				D5F74A4B2973019000EEE2FE /* XCRemoteSwiftPackageReference "swift-collections" */,
 				476579792A626D92009A1256 /* XCRemoteSwiftPackageReference "MarkersExtractor" */,
 				4100D5E52AD19C980081F0EC /* XCRemoteSwiftPackageReference "FilePicker" */,
+				41C538A02AE420EA00E8A8A1 /* XCRemoteSwiftPackageReference "ColorWellKit" */,
 			);
 			productRefGroup = D5F74A2E2972D31C00EEE2FE /* Products */;
 			projectDirPath = "";
@@ -364,6 +427,7 @@
 			files = (
 				D5F74A382972D32100EEE2FE /* Preview Assets.xcassets in Resources */,
 				D5F74A352972D32100EEE2FE /* Assets.xcassets in Resources */,
+				414262C52ADAC6EC00FC6CFC /* DefaultConfiguration.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -378,12 +442,16 @@
 				9B244B3E2A24AB5D005620D8 /* MarkerData.xcdatamodeld in Sources */,
 				47411FDC2A3EA140005890FE /* ViewExtensions.swift in Sources */,
 				417389632AC86BE600984FD8 /* ExtractView.swift in Sources */,
+				41C538992AE3062000E8A8A1 /* HelpCommands.swift in Sources */,
 				47411FDE2A3EA1BA005890FE /* AboutView.swift in Sources */,
+				414262BB2AD2E1AC00FC6CFC /* URLExtension.swift in Sources */,
 				9B51D21629E9B13400DF7836 /* SettingsModels.swift in Sources */,
+				414262BD2AD2E24A00FC6CFC /* BundleExtension.swift in Sources */,
 				4100D5EC2AD1A1F80081F0EC /* UTTypeExtension.swift in Sources */,
 				4100D5DE2AD052010081F0EC /* OverlaySettingsView.swift in Sources */,
 				9B4D90D82A0BAE3900FE7603 /* ImageSettingsView.swift in Sources */,
 				D5F74A412972E0A800EEE2FE /* SettingsView.swift in Sources */,
+				41C5389B2AE3067900E8A8A1 /* ConfigurationCommands.swift in Sources */,
 				9B25815E2A07A286002CED07 /* GeneralSettingsView.swift in Sources */,
 				9BACA4D129FA9B5100EF6837 /* SettingsStore.swift in Sources */,
 				4100D5E42AD1616D0081F0EC /* ColorExtension.swift in Sources */,
@@ -397,10 +465,14 @@
 				9B4D90DA2A0BAF9E00FE7603 /* GeneralLabelSettingsView.swift in Sources */,
 				47F5CDF82A60CA43005D9A98 /* ExtractionModel.swift in Sources */,
 				9B653ABD29F2C64600C64999 /* ErrorViewModel.swift in Sources */,
+				41C5389D2AE306C000E8A8A1 /* DatabaseCommands.swift in Sources */,
+				41C538942AE1AFF200E8A8A1 /* SettingsContainer.swift in Sources */,
+				414262C02AD5CE3200FC6CFC /* ConfigurationErrors.swift in Sources */,
 				D5F74A312972D31D00EEE2FE /* Marker_DataApp.swift in Sources */,
 				474595582A40254E00EF100D /* ColorPickerOpacitySliderForm.swift in Sources */,
 				47411FDA2A3EA121005890FE /* HelpButton.swift in Sources */,
 				9B4D90DC2A0BB07500FE7603 /* ConfigurationSettingsView.swift in Sources */,
+				414262C22AD5D34D00FC6CFC /* ConfigurationsModel.swift in Sources */,
 				9B51D21129E9A01A00DF7836 /* FolderPicker.swift in Sources */,
 				9B9CA1172A1A9BBB004E337A /* PersistenceController.swift in Sources */,
 				474595372A40113000EF100D /* LabeledTextboxStepperForm.swift in Sources */,
@@ -462,7 +534,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -518,7 +590,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
@@ -643,6 +715,14 @@
 				minimumVersion = 1.0.1;
 			};
 		};
+		41C538A02AE420EA00E8A8A1 /* XCRemoteSwiftPackageReference "ColorWellKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jordanbaird/ColorWellKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.0;
+			};
+		};
 		476579792A626D92009A1256 /* XCRemoteSwiftPackageReference "MarkersExtractor" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Peter-Schorn/MarkersExtractor";
@@ -682,6 +762,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4100D5E52AD19C980081F0EC /* XCRemoteSwiftPackageReference "FilePicker" */;
 			productName = FilePicker;
+		};
+		41C538A12AE420EA00E8A8A1 /* ColorWellKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 41C538A02AE420EA00E8A8A1 /* XCRemoteSwiftPackageReference "ColorWellKit" */;
+			productName = ColorWellKit;
 		};
 		4765797A2A626D92009A1256 /* MarkersExtractor */ = {
 			isa = XCSwiftPackageProductDependency;

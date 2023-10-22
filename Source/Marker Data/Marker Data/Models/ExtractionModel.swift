@@ -15,15 +15,15 @@ class ExtractionModel: ObservableObject, DropDelegate {
     @Published var completedOutputFolder: URL? = nil
 
     let errorViewModel: ErrorViewModel
-    let settingsStore: SettingsStore
+    let settings: SettingsContainer
     let progressPublisher: ProgressPublisher
 
     init(
-        settingsStore: SettingsStore,
+        settings: SettingsContainer,
         progressPublisher: ProgressPublisher
     ) {
         self.errorViewModel = ErrorViewModel()
-        self.settingsStore = settingsStore
+        self.settings = settings
         self.progressPublisher = progressPublisher
     }
 
@@ -103,7 +103,7 @@ class ExtractionModel: ObservableObject, DropDelegate {
         )
 
         do {
-            let settings = try self.settingsStore.markersExtractorSettings(
+            let settings = try self.settings.store.markersExtractorSettings(
                 fcpxmlFileUrl: url
             )
             self.progressPublisher.updateProgressTo(

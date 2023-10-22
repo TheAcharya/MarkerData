@@ -8,9 +8,7 @@
 import SwiftUI
 
 struct ImageSettingsView: View {
-
-    @EnvironmentObject var settingsStore: SettingsStore
-
+    @EnvironmentObject var settings: SettingsContainer
 
     var body: some View {
         VStack(alignment: .formControlAlignment) {
@@ -24,7 +22,7 @@ struct ImageSettingsView: View {
                     Text("Naming Mode:")
 
                     //Picker To Change Selected ID Naming Mode
-                    Picker("", selection: $settingsStore.selectedIDNamingMode) {
+                    Picker("", selection: $settings.store.selectedIDNamingMode) {
                         ForEach(IdNamingMode.allCases) { item in
                             Text(item.displayName).tag(item)
                         }
@@ -64,14 +62,14 @@ struct ImageSettingsView: View {
                     // Picker To Change Selected ID Naming Mode
                     TextField(
                         "",
-                        value: settingsStore.$imageWidth,
+                        value: settings.store.$imageWidth,
                         format: .emptyOrInt
                     )
                     .labelsHidden()
                     .frame(width: 75)
                     .formControlLeadingAlignmentGuide()
 
-                    Toggle("", isOn: settingsStore.$imageWidthEnabled)
+                    Toggle("", isOn: settings.store.$imageWidthEnabled)
 
                 }
 
@@ -82,14 +80,14 @@ struct ImageSettingsView: View {
                     //Picker To Change Selected ID Naming Mode
                     TextField(
                         "",
-                        value: settingsStore.$imageHeight,
+                        value: settings.store.$imageHeight,
                         format: .emptyOrInt
                     )
                     .labelsHidden()
                     .frame(width: 75)
                     .formControlLeadingAlignmentGuide()
 
-                    Toggle("", isOn: settingsStore.$imageHeightEnabled)
+                    Toggle("", isOn: settings.store.$imageHeightEnabled)
 
                 }
 
@@ -100,7 +98,7 @@ struct ImageSettingsView: View {
                     TextField(
                         "",
                         // text: imageSizeBinding
-                        value: settingsStore.$selectedImageSize,
+                        value: settings.store.$selectedImageSize,
                         format: .percent
                     )
                     .labelsHidden()
@@ -109,7 +107,7 @@ struct ImageSettingsView: View {
 
                     Stepper(
                         "",
-                        value: $settingsStore.selectedImageSize,
+                        value: $settings.store.selectedImageSize,
                         in: 0...100
                     )
                     .labelsHidden()
@@ -132,7 +130,7 @@ struct ImageSettingsView: View {
 
                     TextField(
                         "",
-                        value: settingsStore.$selectedImageQuality,
+                        value: settings.store.$selectedImageQuality,
                         format: .percent
                     )
                     .labelsHidden()
@@ -141,7 +139,7 @@ struct ImageSettingsView: View {
 
                     Stepper(
                         "",
-                        value: $settingsStore.selectedImageQuality,
+                        value: $settings.store.selectedImageQuality,
                         in: 0...100
                     )
                     .labelsHidden()
@@ -150,7 +148,7 @@ struct ImageSettingsView: View {
                 }
 
             }
-            .disabled(settingsStore.selectedImageMode != .JPG)
+            .disabled(settings.store.selectedImageMode != .JPG)
 
             Group {
 
@@ -165,7 +163,7 @@ struct ImageSettingsView: View {
 
                     TextField(
                         "",
-                        value: settingsStore.$selectedGIFFPS,
+                        value: settings.store.$selectedGIFFPS,
                         format: .number.precision(.fractionLength(0))
                     )
                     .labelsHidden()
@@ -174,7 +172,7 @@ struct ImageSettingsView: View {
 
                     Stepper(
                         "",
-                        value: $settingsStore.selectedGIFFPS,
+                        value: $settings.store.selectedGIFFPS,
                         in: 0...100
                     )
                     .labelsHidden()
@@ -188,7 +186,7 @@ struct ImageSettingsView: View {
 
                     TextField(
                         "",
-                        value: settingsStore.$selectedGIFLength,
+                        value: settings.store.$selectedGIFLength,
                         format: .number.precision(.fractionLength(0))
                     )
                     .labelsHidden()
@@ -197,7 +195,7 @@ struct ImageSettingsView: View {
 
                     Stepper(
                         "",
-                        value: $settingsStore.selectedGIFLength,
+                        value: $settings.store.selectedGIFLength,
                         in: 0...100
                     )
                     .labelsHidden()
@@ -205,17 +203,19 @@ struct ImageSettingsView: View {
 
                 }
             }
-            .disabled(settingsStore.selectedImageMode != .GIF)
+            .disabled(settings.store.selectedImageMode != .GIF)
 
         }
-        .overlayHelpButton(url: settingsStore.imageSettingsURL)
+        .overlayHelpButton(url: settings.imageSettingsURL)
         .navigationTitle("Image Settings")
     }
 }
 
 struct ImageSettingsView_Previews: PreviewProvider {
-    static let settingsStore = SettingsStore()
+    static let settings = SettingsContainer()
+    
     static var previews: some View {
-        ImageSettingsView().environmentObject(settingsStore)
+        ImageSettingsView()
+            .environmentObject(settings)
     }
 }

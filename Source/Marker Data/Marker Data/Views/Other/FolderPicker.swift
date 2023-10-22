@@ -11,10 +11,9 @@ import UniformTypeIdentifiers
 import Combine
 
 struct FolderPicker: View {
+    @EnvironmentObject var settings: SettingsContainer
 
     static let coordinateSpace = "folderPicker"
-
-    @EnvironmentObject var settingsStore: SettingsStore
 
     @State private var rect = NSRect.zero
 
@@ -27,7 +26,7 @@ struct FolderPicker: View {
     }
 
     var isDragging: Bool {
-        settingsStore.folderPickerDropDelegate.isDragging
+        settings.folderPickerDropDelegate.isDragging
     }
 
     var body: some View {
@@ -69,16 +68,16 @@ struct FolderPicker: View {
             }
             .onDrop(
                 of: FolderPickerDropDelegate.allowedTypes,
-                delegate: settingsStore.folderPickerDropDelegate
+                delegate: settings.folderPickerDropDelegate
             )
             .onReceive(
-                settingsStore.folderPickerDropDelegate.droppedURLSubject
+                settings.folderPickerDropDelegate.droppedURLSubject
             ) { url in
                 self.url = url
             }
             
             Button {
-                settingsStore.exportFolderURL = URL(string: "")
+                settings.store.exportFolderURL = URL(string: "")
             } label: {
                 Image(systemName: "trash")
             }
@@ -91,13 +90,13 @@ struct FolderPicker: View {
 
         print("FolderPicker.presentPanel")
 
-        if let url = self.settingsStore.exportFolderURL {
-            self.settingsStore.exportDestinationOpenPanel.directoryURL = url
+        if let url = self.settings.store.exportFolderURL {
+            self.settings.exportDestinationOpenPanel.directoryURL = url
         }
 
-        self.settingsStore.exportDestinationOpenPanel.begin { response in
+        self.settings.exportDestinationOpenPanel.begin { response in
             if response == .OK {
-                self.url = self.settingsStore.exportDestinationOpenPanel.url
+                self.url = self.settings.exportDestinationOpenPanel.url
             }
             else {
                 print(

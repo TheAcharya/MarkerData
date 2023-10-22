@@ -8,11 +8,10 @@
 import SwiftUI
 
 struct ExportFormatPicker: View {
-    
-    @EnvironmentObject var settingsStore: SettingsStore
+    @EnvironmentObject var settings: SettingsContainer
 
     var body: some View {
-        Picker("Profiles", selection: $settingsStore.selectedExportFormat) {
+        Picker("Profiles", selection: $settings.store.selectedExportFormat) {
             ForEach(ExportFormat.allCases) { exportFormat in
                 Text(exportFormat.displayName).tag(exportFormat)
             }
@@ -21,11 +20,10 @@ struct ExportFormatPicker: View {
 }
 
 struct ExcludedRolesPicker: View {
-    
-    @EnvironmentObject var settingsStore: SettingsStore
+    @EnvironmentObject var settings: SettingsContainer
 
     var body: some View {
-        Picker("Exclude Roles", selection: $settingsStore.selectedExcludeRoles) {
+        Picker("Exclude Roles", selection: $settings.store.selectedExcludeRoles) {
             ForEach(ExcludedRoles.allCases) { excludedRole in
                 Text(excludedRole.displayName).tag(excludedRole)
             }
@@ -34,11 +32,10 @@ struct ExcludedRolesPicker: View {
 }
 
 struct ImageModePicker: View {
-    
-    @EnvironmentObject var settingsStore: SettingsStore
+    @EnvironmentObject var settings: SettingsContainer
 
     var body: some View {
-        Picker("Image Format", selection: $settingsStore.selectedImageMode) {
+        Picker("Image Format", selection: $settings.store.selectedImageMode) {
             ForEach(ImageMode.allCases) { imageMode in
                 Text(imageMode.displayName).tag(imageMode)
             }
@@ -47,11 +44,10 @@ struct ImageModePicker: View {
 }
 
 struct FontNamePicker: View {
-    
-    @EnvironmentObject var settingsStore: SettingsStore
+    @EnvironmentObject var settings: SettingsContainer
 
     var body: some View {
-        Picker("", selection: $settingsStore.selectedFontNameType) {
+        Picker("", selection: $settings.store.selectedFontNameType) {
             ForEach(FontNameType.allCases) { fontNameType in
                 Text(fontNameType.displayName).tag(fontNameType)
             }
@@ -60,10 +56,10 @@ struct FontNamePicker: View {
 }
 
 struct FontStylePicker: View {
-    @EnvironmentObject var settingsStore: SettingsStore
+    @EnvironmentObject var settings: SettingsContainer
 
     var body: some View {
-        Picker("", selection: $settingsStore.selectedFontStyleType) {
+        Picker("", selection: $settings.store.selectedFontStyleType) {
             ForEach(FontStyleType.allCases) { fontStyleType in
                 Text(fontStyleType.displayName).tag(fontStyleType)
             }

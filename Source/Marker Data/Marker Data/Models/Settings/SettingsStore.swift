@@ -12,63 +12,7 @@ import MarkersExtractor
 import AppKit
 
 class SettingsStore: ObservableObject {
-    
-    // func test<T: RawRepresentable>(_ t: T) where T.RawValue == String {
-    //     if Bool.random() {
-    //         self.test(SettingsSection.general)
-    //     }
-    // }
-
-    // MARK: Documentation Links
-    
-    let generalSettingsURL = URL(
-        string: "https://markerdata.theacharya.co/user-guide/general/"
-    )!
-    
-    let imageSettingsURL =  URL(
-        string: "https://markerdata.theacharya.co/user-guide/image/"
-    )!
-    
-    let labelSettingsURL =  URL(
-        string: "https://markerdata.theacharya.co/user-guide/label/"
-    )!
-    
-    let configurationSettingsURL =  URL(
-        string: "https://markerdata.theacharya.co/user-guide/configurations/"
-    )!
-    
-    let databaseSettingsURL =  URL(
-        string: "https://markerdata.theacharya.co/user-guide/databases/"
-    )!
-
-    let exportDestinationOpenPanel: NSOpenPanel = {
-        let panel = NSOpenPanel()
-        panel.canChooseFiles = false
-        panel.canChooseDirectories = true
-        panel.allowsMultipleSelection = false
-        return panel
-    }()
-
-    init() {
-
-        self.folderPickerDropDelegate.objectWillChange
-            .sink(receiveValue: self.objectWillChange.send)
-            .store(in: &self.cancellables)
-
-        if let url = self.exportFolderURL {
-            self.exportDestinationOpenPanel.directoryURL = url
-        }
-
-    }
-
-    private var cancellables: Set<AnyCancellable> = []
-
-    @Published var folderPickerDropDelegate = FolderPickerDropDelegate()
-
     @AppStorage("exportFolderURL") var exportFolderURL: URL?
-
-    // MARK: settings selection
-//    @AppStorage("settingsSection") var settingsSection: SettingsSection?
 
     @AppStorage("selectedFolderFormat") private var selectedFolderFormatRawValue: Int = UserFolderFormat.Medium.rawValue
     var selectedFolderFormat: UserFolderFormat{
@@ -102,8 +46,7 @@ class SettingsStore: ObservableObject {
     @AppStorage("enabledNoMedia") var enabledNoMedia = false
     
     
-    
-    @AppStorage("selectedIDNamingMode") private var selectedIDNamingModeRawValue:Int = IdNamingMode.Timecode.rawValue
+    @AppStorage("selectedIDNamingMode") private var selectedIDNamingModeRawValue: Int = IdNamingMode.Timecode.rawValue
     var selectedIDNamingMode: IdNamingMode {
         get { IdNamingMode(rawValue: selectedIDNamingModeRawValue) ?? .Name }
         set { selectedIDNamingModeRawValue = newValue.rawValue }
@@ -175,7 +118,16 @@ class SettingsStore: ObservableObject {
         }
     }
     
-    @AppStorage("selectedFontColorOpacity") var selectedFontColorOpacity: Double = 1
+//    @AppStorage("selectedFontColorOpacity") var selectedFontColorOpacity: Double = 1
+    
+    var selectedFontColorOpacity: Double {
+        get {
+            UserDefaults.standard.double(forKey: "selectedFontColorOpacity")
+        }
+        set(newValue) {
+            UserDefaults.standard.set(newValue, forKey: "selectedFontColorOpacity")
+        }
+    }
     
     // Stroke color and opacity
     var selectedStrokeColor: Color {
@@ -238,9 +190,11 @@ class SettingsStore: ObservableObject {
         }
     }
     
-    @AppStorage("copyrightText") var copyrightText = ""
+    @AppStorage("copyrightText") var copyrightText: String = ""
     
-    @AppStorage("hideLabelNames") var hideLabelNames = false
+    @AppStorage("hideLabelNames") var hideLabelNames: Bool = false
+    
+    // MARK: CLI settings
     
     func markersExtractorSettings(fcpxmlFileUrl: URL) throws -> MarkersExtractor.Settings {
         let outputDirURL: URL = UserDefaults.standard.exportFolder
@@ -279,5 +233,4 @@ class SettingsStore: ObservableObject {
         return settings
         
     }
-    
 }

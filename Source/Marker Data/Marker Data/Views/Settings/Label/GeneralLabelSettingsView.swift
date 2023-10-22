@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct GeneralLabelSettingsView: View {
-
-    @EnvironmentObject var settingsStore: SettingsStore
+    @EnvironmentObject var settings: SettingsContainer
 
     let intFormatter: NumberFormatter = {
         let formatter = NumberFormatter()
@@ -19,17 +18,17 @@ struct GeneralLabelSettingsView: View {
     
     var fontSizeBinding: Binding<String> {
         .init(get: {
-            "\(settingsStore.selectedFontSize)"
+            "\(settings.store.selectedFontSize)"
         }, set: {
-            settingsStore.selectedFontSize = Int($0) ?? settingsStore.selectedFontSize
+            settings.store.selectedFontSize = Int($0) ?? settings.store.selectedFontSize
         })
     }
     
     var strokeSizeBinding: Binding<String> {
         .init(get: {
-            "\(settingsStore.selectedStrokeSize)"
+            "\(settings.store.selectedStrokeSize)"
         }, set: {
-            settingsStore.selectedStrokeSize = Int($0) ?? settingsStore.selectedStrokeSize
+            settings.store.selectedStrokeSize = Int($0) ?? settings.store.selectedStrokeSize
         })
     }
     
@@ -50,7 +49,6 @@ struct GeneralLabelSettingsView: View {
                         .padding(.leading, -8)
                         .formControlLeadingAlignmentGuide()
                         .frame(width: 150)
-                        // .border(.green)
                 }
 
                 HStack {
@@ -59,21 +57,20 @@ struct GeneralLabelSettingsView: View {
                         .padding(.leading, -8)
                         .formControlLeadingAlignmentGuide()
                         .frame(width: 150)
-                        // .border(.green)
                 }
 
 
                 LabeledTextboxStepperForm(
                     label: "Size:",
-                    value: settingsStore.$selectedFontSize,
+                    value: $settings.store.selectedFontSize,
                     in: 6...100,
                     format: .number,
                     textFieldWidth: 50
                 )
 
                 ColorPickerOpacitySliderForm(
-                    color: $settingsStore.selectedFontColor,
-                    opacity: settingsStore.$selectedFontColorOpacity
+                    color: $settings.store.selectedFontColor,
+                    opacity: $settings.store.selectedFontColorOpacity
                 )
             }
 
@@ -87,15 +84,15 @@ struct GeneralLabelSettingsView: View {
 
                 LabeledTextboxStepperForm(
                     label: "Size:",
-                    value: settingsStore.$selectedStrokeSize,
+                    value: $settings.store.selectedStrokeSize,
                     in: 6...100,
                     format: .number,
                     textFieldWidth: 50
                 )
 
                 ColorPickerOpacitySliderForm(
-                    color: $settingsStore.selectedStrokeColor,
-                    opacity: settingsStore.$selectedStrokeColorOpacity
+                    color: $settings.store.selectedStrokeColor,
+                    opacity: $settings.store.selectedStrokeColorOpacity
                 )
 
             }
@@ -110,7 +107,7 @@ struct GeneralLabelSettingsView: View {
 
                 HStack {
                     Text("Horizontal:")
-                    Picker("", selection: $settingsStore.selectedHorizonalAlignment) {
+                    Picker("", selection: $settings.store.selectedHorizonalAlignment) {
                         ForEach(LabelHorizontalAlignment.allCases) { item in
                             Text(item.displayName).tag(item)
                         }
@@ -121,7 +118,7 @@ struct GeneralLabelSettingsView: View {
                 }
                 HStack {
                     Text("Vertical:")
-                    Picker("", selection: $settingsStore.selectedVerticalAlignment) {
+                    Picker("", selection: $settings.store.selectedVerticalAlignment) {
                         ForEach(LabelVerticalAlignment.allCases) { item in
                             Text(item.displayName).tag(item)
                         }
@@ -141,12 +138,11 @@ struct GeneralLabelSettingsView: View {
 
 struct GeneralLabelSettingsView_Previews: PreviewProvider {
 
-    @StateObject static private var settingsStore = SettingsStore()
+    @StateObject static private var settings = SettingsContainer()
     
     static var previews: some View {
         GeneralLabelSettingsView()
-            .environmentObject(settingsStore)
-            // .frame(width: 500, height: 500)
+            .environmentObject(settings)
     }
     
 }

@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct DatabaseSettingsView: View {
-    
-    @EnvironmentObject var settingsStore: SettingsStore
+    @EnvironmentObject var settings: SettingsContainer
     
     var body: some View {
         Form {
@@ -73,7 +72,7 @@ struct DatabaseSettingsView: View {
             }
             .padding(.horizontal)
         }
-        .overlayHelpButton(url: settingsStore.databaseSettingsURL)
+        .overlayHelpButton(url: settings.databaseSettingsURL)
         .navigationTitle("Database Settings")
         
     }
@@ -81,8 +80,10 @@ struct DatabaseSettingsView: View {
 }
 
 struct DatabaseSettingsView_Previews: PreviewProvider {
-    static let settingsStore = SettingsStore()
+    static let settings = SettingsContainer()
+    
     static var previews: some View {
-        DatabaseSettingsView().environmentObject(settingsStore)
+        DatabaseSettingsView()
+            .environmentObject(settings)
     }
 }

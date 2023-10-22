@@ -11,7 +11,7 @@ struct GeneralSettingsView: View {
 
     @Environment(\.openURL) var openURL
 
-    @EnvironmentObject var settingsStore: SettingsStore
+    @EnvironmentObject var settings: SettingsContainer
     
     var body: some View {
         VStack(alignment: .formControlAlignment) {
@@ -25,7 +25,7 @@ struct GeneralSettingsView: View {
                         .fixedSize(horizontal: true, vertical: false)
 
                     FolderPicker(
-                        url: settingsStore.$exportFolderURL,
+                        url: settings.store.$exportFolderURL,
                         title: "Choose…"
                     )
                 }
@@ -35,7 +35,7 @@ struct GeneralSettingsView: View {
                     Text("Folder Format:")
                         // .border(.green)
 
-                    Picker("", selection: $settingsStore.selectedFolderFormat) {
+                    Picker("", selection: $settings.store.selectedFolderFormat) {
                         ForEach(UserFolderFormat.allCases) { item in
                             Text(item.displayName).tag(item)
                         }
@@ -80,7 +80,7 @@ struct GeneralSettingsView: View {
 
                     Text("Enable Subframes:")
 
-                    Toggle("", isOn: $settingsStore.enabledSubframes)
+                    Toggle("", isOn: settings.store.$enabledSubframes)
                         .toggleStyle(CheckboxToggleStyle())
                         .formControlLeadingAlignmentGuide()
 
@@ -90,7 +90,7 @@ struct GeneralSettingsView: View {
 
                     Text("Clip Boundaries:")
 
-                    Toggle("", isOn: $settingsStore.enabledClipBoundaries)
+                    Toggle("", isOn: settings.store.$enabledClipBoundaries)
                         .toggleStyle(CheckboxToggleStyle())
                         .formControlLeadingAlignmentGuide()
 
@@ -100,14 +100,14 @@ struct GeneralSettingsView: View {
 
                     Text("No Media:")
 
-                    Toggle("", isOn: $settingsStore.enabledNoMedia)
+                    Toggle("", isOn: settings.store.$enabledNoMedia)
                         .toggleStyle(CheckboxToggleStyle())
                         .formControlLeadingAlignmentGuide()
 
                 }
             }
         }
-        .overlayHelpButton(url: settingsStore.generalSettingsURL)
+        .overlayHelpButton(url: settings.generalSettingsURL)
         .navigationTitle("General Settings")
         
     }
@@ -116,11 +116,11 @@ struct GeneralSettingsView: View {
 
 struct GeneralSettingsView_Previews: PreviewProvider {
 
-    @StateObject static private var settingsStore = SettingsStore()
+    @StateObject static private var settings = SettingsContainer()
     
     static var previews: some View {
         GeneralSettingsView()
-            .environmentObject(settingsStore)
+            .environmentObject(settings)
             .padding()
     }
     

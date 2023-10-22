@@ -14,7 +14,7 @@ struct ExtractView: View {
     @ObservedObject var extractionModel: ExtractionModel
     @ObservedObject var progressPublisher: ProgressPublisher
    
-    @EnvironmentObject var settingsStore: SettingsStore
+    @EnvironmentObject var settings: SettingsContainer
     
     @State var showMoreQuickSettings = false
     @State var emptyExportDestination = false
@@ -156,18 +156,18 @@ struct ExtractView: View {
                         Text("Export Destination: ")
                         
                         FolderPicker(
-                            url: settingsStore.$exportFolderURL,
+                            url: settings.store.$exportFolderURL,
                             title: "Choose…"
                         )
-                        .onChange(of: settingsStore.exportFolderURL) { newURL in
-                            if let exportURL = settingsStore.exportFolderURL {
+                        .onChange(of: settings.store.exportFolderURL) { newURL in
+                            if let exportURL = settings.store.exportFolderURL {
                                 withAnimation {
                                     emptyExportDestination = exportURL.absoluteString.isEmpty
                                 }
                             }
                         }
                         .onAppear {
-                            if let exportURL = settingsStore.exportFolderURL {
+                            if let exportURL = settings.store.exportFolderURL {
                                 print(exportURL.absoluteString)
                                 emptyExportDestination = exportURL.absoluteString.isEmpty
                             } else {
@@ -214,7 +214,7 @@ struct ExtractView: View {
                     // Hidden quick settings
                     if showMoreQuickSettings {
                         HStack {
-                            Toggle("Upload", isOn: $settingsStore.isUploadEnabled)
+                            Toggle("Upload", isOn: settings.store.$isUploadEnabled)
                                 .toggleStyle(CheckboxToggleStyle())
                             
                             ExcludedRolesPicker()
@@ -261,14 +261,14 @@ struct ExtractView: View {
 }
 
 #Preview {
-    @StateObject  var settingsStore = SettingsStore()
+    @StateObject var settings = SettingsContainer()
 
     @StateObject var progressPublisher = ProgressPublisher(
         progress: Progress(totalUnitCount: 100)
     )
 
     @StateObject var extractionModel = ExtractionModel(
-        settingsStore: settingsStore,
+        settings: settings,
         progressPublisher: progressPublisher
     )
 
@@ -276,5 +276,5 @@ struct ExtractView: View {
         extractionModel: extractionModel,
         progressPublisher: progressPublisher
     )
-    .environmentObject(settingsStore)
+    .environmentObject(settings)
 }

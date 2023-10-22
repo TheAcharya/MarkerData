@@ -9,7 +9,7 @@ import SwiftUI
 import MarkersExtractor
 
 struct OverlaySettingsView: View {
-    @EnvironmentObject var settingsStore: SettingsStore
+    @EnvironmentObject var settings: SettingsContainer
 
     @State private var searchText = ""
     @State private var selectedTags: Set<String> = []
@@ -47,7 +47,7 @@ struct OverlaySettingsView: View {
         }
         .frame(maxWidth: 520)
         .onAppear {
-            let selectedOverlays = settingsStore.overlays
+            let selectedOverlays = settings.store.overlays
 
             overlays = ExportField.allCases.map {
                 OverlayItem(overlay: $0,
@@ -80,7 +80,7 @@ struct OverlaySettingsView: View {
     }
     
     func removeActiveOverlays() {
-        settingsStore.overlays.removeAll()
+        settings.store.overlays.removeAll()
         self.overlays = ExportField.allCases.map {
             OverlayItem(overlay: $0,
                         isSelected: false)
@@ -91,12 +91,12 @@ struct OverlaySettingsView: View {
         VStack(alignment: .leading) {
             HStack {
                 Text("Copyright:")
-                TextField("Your company", text: settingsStore.$copyrightText)
+                TextField("Your company", text: settings.store.$copyrightText)
             }
 
             HStack {
                 Text("Hide Label Names:")
-                Toggle("", isOn: settingsStore.$hideLabelNames)
+                Toggle("", isOn: settings.store.$hideLabelNames)
             }
         }
     }
@@ -118,7 +118,7 @@ struct OverlaySettingsView: View {
                             Button(overlay.name) {
                                 withAnimation(.spring(duration: 0.2)) {
                                     if let index = self.overlays.firstIndex(of: overlay) {
-                                        self.overlays[index].flipSelection(settingsStore: settingsStore)
+                                        self.overlays[index].flipSelection(settings: settings)
                                     }
                                 }
                             }
@@ -150,9 +150,9 @@ struct OverlaySettingsView: View {
 }
 
 #Preview {
-    @StateObject var settingsStore = SettingsStore()
+    @StateObject var settings = SettingsContainer()
     
     return OverlaySettingsView()
         .padding()
-        .environmentObject(settingsStore)
+        .environmentObject(settings)
 }

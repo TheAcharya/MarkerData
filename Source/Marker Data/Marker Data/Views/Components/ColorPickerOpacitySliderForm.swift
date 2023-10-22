@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import ColorWellKit
 
 /// Only use in a Form
 struct ColorPickerOpacitySliderForm: View {
@@ -18,7 +19,8 @@ struct ColorPickerOpacitySliderForm: View {
 
             Text("Color & Opacity:")
 
-            ColorPicker("", selection: $color, supportsOpacity: false)
+            ColorWellView(selection: $color, supportsOpacity: false)
+                .colorWellStyle(.swatches)
 
             Slider(value: $opacity, in: 0...1)
                 .frame(width: 75)
