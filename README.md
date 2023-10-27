@@ -68,7 +68,7 @@ macOS Monterey 12.6.6 or later <br> Final Cut Pro 10.6.6
 
 ## Credits
 
-Original Idea, Application Direction and Workflow by [Vigneswaran Rajkumar](https://twitter.com/IAmVigneswaran)
+Original Idea, Application Direction and Workflow Architecture by [Vigneswaran Rajkumar](https://twitter.com/IAmVigneswaran)
 
 **Graphical User Interface and UI/UX Logic**
 
