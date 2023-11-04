@@ -29,6 +29,9 @@ class ConfigurationsModel: ObservableObject {
     static let configurationNameCharacterLimit = 20
     
     init() {
+        // Create configurations directory in case it doesn't exist yet
+        createConfigurationsDirectory()
+        
         // Add Default config to list
         self.configurations.append(ConfigurationItem(name: Self.defaultConfigurationName))
         
@@ -221,6 +224,22 @@ class ConfigurationsModel: ObservableObject {
             return !NSDictionary(dictionary: current).isEqual(to: saved)
         } catch {
             return false
+        }
+    }
+    
+    /// Creates configurations directory if it doesn't exist already
+    private func createConfigurationsDirectory() {
+        let fileManager = FileManager.default
+        
+        let pathString = URL.configurationsFolder.path().removingPercentEncoding ?? ""
+        var isDir : ObjCBool = false
+        
+        if !fileManager.fileExists(atPath: pathString, isDirectory: &isDir) {
+            do {
+                try fileManager.createDirectory(at: URL.configurationsFolder, withIntermediateDirectories: true)
+            } catch {
+                Self.logger.error("Failed to create Configurations directory")
+            }
         }
     }
     
