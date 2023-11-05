@@ -156,7 +156,7 @@ struct ExtractView: View {
                         Text("Export Destination: ")
                         
                         FolderPicker(
-                            url: settings.store.$exportFolderURL,
+                            url: $settings.store.exportFolderURL,
                             title: "Choose…"
                         )
                         .onChange(of: settings.store.exportFolderURL) { newURL in
@@ -214,7 +214,7 @@ struct ExtractView: View {
                     // Hidden quick settings
                     if showMoreQuickSettings {
                         HStack {
-                            Toggle("Upload", isOn: settings.store.$isUploadEnabled)
+                            Toggle("Upload", isOn: $settings.store.isUploadEnabled)
                                 .toggleStyle(CheckboxToggleStyle())
                             
                             ExcludedRolesPicker()

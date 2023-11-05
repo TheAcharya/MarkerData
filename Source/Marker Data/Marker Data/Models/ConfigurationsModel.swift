@@ -112,13 +112,18 @@ class ConfigurationsModel: ObservableObject {
         }
         
         // Load export settings into dictionary format
-        let dictionary = if configurationName == Self.defaultConfigurationName {
-            try loadDefaultsDicitionary()
-        } else {
-            try getConfigurationDictionary(configurationName: configurationName)
+        do {
+            let dictionary = if configurationName == Self.defaultConfigurationName {
+                try loadDefaultsDicitionary()
+            } else {
+                try getConfigurationDictionary(configurationName: configurationName)
+            }
+            
+            UserDefaults.standard.setValuesForKeys(dictionary)
+        } catch {
+            Self.logger.error("Failed to load configuration file. Message: \(error.localizedDescription)")
+            throw ConfigurationLoadError.fileDoesntExists
         }
-        
-        UserDefaults.standard.setValuesForKeys(dictionary)
         
         UserDefaults.standard.synchronize()
         
@@ -197,15 +202,27 @@ class ConfigurationsModel: ObservableObject {
     
     /// Loads default configuration from resources
     func loadDefaultsDicitionary() throws -> Dictionary<String, Any> {
-        guard
-            let url = Bundle.main.url(forResource: Self.defaultConfigurationFileName, withExtension: "json"),
-            let data = try? Data(contentsOf: url),
-            let configDict = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
-        else {
+//        guard
+//            let url = Bundle.main.url(forResource: Self.defaultConfigurationFileName, withExtension: "json"),
+//            let data = try? Data(contentsOf: url),
+//            let configDict = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+//        else {
+//            throw ConfigurationLoadError.fileDoesntExists
+//        }
+        
+        do {
+            if let url = Bundle.main.url(forResource: Self.defaultConfigurationFileName, withExtension: "json") {
+                let data = try Data(contentsOf: url)
+                let configDict = try JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
+                
+                return configDict
+            }
+        } catch {
+            Self.logger.error("Failed to load defaults dict. Message: \(error.localizedDescription)")
             throw ConfigurationLoadError.fileDoesntExists
         }
         
-        return configDict
+        throw ConfigurationLoadError.fileDoesntExists
     }
     
     /// Returns true if there are unsaved changes to active configuration

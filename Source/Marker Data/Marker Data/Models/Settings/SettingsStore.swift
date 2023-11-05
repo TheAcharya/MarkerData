@@ -59,12 +59,12 @@ class SettingsStore: ObservableObject {
     //Default Image Width
     @AppStorage("imageWidth") var imageWidth: Int?  // 1920
 
-    @AppStorage("imageWidthEnabled") var imageWidthEnabled = true
+    @AppStorage("imageWidthEnabled") var imageWidthEnabled = false
 
     //Default Image Height
     @AppStorage("imageHeight") var imageHeight: Int?  // 1080
 
-    @AppStorage("imageHeightEnabled") var imageHeightEnabled = true
+    @AppStorage("imageHeightEnabled") var imageHeightEnabled = false
 
     //Default Image Scale Size
     @AppStorage("selectedImageSize") var selectedImageSize: Int = 100
@@ -117,8 +117,6 @@ class SettingsStore: ObservableObject {
             UserDefaults.standard.set(newColor.hex, forKey: "selectedFontColor")
         }
     }
-    
-//    @AppStorage("selectedFontColorOpacity") var selectedFontColorOpacity: Double = 1
     
     var selectedFontColorOpacity: Double {
         get {

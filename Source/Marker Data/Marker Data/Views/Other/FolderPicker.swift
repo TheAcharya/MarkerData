@@ -77,7 +77,7 @@ struct FolderPicker: View {
             }
             
             Button {
-                settings.store.exportFolderURL = URL(string: "")
+                url = URL(string: "")
             } label: {
                 Image(systemName: "trash")
             }

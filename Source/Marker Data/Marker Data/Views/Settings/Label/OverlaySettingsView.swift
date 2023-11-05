@@ -91,12 +91,12 @@ struct OverlaySettingsView: View {
         VStack(alignment: .leading) {
             HStack {
                 Text("Copyright:")
-                TextField("Your company", text: settings.store.$copyrightText)
+                TextField("Your company", text: $settings.store.copyrightText)
             }
 
             HStack {
                 Text("Hide Label Names:")
-                Toggle("", isOn: settings.store.$hideLabelNames)
+                Toggle("", isOn: $settings.store.hideLabelNames)
             }
         }
     }

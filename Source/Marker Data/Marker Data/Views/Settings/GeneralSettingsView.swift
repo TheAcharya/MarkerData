@@ -25,7 +25,7 @@ struct GeneralSettingsView: View {
                         .fixedSize(horizontal: true, vertical: false)
 
                     FolderPicker(
-                        url: settings.store.$exportFolderURL,
+                        url: $settings.store.exportFolderURL,
                         title: "Choose…"
                     )
                 }
@@ -80,7 +80,7 @@ struct GeneralSettingsView: View {
 
                     Text("Enable Subframes:")
 
-                    Toggle("", isOn: settings.store.$enabledSubframes)
+                    Toggle("", isOn: $settings.store.enabledSubframes)
                         .toggleStyle(CheckboxToggleStyle())
                         .formControlLeadingAlignmentGuide()
 
@@ -90,7 +90,7 @@ struct GeneralSettingsView: View {
 
                     Text("Clip Boundaries:")
 
-                    Toggle("", isOn: settings.store.$enabledClipBoundaries)
+                    Toggle("", isOn: $settings.store.enabledClipBoundaries)
                         .toggleStyle(CheckboxToggleStyle())
                         .formControlLeadingAlignmentGuide()
 
@@ -100,7 +100,7 @@ struct GeneralSettingsView: View {
 
                     Text("No Media:")
 
-                    Toggle("", isOn: settings.store.$enabledNoMedia)
+                    Toggle("", isOn: $settings.store.enabledNoMedia)
                         .toggleStyle(CheckboxToggleStyle())
                         .formControlLeadingAlignmentGuide()
 

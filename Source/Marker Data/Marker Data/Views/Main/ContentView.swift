@@ -31,7 +31,6 @@ struct ContentView: View {
         var id: String {
             self.rawValue
         }
-
     }
 
     //Main View Controller

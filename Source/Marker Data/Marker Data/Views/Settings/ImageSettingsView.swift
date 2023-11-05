@@ -62,14 +62,14 @@ struct ImageSettingsView: View {
                     // Picker To Change Selected ID Naming Mode
                     TextField(
                         "",
-                        value: settings.store.$imageWidth,
+                        value: $settings.store.imageWidth,
                         format: .emptyOrInt
                     )
                     .labelsHidden()
                     .frame(width: 75)
                     .formControlLeadingAlignmentGuide()
 
-                    Toggle("", isOn: settings.store.$imageWidthEnabled)
+                    Toggle("", isOn: $settings.store.imageWidthEnabled)
 
                 }
 
@@ -80,14 +80,14 @@ struct ImageSettingsView: View {
                     //Picker To Change Selected ID Naming Mode
                     TextField(
                         "",
-                        value: settings.store.$imageHeight,
+                        value: $settings.store.imageHeight,
                         format: .emptyOrInt
                     )
                     .labelsHidden()
                     .frame(width: 75)
                     .formControlLeadingAlignmentGuide()
 
-                    Toggle("", isOn: settings.store.$imageHeightEnabled)
+                    Toggle("", isOn: $settings.store.imageHeightEnabled)
 
                 }
 
@@ -98,7 +98,7 @@ struct ImageSettingsView: View {
                     TextField(
                         "",
                         // text: imageSizeBinding
-                        value: settings.store.$selectedImageSize,
+                        value: $settings.store.selectedImageSize,
                         format: .percent
                     )
                     .labelsHidden()
@@ -130,7 +130,7 @@ struct ImageSettingsView: View {
 
                     TextField(
                         "",
-                        value: settings.store.$selectedImageQuality,
+                        value: $settings.store.selectedImageQuality,
                         format: .percent
                     )
                     .labelsHidden()
@@ -163,7 +163,7 @@ struct ImageSettingsView: View {
 
                     TextField(
                         "",
-                        value: settings.store.$selectedGIFFPS,
+                        value: $settings.store.selectedGIFFPS,
                         format: .number.precision(.fractionLength(0))
                     )
                     .labelsHidden()
@@ -186,7 +186,7 @@ struct ImageSettingsView: View {
 
                     TextField(
                         "",
-                        value: settings.store.$selectedGIFLength,
+                        value: $settings.store.selectedGIFLength,
                         format: .number.precision(.fractionLength(0))
                     )
                     .labelsHidden()
