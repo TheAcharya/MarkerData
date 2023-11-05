@@ -6,37 +6,37 @@
 //
 
 import SwiftUI
+import AppKit
 
 struct HelpCommands: Commands {
     var body: some Commands {
         //Add Help And Debug Menu Buttons
-        CommandGroup(after: .help) {
-            //Button To Be Sent To App Website
-            Button(action: {}) {
-                Text("Website")
-            }
-            //Button To Access The User Guide
-            Button(action: {}) {
-                Text("User Guide")
-            }
-            //Button To Send App Feedback
-            Button(action: {}) {
-                Text("Send Feedback")
-            }
-            //Button To Access App Discussion Page
-            Button(action: {}) {
-                Text("Discussions")
-            }
-            //Debug Menu
-            Menu("Debug") {
-                //Button To Open Debug Console
-                Button(action: {}) {
-                    Text("Open Debug Console")
-                }
-                //Button To Open The App Log Folder
-                Button(action: {}) {
-                    Text("Open Log Folder")
-                }
+        CommandGroup(replacing: .help) {
+            Link("Website", destination: URL(string: "https://markerdata.theacharya.co")!)
+            Link("Source Code", destination: URL(string: "https://github.com/TheAcharya/MarkerData")!)
+            
+            Divider()
+            
+            Link("Release Notes", destination: URL(string: "https://markerdata.theacharya.co/release-notes/")!)
+            Link("About Marker Data", destination: URL(string: "https://markerdata.theacharya.co/credits/")!)
+            
+            Divider()
+            
+            Link("Send Feedback", destination: URL(string: "https://github.com/TheAcharya/MarkerData/issues")!)
+            Link("Discussions", destination: URL(string: "https://github.com/TheAcharya/MarkerData/discussions")!)
+            
+            Divider()
+            
+            // Open Console
+            Button("Debug") {
+                guard let url = NSWorkspace.shared.urlForApplication(withBundleIdentifier: "com.apple.Console") else { return }
+
+                let path = "/bin"
+                let configuration = NSWorkspace.OpenConfiguration()
+                configuration.arguments = [path]
+                NSWorkspace.shared.openApplication(at: url,
+                                                   configuration: configuration,
+                                                   completionHandler: nil)
             }
         }
     }
