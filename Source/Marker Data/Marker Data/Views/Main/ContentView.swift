@@ -61,27 +61,30 @@ struct ContentView: View {
                         .tag(MainViews.about)
                 }
             }
+            .frame(minWidth: WindowSize.sidebarWidth)
         } detail: {
-            switch sidebarSelection {
-            case .extract:
-                ExtractView(
-                    extractionModel: extractionModel,
-                    progressPublisher: progressPublisher
-                )
-            case .general:
-                GeneralSettingsView()
-            case .image:
-                ImageSettingsView()
-            case .label:
-                LabelSettingsView()
-            case .configurations:
-                ConfigurationSettingsView()
-            case .databases:
-                DatabaseSettingsView()
-            case .about:
-                AboutView()
-            
+            Group {
+                switch sidebarSelection {
+                case .extract:
+                    ExtractView(
+                        extractionModel: extractionModel,
+                        progressPublisher: progressPublisher
+                    )
+                case .general:
+                    GeneralSettingsView()
+                case .image:
+                    ImageSettingsView()
+                case .label:
+                    LabelSettingsView()
+                case .configurations:
+                    ConfigurationSettingsView()
+                case .databases:
+                    DatabaseSettingsView()
+                case .about:
+                    AboutView()
+                }
             }
+            .frame(width: WindowSize.detailWidth)
         }
     }
 }

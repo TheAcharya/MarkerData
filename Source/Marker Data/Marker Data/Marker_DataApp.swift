@@ -55,16 +55,8 @@ struct Marker_DataApp: App {
             .environment(\.managedObjectContext, persistenceController.container.viewContext)
             // Force Dark Mode On Content View
             .preferredColorScheme(.dark)
-            // Set Main Window Min And Max Size
-            .frame(
-                minWidth: 750,
-                idealWidth: 750,
-                maxWidth: .infinity,
-                minHeight: 400,
-                idealHeight: 400,
-                maxHeight: .infinity,
-                alignment: .center
-            )
+            // Set fix window size
+            .frame(width: WindowSize.fullWidth, height: WindowSize.fullHeight)
             // Change configuration (controlled from the menu bar)
             .onChange(of: selectedConfiguration) { newConfig in
                 do {
@@ -77,6 +69,8 @@ struct Marker_DataApp: App {
                 selectedConfiguration = $0
             }
         }
+        // Set fix window size
+        .windowResizability(.contentSize)
         
         // Customise Menu Bar Commands
         .commands {
