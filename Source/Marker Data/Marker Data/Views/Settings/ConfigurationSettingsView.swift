@@ -36,10 +36,11 @@ struct ConfigurationSettingsView: View {
     @State var showConfigurationUpdateAlert = false
     @State var showConfigurationRenameAlert = false
     
+    /// Currently highlighted configuration (not the active configuration)
     @State var selectedConfiguration = ""
     
     /// True if the selected configuration is the default
-    var isDefaultConfigurationSelected: Bool {
+    var isDefaultConfigurationActive: Bool {
         configurationsModel.activeConfiguration == ConfigurationsModel.defaultConfigurationName
     }
     
@@ -67,7 +68,7 @@ struct ConfigurationSettingsView: View {
         }
         .confirmationDialog("Unsaved Changes", isPresented: $showSwitchUnsavedChangesDialog) {
             // Save to current and switch (if not default configuration)
-            if !isDefaultConfigurationSelected {
+            if !isDefaultConfigurationActive {
                 Button("Save changes to \(configurationsModel.activeConfiguration) and switch") {
                     // Save changes to current config
                     updateConfiguration(configurationsModel.activeConfiguration)
@@ -163,7 +164,7 @@ struct ConfigurationSettingsView: View {
             } label: {
                 Image(systemName: "minus")
             }
-            .disabled(selectedConfiguration.isEmpty || isDefaultConfigurationSelected)
+            .disabled(selectedConfiguration.isEmpty || selectedConfiguration == ConfigurationsModel.defaultConfigurationName)
             
             Divider()
                 .frame(maxHeight: 20)
@@ -182,17 +183,17 @@ struct ConfigurationSettingsView: View {
             } label: {
                 Label("Update Active Configuration", systemImage: "gearshape.arrow.triangle.2.circlepath")
             }
-            .disabled(!unsavedChanges || isDefaultConfigurationSelected)
+            .disabled(!unsavedChanges || isDefaultConfigurationActive)
         }
         .padding(.vertical)
         .sheet(isPresented: $showAddConfigurationSheet) {
             addOrRenameConfigurationModal()
-                .frame(width: 300)
+                .frame(width: 500)
                 .padding()
         }
         .sheet(isPresented: $showRenameConfigurationSheet) {
             addOrRenameConfigurationModal(rename: true)
-                .frame(width: 300)
+                .frame(width: 500)
                 .padding()
         }
     }

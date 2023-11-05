@@ -14,11 +14,11 @@ struct Marker_DataApp: App {
     @StateObject private var progressPublisher: ProgressPublisher
     @StateObject private var extractionModel: ExtractionModel
     @StateObject var configurationsModel: ConfigurationsModel
+    
+    /// Currently selected detail view in the sidebar
+    @State var sidebarSelection: MainViews = .extract
 
     let persistenceController = PersistenceController.shared
-    
-    /// Controlled from the menu bar
-    @State var selectedConfiguration: String
 
     init() {
         let settings = SettingsContainer()
@@ -37,8 +37,6 @@ struct Marker_DataApp: App {
         self._progressPublisher = StateObject(wrappedValue: progressPublisher)
         self._extractionModel = StateObject(wrappedValue: extractionModel)
         self._configurationsModel = StateObject(wrappedValue: configurationsModel)
-        
-        self._selectedConfiguration = State(wrappedValue: configurationsModel.activeConfiguration)
     }
     
     var body: some Scene {
@@ -48,7 +46,8 @@ struct Marker_DataApp: App {
             // MARK: ContentView
             ContentView(
                 extractionModel: self.extractionModel,
-                progressPublisher: progressPublisher
+                progressPublisher: progressPublisher,
+                sidebarSelection: $sidebarSelection
             )
             .environmentObject(settings)
             .environmentObject(configurationsModel)
@@ -57,17 +56,6 @@ struct Marker_DataApp: App {
             .preferredColorScheme(.dark)
             // Set fix window size
             .frame(width: WindowSize.fullWidth, height: WindowSize.fullHeight)
-            // Change configuration (controlled from the menu bar)
-            .onChange(of: selectedConfiguration) { newConfig in
-                do {
-                    try configurationsModel.loadConfiguration(configurationName: newConfig, settings: settings)
-                } catch {
-                    print("Failed to load configuration: \(newConfig)")
-                }
-            }
-            .onChange(of: configurationsModel.activeConfiguration) {
-                selectedConfiguration = $0
-            }
         }
         // Set fix window size
         .windowResizability(.contentSize)
@@ -84,7 +72,7 @@ struct Marker_DataApp: App {
             ConfigurationCommands(
                 configurationsModel: configurationsModel,
                 settings: settings,
-                selectedConfiguration: $selectedConfiguration
+                sidebarSelection: $sidebarSelection
             )
             
             DatabaseCommands()

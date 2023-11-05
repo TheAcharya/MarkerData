@@ -15,23 +15,7 @@ struct ContentView: View {
 
     @ObservedObject var extractionModel: ExtractionModel
     @ObservedObject var progressPublisher: ProgressPublisher
-    
-    /// Currently selected item in the sidebar
-    @State var sidebarSelection: MainViews = .extract
-    
-    enum MainViews: String, CaseIterable, Identifiable {
-        case extract
-        case general
-        case image
-        case label
-        case configurations
-        case databases
-        case about
-
-        var id: String {
-            self.rawValue
-        }
-    }
+    @Binding var sidebarSelection: MainViews
 
     //Main View Controller
     var body: some View {
@@ -102,7 +86,8 @@ struct ContentView: View {
 
     return ContentView(
         extractionModel: extractionModel,
-        progressPublisher: progressPublisher
+        progressPublisher: progressPublisher,
+        sidebarSelection: .constant(.extract)
     )
     .environmentObject(settings)
 }

@@ -27,7 +27,7 @@
     "selectedStrokeColorOpacity": 1,
     "selectedHorizontalAlignment": 0,
     "selectedVerticallignment": 0,
-    "selectedOverlays": ["id", "status", "notes", "clipName"],
+    "selectedOverlays": [],
     "copyrightText": "",
     "hideLabelNames": false
 }

@@ -10,17 +10,21 @@ import SwiftUI
 struct ConfigurationCommands: Commands {
     @ObservedObject var configurationsModel: ConfigurationsModel
     @ObservedObject var settings: SettingsContainer
-    @Binding var selectedConfiguration: String
+    @Binding var sidebarSelection: MainViews
     
     var body: some Commands {
         CommandMenu("Configurations") {
-            Button("Update Active Configuration") {
-                do {
-                    try configurationsModel.saveConfiguration(configurationName: configurationsModel.activeConfiguration, replace: true)
-                } catch {
-                    print("Failed to update configuration")
-                }
+            Button("Open Configurations Panel") {
+                sidebarSelection = .configurations
             }
+            
+//            Button("Update Active Configuration") {
+//                do {
+//                    try configurationsModel.saveConfiguration(configurationName: configurationsModel.activeConfiguration, replace: true)
+//                } catch {
+//                    print("Failed to update configuration")
+//                }
+//            }
             
             Button("Open Configuration Folder in Finder") {
                 NSWorkspace.shared.open(
@@ -30,10 +34,23 @@ struct ConfigurationCommands: Commands {
             
             Divider()
             
-            Picker("Select Configuration", selection: $selectedConfiguration) {
-                ForEach(configurationsModel.configurations) {
-                    Text($0.name)
+            Text("Select Configuration")
+            
+            ForEach(configurationsModel.configurations) { config in
+                Button {
+                    do {
+                        try configurationsModel.loadConfiguration(configurationName: config.name, settings: settings)
+                    } catch {
+                        print("Failed to load config from menu bar")
+                    }
+                } label: {
+                    if config.name == configurationsModel.activeConfiguration {
+                        Label(config.name, systemImage: "checkmark")
+                    } else {
+                        Text(config.name)
+                    }
                 }
+                .labelStyle(.titleAndIcon)
             }
         }
     }

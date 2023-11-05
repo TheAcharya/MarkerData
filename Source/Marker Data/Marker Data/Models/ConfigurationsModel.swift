@@ -26,7 +26,7 @@ class ConfigurationsModel: ObservableObject {
     
     static let defaultConfigurationName = "Default"
     static let defaultConfigurationFileName = "DefaultConfiguration"
-    static let configurationNameCharacterLimit = 20
+    static let configurationNameCharacterLimit = 50
     
     init() {
         // Create configurations directory in case it doesn't exist yet
