@@ -55,7 +55,6 @@
 		D5F74A382972D32100EEE2FE /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5F74A372972D32100EEE2FE /* Preview Assets.xcassets */; };
 		D5F74A412972E0A800EEE2FE /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F74A402972E0A800EEE2FE /* SettingsView.swift */; };
 		D5F74A472972FE7C00EEE2FE /* AirtableKit in Frameworks */ = {isa = PBXBuildFile; productRef = D5F74A462972FE7C00EEE2FE /* AirtableKit */; };
-		D5F74A4A2973012800EEE2FE /* AppUpdater in Frameworks */ = {isa = PBXBuildFile; productRef = D5F74A492973012800EEE2FE /* AppUpdater */; };
 		D5F74A4D2973019000EEE2FE /* Collections in Frameworks */ = {isa = PBXBuildFile; productRef = D5F74A4C2973019000EEE2FE /* Collections */; };
 		D5F74A4F2973019000EEE2FE /* DequeModule in Frameworks */ = {isa = PBXBuildFile; productRef = D5F74A4E2973019000EEE2FE /* DequeModule */; };
 		D5F74A512973019000EEE2FE /* OrderedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = D5F74A502973019000EEE2FE /* OrderedCollections */; };
@@ -135,7 +134,6 @@
 				9B61B44229F03866003EC14A /* libswiftCoreGraphics.tbd in Frameworks */,
 				41C538A22AE420EA00E8A8A1 /* ColorWellKit in Frameworks */,
 				4765797B2A626D92009A1256 /* MarkersExtractor in Frameworks */,
-				D5F74A4A2973012800EEE2FE /* AppUpdater in Frameworks */,
 				D5F74A512973019000EEE2FE /* OrderedCollections in Frameworks */,
 				D5F74A4F2973019000EEE2FE /* DequeModule in Frameworks */,
 				D5F74A4D2973019000EEE2FE /* Collections in Frameworks */,
@@ -373,7 +371,6 @@
 			name = "Marker Data";
 			packageProductDependencies = (
 				D5F74A462972FE7C00EEE2FE /* AirtableKit */,
-				D5F74A492973012800EEE2FE /* AppUpdater */,
 				D5F74A4C2973019000EEE2FE /* Collections */,
 				D5F74A4E2973019000EEE2FE /* DequeModule */,
 				D5F74A502973019000EEE2FE /* OrderedCollections */,
@@ -411,7 +408,6 @@
 			mainGroup = D5F74A242972D31C00EEE2FE;
 			packageReferences = (
 				D5F74A452972FE7C00EEE2FE /* XCRemoteSwiftPackageReference "AirtableKit" */,
-				D5F74A482973012800EEE2FE /* XCRemoteSwiftPackageReference "AppUpdater" */,
 				D5F74A4B2973019000EEE2FE /* XCRemoteSwiftPackageReference "swift-collections" */,
 				476579792A626D92009A1256 /* XCRemoteSwiftPackageReference "MarkersExtractor" */,
 				4100D5E52AD19C980081F0EC /* XCRemoteSwiftPackageReference "FilePicker" */,
@@ -747,14 +743,6 @@
 				minimumVersion = 1.0.0;
 			};
 		};
-		D5F74A482973012800EEE2FE /* XCRemoteSwiftPackageReference "AppUpdater" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/mxcl/AppUpdater";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
-			};
-		};
 		D5F74A4B2973019000EEE2FE /* XCRemoteSwiftPackageReference "swift-collections" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/apple/swift-collections.git";
@@ -785,11 +773,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = D5F74A452972FE7C00EEE2FE /* XCRemoteSwiftPackageReference "AirtableKit" */;
 			productName = AirtableKit;
-		};
-		D5F74A492973012800EEE2FE /* AppUpdater */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = D5F74A482973012800EEE2FE /* XCRemoteSwiftPackageReference "AppUpdater" */;
-			productName = AppUpdater;
 		};
 		D5F74A4C2973019000EEE2FE /* Collections */ = {
 			isa = XCSwiftPackageProductDependency;

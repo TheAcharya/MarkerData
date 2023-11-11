@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import AppUpdater
 
 @main
 struct Marker_DataApp: App {

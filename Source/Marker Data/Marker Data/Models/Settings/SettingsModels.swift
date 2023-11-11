@@ -203,12 +203,12 @@ enum LabelVerticalAlignment: Int, CaseIterable, Identifiable {
 }
 
 enum FontNameType: Int, CaseIterable, Identifiable {
-
-    case Menlo = 0
-    case Arial
-    case Helvetica
-    case SourceCodePro
+    
+    case Arial = 0
     case CourierNew
+    case Helvetica
+    case Menlo
+    case SourceCodePro
 
     var id: Int {
         self.rawValue
