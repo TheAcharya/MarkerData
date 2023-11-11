@@ -64,8 +64,16 @@ struct Marker_DataApp: App {
         .commands {
             // Removes New Window Menu Item
             CommandGroup(replacing: .newItem) {}
+            
             // Removes Toolbar Menu Items
             CommandGroup(replacing: .toolbar) {}
+            
+            // Replace about
+            CommandGroup(replacing: .appInfo) {
+                Button("About Marker Data") {
+                    sidebarSelection = .about
+                }
+            }
             
             SidebarCommands()
             

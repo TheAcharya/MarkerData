@@ -8,38 +8,23 @@
 import SwiftUI
 
 struct AboutView: View {
-    
-    let versionBuildIdentifier: String = {
-        let dictionary = Bundle.main.infoDictionary ?? [:]
-        let version = dictionary["CFBundleShortVersionString"] as? String
-        let build = dictionary["CFBundleVersion"] as? String
-        var result = ""
-        if let version = version {
-            result += version
-        }
-        if let build = build {
-            result += " (\(build))"
-        }
-        return result
-    }()
-    
     var body: some View {
         VStack(spacing: 20) {
-            Image("AppIcon2")
+            Image("AppIconSingle")
                 .resizable()
                 .frame(width: 200, height: 200)
+            
             Text("Marker Data")
                 .font(.largeTitle)
                 .bold()
-            Text("Version \(versionBuildIdentifier)")
-            Text("Copyright © 2023 The Acharya. All rights reserved.")
-            Text("Acknowledgments & Credits")
             
+            Text("Version \(Bundle.main.version) (\(Bundle.main.buildNumber))")
+            Text("Copyright © 2023 The Acharya. All rights reserved.")
+            
+            Link("Acknowledgments & Credits", destination: URL(string: "https://markerdata.theacharya.co/credits/")!)
         }
         .navigationTitle("About")
-        
     }
-    
 }
 
 struct AboutView_Previews: PreviewProvider {
