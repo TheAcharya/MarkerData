@@ -22,8 +22,7 @@ struct Marker_DataApp: App {
     init() {
         let settings = SettingsContainer()
         
-        let progress = Progress(totalUnitCount: 0)
-        let progressPublisher = ProgressPublisher(progress: progress)
+        let progressPublisher = ProgressPublisher()
         
         let extractionModel = ExtractionModel(
             settings: settings,

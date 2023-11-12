@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UniformTypeIdentifiers
 
 extension URL {
     /// Path to ~/Library/Application Support/Marker Data
@@ -25,5 +26,13 @@ extension URL {
             .appendingPathComponent(
                 Bundle.main.bundleIdentifier ?? "com.TheAcharya.Marker-Data.plist" + ".plist",
                 conformingTo: .propertyList)
+    }
+    
+    func conformsToType(_ types: [UTType]) -> Bool {
+        let fileExtensions = types
+            .map { $0.preferredFilenameExtension }
+            .filter { $0 != nil }
+        
+        return fileExtensions.contains(pathExtension)
     }
 }

@@ -4,19 +4,24 @@ import Combine
 import MarkersExtractor
 import AppKit
 import UniformTypeIdentifiers
+import os
 
 class ExtractionModel: ObservableObject, DropDelegate {
-
     static let supportedContentTypes: [UTType] = [.fcpxml, .fcpxmld]
 
     @Published var dropPoint: CGPoint? = nil
     @Published var isDropping = false
     @Published var showOutputInFinder = false
     @Published var completedOutputFolder: URL? = nil
+    @Published var extractionInProgresss = false
 
     let errorViewModel: ErrorViewModel
     let settings: SettingsContainer
     let progressPublisher: ProgressPublisher
+    
+    var observation: NSKeyValueObservation?
+    
+    static let logger = Logger()
 
     init(
         settings: SettingsContainer,
@@ -37,7 +42,11 @@ class ExtractionModel: ObservableObject, DropDelegate {
         
         let isFileSupported = info.hasItemsConforming(to: Self.supportedContentTypes)
         
-        return isFileSupported ? DropProposal(operation: .copy) : DropProposal(operation: .forbidden)
+        return if isFileSupported && !self.extractionInProgresss {
+            DropProposal(operation: .copy) }
+        else {
+            DropProposal(operation: .forbidden)
+        }
     }
 
     func dropExited(info: DropInfo) {
@@ -47,9 +56,8 @@ class ExtractionModel: ObservableObject, DropDelegate {
 
 
     func performDrop(info: DropInfo) -> Bool {
-
         let providers = info.itemProviders(
-            for: Self.supportedContentTypes
+            for: [.fileURL]
         )
 
         self.progressPublisher.showProgress = true
@@ -57,17 +65,18 @@ class ExtractionModel: ObservableObject, DropDelegate {
             progressMessage: "Received file",
             percentageCompleted: 1
         )
-        self.completedOutputFolder = nil
 
         for provider in providers {
-            //UserDefaults.standard.set(nil, forKey:exportFolderPathKey)
             // Check if the provider can load a file URL
             if provider.canLoadObject(ofClass: URL.self) {
                 // Load the file URL from the provider
                 let _ = provider.loadObject(ofClass: URL.self) { url, error in
                     if let fileURL = url {
-                        Task {
-                            await self.performExtraction(fileURL)
+                        // Check file type
+                        if fileURL.conformsToType(Self.supportedContentTypes) {
+                            Task {
+                                await self.performExtraction(fileURL)
+                            }
                         }
                     } else if let error = error {
                         // Handle the error
@@ -75,8 +84,10 @@ class ExtractionModel: ObservableObject, DropDelegate {
                             self.progressPublisher.markasFailed(
                                 errorMessage: "Error: \(error.localizedDescription)"
                             )
+                            
                             self.errorViewModel.errorMessage  = error.localizedDescription
-                            print("Error: \(error.localizedDescription)")
+                            
+                            Self.logger.error("File drop error: \(error.localizedDescription)")
                         }
                     }
                 }
@@ -84,21 +95,44 @@ class ExtractionModel: ObservableObject, DropDelegate {
         }
 
         return true
-
     }
 
     func validateDrop(info: DropInfo) -> Bool {
-        return info.hasItemsConforming(
-            to: Self.supportedContentTypes
-        )
+        return info.hasItemsConforming(to: Self.supportedContentTypes)
     }
 
     func performExtraction(_ url: URL) async {
-
+        defer {
+            self.extractionInProgresss = false
+        }
+        
+        // Reset
+        self.completedOutputFolder = nil
+        
+        // Check for invalid export destination
+        var isDir : ObjCBool = false
+        
+        let exportPath: String = settings.store.exportFolderURL?.path(percentEncoded: false) ?? ""
+            
+        if !FileManager.default.fileExists(atPath: exportPath, isDirectory: &isDir) {
+            self.progressPublisher.markasFailed(errorMessage: "Failed: Empty or invalid export destination")
+            self.errorViewModel.errorMessage = "Empty or invalid export destination."
+    
+            Self.logger.error("Extract error: Empty or invalid export destination")
+            
+            return
+        }
+        
+        withAnimation {
+            self.extractionInProgresss = true
+        }
+        
         // Handle the file URL
-        print("Dropped file URL: \(url.absoluteString)")
+        Self.logger.notice("Dropped file URL: \(url.path(percentEncoded: false))")
+        
+        self.progressPublisher.showProgress = true
         self.progressPublisher.updateProgressTo(
-            progressMessage: "Begin to process file \(url.absoluteString) ",
+            progressMessage: "Begin to process file \(url.path(percentEncoded: false))",
             percentageCompleted: 2
         )
 
@@ -106,27 +140,41 @@ class ExtractionModel: ObservableObject, DropDelegate {
             let settings = try self.settings.store.markersExtractorSettings(
                 fcpxmlFileUrl: url
             )
+            
+            let extractor = MarkersExtractor(settings)
+            
+            // Observe changes
+            observation = extractor.observe(
+                \.progress.fractionCompleted,
+                 options: [.old, .new]
+            ) { object, change in
+                self.progressPublisher.updateProgressTo(
+                    progressMessage: "Extracting...",
+                    percentageCompleted: Int(change.newValue! * 100),
+                    icon: "gearshape"
+                )
+            }
+            
+            try await extractor.extract()
+            
             self.progressPublisher.updateProgressTo(
-                progressMessage: "Extraction in progress...",
-                percentageCompleted: 2
+                progressMessage: "Extraction completed",
+                percentageCompleted: 100,
+                icon: "checkmark"
             )
-            try await MarkersExtractor(settings).extract()
-            self.progressPublisher.updateProgressTo(
-                progressMessage: "Extraction successful",
-                percentageCompleted: 100
-            )
+            
             self.completedOutputFolder = settings.outputDir
-            self.showOutputInFinder = true // inform the user
-            print("Ok")
-
+            self.showOutputInFinder = true // Inform the user
+            
+            Self.logger.notice("Extraction complete.")
         } catch {
-
             self.progressPublisher.markasFailed(
                 errorMessage: "Error: \(error.localizedDescription)"
             )
 
-            self.errorViewModel.errorMessage  = error.localizedDescription
-            print("Error: \(error.localizedDescription)")
+            self.errorViewModel.errorMessage = error.localizedDescription
+            
+            Self.logger.error("Extraction error: \(error.localizedDescription)")
         }
     }
 

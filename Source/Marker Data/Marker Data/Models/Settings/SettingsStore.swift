@@ -195,9 +195,10 @@ class SettingsStore: ObservableObject {
     // MARK: CLI settings
     
     func markersExtractorSettings(fcpxmlFileUrl: URL) throws -> MarkersExtractor.Settings {
-        let outputDirURL: URL = UserDefaults.standard.exportFolder
+        let outputDirURL: URL = self.exportFolderURL ?? URL.moviesDirectory
+        
         let settings = try MarkersExtractor.Settings(
-            fcpxml: .init(fcpxmlFileUrl),
+            fcpxml: .init(at: fcpxmlFileUrl),
             outputDir: outputDirURL,
             exportFormat: self.selectedExportFormat.markersExtractor,
             enableSubframes: self.enabledSubframes,

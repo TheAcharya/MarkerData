@@ -9,6 +9,7 @@ import SwiftUI
 import AppKit
 
 extension Color {
+    /// Init from a hex string. I.e #FFFFFF for white
     init(hex: String) {
         let hex = hex.trimmingCharacters(in: CharacterSet(charactersIn: "#"))
         var rgbValue: UInt64 = 0
@@ -19,6 +20,7 @@ extension Color {
         self.init(red: Double(red), green: Double(green), blue: Double(blue))
     }
     
+    /// Hex string representation. I.e #FFFFFF for white
     var hex: String {
         let components = self.components()
         let red = Int(components.red * 255.0)
@@ -36,6 +38,8 @@ extension Color {
         let blue = color.blueComponent
         return (red, green, blue)
     }
+    
+    static let darkPurple = Color(red: 0.5098, green: 0.2352, blue: 0.6274)
 }
 
 

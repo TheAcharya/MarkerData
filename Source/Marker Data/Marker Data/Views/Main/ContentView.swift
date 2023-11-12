@@ -75,9 +75,7 @@ struct ContentView: View {
 #Preview {
     @StateObject var settings = SettingsContainer()
 
-    @StateObject var progressPublisher = ProgressPublisher(
-        progress: Progress(totalUnitCount: 100)
-    )
+    @StateObject var progressPublisher = ProgressPublisher()
 
     @StateObject var extractionModel = ExtractionModel(
         settings: settings,
