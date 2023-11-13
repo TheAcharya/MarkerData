@@ -50,9 +50,17 @@
 
 ## Screenshot
 
+<p align="center"> <img src="https://github.com/TheAcharya/MarkerData-Website/blob/main/docs/assets/md-main.png?raw=true"> </p>
+
+<p align="center"> <img src="https://github.com/TheAcharya/MarkerData-Website/blob/main/docs/assets/md-general-settings.png?raw=true"> </p>
+
+<p align="center"> <img src="https://github.com/TheAcharya/MarkerData-Website/blob/main/docs/assets/md-label-settings.png?raw=true"> </p>
+
+<p align="center"> <img src="https://github.com/TheAcharya/MarkerData-Website/blob/main/docs/assets/md-configuration-settings.png?raw=true"> </p>
+
 ## System Requirements
 
-macOS Monterey 12.6.6 or later <br> Final Cut Pro 10.6.6
+macOS Ventura 13.6.2 or later <br> Final Cut Pro 10.6.9 <br> Runs natively on both Apple silicon and Intel-based Mac computers
 
 ## Installation
 
