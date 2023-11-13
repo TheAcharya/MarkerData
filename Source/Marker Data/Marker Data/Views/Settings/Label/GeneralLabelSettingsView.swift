@@ -89,11 +89,8 @@ struct GeneralLabelSettingsView: View {
                     format: .number,
                     textFieldWidth: 50
                 )
-
-                ColorPickerOpacitySliderForm(
-                    color: $settings.store.selectedStrokeColor,
-                    opacity: $settings.store.selectedStrokeColorOpacity
-                )
+                
+                ColorPickerForm(color: $settings.store.selectedStrokeColor)
 
             }
 

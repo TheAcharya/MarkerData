@@ -127,7 +127,7 @@ class SettingsStore: ObservableObject {
         }
     }
     
-    // Stroke color and opacity
+    // Stroke color
     var selectedStrokeColor: Color {
         get {
             guard let hexString: String = UserDefaults.standard.string(forKey: "selectedStrokeColor") else {
@@ -141,8 +141,6 @@ class SettingsStore: ObservableObject {
             UserDefaults.standard.set(newColor.hex, forKey: "selectedStrokeColor")
         }
     }
-    
-    @AppStorage("selectedStrokeColorOpacity") var selectedStrokeColorOpacity: Double = 1
     
 
     @AppStorage("selectedHorizontalAlignment") private var selectedHorizonalAlignmentRawValue: Int = LabelHorizontalAlignment.Left.rawValue
