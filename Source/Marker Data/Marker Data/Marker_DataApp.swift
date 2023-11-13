@@ -66,6 +66,8 @@ struct Marker_DataApp: App {
             // Removes Toolbar Menu Items
             CommandGroup(replacing: .toolbar) {}
             
+            // TODO: Add "Install Share Extension" item
+            
             // Replace about
             CommandGroup(replacing: .appInfo) {
                 Button("About Marker Data") {

@@ -52,7 +52,6 @@
 		D5F74A332972D31D00EEE2FE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F74A322972D31D00EEE2FE /* ContentView.swift */; };
 		D5F74A352972D32100EEE2FE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5F74A342972D32100EEE2FE /* Assets.xcassets */; };
 		D5F74A382972D32100EEE2FE /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5F74A372972D32100EEE2FE /* Preview Assets.xcassets */; };
-		D5F74A412972E0A800EEE2FE /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F74A402972E0A800EEE2FE /* SettingsView.swift */; };
 		D5F74A472972FE7C00EEE2FE /* AirtableKit in Frameworks */ = {isa = PBXBuildFile; productRef = D5F74A462972FE7C00EEE2FE /* AirtableKit */; };
 		D5F74A4D2973019000EEE2FE /* Collections in Frameworks */ = {isa = PBXBuildFile; productRef = D5F74A4C2973019000EEE2FE /* Collections */; };
 		D5F74A4F2973019000EEE2FE /* DequeModule in Frameworks */ = {isa = PBXBuildFile; productRef = D5F74A4E2973019000EEE2FE /* DequeModule */; };
@@ -120,7 +119,6 @@
 		D5F74A372972D32100EEE2FE /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		D5F74A392972D32100EEE2FE /* Marker_Data.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Marker_Data.entitlements; sourceTree = "<group>"; };
 		D5F74A3F2972DFD800EEE2FE /* Marker-Data-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Marker-Data-Info.plist"; sourceTree = SOURCE_ROOT; };
-		D5F74A402972E0A800EEE2FE /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -240,7 +238,6 @@
 			isa = PBXGroup;
 			children = (
 				47411FDD2A3EA1BA005890FE /* AboutView.swift */,
-				D5F74A402972E0A800EEE2FE /* SettingsView.swift */,
 				9B25815D2A07A286002CED07 /* GeneralSettingsView.swift */,
 				4100D5DC2AD051DB0081F0EC /* Label */,
 				9B4D90D72A0BAE3900FE7603 /* ImageSettingsView.swift */,
@@ -449,7 +446,6 @@
 				4100D5EC2AD1A1F80081F0EC /* UTTypeExtension.swift in Sources */,
 				4100D5DE2AD052010081F0EC /* OverlaySettingsView.swift in Sources */,
 				9B4D90D82A0BAE3900FE7603 /* ImageSettingsView.swift in Sources */,
-				D5F74A412972E0A800EEE2FE /* SettingsView.swift in Sources */,
 				41C5389B2AE3067900E8A8A1 /* ConfigurationCommands.swift in Sources */,
 				9B25815E2A07A286002CED07 /* GeneralSettingsView.swift in Sources */,
 				9BACA4D129FA9B5100EF6837 /* SettingsStore.swift in Sources */,
@@ -606,13 +602,13 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Marker Data/Marker_Data.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 2;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Marker Data/Preview Content\"";
-				DEVELOPMENT_TEAM = NB77K8UB8Y;
+				DEVELOPMENT_TEAM = 9CLTNBW4Z3;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -648,13 +644,13 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Marker Data/Marker_Data.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 2;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Marker Data/Preview Content\"";
-				DEVELOPMENT_TEAM = NB77K8UB8Y;
+				DEVELOPMENT_TEAM = 9CLTNBW4Z3;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;

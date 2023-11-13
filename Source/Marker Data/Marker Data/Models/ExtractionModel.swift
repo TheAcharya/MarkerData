@@ -65,6 +65,8 @@ class ExtractionModel: ObservableObject, DropDelegate {
             progressMessage: "Received file",
             percentageCompleted: 1
         )
+        
+        var filesToProcess: [URL] = []
 
         for provider in providers {
             // Check if the provider can load a file URL
@@ -74,9 +76,9 @@ class ExtractionModel: ObservableObject, DropDelegate {
                     if let fileURL = url {
                         // Check file type
                         if fileURL.conformsToType(Self.supportedContentTypes) {
-                            Task {
-                                await self.performExtraction(fileURL)
-                            }
+                            filesToProcess.append(fileURL)
+                        } else {
+                            Self.logger.notice("Skipping file \(url?.path(percentEncoded: false) ?? ""). Not supported.")
                         }
                     } else if let error = error {
                         // Handle the error
@@ -93,6 +95,10 @@ class ExtractionModel: ObservableObject, DropDelegate {
                 }
             }
         }
+        
+        Task {
+            await self.performExtraction(filesToProcess)
+        }
 
         return true
     }
@@ -101,7 +107,7 @@ class ExtractionModel: ObservableObject, DropDelegate {
         return info.hasItemsConforming(to: Self.supportedContentTypes)
     }
 
-    func performExtraction(_ url: URL) async {
+    func performExtraction(_ urls: [URL]) async {
         defer {
             self.extractionInProgresss = false
         }
@@ -113,11 +119,11 @@ class ExtractionModel: ObservableObject, DropDelegate {
         var isDir : ObjCBool = false
         
         let exportPath: String = settings.store.exportFolderURL?.path(percentEncoded: false) ?? ""
-            
+        
         if !FileManager.default.fileExists(atPath: exportPath, isDirectory: &isDir) {
             self.progressPublisher.markasFailed(errorMessage: "Failed: Empty or invalid export destination")
             self.errorViewModel.errorMessage = "Empty or invalid export destination."
-    
+            
             Self.logger.error("Extract error: Empty or invalid export destination")
             
             return
@@ -128,54 +134,83 @@ class ExtractionModel: ObservableObject, DropDelegate {
         }
         
         // Handle the file URL
-        Self.logger.notice("Dropped file URL: \(url.path(percentEncoded: false))")
+        Self.logger.notice("Processing files: \(urls.map { $0.path(percentEncoded: false) })")
         
         self.progressPublisher.showProgress = true
         self.progressPublisher.updateProgressTo(
-            progressMessage: "Begin to process file \(url.path(percentEncoded: false))",
+            progressMessage: "Begin to process \(urls.count) file\(urls.count > 1 ? "s": "")",
             percentageCompleted: 2
         )
-
-        do {
-            let settings = try self.settings.store.markersExtractorSettings(
-                fcpxmlFileUrl: url
-            )
-            
-            let extractor = MarkersExtractor(settings)
-            
-            // Observe changes
-            observation = extractor.observe(
-                \.progress.fractionCompleted,
-                 options: [.old, .new]
-            ) { object, change in
-                self.progressPublisher.updateProgressTo(
-                    progressMessage: "Extracting...",
-                    percentageCompleted: Int(change.newValue! * 100),
-                    icon: "gearshape"
-                )
+        
+        var filesCompleted = 0
+        
+        await withTaskGroup(of: Void.self) { group in
+            for url in urls {
+                group.addTask {
+                    do {
+                        let settings = try self.settings.store.markersExtractorSettings(
+                            fcpxmlFileUrl: url
+                        )
+                        
+                        let extractor = MarkersExtractor(settings)
+                        
+                        // Observe progress changes (only in case of a single file)
+                        if urls.count == 1 {
+                            await MainActor.run {
+                                self.observation = extractor.observe(
+                                    \.progress.fractionCompleted,
+                                     options: [.old, .new]
+                                ) { object, change in
+                                    Task {
+                                        await MainActor.run {
+                                            self.progressPublisher.updateProgressTo(
+                                                progressMessage: "Extracting...",
+                                                percentageCompleted: Int(change.newValue! * 100),
+                                                icon: "gearshape"
+                                            )
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        
+                        try await extractor.extract()
+                        
+                        await MainActor.run {
+                            filesCompleted += 1
+                            
+                            if filesCompleted == urls.count {
+                                // All extractions complete
+                                self.progressPublisher.updateProgressTo(
+                                    progressMessage: "Extraction completed",
+                                    percentageCompleted: 100,
+                                    icon: "checkmark"
+                                )
+                                
+                                self.completedOutputFolder = settings.outputDir
+                                self.showOutputInFinder = true // Inform the user
+                            } else if urls.count > 1 {
+                                // Update progress in case of multiple files
+                                self.progressPublisher.updateProgressTo(
+                                    progressMessage: "Extracting files \(filesCompleted)/\(urls.count)...",
+                                    percentageCompleted: (100/urls.count) * filesCompleted,
+                                    icon: "gearshape"
+                                )
+                            }
+                        }
+                        
+                        Self.logger.notice("Extraction complete.")
+                    } catch {
+                        self.progressPublisher.markasFailed(
+                            errorMessage: "Error: \(error.localizedDescription)"
+                        )
+                        
+                        self.errorViewModel.errorMessage = error.localizedDescription
+                        
+                        Self.logger.error("Extraction error: \(error.localizedDescription)")
+                    }
+                }
             }
-            
-            try await extractor.extract()
-            
-            self.progressPublisher.updateProgressTo(
-                progressMessage: "Extraction completed",
-                percentageCompleted: 100,
-                icon: "checkmark"
-            )
-            
-            self.completedOutputFolder = settings.outputDir
-            self.showOutputInFinder = true // Inform the user
-            
-            Self.logger.notice("Extraction complete.")
-        } catch {
-            self.progressPublisher.markasFailed(
-                errorMessage: "Error: \(error.localizedDescription)"
-            )
-
-            self.errorViewModel.errorMessage = error.localizedDescription
-            
-            Self.logger.error("Extraction error: \(error.localizedDescription)")
         }
     }
-
 }

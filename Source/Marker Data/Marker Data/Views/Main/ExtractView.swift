@@ -67,10 +67,10 @@ struct ExtractView: View {
                     .padding(.top, 8)
                     .padding(.bottom, 18)
                 
-                FilePicker(types: [.fcpxml, .fcpxmld], allowMultiple: false) { urls in
+                FilePicker(types: [.fcpxml, .fcpxmld], allowMultiple: true) { urls in
                     if !urls.isEmpty {
                         Task {
-                            await extractionModel.performExtraction(urls[0])
+                            await extractionModel.performExtraction(urls)
                         }
                     }
                 } label: {
@@ -102,23 +102,36 @@ struct ExtractView: View {
             }
             .font(.system(size: 18, weight: .bold))
             
-            if extractionModel.completedOutputFolder != nil {
-                Button {
-                    if let url = extractionModel.completedOutputFolder {
-                        NSWorkspace.shared.open(url)
+            HStack {
+                if extractionModel.completedOutputFolder != nil {
+                    // Open in Finder button
+                    Button {
+                        if let url = extractionModel.completedOutputFolder {
+                            NSWorkspace.shared.open(url)
+                        }
+                    } label: {
+                        Label("Show in Finder", systemImage: "folder")
                     }
-                } label: {
-                    Label("Show in Finder", systemImage: "folder")
-                }
-                
-                Button {
-                    withAnimation {
-                        progressPublisher.showProgress = false
+                    
+                    Button {
+                        withAnimation {
+                            progressPublisher.showProgress = false
+                        }
+                    } label: {
+                        Image(systemName: "xmark")
                     }
-                } label: {
-                    Image(systemName: "xmark")
+                } else {
+                    // Show progress
+                    HStack {
+                    let percentage: Int = Int(progressPublisher.progress.fractionCompleted * 100)
+                        Text("\(percentage)%")
+                            .font(.system(size: 18, weight: .light))
+                        
+                        Spacer()
+                    }
                 }
             }
+            .frame(width: 200)
         }
         .padding()
         .frame(height: 50)
