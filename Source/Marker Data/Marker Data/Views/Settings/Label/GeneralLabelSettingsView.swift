@@ -81,14 +81,21 @@ struct GeneralLabelSettingsView: View {
                 .font(.headline)
 
             Group {
-
-                LabeledTextboxStepperForm(
-                    label: "Size:",
-                    value: $settings.store.selectedStrokeSize,
-                    in: 6...100,
-                    format: .number,
-                    textFieldWidth: 50
-                )
+                HStack {
+                    LabeledTextboxStepperForm(
+                        label: "Size:",
+                        value: $settings.store.selectedStrokeSize,
+                        in: 6...100,
+                        format: .number,
+                        textFieldWidth: 50
+                    )
+                    .disabled(settings.store.isStrokeSizeAuto)
+                    
+                    Divider()
+                        .frame(height: 16)
+                    
+                    Toggle("Auto", isOn: $settings.store.isStrokeSizeAuto)
+                }
                 
                 ColorPickerForm(color: $settings.store.selectedStrokeColor)
 

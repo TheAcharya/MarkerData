@@ -115,6 +115,17 @@ struct ConfigurationSettingsView: View {
     private var tableView: some View {
         List(self.configurationsModel.configurations, selection: $selectedConfiguration) { configuration in
             let isActive = configurationsModel.activeConfiguration == configuration.name
+            
+            let unsavedChangesText = if isActive && unsavedChanges {
+                if isDefaultConfigurationActive {
+                    "(unsaved changes, Default configuration cannot be modified)"
+                } else {
+                    "(unsaved changes)"
+                }
+            } else {
+                ""
+            }
+            
             let stateIndicatorColor = if isActive {
                 if unsavedChanges {
                     Color.orange
@@ -127,7 +138,8 @@ struct ConfigurationSettingsView: View {
             
             Label(
                 title: {
-                    Text(configuration.name) + Text("\(isActive && unsavedChanges ? " (unsaved changes)" : "")").fontWeight(.thin)
+                    Text(configuration.name) +
+                    Text(" \(unsavedChangesText)").fontWeight(.thin)
                 },
                 icon: {
                     Image(systemName: isActive ? "largecircle.fill.circle" : "circle")

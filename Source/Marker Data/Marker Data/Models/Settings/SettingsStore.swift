@@ -20,11 +20,7 @@ class SettingsStore: ObservableObject {
         set { selectedFolderFormatRawValue = newValue.rawValue }
     }
     
-    @AppStorage("selectedExportFormat") private var selectedExportFormatRawValue: Int = ExportFormat.Notion.rawValue
-    var selectedExportFormat: ExportFormat {
-        get { ExportFormat(rawValue: selectedExportFormatRawValue) ?? .Notion }
-        set { selectedExportFormatRawValue = newValue.rawValue }
-    }
+    @AppStorage("selectedExportFormat") var selectedExportFormat: ExportProfileFormat = .notion
 
     @AppStorage("selectedExcludeRoles") private var selectedExcludeRolesRawValues: Int = ExcludedRoles.None.rawValue
     var selectedExcludeRoles: ExcludedRoles {
@@ -94,14 +90,9 @@ class SettingsStore: ObservableObject {
     }
     
     @AppStorage("selectedFontSize") var selectedFontSize: Int = 30
+    
     @AppStorage("selectedStrokeSize") var selectedStrokeSize: Int = 0
-    var markersExtractorStrokeWidth: Int? {
-        if selectedStrokeSize == 0 {
-            return nil
-        }
-        
-        return selectedStrokeSize
-    }
+    @AppStorage("isStrokeSizeAuto") var isStrokeSizeAuto: Bool = true
     
     // Font color and opacity
     var selectedFontColor: Color {
@@ -194,11 +185,12 @@ class SettingsStore: ObservableObject {
     
     func markersExtractorSettings(fcpxmlFileUrl: URL) throws -> MarkersExtractor.Settings {
         let outputDirURL: URL = self.exportFolderURL ?? URL.moviesDirectory
+        let strokeSize: Int? = self.isStrokeSizeAuto ? nil : self.selectedStrokeSize
         
         let settings = try MarkersExtractor.Settings(
             fcpxml: .init(at: fcpxmlFileUrl),
             outputDir: outputDirURL,
-            exportFormat: self.selectedExportFormat.markersExtractor,
+            exportFormat: self.selectedExportFormat,
             enableSubframes: self.enabledSubframes,
             imageFormat: self.selectedImageMode.markersExtractor,
             imageQuality: Int(self.selectedImageQuality),
@@ -217,7 +209,7 @@ class SettingsStore: ObservableObject {
             imageLabelFontOpacity: Int(self.selectedFontColorOpacity),
             imageLabelFontColor: self.selectedFontColor.hex,
             imageLabelFontStrokeColor: self.selectedStrokeColor.hex,
-            imageLabelFontStrokeWidth: self.markersExtractorStrokeWidth,
+            imageLabelFontStrokeWidth: strokeSize,
             imageLabelAlignHorizontal: self.selectedHorizonalAlignment.markersExtractor,
             imageLabelAlignVertical: self.selectedVerticalAlignment.markersExtractor,
             imageLabelHideNames: self.hideLabelNames,

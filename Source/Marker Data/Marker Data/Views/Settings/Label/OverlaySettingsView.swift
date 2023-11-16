@@ -91,7 +91,7 @@ struct OverlaySettingsView: View {
         VStack(alignment: .leading) {
             HStack {
                 Text("Copyright:")
-                TextField("Your company", text: $settings.store.copyrightText)
+                TextField("Input your copyright information", text: $settings.store.copyrightText)
             }
 
             HStack {

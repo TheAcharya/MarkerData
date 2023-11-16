@@ -1,7 +1,7 @@
 {
     "exportFolderURL": "",
     "selectedFolderFormat": 1,
-    "selectedExportFormat": 0,
+    "selectedExportFormat": "notion",
     "selectedExcludeRoles": 0,
     "selectedImageMode": 0,
     "isUploadEnabled": false,
@@ -20,7 +20,8 @@
     "selectedFontNameType": 3,
     "selectedFontStyleType": 0,
     "selectedFontSize": 30,
-    "selectedStrokeSize": 0,
+    "selectedStrokeSize": 6,
+    "isStrokeSizeAuto": true,
     "selectedFontColor": "#FFFFFF",
     "selectedFontColorOpacity": 1,
     "selectedStrokeColor": "#FFFFFF",

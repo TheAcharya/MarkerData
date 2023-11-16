@@ -6,14 +6,15 @@
 //
 
 import SwiftUI
+import MarkersExtractor
 
 struct ExportFormatPicker: View {
     @EnvironmentObject var settings: SettingsContainer
 
     var body: some View {
         Picker("Profiles", selection: $settings.store.selectedExportFormat) {
-            ForEach(ExportFormat.allCases) { exportFormat in
-                Text(exportFormat.displayName).tag(exportFormat)
+            ForEach(ExportProfileFormat.allCases, id: \.self) { exportFormat in
+                Text(exportFormat.rawValue).tag(exportFormat)
             }
         }
     }

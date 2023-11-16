@@ -8,34 +8,6 @@
 import Foundation
 import MarkersExtractor
 
-enum ExportFormat: Int, CaseIterable, Identifiable {
-
-    case Notion = 0
-    case Airtable
-
-    var id: Int {
-        self.rawValue
-    }
-
-    var displayName : String {
-        switch self {
-            case .Notion:
-                return "Notion"
-            case .Airtable:
-                return "Airtable"
-        }
-    }
-    
-    var markersExtractor: ExportProfileFormat {
-        switch self {
-            case .Notion:
-                return ExportProfileFormat.notion
-            case .Airtable:
-                return ExportProfileFormat.airtable
-        }
-    }
-}
-
 enum ExcludedRoles: Int, CaseIterable, Identifiable {
 
     case None = 0
