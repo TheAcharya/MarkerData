@@ -19,26 +19,31 @@ struct ExtractView: View {
     var body: some View {
         VStack {
             // Drag And Drop File Zone
-            VStack {
+            ZStack {
                 titleAndFileOpenView
-                    .padding(.top, 60)
+                    // Disable and dim while extracting
+                    .padding(.bottom, 60)
+                    .disabled(extractionModel.extractionInProgresss)
+                    .grayscale(extractionModel.extractionInProgresss ? 0.8 : 0)
                 
-                // Progress
-                extractionProgressView
-                    .padding(.vertical)
-                    .opacity(progressPublisher.showProgress ? 1 : 0)
+                VStack {
+                    Spacer()
+                    
+                    // Install share destination card
+                    InstallShareDestinationCard()
+                    
+                    // Progress
+                    if progressPublisher.showProgress {
+                        extractionProgressView
+                    }
+                }
             }
-            // Disable and dim while extracting
-            .disabled(extractionModel.extractionInProgresss)
-            .grayscale(extractionModel.extractionInProgresss ? 0.8 : 0)
+            .padding(.vertical)
             // Handle file drop and perform extraction
             .onDrop(
                 of: ExtractionModel.supportedContentTypes,
                 delegate: extractionModel
             )
-            
-            // Install share destination card
-            InstallShareDestinationCard()
             
             // Quick Settings
             QuickSettingsView()
@@ -131,7 +136,7 @@ struct ExtractView: View {
                     }
                 }
             }
-            .frame(width: 200)
+            .frame(width: 170)
         }
         .padding()
         .frame(height: 50)
@@ -269,7 +274,6 @@ struct ExtractView: View {
                 .padding()
                 .background(.linearGradient(colors: [.black, Color.darkPurple], startPoint: .leading, endPoint: .trailing))
                 .clipShape(RoundedRectangle(cornerRadius: 8))
-                .padding(.horizontal)
             } else {
                 EmptyView()
             }
