@@ -32,7 +32,7 @@
 ## Avaliable Extract Profiles
 
 - Notion (CSV)
-- Airtable (CSV & JSON)
+- Airtable (CSV)
 - Pro Tools (MIDI)
 - Cubase (MIDI)
 
