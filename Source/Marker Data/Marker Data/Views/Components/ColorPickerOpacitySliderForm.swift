@@ -20,7 +20,7 @@ struct ColorPickerOpacitySliderForm: View {
             Text("Color & Opacity:")
 
             ColorWellView(selection: $color, supportsOpacity: false)
-                .colorWellStyle(.swatches)
+                .colorWellStyle(.minimal)
 
             Slider(value: $opacity, in: 0...1)
                 .frame(width: 75)

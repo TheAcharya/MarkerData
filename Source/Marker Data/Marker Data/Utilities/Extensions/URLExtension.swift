@@ -11,12 +11,26 @@ import UniformTypeIdentifiers
 extension URL {
     /// Path to ~/Library/Application Support/Marker Data
     public static var applicationSupportAppDirectory: URL {
-        Self.applicationSupportDirectory.appendingPathComponent(Bundle.main.appName, conformingTo: .directory)
+        Self.applicationSupportDirectory
+            .appendingPathComponent(Bundle.main.appName, conformingTo: .directory)
     }
     
-    /// Path to ~/Library/Application Support/Marker Data/ Configurations
+    /// Path to ~/Library/Application Support/Marker Data/Configurations
     public static var configurationsFolder: URL {
-        Self.applicationSupportAppDirectory.appendingPathComponent("Configurations", conformingTo: .directory)
+        Self.applicationSupportAppDirectory
+            .appendingPathComponent("Configurations", conformingTo: .directory)
+    }
+    
+    /// Path to ~/Library/Application Support/Marker Data/Database
+    public static var databaseFolder: URL {
+        Self.applicationSupportAppDirectory
+            .appendingPathComponent("Database", conformingTo: .directory)
+    }
+    
+    /// Path to ~/Library/Application Support/Marker Data/Database/Profiles
+    public static var databaseProfilesFolder: URL {
+        Self.databaseFolder
+            .appendingPathComponent("Profiles", conformingTo: .directory)
     }
     
     /// Path to ~/Library/Preferences/com.TheAcharya.Marker-Data.plist

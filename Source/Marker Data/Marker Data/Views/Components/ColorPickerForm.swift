@@ -16,7 +16,7 @@ struct ColorPickerForm: View {
             Text("Color:")
             
             ColorWellView(selection: $color, supportsOpacity: false)
-                .colorWellStyle(.swatches)
+                .colorWellStyle(.minimal)
         }
     }
 }

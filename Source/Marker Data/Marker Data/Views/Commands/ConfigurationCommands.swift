@@ -18,14 +18,6 @@ struct ConfigurationCommands: Commands {
                 sidebarSelection = .configurations
             }
             
-//            Button("Update Active Configuration") {
-//                do {
-//                    try configurationsModel.saveConfiguration(configurationName: configurationsModel.activeConfiguration, replace: true)
-//                } catch {
-//                    print("Failed to update configuration")
-//                }
-//            }
-            
             Button("Open Configuration Folder in Finder") {
                 NSWorkspace.shared.open(
                     URL(fileURLWithPath: URL.configurationsFolder.path().removingPercentEncoding ?? "")

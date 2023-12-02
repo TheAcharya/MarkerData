@@ -13,6 +13,7 @@ struct Marker_DataApp: App {
     @StateObject private var progressPublisher: ProgressPublisher
     @StateObject private var extractionModel: ExtractionModel
     @StateObject var configurationsModel: ConfigurationsModel
+    @StateObject var databaseManager: DatabaseManager
     
     /// Currently selected detail view in the sidebar
     @State var sidebarSelection: MainViews = .extract
@@ -21,12 +22,13 @@ struct Marker_DataApp: App {
 
     init() {
         let settings = SettingsContainer()
-        
         let progressPublisher = ProgressPublisher()
+        let databaseManager = DatabaseManager()
         
         let extractionModel = ExtractionModel(
             settings: settings,
-            progressPublisher: progressPublisher
+            progressPublisher: progressPublisher,
+            databaseManager: databaseManager
         )
         
         let configurationsModel = ConfigurationsModel()
@@ -35,6 +37,7 @@ struct Marker_DataApp: App {
         self._progressPublisher = StateObject(wrappedValue: progressPublisher)
         self._extractionModel = StateObject(wrappedValue: extractionModel)
         self._configurationsModel = StateObject(wrappedValue: configurationsModel)
+        self._databaseManager = StateObject(wrappedValue: databaseManager)
     }
     
     var body: some Scene {
@@ -49,6 +52,7 @@ struct Marker_DataApp: App {
             )
             .environmentObject(settings)
             .environmentObject(configurationsModel)
+            .environmentObject(databaseManager)
             .environment(\.managedObjectContext, persistenceController.container.viewContext)
             // Force Dark Mode On Content View
             .preferredColorScheme(.dark)

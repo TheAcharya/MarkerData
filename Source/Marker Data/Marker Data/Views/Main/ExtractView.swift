@@ -52,6 +52,9 @@ struct ExtractView: View {
         .overlay(UserAlertView(title: "Error", onDismiss: {
             // Perform any action you want when the user dismisses the alert.
         })
+        .alert("Failed to exract completely", isPresented: $progressPublisher.showAlert) {} message: {
+            Text(progressPublisher.alertMessage)
+        }
         .environmentObject(extractionModel.errorViewModel))
     }
     
@@ -136,7 +139,7 @@ struct ExtractView: View {
                     }
                 }
             }
-            .frame(width: 170)
+            .frame(width: 180)
         }
         .padding()
         .frame(height: 50)
@@ -178,7 +181,6 @@ struct ExtractView: View {
                         }
                         .onAppear {
                             if let exportURL = settings.store.exportFolderURL {
-                                print(exportURL.absoluteString)
                                 emptyExportDestination = exportURL.absoluteString.isEmpty
                             } else {
                                 emptyExportDestination = true
@@ -283,12 +285,13 @@ struct ExtractView: View {
 
 #Preview {
     @StateObject var settings = SettingsContainer()
-
     @StateObject var progressPublisher = ProgressPublisher()
+    @StateObject var databaseManager = DatabaseManager()
 
     @StateObject var extractionModel = ExtractionModel(
         settings: settings,
-        progressPublisher: progressPublisher
+        progressPublisher: progressPublisher,
+        databaseManager: databaseManager
     )
 
     return ExtractView(

@@ -74,12 +74,13 @@ struct ContentView: View {
 
 #Preview {
     @StateObject var settings = SettingsContainer()
-
     @StateObject var progressPublisher = ProgressPublisher()
+    @StateObject var databaseManager = DatabaseManager()
 
     @StateObject var extractionModel = ExtractionModel(
         settings: settings,
-        progressPublisher: progressPublisher
+        progressPublisher: progressPublisher,
+        databaseManager: databaseManager
     )
 
     return ContentView(

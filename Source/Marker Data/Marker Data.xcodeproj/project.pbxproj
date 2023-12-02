@@ -26,6 +26,18 @@
 		41EBAD522AF8172F00E6AF7C /* MainViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EBAD512AF8172F00E6AF7C /* MainViews.swift */; };
 		41EC60CB2AFFBC0700F0A131 /* MarkersExtractor in Frameworks */ = {isa = PBXBuildFile; productRef = 41EC60CA2AFFBC0700F0A131 /* MarkersExtractor */; };
 		41F88ADC2B029D4A004A3B58 /* ColorPickerForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F88ADB2B029D4A004A3B58 /* ColorPickerForm.swift */; };
+		41F88AE32B0C839B004A3B58 /* Shell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F88AE22B0C839B004A3B58 /* Shell.swift */; };
+		41F88AE52B0C83DE004A3B58 /* ShellResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F88AE42B0C83DE004A3B58 /* ShellResult.swift */; };
+		41F88AE82B0E9176004A3B58 /* DatabaseProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F88AE72B0E9176004A3B58 /* DatabaseProfileModel.swift */; };
+		41F88AEC2B0E9224004A3B58 /* DatabasePlatform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F88AEB2B0E9224004A3B58 /* DatabasePlatform.swift */; };
+		41F88AEF2B0E92E9004A3B58 /* NotionDBModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F88AEE2B0E92E9004A3B58 /* NotionDBModel.swift */; };
+		41F88AF12B0E9367004A3B58 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F88AF02B0E9367004A3B58 /* DatabaseManager.swift */; };
+		41F88AF62B0E9DBF004A3B58 /* CreateDBProfileSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F88AF52B0E9DBF004A3B58 /* CreateDBProfileSheet.swift */; };
+		41F88AF82B0FDCF7004A3B58 /* ProfileCredentialModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F88AF72B0FDCF7004A3B58 /* ProfileCredentialModel.swift */; };
+		41F88AFA2B0FF62A004A3B58 /* DatabaseErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F88AF92B0FF62A004A3B58 /* DatabaseErrors.swift */; };
+		41F88AFC2B111F8F004A3B58 /* csv2notion_neo in Resources */ = {isa = PBXBuildFile; fileRef = 41F88AFB2B111F8F004A3B58 /* csv2notion_neo */; };
+		41F88AFE2B126439004A3B58 /* ExtractionResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F88AFD2B126439004A3B58 /* ExtractionResult.swift */; };
+		41F88B032B1A4D40004A3B58 /* ShellOutputStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F88B022B1A4D40004A3B58 /* ShellOutputStream.swift */; };
 		47411FDA2A3EA121005890FE /* HelpButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47411FD92A3EA121005890FE /* HelpButton.swift */; };
 		47411FDC2A3EA140005890FE /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47411FDB2A3EA140005890FE /* ViewExtensions.swift */; };
 		47411FDE2A3EA1BA005890FE /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47411FDD2A3EA1BA005890FE /* AboutView.swift */; };
@@ -88,6 +100,18 @@
 		41EBAD4F2AF7B6F200E6AF7C /* WindowSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowSize.swift; sourceTree = "<group>"; };
 		41EBAD512AF8172F00E6AF7C /* MainViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViews.swift; sourceTree = "<group>"; };
 		41F88ADB2B029D4A004A3B58 /* ColorPickerForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickerForm.swift; sourceTree = "<group>"; };
+		41F88AE22B0C839B004A3B58 /* Shell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shell.swift; sourceTree = "<group>"; };
+		41F88AE42B0C83DE004A3B58 /* ShellResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShellResult.swift; sourceTree = "<group>"; };
+		41F88AE72B0E9176004A3B58 /* DatabaseProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseProfileModel.swift; sourceTree = "<group>"; };
+		41F88AEB2B0E9224004A3B58 /* DatabasePlatform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabasePlatform.swift; sourceTree = "<group>"; };
+		41F88AEE2B0E92E9004A3B58 /* NotionDBModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotionDBModel.swift; sourceTree = "<group>"; };
+		41F88AF02B0E9367004A3B58 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
+		41F88AF52B0E9DBF004A3B58 /* CreateDBProfileSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateDBProfileSheet.swift; sourceTree = "<group>"; };
+		41F88AF72B0FDCF7004A3B58 /* ProfileCredentialModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCredentialModel.swift; sourceTree = "<group>"; };
+		41F88AF92B0FF62A004A3B58 /* DatabaseErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseErrors.swift; sourceTree = "<group>"; };
+		41F88AFB2B111F8F004A3B58 /* csv2notion_neo */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = csv2notion_neo; sourceTree = "<group>"; };
+		41F88AFD2B126439004A3B58 /* ExtractionResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractionResult.swift; sourceTree = "<group>"; };
+		41F88B022B1A4D40004A3B58 /* ShellOutputStream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShellOutputStream.swift; sourceTree = "<group>"; };
 		47411FD92A3EA121005890FE /* HelpButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpButton.swift; sourceTree = "<group>"; };
 		47411FDB2A3EA140005890FE /* ViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
 		47411FDD2A3EA1BA005890FE /* AboutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
@@ -168,6 +192,7 @@
 			isa = PBXGroup;
 			children = (
 				414262BF2AD5CE3200FC6CFC /* ConfigurationErrors.swift */,
+				41F88AF92B0FF62A004A3B58 /* DatabaseErrors.swift */,
 			);
 			path = Errors;
 			sourceTree = "<group>";
@@ -175,6 +200,7 @@
 		414262C32ADAC6B100FC6CFC /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				41F88AFB2B111F8F004A3B58 /* csv2notion_neo */,
 				414262C42ADAC6EC00FC6CFC /* DefaultConfiguration.json */,
 			);
 			path = Resources;
@@ -198,6 +224,55 @@
 				41C5389C2AE306C000E8A8A1 /* DatabaseCommands.swift */,
 			);
 			path = Commands;
+			sourceTree = "<group>";
+		};
+		41F88AE12B0C8360004A3B58 /* Shell */ = {
+			isa = PBXGroup;
+			children = (
+				41F88AE22B0C839B004A3B58 /* Shell.swift */,
+				41F88B022B1A4D40004A3B58 /* ShellOutputStream.swift */,
+				41F88AE42B0C83DE004A3B58 /* ShellResult.swift */,
+			);
+			path = Shell;
+			sourceTree = "<group>";
+		};
+		41F88AE62B0E9126004A3B58 /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				41F88AF02B0E9367004A3B58 /* DatabaseManager.swift */,
+				41F88AE72B0E9176004A3B58 /* DatabaseProfileModel.swift */,
+				41F88AED2B0E92A2004A3B58 /* Platoform models */,
+			);
+			path = Database;
+			sourceTree = "<group>";
+		};
+		41F88AED2B0E92A2004A3B58 /* Platoform models */ = {
+			isa = PBXGroup;
+			children = (
+				41F88AEB2B0E9224004A3B58 /* DatabasePlatform.swift */,
+				41F88AEE2B0E92E9004A3B58 /* NotionDBModel.swift */,
+			);
+			path = "Platoform models";
+			sourceTree = "<group>";
+		};
+		41F88AF32B0E9D8E004A3B58 /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				9B4D90DD2A0BB11000FE7603 /* DatabaseSettingsView.swift */,
+				41F88AF52B0E9DBF004A3B58 /* CreateDBProfileSheet.swift */,
+				41F88AF72B0FDCF7004A3B58 /* ProfileCredentialModel.swift */,
+			);
+			path = Database;
+			sourceTree = "<group>";
+		};
+		41F88AFF2B12644A004A3B58 /* Extract */ = {
+			isa = PBXGroup;
+			children = (
+				47F5CDF72A60CA43005D9A98 /* ExtractionModel.swift */,
+				41F88AFD2B126439004A3B58 /* ExtractionResult.swift */,
+				9B7BA03A2A128E9E0014E168 /* ProgressPublisher.swift */,
+			);
+			path = Extract;
 			sourceTree = "<group>";
 		};
 		47136CBE2A51079E00AB9C92 /* Main */ = {
@@ -237,24 +312,24 @@
 			path = Other;
 			sourceTree = "<group>";
 		};
-		9B25815C2A079FBC002CED07 /* Settings */ = {
+		9B25815C2A079FBC002CED07 /* Detail Views */ = {
 			isa = PBXGroup;
 			children = (
-				47411FDD2A3EA1BA005890FE /* AboutView.swift */,
 				9B25815D2A07A286002CED07 /* GeneralSettingsView.swift */,
-				4100D5DC2AD051DB0081F0EC /* Label */,
 				9B4D90D72A0BAE3900FE7603 /* ImageSettingsView.swift */,
+				4100D5DC2AD051DB0081F0EC /* Label */,
 				9B4D90DB2A0BB07500FE7603 /* ConfigurationSettingsView.swift */,
-				9B4D90DD2A0BB11000FE7603 /* DatabaseSettingsView.swift */,
+				41F88AF32B0E9D8E004A3B58 /* Database */,
+				47411FDD2A3EA1BA005890FE /* AboutView.swift */,
 			);
-			path = Settings;
+			path = "Detail Views";
 			sourceTree = "<group>";
 		};
 		9B35FE6629F94BF30035B760 /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				47136CBE2A51079E00AB9C92 /* Main */,
-				9B25815C2A079FBC002CED07 /* Settings */,
+				9B25815C2A079FBC002CED07 /* Detail Views */,
 				47B21A6E2A4DF96D004FECFA /* Other */,
 				474595352A40110F00EF100D /* Components */,
 				41C538952AE3018100E8A8A1 /* Commands */,
@@ -276,6 +351,7 @@
 		9B51D20F29E99FFD00DF7836 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				41F88AE12B0C8360004A3B58 /* Shell */,
 				4100D5E22AD161570081F0EC /* Extensions */,
 				4741202D2A3EFC42005890FE /* Miscellaneous Utilities.swift */,
 			);
@@ -285,15 +361,15 @@
 		9B51D21429E9B10500DF7836 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				41F88AFF2B12644A004A3B58 /* Extract */,
 				41C538922AE1AFC600E8A8A1 /* Settings */,
 				9B9CA1152A1A9B97004E337A /* Core Data */,
+				41F88AE62B0E9126004A3B58 /* Database */,
 				9B653ABC29F2C64600C64999 /* ErrorViewModel.swift */,
-				9B7BA03A2A128E9E0014E168 /* ProgressPublisher.swift */,
-				47F5CDF72A60CA43005D9A98 /* ExtractionModel.swift */,
 				414262C12AD5D34D00FC6CFC /* ConfigurationsModel.swift */,
 				41EBAD4F2AF7B6F200E6AF7C /* WindowSize.swift */,
-				414262BE2AD5CE1900FC6CFC /* Errors */,
 				41EBAD512AF8172F00E6AF7C /* MainViews.swift */,
+				414262BE2AD5CE1900FC6CFC /* Errors */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -424,6 +500,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				41F88AFC2B111F8F004A3B58 /* csv2notion_neo in Resources */,
 				D5F74A382972D32100EEE2FE /* Preview Assets.xcassets in Resources */,
 				D5F74A352972D32100EEE2FE /* Assets.xcassets in Resources */,
 				414262C52ADAC6EC00FC6CFC /* DefaultConfiguration.json in Resources */,
@@ -440,10 +517,14 @@
 				4741202E2A3EFC42005890FE /* Miscellaneous Utilities.swift in Sources */,
 				9B244B3E2A24AB5D005620D8 /* MarkerData.xcdatamodeld in Sources */,
 				47411FDC2A3EA140005890FE /* ViewExtensions.swift in Sources */,
+				41F88AEC2B0E9224004A3B58 /* DatabasePlatform.swift in Sources */,
+				41F88AEF2B0E92E9004A3B58 /* NotionDBModel.swift in Sources */,
 				417389632AC86BE600984FD8 /* ExtractView.swift in Sources */,
 				41C538992AE3062000E8A8A1 /* HelpCommands.swift in Sources */,
 				47411FDE2A3EA1BA005890FE /* AboutView.swift in Sources */,
 				414262BB2AD2E1AC00FC6CFC /* URLExtension.swift in Sources */,
+				41F88B032B1A4D40004A3B58 /* ShellOutputStream.swift in Sources */,
+				41F88AFE2B126439004A3B58 /* ExtractionResult.swift in Sources */,
 				9B51D21629E9B13400DF7836 /* SettingsModels.swift in Sources */,
 				414262BD2AD2E24A00FC6CFC /* BundleExtension.swift in Sources */,
 				4100D5EC2AD1A1F80081F0EC /* UTTypeExtension.swift in Sources */,
@@ -452,13 +533,17 @@
 				41C5389B2AE3067900E8A8A1 /* ConfigurationCommands.swift in Sources */,
 				9B25815E2A07A286002CED07 /* GeneralSettingsView.swift in Sources */,
 				9BACA4D129FA9B5100EF6837 /* SettingsStore.swift in Sources */,
+				41F88AFA2B0FF62A004A3B58 /* DatabaseErrors.swift in Sources */,
+				41F88AF12B0E9367004A3B58 /* DatabaseManager.swift in Sources */,
 				4100D5E42AD1616D0081F0EC /* ColorExtension.swift in Sources */,
 				9B4D90DE2A0BB11000FE7603 /* DatabaseSettingsView.swift in Sources */,
 				9B653ABB29F2C2E700C64999 /* UserAlertView.swift in Sources */,
+				41F88AF62B0E9DBF004A3B58 /* CreateDBProfileSheet.swift in Sources */,
 				9B35FE6829F94C110035B760 /* PickerViews.swift in Sources */,
 				9B7BA03B2A128E9E0014E168 /* ProgressPublisher.swift in Sources */,
 				41EBAD522AF8172F00E6AF7C /* MainViews.swift in Sources */,
 				D5F74A332972D31D00EEE2FE /* ContentView.swift in Sources */,
+				41F88AE32B0C839B004A3B58 /* Shell.swift in Sources */,
 				4779AF592A4FC06C00F1B48B /* LabelSettingsView.swift in Sources */,
 				9B4D90DA2A0BAF9E00FE7603 /* GeneralLabelSettingsView.swift in Sources */,
 				47F5CDF82A60CA43005D9A98 /* ExtractionModel.swift in Sources */,
@@ -468,12 +553,15 @@
 				41C538942AE1AFF200E8A8A1 /* SettingsContainer.swift in Sources */,
 				414262C02AD5CE3200FC6CFC /* ConfigurationErrors.swift in Sources */,
 				D5F74A312972D31D00EEE2FE /* Marker_DataApp.swift in Sources */,
+				41F88AF82B0FDCF7004A3B58 /* ProfileCredentialModel.swift in Sources */,
 				41F88ADC2B029D4A004A3B58 /* ColorPickerForm.swift in Sources */,
 				474595582A40254E00EF100D /* ColorPickerOpacitySliderForm.swift in Sources */,
+				41F88AE82B0E9176004A3B58 /* DatabaseProfileModel.swift in Sources */,
 				47411FDA2A3EA121005890FE /* HelpButton.swift in Sources */,
 				9B4D90DC2A0BB07500FE7603 /* ConfigurationSettingsView.swift in Sources */,
 				414262C22AD5D34D00FC6CFC /* ConfigurationsModel.swift in Sources */,
 				9B51D21129E9A01A00DF7836 /* FolderPicker.swift in Sources */,
+				41F88AE52B0C83DE004A3B58 /* ShellResult.swift in Sources */,
 				9B9CA1172A1A9BBB004E337A /* PersistenceController.swift in Sources */,
 				474595372A40113000EF100D /* LabeledTextboxStepperForm.swift in Sources */,
 			);
