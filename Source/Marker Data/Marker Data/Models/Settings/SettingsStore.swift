@@ -22,12 +22,6 @@ class SettingsStore: ObservableObject {
     
     @AppStorage("selectedExportFormat") var selectedExportFormat: ExportProfileFormat = .notion
 
-    @AppStorage("selectedExcludeRoles") private var selectedExcludeRolesRawValues: Int = ExcludedRoles.None.rawValue
-    var selectedExcludeRoles: ExcludedRoles {
-        get { ExcludedRoles(rawValue: selectedExcludeRolesRawValues) ?? .None }
-        set { selectedExcludeRolesRawValues = newValue.rawValue }
-    }
-
     @AppStorage("selectedImageMode") private var selectedImageModeRawValue: Int = ImageMode.PNG.rawValue
     var selectedImageMode: ImageMode {
         get { ImageMode(rawValue: selectedImageModeRawValue) ?? .PNG }
@@ -201,7 +195,6 @@ class SettingsStore: ObservableObject {
             gifSpan: TimeInterval(self.selectedGIFLength),
             idNamingMode: self.selectedIDNamingMode.markersExtractor,
             includeOutsideClipBoundaries:  self.enabledClipBoundaries,
-            excludeRoleType: self.selectedExcludeRoles.markersExtractor,
             imageLabels: self.overlays,
             imageLabelCopyright: self.copyrightText,
             imageLabelFont: self.selectedFontNameType.markersExtractor,

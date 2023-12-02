@@ -7,45 +7,6 @@
 
 import Foundation
 import MarkersExtractor
-import DAWFileKit
-
-enum ExcludedRoles: Int, CaseIterable, Identifiable {
-
-    case None = 0
-    case Video
-    case Audio
-    case Caption
-
-    var id: Int {
-        self.rawValue
-    }
-
-    var displayName : String {
-        switch self {
-        case .None:
-            return "None"
-        case .Video:
-            return "Video"
-        case .Audio:
-            return "Audio"
-        case .Caption:
-            return "Caption"
-        }
-    }
-    
-    var markersExtractor: FinalCutPro.FCPXML.RoleType? {
-        switch self {
-        case .None:
-            return nil
-        case .Video:
-            return FinalCutPro.FCPXML.RoleType.video
-        case .Audio:
-            return FinalCutPro.FCPXML.RoleType.audio
-        case .Caption:
-            return FinalCutPro.FCPXML.RoleType.caption
-        }
-    }
-}
 
 enum IdNamingMode: Int, CaseIterable, Identifiable {
 

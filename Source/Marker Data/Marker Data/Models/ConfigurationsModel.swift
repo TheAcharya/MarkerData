@@ -261,7 +261,7 @@ class ConfigurationsModel: ObservableObject {
     }
     
     /// The set of keys saved from the `UserDefaults` when creating a Configuration
-    private static let keysToSave = ["exportFolderURL", "selectedFolderFormat", "selectedExportFormat", "selectedExcludeRoles", "selectedImageMode", "isUploadEnabled", "enabledSubframes", "enabledClipBoundaries", "enabledNoMedia", "selectedIDNamingMode", "selectedImageQuality", "imageWidth", "imageWidthEnabled", "imageHeight", "imageHeightEnabled", "selectedImageSize", "selectedGIFFPS", "selectedGIFLength", "selectedFontNameType", "selectedFontStyleType", "selectedFontSize", "selectedStrokeSize", "isStrokeSizeAuto", "selectedFontColor", "selectedFontColorOpacity", "selectedStrokeColor", "selectedHorizontalAlignment", "selectedVerticallignment", "selectedOverlays", "copyrightText", "hideLabelNames"]
+    private static let keysToSave = ["exportFolderURL", "selectedFolderFormat", "selectedExportFormat", "selectedImageMode", "isUploadEnabled", "enabledSubframes", "enabledClipBoundaries", "enabledNoMedia", "selectedIDNamingMode", "selectedImageQuality", "imageWidth", "imageWidthEnabled", "imageHeight", "imageHeightEnabled", "selectedImageSize", "selectedGIFFPS", "selectedGIFLength", "selectedFontNameType", "selectedFontStyleType", "selectedFontSize", "selectedStrokeSize", "isStrokeSizeAuto", "selectedFontColor", "selectedFontColorOpacity", "selectedStrokeColor", "selectedHorizontalAlignment", "selectedVerticallignment", "selectedOverlays", "copyrightText", "hideLabelNames"]
 }
 
 struct ConfigurationItem: Identifiable, Hashable {

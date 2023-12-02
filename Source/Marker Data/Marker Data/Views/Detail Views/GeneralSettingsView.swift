@@ -64,18 +64,7 @@ struct GeneralSettingsView: View {
                         .formControlLeadingAlignmentGuide()
 
                 }
-
-                HStack {
-
-                    Text("Exclude Roles:")
-
-                    ExcludedRolesPicker()
-                        .labelsHidden()
-                        .frame(width: 150)
-                        .formControlLeadingAlignmentGuide()
-
-                }
-
+                
                 HStack {
 
                     Text("Enable Subframes:")

@@ -229,8 +229,6 @@ struct ExtractView: View {
                             Toggle("Upload", isOn: $settings.store.isUploadEnabled)
                                 .toggleStyle(CheckboxToggleStyle())
                             
-                            ExcludedRolesPicker()
-                            
                             ImageModePicker()
                         }
                     }

@@ -20,18 +20,6 @@ struct ExportFormatPicker: View {
     }
 }
 
-struct ExcludedRolesPicker: View {
-    @EnvironmentObject var settings: SettingsContainer
-
-    var body: some View {
-        Picker("Exclude Roles", selection: $settings.store.selectedExcludeRoles) {
-            ForEach(ExcludedRoles.allCases) { excludedRole in
-                Text(excludedRole.displayName).tag(excludedRole)
-            }
-        }
-    }
-}
-
 struct ImageModePicker: View {
     @EnvironmentObject var settings: SettingsContainer
 
