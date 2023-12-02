@@ -28,6 +28,7 @@
 - Ability to batch extract and render stills or animated GIFs based on each Marker's timecode
 - Ability to batch burn-in labels of each Marker's metadata onto the stills or animated GIFs
 - Ability to create multiple configuration for different projects
+- Ability to use Captions as Markers
 
 ## Avaliable Extract Profiles
 
