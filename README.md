@@ -31,10 +31,9 @@
 
 ## Avaliable Extract Profiles
 
-- Notion (CSV)
-- Airtable (CSV)
-- Pro Tools (MIDI)
-- Cubase (MIDI)
+- Notion (JSON)
+- Airtable (JSON)
+- Standard MIDI File - Compatible with most audio DAWs
 
 ## Table of contents
 - [Demo](#demo)
