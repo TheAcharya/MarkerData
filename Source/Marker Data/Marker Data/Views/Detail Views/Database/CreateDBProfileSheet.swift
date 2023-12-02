@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import PasswordField
 
 struct CreateDBProfileSheet: View {
     @EnvironmentObject var databaseManager: DatabaseManager
@@ -23,6 +24,8 @@ struct CreateDBProfileSheet: View {
     
     @State var airtableAPIKey = ""
     @State var airtableBaseID = ""
+    
+    @Environment(\.openURL) var openURL
     
     var inputValid: Bool {
         if !nameText.isEmpty {
@@ -71,6 +74,10 @@ struct CreateDBProfileSheet: View {
             .padding(.bottom)
             
             HStack {
+                HelpButton(action: {
+                    self.openURL(selectedPlatform == .airtable ? Links.airtableHelpURL : Links.notionHelpURL)
+                })
+                
                 Spacer()
                 
                 Button("Cancel") {
@@ -119,16 +126,33 @@ struct CreateDBProfileSheet: View {
         }
     }
     
-    func platformInfoTextField(_ title: String, prompt: String, text: Binding<String>, isRequired: Bool = false) -> some View {
+    func platformInfoTextField(_ title: String, prompt: LocalizedStringKey, text: Binding<String>, isRequired: Bool = false) -> some View {
         HStack {
             Group {
                 Text(title) +
                 Text(" (\(isRequired ? "Required" : "Optional"))").fontWeight(.thin) +
                 Text(":")
             }
+            .padding(.trailing, -12)
             
-            TextField(prompt, text: text)
-                .textFieldStyle(.roundedBorder)
+            PasswordField("", text: text) { isInputVisible in
+                // Visibility toggle button
+                Button {
+                    isInputVisible.wrappedValue = isInputVisible.wrappedValue.toggled()
+                } label: {
+                    Image(systemName: isInputVisible.wrappedValue ? "eye.slash" : "eye")
+                }
+                .buttonStyle(.plain)
+            }
+            .visibilityControlPosition(.inlineOutside)
+            .textFieldStyle(.roundedBorder)
+            
+            Button {
+                text.wrappedValue = ""
+            } label: {
+                Image(systemName: "trash")
+            }
+            .buttonStyle(.plain)
         }
     }
     

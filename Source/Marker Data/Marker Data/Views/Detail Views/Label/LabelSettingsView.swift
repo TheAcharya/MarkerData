@@ -32,7 +32,7 @@ struct LabelSettingsView: View {
                  }
          }
          .padding(.top)
-         .overlayHelpButton(url: settings.labelSettingsURL)
+         .overlayHelpButton(url: Links.labelSettingsURL)
     }
 
 }

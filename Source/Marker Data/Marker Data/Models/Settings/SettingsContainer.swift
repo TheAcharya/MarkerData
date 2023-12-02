@@ -18,27 +18,6 @@ import Combine
 class SettingsContainer: ObservableObject {
     @Published var store = SettingsStore()
     
-    // MARK: Documentation links
-    let generalSettingsURL = URL(
-        string: "https://markerdata.theacharya.co/user-guide/general/"
-    )!
-    
-    let imageSettingsURL =  URL(
-        string: "https://markerdata.theacharya.co/user-guide/image/"
-    )!
-    
-    let labelSettingsURL =  URL(
-        string: "https://markerdata.theacharya.co/user-guide/label/"
-    )!
-    
-    let configurationSettingsURL =  URL(
-        string: "https://markerdata.theacharya.co/user-guide/configurations/"
-    )!
-    
-    let databaseSettingsURL =  URL(
-        string: "https://markerdata.theacharya.co/user-guide/databases/"
-    )!
-
     let exportDestinationOpenPanel: NSOpenPanel = {
         let panel = NSOpenPanel()
         panel.canChooseFiles = false

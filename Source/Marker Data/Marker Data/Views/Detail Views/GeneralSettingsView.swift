@@ -96,7 +96,7 @@ struct GeneralSettingsView: View {
                 }
             }
         }
-        .overlayHelpButton(url: settings.generalSettingsURL)
+        .overlayHelpButton(url: Links.generalSettingsURL)
         .navigationTitle("General Settings")
         
     }

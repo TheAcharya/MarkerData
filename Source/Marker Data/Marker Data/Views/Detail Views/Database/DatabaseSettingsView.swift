@@ -32,10 +32,10 @@ struct DatabaseSettingsView: View {
             Spacer()
                 .frame(height: 30)
             
-            openInFinderView
+            linksView
         }
         .padding()
-        .overlayHelpButton(url: settings.databaseSettingsURL)
+        .overlayHelpButton(url: Links.databaseSettingsURL)
         .navigationTitle("Database Settings")
         .sheet(isPresented: $showCreateProfileSheet) {
             CreateDBProfileSheet(
@@ -146,14 +146,32 @@ struct DatabaseSettingsView: View {
         }
     }
     
-    var openInFinderView: some View {
+    var linksView: some View {
         HStack {
-            Button("Open Database Folder in Finder") {
+            Button() {
                 NSWorkspace.shared.open(
                     URL(fileURLWithPath: URL.databaseFolder.path().removingPercentEncoding ?? "")
                 )
+            } label: {
+                Label("Open Database Folder in Finder", systemImage: "folder")
             }
             .buttonStyle(.link)
+            
+            Divider()
+                .frame(height: 16)
+                .padding(.horizontal, 4)
+            
+            Link(destination: Links.airtableTemplateURL) {
+                Label("Airtable Template", systemImage: "rectangle.portrait.and.arrow.forward")
+            }
+            
+            Divider()
+                .frame(height: 16)
+                .padding(.horizontal, 4)
+            
+            Link(destination: Links.notionTemplateURL) {
+                Label("Notion Template", systemImage: "rectangle.portrait.and.arrow.forward")
+            }
             
             Spacer()
         }

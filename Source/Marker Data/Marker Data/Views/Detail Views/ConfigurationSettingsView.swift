@@ -56,7 +56,7 @@ struct ConfigurationSettingsView: View {
                 .frame(height: 40)
         }
         .padding()
-        .overlayHelpButton(url: settings.configurationSettingsURL)
+        .overlayHelpButton(url: Links.configurationSettingsURL)
         .navigationTitle("Configuration Settings")
         .onAppear {
             unsavedChanges = configurationsModel.checkForUnsavedChanges()

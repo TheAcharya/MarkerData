@@ -17,6 +17,8 @@
 		414262C22AD5D34D00FC6CFC /* ConfigurationsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414262C12AD5D34D00FC6CFC /* ConfigurationsModel.swift */; };
 		414262C52ADAC6EC00FC6CFC /* DefaultConfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = 414262C42ADAC6EC00FC6CFC /* DefaultConfiguration.json */; };
 		417389632AC86BE600984FD8 /* ExtractView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417389622AC86BE600984FD8 /* ExtractView.swift */; };
+		41BFEB6D2B1B9B6400C8B551 /* Links.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BFEB6C2B1B9B6400C8B551 /* Links.swift */; };
+		41BFEB702B1BA4CC00C8B551 /* PasswordField in Frameworks */ = {isa = PBXBuildFile; productRef = 41BFEB6F2B1BA4CC00C8B551 /* PasswordField */; };
 		41C538942AE1AFF200E8A8A1 /* SettingsContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C538932AE1AFF200E8A8A1 /* SettingsContainer.swift */; };
 		41C538992AE3062000E8A8A1 /* HelpCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C538982AE3062000E8A8A1 /* HelpCommands.swift */; };
 		41C5389B2AE3067900E8A8A1 /* ConfigurationCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C5389A2AE3067900E8A8A1 /* ConfigurationCommands.swift */; };
@@ -93,6 +95,7 @@
 		414262C12AD5D34D00FC6CFC /* ConfigurationsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationsModel.swift; sourceTree = "<group>"; };
 		414262C42ADAC6EC00FC6CFC /* DefaultConfiguration.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DefaultConfiguration.json; sourceTree = "<group>"; };
 		417389622AC86BE600984FD8 /* ExtractView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractView.swift; sourceTree = "<group>"; };
+		41BFEB6C2B1B9B6400C8B551 /* Links.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Links.swift; sourceTree = "<group>"; };
 		41C538932AE1AFF200E8A8A1 /* SettingsContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsContainer.swift; sourceTree = "<group>"; };
 		41C538982AE3062000E8A8A1 /* HelpCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpCommands.swift; sourceTree = "<group>"; };
 		41C5389A2AE3067900E8A8A1 /* ConfigurationCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationCommands.swift; sourceTree = "<group>"; };
@@ -158,6 +161,7 @@
 				41C538A22AE420EA00E8A8A1 /* ColorWellKit in Frameworks */,
 				D5F74A512973019000EEE2FE /* OrderedCollections in Frameworks */,
 				D5F74A4F2973019000EEE2FE /* DequeModule in Frameworks */,
+				41BFEB702B1BA4CC00C8B551 /* PasswordField in Frameworks */,
 				D5F74A4D2973019000EEE2FE /* Collections in Frameworks */,
 				D5F74A472972FE7C00EEE2FE /* AirtableKit in Frameworks */,
 			);
@@ -370,6 +374,7 @@
 				41EBAD4F2AF7B6F200E6AF7C /* WindowSize.swift */,
 				41EBAD512AF8172F00E6AF7C /* MainViews.swift */,
 				414262BE2AD5CE1900FC6CFC /* Errors */,
+				41BFEB6C2B1B9B6400C8B551 /* Links.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -450,6 +455,7 @@
 				4100D5E62AD19C980081F0EC /* FilePicker */,
 				41C538A12AE420EA00E8A8A1 /* ColorWellKit */,
 				41EC60CA2AFFBC0700F0A131 /* MarkersExtractor */,
+				41BFEB6F2B1BA4CC00C8B551 /* PasswordField */,
 			);
 			productName = "Marker Data";
 			productReference = D5F74A2D2972D31C00EEE2FE /* Marker Data.app */;
@@ -485,6 +491,7 @@
 				4100D5E52AD19C980081F0EC /* XCRemoteSwiftPackageReference "FilePicker" */,
 				41C538A02AE420EA00E8A8A1 /* XCRemoteSwiftPackageReference "ColorWellKit" */,
 				41EC60C92AFFBC0700F0A131 /* XCRemoteSwiftPackageReference "MarkersExtractor" */,
+				41BFEB6E2B1BA4CC00C8B551 /* XCRemoteSwiftPackageReference "PasswordField" */,
 			);
 			productRefGroup = D5F74A2E2972D31C00EEE2FE /* Products */;
 			projectDirPath = "";
@@ -560,6 +567,7 @@
 				47411FDA2A3EA121005890FE /* HelpButton.swift in Sources */,
 				9B4D90DC2A0BB07500FE7603 /* ConfigurationSettingsView.swift in Sources */,
 				414262C22AD5D34D00FC6CFC /* ConfigurationsModel.swift in Sources */,
+				41BFEB6D2B1B9B6400C8B551 /* Links.swift in Sources */,
 				9B51D21129E9A01A00DF7836 /* FolderPicker.swift in Sources */,
 				41F88AE52B0C83DE004A3B58 /* ShellResult.swift in Sources */,
 				9B9CA1172A1A9BBB004E337A /* PersistenceController.swift in Sources */,
@@ -803,6 +811,14 @@
 				minimumVersion = 1.0.1;
 			};
 		};
+		41BFEB6E2B1BA4CC00C8B551 /* XCRemoteSwiftPackageReference "PasswordField" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/MrAsterisco/PasswordField";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 		41C538A02AE420EA00E8A8A1 /* XCRemoteSwiftPackageReference "ColorWellKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/jordanbaird/ColorWellKit";
@@ -842,6 +858,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4100D5E52AD19C980081F0EC /* XCRemoteSwiftPackageReference "FilePicker" */;
 			productName = FilePicker;
+		};
+		41BFEB6F2B1BA4CC00C8B551 /* PasswordField */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 41BFEB6E2B1BA4CC00C8B551 /* XCRemoteSwiftPackageReference "PasswordField" */;
+			productName = PasswordField;
 		};
 		41C538A12AE420EA00E8A8A1 /* ColorWellKit */ = {
 			isa = XCSwiftPackageProductDependency;

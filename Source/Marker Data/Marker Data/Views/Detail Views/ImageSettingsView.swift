@@ -206,7 +206,7 @@ struct ImageSettingsView: View {
             .disabled(settings.store.selectedImageMode != .GIF)
 
         }
-        .overlayHelpButton(url: settings.imageSettingsURL)
+        .overlayHelpButton(url: Links.imageSettingsURL)
         .navigationTitle("Image Settings")
     }
 }

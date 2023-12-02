@@ -16,6 +16,8 @@ struct ContentView: View {
     @ObservedObject var extractionModel: ExtractionModel
     @ObservedObject var progressPublisher: ProgressPublisher
     @Binding var sidebarSelection: MainViews
+    
+    @EnvironmentObject var configurationsModel: ConfigurationsModel
 
     //Main View Controller
     var body: some View {
@@ -35,6 +37,15 @@ struct ContentView: View {
                         .tag(MainViews.label)
                     
                     Label("Configurations", systemImage: "briefcase")
+                        .if({
+                            return configurationsModel.checkForUnsavedChanges()
+                        }()) { view in
+                            view
+                                .badge(
+                                Text("Changed")
+                                    .font(.system(size: 7, weight: .black))
+                            )
+                        }
                         .tag(MainViews.configurations)
                     
                     Label("Databases", systemImage: "server.rack")
