@@ -58,9 +58,9 @@
 
 <p align="center"> <img src="https://github.com/TheAcharya/MarkerData-Website/blob/main/docs/assets/md-label-settings.png?raw=true"> </p>
 
-<p align="center"> <img src="https://github.com/TheAcharya/MarkerData-Website/blob/main/docs/assets/md-database-settings.png?raw=true"> </p>
-
 <p align="center"> <img src="https://github.com/TheAcharya/MarkerData-Website/blob/main/docs/assets/md-configuration-settings.png?raw=true"> </p>
+
+<p align="center"> <img src="https://github.com/TheAcharya/MarkerData-Website/blob/main/docs/assets/md-database-settings.png?raw=true"> </p>
 
 ## System Requirements
 
