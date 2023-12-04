@@ -8,18 +8,6 @@
 import SwiftUI
 import MarkersExtractor
 
-struct ExportFormatPicker: View {
-    @EnvironmentObject var settings: SettingsContainer
-
-    var body: some View {
-        Picker("Profiles", selection: $settings.store.selectedExportFormat) {
-            ForEach(ExportProfileFormat.allCases, id: \.self) { exportFormat in
-                Text(exportFormat.rawValue).tag(exportFormat)
-            }
-        }
-    }
-}
-
 struct ImageModePicker: View {
     @EnvironmentObject var settings: SettingsContainer
 

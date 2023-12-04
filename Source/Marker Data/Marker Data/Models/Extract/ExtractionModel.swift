@@ -208,7 +208,7 @@ class ExtractionModel: ObservableObject, DropDelegate {
                             }
                         } else {
                             await MainActor.run {
-                                Self.logger.error("Upload failed: Couldn't retrieve csv path")
+                                Self.logger.error("Upload failed: Couldn't retrieve json path")
                                 failedTasks.append(ExtractionFailure(url: url, exitStatus: .failedToUpload))
                             }
                         }
@@ -264,7 +264,7 @@ class ExtractionModel: ObservableObject, DropDelegate {
     }
     
     private func uploadToDatabase(csvPath: URL, databaseManager: DatabaseManager) async throws {
-        guard let profile = databaseManager.activeDatabaseProfile else {
+        guard let profile = databaseManager.selectedDatabaseProfile else {
             Self.logger.notice("Skipping upload: No database profile selected")
             return
         }
@@ -293,7 +293,6 @@ class ExtractionModel: ObservableObject, DropDelegate {
                 "--icon-column", "Icon Image".quoted,
                 "--max-threads", "5",
                 "--merge",
-                "--add-missing-columns",
                 "--log", logPath.quoted,
                 (csvPath.path(percentEncoded: false)).quoted
             ]

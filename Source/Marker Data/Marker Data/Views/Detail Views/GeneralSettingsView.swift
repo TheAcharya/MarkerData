@@ -58,7 +58,7 @@ struct GeneralSettingsView: View {
 
                     Text("Profile:")
 
-                    ExportFormatPicker()
+                    ExportProfilePicker()
                         .labelsHidden()
                         .frame(width: 150)
                         .formControlLeadingAlignmentGuide()

@@ -58,21 +58,6 @@ struct DatabaseSettingsView: View {
         Table(databaseManager.profiles, selection: $selection) {
             TableColumn("Profile Name", value: \.name)
             TableColumn("Platform", value: \.plaform.rawValue)
-            
-            TableColumn("Active") { profile in
-                let isActive = profile.name == databaseManager.activeDatabaseProfileName
-                
-                Label(
-                    title: {
-                        Text(isActive ? "Active" : "")
-                    },
-                    icon: {
-                        Image(systemName: isActive ? "largecircle.fill.circle" : "circle")
-                            .foregroundStyle(isActive ? .green : .secondary)
-                    }
-                )
-                .frame(height: 20)
-            }
         }
         .clipShape(RoundedRectangle(cornerRadius: 10))
     }
@@ -127,18 +112,6 @@ struct DatabaseSettingsView: View {
                 } label: {
                     Label("Duplicate", systemImage: "square.filled.on.square")
                 }
-                
-                // Make Active button
-                Button {
-                    if let profileName = selection {
-                        withAnimation {
-                            databaseManager.setActiveProfile(profileName: profileName)
-                        }
-                    }
-                } label: {
-                    Label("Make Active", systemImage: "largecircle.fill.circle")
-                }
-                .disabled(selection == databaseManager.activeDatabaseProfileName)
             }
             .disabled(selection == nil)
             

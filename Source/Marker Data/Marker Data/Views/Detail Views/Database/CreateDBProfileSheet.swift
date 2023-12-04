@@ -176,7 +176,7 @@ struct CreateDBProfileSheet: View {
                     // Try to remove the old version of the profile
                     do {
                         // Remember if the profile was active or not
-                        makeActive = databaseManager.activeDatabaseProfile == oldProfile
+                        makeActive = databaseManager.selectedDatabaseProfile == oldProfile
                         
                         try databaseManager.removeProfile(profileName: oldProfile.name)
                     } catch {

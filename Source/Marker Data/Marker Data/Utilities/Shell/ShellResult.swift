@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// Returned by functions that run shell commands, ``shell(_:)-51uzj`` and ``ShellOutputStream``
+/// Returned by functions that run shell commands, ``shell(_:)-6b0df`` and ``ShellOutputStream``
 public struct ShellResult {
     let output: String
     let didFail: Bool

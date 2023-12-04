@@ -149,92 +149,81 @@ struct ExtractView: View {
     
     struct QuickSettingsView: View {
         @EnvironmentObject var settings: SettingsContainer
+        @EnvironmentObject var databaseManager: DatabaseManager
         
-        @State var showMoreQuickSettings = false
         @State var emptyExportDestination = false
+        @State var showUploadLaterHelp = false
         
         var body: some View {
-            HStack {
-                VStack(alignment: .leading) {
-                    //Divide Drag And Drop Zone From Quick Actions
-                    Divider()
-                    
-                    //Quick Settings Title
-                    Text("Quick Settings")
-                        .font(.title2)
-                        .bold()
-                    
-                    // Always visible quick settings
-                    HStack {
-                        Text("Export Destination: ")
-                        
-                        FolderPicker(
-                            url: $settings.store.exportFolderURL,
-                            title: "Choose…"
-                        )
-                        .onChange(of: settings.store.exportFolderURL) { newURL in
-                            if let exportURL = settings.store.exportFolderURL {
-                                withAnimation {
-                                    emptyExportDestination = exportURL.absoluteString.isEmpty
-                                }
-                            }
-                        }
-                        .onAppear {
-                            if let exportURL = settings.store.exportFolderURL {
-                                emptyExportDestination = exportURL.absoluteString.isEmpty
-                            } else {
-                                emptyExportDestination = true
-                            }
+            VStack(alignment: .leading) {
+                // Divide Drag And Drop Zone From Quick Actions
+                Divider()
+                
+                // Quick Settings Title
+                Text("Quick Settings")
+                    .font(.title2)
+                    .bold()
+                
+                HStack(alignment: .top) {
+                    VStack(alignment: .leading) {
+                        // Export destination picker
+                        HStack {
+                            Text("Export Folder: ")
+                            
+                            FolderPicker(
+                                url: $settings.store.exportFolderURL,
+                                title: "Choose…"
+                            )
                         }
                         
                         if emptyExportDestination {
                             Text("Please select an export destination!")
                                 .foregroundStyle(.red)
                         }
-                        
-                        Divider()
-                            .padding(.horizontal, 3)
-                            .frame(maxHeight: 16)
-                        
-                        ExportFormatPicker()
-                            .frame(maxWidth: 300)
                     }
-                    
-                    HStack {
-                        Button {
+                    .frame(minWidth: 340)
+                    // Check for empty export destination
+                    .onChange(of: settings.store.exportFolderURL) { newURL in
+                        if let exportURL = settings.store.exportFolderURL {
                             withAnimation {
-                                showMoreQuickSettings = !showMoreQuickSettings
+                                emptyExportDestination = exportURL.absoluteString.isEmpty
                             }
-                        } label: {
-                            Label(
-                                showMoreQuickSettings ? "Show Less" : "Show More",
-                                systemImage: showMoreQuickSettings ? "chevron.down" : "chevron.up"
-                            )
-                            .font(.system(.body, weight: .light))
-                            .foregroundStyle(Color.accentColor)
                         }
-                        .buttonStyle(.plain)
-                        
-                        if showMoreQuickSettings {
-                            // Divider line
-                            Rectangle()
-                                .fill(.tertiary)
-                                .frame(height: 1)
+                    }
+                    .onAppear {
+                        if let exportURL = settings.store.exportFolderURL {
+                            emptyExportDestination = exportURL.absoluteString.isEmpty
+                        } else {
+                            emptyExportDestination = true
                         }
                     }
                     
-                    // Hidden quick settings
-                    if showMoreQuickSettings {
+                    Divider()
+                        .padding(.horizontal, 3)
+                        .frame(maxHeight: 50)
+                    
+                    VStack(alignment: .leading) {
+                        ExportProfilePicker()
+                            .frame(maxWidth: 300)
+                        
+                        // Upload later toggle
                         HStack {
-                            Toggle("Upload", isOn: $settings.store.isUploadEnabled)
-                                .toggleStyle(CheckboxToggleStyle())
+                            Toggle(isOn: $settings.store.uploadLater) {
+                                Text("Upload Later")
+                            }
+                            .disabled(databaseManager.selectedDatabaseProfileName.isEmpty)
                             
-                            ImageModePicker()
+                            HelpButton(action: { showUploadLaterHelp = true })
+                                .scaleEffect(0.8)
+                                .popover(isPresented: $showUploadLaterHelp) {
+                                    Text("Data will be extracted according to the selected database profile, but won't be uploaded. You can upload later in the \"Recent Extractions\" tab.")
+                                        .lineLimit(3, reservesSpace: true)
+                                        .frame(maxWidth: 300)
+                                        .padding(10)
+                                }
                         }
                     }
                 }
-                
-                Spacer()
             }
         }
     }
@@ -297,4 +286,5 @@ struct ExtractView: View {
         progressPublisher: progressPublisher
     )
     .environmentObject(settings)
+    .environmentObject(databaseManager)
 }

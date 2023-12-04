@@ -19,6 +19,8 @@
 		417389632AC86BE600984FD8 /* ExtractView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417389622AC86BE600984FD8 /* ExtractView.swift */; };
 		41BFEB6D2B1B9B6400C8B551 /* Links.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BFEB6C2B1B9B6400C8B551 /* Links.swift */; };
 		41BFEB702B1BA4CC00C8B551 /* PasswordField in Frameworks */ = {isa = PBXBuildFile; productRef = 41BFEB6F2B1BA4CC00C8B551 /* PasswordField */; };
+		41BFEB722B1BCE4600C8B551 /* ExportProfilePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BFEB712B1BCE4600C8B551 /* ExportProfilePicker.swift */; };
+		41BFEB772B1E63EB00C8B551 /* ExportProfileFormatExtrension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BFEB762B1E63EA00C8B551 /* ExportProfileFormatExtrension.swift */; };
 		41C538942AE1AFF200E8A8A1 /* SettingsContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C538932AE1AFF200E8A8A1 /* SettingsContainer.swift */; };
 		41C538992AE3062000E8A8A1 /* HelpCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C538982AE3062000E8A8A1 /* HelpCommands.swift */; };
 		41C5389B2AE3067900E8A8A1 /* ConfigurationCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C5389A2AE3067900E8A8A1 /* ConfigurationCommands.swift */; };
@@ -96,6 +98,8 @@
 		414262C42ADAC6EC00FC6CFC /* DefaultConfiguration.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DefaultConfiguration.json; sourceTree = "<group>"; };
 		417389622AC86BE600984FD8 /* ExtractView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractView.swift; sourceTree = "<group>"; };
 		41BFEB6C2B1B9B6400C8B551 /* Links.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Links.swift; sourceTree = "<group>"; };
+		41BFEB712B1BCE4600C8B551 /* ExportProfilePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportProfilePicker.swift; sourceTree = "<group>"; };
+		41BFEB762B1E63EA00C8B551 /* ExportProfileFormatExtrension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportProfileFormatExtrension.swift; sourceTree = "<group>"; };
 		41C538932AE1AFF200E8A8A1 /* SettingsContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsContainer.swift; sourceTree = "<group>"; };
 		41C538982AE3062000E8A8A1 /* HelpCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpCommands.swift; sourceTree = "<group>"; };
 		41C5389A2AE3067900E8A8A1 /* ConfigurationCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationCommands.swift; sourceTree = "<group>"; };
@@ -188,6 +192,7 @@
 				4100D5EB2AD1A1F80081F0EC /* UTTypeExtension.swift */,
 				414262BA2AD2E1AC00FC6CFC /* URLExtension.swift */,
 				414262BC2AD2E24A00FC6CFC /* BundleExtension.swift */,
+				41BFEB762B1E63EA00C8B551 /* ExportProfileFormatExtrension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -195,6 +200,7 @@
 		414262BE2AD5CE1900FC6CFC /* Errors */ = {
 			isa = PBXGroup;
 			children = (
+				9B653ABC29F2C64600C64999 /* ErrorViewModel.swift */,
 				414262BF2AD5CE3200FC6CFC /* ConfigurationErrors.swift */,
 				41F88AF92B0FF62A004A3B58 /* DatabaseErrors.swift */,
 			);
@@ -208,6 +214,17 @@
 				414262C42ADAC6EC00FC6CFC /* DefaultConfiguration.json */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		41BFEB732B1BD15A00C8B551 /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				41EBAD512AF8172F00E6AF7C /* MainViews.swift */,
+				41BFEB6C2B1B9B6400C8B551 /* Links.swift */,
+				414262C12AD5D34D00FC6CFC /* ConfigurationsModel.swift */,
+				41EBAD4F2AF7B6F200E6AF7C /* WindowSize.swift */,
+			);
+			path = Other;
 			sourceTree = "<group>";
 		};
 		41C538922AE1AFC600E8A8A1 /* Settings */ = {
@@ -312,6 +329,7 @@
 				9B51D21029E9A01A00DF7836 /* FolderPicker.swift */,
 				9B653ABA29F2C2E700C64999 /* UserAlertView.swift */,
 				9B35FE6729F94C110035B760 /* PickerViews.swift */,
+				41BFEB712B1BCE4600C8B551 /* ExportProfilePicker.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -369,12 +387,8 @@
 				41C538922AE1AFC600E8A8A1 /* Settings */,
 				9B9CA1152A1A9B97004E337A /* Core Data */,
 				41F88AE62B0E9126004A3B58 /* Database */,
-				9B653ABC29F2C64600C64999 /* ErrorViewModel.swift */,
-				414262C12AD5D34D00FC6CFC /* ConfigurationsModel.swift */,
-				41EBAD4F2AF7B6F200E6AF7C /* WindowSize.swift */,
-				41EBAD512AF8172F00E6AF7C /* MainViews.swift */,
 				414262BE2AD5CE1900FC6CFC /* Errors */,
-				41BFEB6C2B1B9B6400C8B551 /* Links.swift */,
+				41BFEB732B1BD15A00C8B551 /* Other */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -526,6 +540,7 @@
 				47411FDC2A3EA140005890FE /* ViewExtensions.swift in Sources */,
 				41F88AEC2B0E9224004A3B58 /* DatabasePlatform.swift in Sources */,
 				41F88AEF2B0E92E9004A3B58 /* NotionDBModel.swift in Sources */,
+				41BFEB772B1E63EB00C8B551 /* ExportProfileFormatExtrension.swift in Sources */,
 				417389632AC86BE600984FD8 /* ExtractView.swift in Sources */,
 				41C538992AE3062000E8A8A1 /* HelpCommands.swift in Sources */,
 				47411FDE2A3EA1BA005890FE /* AboutView.swift in Sources */,
@@ -566,6 +581,7 @@
 				41F88AE82B0E9176004A3B58 /* DatabaseProfileModel.swift in Sources */,
 				47411FDA2A3EA121005890FE /* HelpButton.swift in Sources */,
 				9B4D90DC2A0BB07500FE7603 /* ConfigurationSettingsView.swift in Sources */,
+				41BFEB722B1BCE4600C8B551 /* ExportProfilePicker.swift in Sources */,
 				414262C22AD5D34D00FC6CFC /* ConfigurationsModel.swift in Sources */,
 				41BFEB6D2B1B9B6400C8B551 /* Links.swift in Sources */,
 				9B51D21129E9A01A00DF7836 /* FolderPicker.swift in Sources */,

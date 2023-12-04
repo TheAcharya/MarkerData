@@ -20,7 +20,7 @@ class SettingsStore: ObservableObject {
         set { selectedFolderFormatRawValue = newValue.rawValue }
     }
     
-    @AppStorage("selectedExportFormat") var selectedExportFormat: ExportProfileFormat = .notion
+    @AppStorage("selectedExportFormat") private(set) var selectedExportFormat: ExportProfileFormat = .notion
 
     @AppStorage("selectedImageMode") private var selectedImageModeRawValue: Int = ImageMode.PNG.rawValue
     var selectedImageMode: ImageMode {
@@ -175,11 +175,18 @@ class SettingsStore: ObservableObject {
     
     @AppStorage("hideLabelNames") var hideLabelNames: Bool = false
     
+    /// Whether to skip upload during extraction
+    @AppStorage("uploadLater") var uploadLater: Bool = false
+    
     // MARK: CLI settings
     
     func markersExtractorSettings(fcpxmlFileUrl: URL) throws -> MarkersExtractor.Settings {
         let outputDirURL: URL = self.exportFolderURL ?? URL.moviesDirectory
         let strokeSize: Int? = self.isStrokeSizeAuto ? nil : self.selectedStrokeSize
+        
+        // TODO: Remove prints
+        print("Exporting settings")
+        print("overlays: \(self.overlays)")
         
         let settings = try MarkersExtractor.Settings(
             fcpxml: .init(at: fcpxmlFileUrl),
@@ -206,11 +213,12 @@ class SettingsStore: ObservableObject {
             imageLabelAlignHorizontal: self.selectedHorizonalAlignment.markersExtractor,
             imageLabelAlignVertical: self.selectedVerticalAlignment.markersExtractor,
             imageLabelHideNames: self.hideLabelNames,
-            //createDoneFile: Bool = Defaults.createDoneFile,
-            //doneFilename: String = Defaults.doneFilename,
+//            resultFilePath: 
             exportFolderFormat: self.selectedFolderFormat.markersExtractor
-            
         )
+        
+        // TODO: Remove print
+        print("exported settings: \(settings.imageLabels)")
         
         return settings
         

@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import MarkersExtractor
 import os
 
 /// Holds and manages database profiles
@@ -14,9 +15,10 @@ import os
 class DatabaseManager: ObservableObject {
     /// List of database profiles
     @Published var profiles: [DatabaseProfileModel] = []
-    @AppStorage("selectedDatabaseProfile") var activeDatabaseProfileName = ""
+    @AppStorage("selectedDatabaseProfileName") var selectedDatabaseProfileName = ""
+    @AppStorage("selectedExportFormat") var selectedExportFormat: ExportProfileFormat = .notion
     
-    var activeDatabaseProfile: DatabaseProfileModel? {
+    var selectedDatabaseProfile: DatabaseProfileModel? {
         if let activeProfileName = UserDefaults.standard.string(forKey: "selectedDatabaseProfile"),
            let profile = self.profiles.first(where: { $0.name == activeProfileName }) {
             return profile
@@ -50,6 +52,20 @@ class DatabaseManager: ObservableObject {
         }
     }
     
+    /// Set export profile without uploading to any database
+    public func setExportProfile(exportProfile profile: ExportProfileFormat) {
+        self.selectedExportFormat = profile
+        self.selectedDatabaseProfileName = ""
+    }
+    
+    /// Set export profile and database upload settings
+    public func setExportProfile(databaseProfileName: String) {
+        if let profile = self.profiles.first(where: { $0.name == databaseProfileName }) {
+            self.selectedExportFormat = profile.plaform.asExportProfile
+            self.selectedDatabaseProfileName = profile.name
+        }
+    }
+    
     func addProfile(_ profile: DatabaseProfileModel, saveToDisk: Bool = true) throws {
         if saveToDisk {
             try self.validateProfile(profile)
@@ -57,11 +73,6 @@ class DatabaseManager: ObservableObject {
         }
         
         self.profiles.append(profile)
-        
-        // Make active if there are no active profiles
-        if activeDatabaseProfileName.isEmpty {
-            activeDatabaseProfileName = profile.name
-        }
     }
     
     func removeProfile(profileName: String) throws {
@@ -76,11 +87,6 @@ class DatabaseManager: ObservableObject {
         
         try filemanager.removeItem(at: url)
         
-        // Change active profile if needed
-        if self.activeDatabaseProfile == profile && !self.profiles.isEmpty {
-            self.activeDatabaseProfileName = self.profiles.first?.name ?? ""
-        }
-        
         // Remove from list
         if let index = self.profiles.firstIndex(of: profile) {
             self.profiles.remove(at: index)
@@ -91,7 +97,7 @@ class DatabaseManager: ObservableObject {
         Task {
             await MainActor.run {
                 if let profile = self.profiles.first(where: { $0.name == profileName }) {
-                    self.activeDatabaseProfileName = profile.name
+                    self.selectedDatabaseProfileName = profile.name
                 }
             }
         }
@@ -178,6 +184,13 @@ class DatabaseManager: ObservableObject {
         // Check if name is empty
         if profile.name.isEmpty {
             throw DatabaseValidationError.emptyName
+        }
+        
+        // Check for illegal names (names of no upload exports)
+        let illegalNames = ExportProfileFormat.allExtractOnlyNames
+        
+        if illegalNames.contains(profile.name) {
+            throw DatabaseValidationError.illegalName
         }
         
         // Check if name already exists

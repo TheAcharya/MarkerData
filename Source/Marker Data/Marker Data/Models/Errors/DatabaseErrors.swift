@@ -11,6 +11,7 @@ enum DatabaseValidationError: Error {
     case emptyName
     case emptyCredentials
     case nameAlreadyExists
+    case illegalName
 }
 
 extension DatabaseValidationError: LocalizedError {
@@ -22,6 +23,8 @@ extension DatabaseValidationError: LocalizedError {
             "Empty profile credentials"
         case .nameAlreadyExists:
             "A profile with the same name already exists"
+        case .illegalName:
+            "This name is not allowed"
         }
     }
 }
