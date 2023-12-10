@@ -89,7 +89,7 @@ Original Idea, Application Direction and Workflow Architecture by [Vigneswaran R
 
 Maintained by [Milán Várady](https://github.com/milanvarady) (1.0.0 ...)
 
-**MarkersExtractor (CLI & API)**
+**MarkersExtractor (CLI & Library)**
 
 Maintained by [Steffan Andrews](https://github.com/orchetect) ([0.2.0 ...](https://github.com/TheAcharya/MarkersExtractor))
 
