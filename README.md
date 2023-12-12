@@ -69,7 +69,7 @@ macOS Ventura 13.6.2 or later <br> Final Cut Pro 10.6.9 <br> Runs natively on bo
 
 ## Installation
 
-<p align="center"> <img src="https://github.com/TheAcharya/MarkerData/blob/main/assets/marker_data_dmg.png?raw=true"> </p>
+<p align="center"> <img src="https://github.com/TheAcharya/MarkerData-Website/blob/main/docs/assets/md-install.png?raw=true"> </p>
 
 ## Use Cases
 - Marker Notes Database
