@@ -11,7 +11,7 @@
 <img src="https://img.shields.io/badge/platform-macOS-lightgrey.svg?style=flat" alt="platform"/>
 </a>
 <p>
-<p>Marker Data facilitates the seamless extraction, conversion, and database creation from <a href="https://www.apple.com/final-cut-pro/" target="_blank">Final Cut Pro</a>’s Maker metadata. Leveraging the sophisticated <a href="https://github.com/TheAcharya/MarkersExtractor" target="_blank">MarkersExtractor</a> Library, users can effortlessly manage and manipulate marker information with precision and efficiency.</p>
+<p>Marker Data facilitates the seamless extraction, conversion, and database creation from <a href="https://www.apple.com/final-cut-pro/" target="_blank">Final Cut Pro</a>’s Maker metadata. Leveraging the sophisticated <a href="https://github.com/TheAcharya/MarkersExtractor" target="_blank">MarkersExtractor</a> Library, users can effortlessly manage Marker information with efficiency.</p>
 
 <a href="https://github.com/TheAcharya/MarkerData/releases"><img src="assets/macos_badge_noborder.png" width="175" alt="Download for macOS"/></a>
 
