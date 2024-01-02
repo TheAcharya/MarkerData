@@ -9,10 +9,13 @@ import SwiftUI
 
 @main
 struct Marker_DataApp: App {
+    // Environment objects
     @StateObject private var settings: SettingsContainer
-    @StateObject private var progressPublisher: ProgressPublisher
+    
     @StateObject private var extractionModel: ExtractionModel
+    
     @StateObject var configurationsModel: ConfigurationsModel
+    
     @StateObject var databaseManager: DatabaseManager
     
     /// Currently selected detail view in the sidebar
@@ -22,19 +25,16 @@ struct Marker_DataApp: App {
 
     init() {
         let settings = SettingsContainer()
-        let progressPublisher = ProgressPublisher()
         let databaseManager = DatabaseManager()
         
         let extractionModel = ExtractionModel(
             settings: settings,
-            progressPublisher: progressPublisher,
             databaseManager: databaseManager
         )
         
         let configurationsModel = ConfigurationsModel()
         
         self._settings = StateObject(wrappedValue: settings)
-        self._progressPublisher = StateObject(wrappedValue: progressPublisher)
         self._extractionModel = StateObject(wrappedValue: extractionModel)
         self._configurationsModel = StateObject(wrappedValue: configurationsModel)
         self._databaseManager = StateObject(wrappedValue: databaseManager)
@@ -47,7 +47,6 @@ struct Marker_DataApp: App {
             // MARK: ContentView
             ContentView(
                 extractionModel: self.extractionModel,
-                progressPublisher: progressPublisher,
                 sidebarSelection: $sidebarSelection
             )
             .environmentObject(settings)
@@ -89,6 +88,11 @@ struct Marker_DataApp: App {
             
             DatabaseCommands()
             HelpCommands()
+        }
+        
+        WindowGroup("Failed Tasks", for: [ExtractionFailure].self) { $failedExtractions in
+            FailedExtractionsView(failedExtractions: failedExtractions ?? [])
+                .preferredColorScheme(.dark)
         }
     }
 }

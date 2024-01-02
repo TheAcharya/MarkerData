@@ -175,9 +175,6 @@ class SettingsStore: ObservableObject {
     
     @AppStorage("hideLabelNames") var hideLabelNames: Bool = false
     
-    /// Whether to skip upload during extraction
-    @AppStorage("uploadLater") var uploadLater: Bool = false
-    
     // MARK: CLI settings
     
     func markersExtractorSettings(fcpxmlFileUrl: URL) throws -> MarkersExtractor.Settings {

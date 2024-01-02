@@ -14,7 +14,6 @@ struct ContentView: View {
     @StateObject private var errorViewModel = ErrorViewModel()
 
     @ObservedObject var extractionModel: ExtractionModel
-    @ObservedObject var progressPublisher: ProgressPublisher
     @Binding var sidebarSelection: MainViews
     
     @EnvironmentObject var configurationsModel: ConfigurationsModel
@@ -60,10 +59,7 @@ struct ContentView: View {
             Group {
                 switch sidebarSelection {
                 case .extract:
-                    ExtractView(
-                        extractionModel: extractionModel,
-                        progressPublisher: progressPublisher
-                    )
+                    ExtractView(extractionModel: extractionModel)
                 case .general:
                     GeneralSettingsView()
                 case .image:
@@ -85,18 +81,15 @@ struct ContentView: View {
 
 #Preview {
     @StateObject var settings = SettingsContainer()
-    @StateObject var progressPublisher = ProgressPublisher()
     @StateObject var databaseManager = DatabaseManager()
 
     @StateObject var extractionModel = ExtractionModel(
         settings: settings,
-        progressPublisher: progressPublisher,
         databaseManager: databaseManager
     )
 
     return ContentView(
         extractionModel: extractionModel,
-        progressPublisher: progressPublisher,
         sidebarSelection: .constant(.extract)
     )
     .environmentObject(settings)

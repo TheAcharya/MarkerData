@@ -16,11 +16,16 @@
 		414262C02AD5CE3200FC6CFC /* ConfigurationErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414262BF2AD5CE3200FC6CFC /* ConfigurationErrors.swift */; };
 		414262C22AD5D34D00FC6CFC /* ConfigurationsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414262C12AD5D34D00FC6CFC /* ConfigurationsModel.swift */; };
 		414262C52ADAC6EC00FC6CFC /* DefaultConfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = 414262C42ADAC6EC00FC6CFC /* DefaultConfiguration.json */; };
+		415619672B3A18D60032E82C /* ExtractError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 415619662B3A18D60032E82C /* ExtractError.swift */; };
+		4156196B2B3AE41F0032E82C /* ProgressViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4156196A2B3AE41F0032E82C /* ProgressViewModel.swift */; };
+		417272982B444211005A04BE /* ExportExitStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417272972B444211005A04BE /* ExportExitStatus.swift */; };
+		4172729A2B44533D005A04BE /* FailedExtractionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417272992B44533D005A04BE /* FailedExtractionsView.swift */; };
 		417389632AC86BE600984FD8 /* ExtractView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417389622AC86BE600984FD8 /* ExtractView.swift */; };
 		41BFEB6D2B1B9B6400C8B551 /* Links.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BFEB6C2B1B9B6400C8B551 /* Links.swift */; };
 		41BFEB702B1BA4CC00C8B551 /* PasswordField in Frameworks */ = {isa = PBXBuildFile; productRef = 41BFEB6F2B1BA4CC00C8B551 /* PasswordField */; };
 		41BFEB722B1BCE4600C8B551 /* ExportProfilePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BFEB712B1BCE4600C8B551 /* ExportProfilePicker.swift */; };
 		41BFEB772B1E63EB00C8B551 /* ExportProfileFormatExtrension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BFEB762B1E63EA00C8B551 /* ExportProfileFormatExtrension.swift */; };
+		41BFEB792B1F925800C8B551 /* ExportProcess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BFEB782B1F925800C8B551 /* ExportProcess.swift */; };
 		41C538942AE1AFF200E8A8A1 /* SettingsContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C538932AE1AFF200E8A8A1 /* SettingsContainer.swift */; };
 		41C538992AE3062000E8A8A1 /* HelpCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C538982AE3062000E8A8A1 /* HelpCommands.swift */; };
 		41C5389B2AE3067900E8A8A1 /* ConfigurationCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C5389A2AE3067900E8A8A1 /* ConfigurationCommands.swift */; };
@@ -62,7 +67,6 @@
 		9B61B44229F03866003EC14A /* libswiftCoreGraphics.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B61B44129F03866003EC14A /* libswiftCoreGraphics.tbd */; };
 		9B653ABB29F2C2E700C64999 /* UserAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B653ABA29F2C2E700C64999 /* UserAlertView.swift */; };
 		9B653ABD29F2C64600C64999 /* ErrorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B653ABC29F2C64600C64999 /* ErrorViewModel.swift */; };
-		9B7BA03B2A128E9E0014E168 /* ProgressPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B7BA03A2A128E9E0014E168 /* ProgressPublisher.swift */; };
 		9B9CA1172A1A9BBB004E337A /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9CA1162A1A9BBB004E337A /* PersistenceController.swift */; };
 		9BACA4D129FA9B5100EF6837 /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BACA4D029FA9B5100EF6837 /* SettingsStore.swift */; };
 		D5F74A312972D31D00EEE2FE /* Marker_DataApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F74A302972D31D00EEE2FE /* Marker_DataApp.swift */; };
@@ -96,10 +100,15 @@
 		414262BF2AD5CE3200FC6CFC /* ConfigurationErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationErrors.swift; sourceTree = "<group>"; };
 		414262C12AD5D34D00FC6CFC /* ConfigurationsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationsModel.swift; sourceTree = "<group>"; };
 		414262C42ADAC6EC00FC6CFC /* DefaultConfiguration.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DefaultConfiguration.json; sourceTree = "<group>"; };
+		415619662B3A18D60032E82C /* ExtractError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractError.swift; sourceTree = "<group>"; };
+		4156196A2B3AE41F0032E82C /* ProgressViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressViewModel.swift; sourceTree = "<group>"; };
+		417272972B444211005A04BE /* ExportExitStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportExitStatus.swift; sourceTree = "<group>"; };
+		417272992B44533D005A04BE /* FailedExtractionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FailedExtractionsView.swift; sourceTree = "<group>"; };
 		417389622AC86BE600984FD8 /* ExtractView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractView.swift; sourceTree = "<group>"; };
 		41BFEB6C2B1B9B6400C8B551 /* Links.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Links.swift; sourceTree = "<group>"; };
 		41BFEB712B1BCE4600C8B551 /* ExportProfilePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportProfilePicker.swift; sourceTree = "<group>"; };
 		41BFEB762B1E63EA00C8B551 /* ExportProfileFormatExtrension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportProfileFormatExtrension.swift; sourceTree = "<group>"; };
+		41BFEB782B1F925800C8B551 /* ExportProcess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportProcess.swift; sourceTree = "<group>"; };
 		41C538932AE1AFF200E8A8A1 /* SettingsContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsContainer.swift; sourceTree = "<group>"; };
 		41C538982AE3062000E8A8A1 /* HelpCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpCommands.swift; sourceTree = "<group>"; };
 		41C5389A2AE3067900E8A8A1 /* ConfigurationCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationCommands.swift; sourceTree = "<group>"; };
@@ -141,7 +150,6 @@
 		9B61B44329F0387C003EC14A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		9B653ABA29F2C2E700C64999 /* UserAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAlertView.swift; sourceTree = "<group>"; };
 		9B653ABC29F2C64600C64999 /* ErrorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorViewModel.swift; sourceTree = "<group>"; };
-		9B7BA03A2A128E9E0014E168 /* ProgressPublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressPublisher.swift; sourceTree = "<group>"; };
 		9B9CA0F42A1A9ADD004E337A /* MarkerData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MarkerData.xcdatamodel; sourceTree = "<group>"; };
 		9B9CA1162A1A9BBB004E337A /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
 		9BACA4D029FA9B5100EF6837 /* SettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStore.swift; sourceTree = "<group>"; };
@@ -203,6 +211,7 @@
 				9B653ABC29F2C64600C64999 /* ErrorViewModel.swift */,
 				414262BF2AD5CE3200FC6CFC /* ConfigurationErrors.swift */,
 				41F88AF92B0FF62A004A3B58 /* DatabaseErrors.swift */,
+				415619662B3A18D60032E82C /* ExtractError.swift */,
 			);
 			path = Errors;
 			sourceTree = "<group>";
@@ -291,7 +300,9 @@
 			children = (
 				47F5CDF72A60CA43005D9A98 /* ExtractionModel.swift */,
 				41F88AFD2B126439004A3B58 /* ExtractionResult.swift */,
-				9B7BA03A2A128E9E0014E168 /* ProgressPublisher.swift */,
+				41BFEB782B1F925800C8B551 /* ExportProcess.swift */,
+				4156196A2B3AE41F0032E82C /* ProgressViewModel.swift */,
+				417272972B444211005A04BE /* ExportExitStatus.swift */,
 			);
 			path = Extract;
 			sourceTree = "<group>";
@@ -330,6 +341,7 @@
 				9B653ABA29F2C2E700C64999 /* UserAlertView.swift */,
 				9B35FE6729F94C110035B760 /* PickerViews.swift */,
 				41BFEB712B1BCE4600C8B551 /* ExportProfilePicker.swift */,
+				417272992B44533D005A04BE /* FailedExtractionsView.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -535,6 +547,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4156196B2B3AE41F0032E82C /* ProgressViewModel.swift in Sources */,
 				4741202E2A3EFC42005890FE /* Miscellaneous Utilities.swift in Sources */,
 				9B244B3E2A24AB5D005620D8 /* MarkerData.xcdatamodeld in Sources */,
 				47411FDC2A3EA140005890FE /* ViewExtensions.swift in Sources */,
@@ -556,13 +569,14 @@
 				9B25815E2A07A286002CED07 /* GeneralSettingsView.swift in Sources */,
 				9BACA4D129FA9B5100EF6837 /* SettingsStore.swift in Sources */,
 				41F88AFA2B0FF62A004A3B58 /* DatabaseErrors.swift in Sources */,
+				415619672B3A18D60032E82C /* ExtractError.swift in Sources */,
+				417272982B444211005A04BE /* ExportExitStatus.swift in Sources */,
 				41F88AF12B0E9367004A3B58 /* DatabaseManager.swift in Sources */,
 				4100D5E42AD1616D0081F0EC /* ColorExtension.swift in Sources */,
 				9B4D90DE2A0BB11000FE7603 /* DatabaseSettingsView.swift in Sources */,
 				9B653ABB29F2C2E700C64999 /* UserAlertView.swift in Sources */,
 				41F88AF62B0E9DBF004A3B58 /* CreateDBProfileSheet.swift in Sources */,
 				9B35FE6829F94C110035B760 /* PickerViews.swift in Sources */,
-				9B7BA03B2A128E9E0014E168 /* ProgressPublisher.swift in Sources */,
 				41EBAD522AF8172F00E6AF7C /* MainViews.swift in Sources */,
 				D5F74A332972D31D00EEE2FE /* ContentView.swift in Sources */,
 				41F88AE32B0C839B004A3B58 /* Shell.swift in Sources */,
@@ -571,6 +585,7 @@
 				47F5CDF82A60CA43005D9A98 /* ExtractionModel.swift in Sources */,
 				9B653ABD29F2C64600C64999 /* ErrorViewModel.swift in Sources */,
 				41EBAD502AF7B6F200E6AF7C /* WindowSize.swift in Sources */,
+				41BFEB792B1F925800C8B551 /* ExportProcess.swift in Sources */,
 				41C5389D2AE306C000E8A8A1 /* DatabaseCommands.swift in Sources */,
 				41C538942AE1AFF200E8A8A1 /* SettingsContainer.swift in Sources */,
 				414262C02AD5CE3200FC6CFC /* ConfigurationErrors.swift in Sources */,
@@ -584,6 +599,7 @@
 				41BFEB722B1BCE4600C8B551 /* ExportProfilePicker.swift in Sources */,
 				414262C22AD5D34D00FC6CFC /* ConfigurationsModel.swift in Sources */,
 				41BFEB6D2B1B9B6400C8B551 /* Links.swift in Sources */,
+				4172729A2B44533D005A04BE /* FailedExtractionsView.swift in Sources */,
 				9B51D21129E9A01A00DF7836 /* FolderPicker.swift in Sources */,
 				41F88AE52B0C83DE004A3B58 /* ShellResult.swift in Sources */,
 				9B9CA1172A1A9BBB004E337A /* PersistenceController.swift in Sources */,

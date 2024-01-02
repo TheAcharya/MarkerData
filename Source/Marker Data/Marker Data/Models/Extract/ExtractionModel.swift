@@ -11,28 +11,28 @@ class ExtractionModel: ObservableObject, DropDelegate {
     
     static let supportedContentTypes: [UTType] = [.fcpxml, .fcpxmld]
 
+    // Drop
     @Published var dropPoint: CGPoint? = nil
     @Published var isDropping = false
-    @Published var showOutputInFinder = false
+    
+    @Published var extractionInProgress = false
+    @Published var showProgress = false
+    @Published var exportResult: ExportExitStatus = .none
     @Published var completedOutputFolder: URL? = nil
-    @Published var extractionInProgresss = false
+    
+    @Published var extractionProgress = ProgressViewModel(taskDescription: "Extract")
+    @Published var uploadProgress = ProgressViewModel(taskDescription: "Upload")
+    
+    public var failedTasks: [ExtractionFailure] = []
 
     let errorViewModel: ErrorViewModel
     let settings: SettingsContainer
-    let progressPublisher: ProgressPublisher
-    
-    var observation: NSKeyValueObservation?
     
     static let logger = Logger()
 
-    init(
-        settings: SettingsContainer,
-        progressPublisher: ProgressPublisher,
-        databaseManager: DatabaseManager
-    ) {
+    init(settings: SettingsContainer, databaseManager: DatabaseManager) {
         self.errorViewModel = ErrorViewModel()
         self.settings = settings
-        self.progressPublisher = progressPublisher
         self.databaseManager = databaseManager
     }
 
@@ -46,7 +46,7 @@ class ExtractionModel: ObservableObject, DropDelegate {
         
         let isFileSupported = info.hasItemsConforming(to: Self.supportedContentTypes)
         
-        return if isFileSupported && !self.extractionInProgresss {
+        return if isFileSupported && !self.extractionInProgress {
             DropProposal(operation: .copy) }
         else {
             DropProposal(operation: .forbidden)
@@ -62,12 +62,6 @@ class ExtractionModel: ObservableObject, DropDelegate {
     func performDrop(info: DropInfo) -> Bool {
         let providers = info.itemProviders(
             for: [.fileURL]
-        )
-
-        self.progressPublisher.showProgress = true
-        self.progressPublisher.updateProgressTo(
-            progressMessage: "Received file",
-            percentageCompleted: 1
         )
         
         var filesToProcess: [URL] = []
@@ -87,8 +81,9 @@ class ExtractionModel: ObservableObject, DropDelegate {
                     } else if let error = error {
                         // Handle the error
                         DispatchQueue.main.async {
-                            self.progressPublisher.markasFailed(
-                                errorMessage: "Error: \(error.localizedDescription)"
+                            self.extractionProgress.markasFailed(
+                                progressMessage: "Failed to load files",
+                                alertMessage: "Error: \(error.localizedDescription)"
                             )
                             
                             self.errorViewModel.errorMessage  = error.localizedDescription
@@ -112,165 +107,188 @@ class ExtractionModel: ObservableObject, DropDelegate {
     }
     
     func performExtraction(_ urls: [URL]) async {
+        func resetVariables() {
+            self.exportResult = .none
+            self.completedOutputFolder = nil
+            self.failedTasks.removeAll()
+            self.extractionProgress.reset()
+            self.uploadProgress.reset()
+        }
+        
+        func validateExportDestination() throws {
+            var isDir : ObjCBool = false
+            
+            let exportPath: String = settings.store.exportFolderURL?.path(percentEncoded: false) ?? ""
+            
+            if !FileManager.default.fileExists(atPath: exportPath, isDirectory: &isDir) {
+                Self.logger.error("Extract error: Empty or invalid export destination")
+                
+                throw ExtractError.invalidExportDestination
+            }
+        }
+        
+        func prepareExtraction(for urls: [URL]) async {
+            self.extractionInProgress = true
+            Self.logger.notice("Processing files: \(urls.map { $0.path(percentEncoded: false) })")
+            
+            self.extractionProgress.setProcesses(urls: urls)
+            
+            // Show extraction progress
+            await MainActor.run {
+                self.showProgress = true
+            }
+        }
+        
+        @Sendable 
+        func extractAndUpdateProgress(for url: URL) async throws -> ExportResult? {
+            // Get extraction settings
+            guard let settings = try? self.settings.store.markersExtractorSettings(fcpxmlFileUrl: url) else {
+                throw ExtractError.settingsReadError
+            }
+            
+            let extractor = MarkersExtractor(settings)
+            
+            // Observe progress changes
+            let observation = extractor.observe(
+                \.progress.fractionCompleted,
+                 options: [.old, .new]
+            ) { object, change in
+                Task {
+                    await self.extractionProgress.updateProgress(of: url, to: Int64(change.newValue! * 100))
+                }
+            }
+            
+            var exportResult: ExportResult? = nil
+            
+            do {
+                // Do extraction
+                exportResult = try await extractor.extract()
+            } catch {
+                await MainActor.run {
+                    failedTasks.append(ExtractionFailure(url: url, exitStatus: .failedToExtract))
+                }
+            }
+            
+            observation.invalidate()
+            
+            // Set progress as finished
+            await self.extractionProgress.markProcessAsFinished(url: url)
+            
+            Self.logger.notice("Successfully extracted: \(url.path(percentEncoded: false))")
+            
+            return exportResult
+        }
+        
+        @Sendable
+        func uploadToDatabaseAndTrackProgress(url: URL, exportResult: ExportResult?) async throws {
+            // Check if a database profile is set
+            if let databaseProfile = await self.databaseManager.selectedDatabaseProfile,
+               let exportInfo = exportResult,
+               let csvURL = exportInfo.csvManifestPath {
+                
+                Self.logger.notice("Upload started")
+                
+                // Add process to upload progress
+                await self.uploadProgress.addProcess(url: csvURL)
+                
+                // Upload
+                try await self.uploadToDatabase(url: csvURL, databaseProfile: databaseProfile)
+                
+                Self.logger.notice("Successfully uploaded: \(url.path(percentEncoded: false))")
+            } else {
+                Self.logger.notice("Skipping upload for: \(url)")
+                return
+            }
+        }
+        
+        // MARK: Prepare for extraction
+        
         defer {
-            self.extractionInProgresss = false
+            self.extractionInProgress = false
         }
         
         Self.logger.notice("Extraction started")
         
-        // Reset
-        self.completedOutputFolder = nil
+        resetVariables()
         
-        // Check for invalid export destination
-        var isDir : ObjCBool = false
-        
-        let exportPath: String = settings.store.exportFolderURL?.path(percentEncoded: false) ?? ""
-        
-        if !FileManager.default.fileExists(atPath: exportPath, isDirectory: &isDir) {
-            self.progressPublisher.markasFailed(errorMessage: "Failed: Empty or invalid export destination")
-            self.errorViewModel.errorMessage = "Empty or invalid export destination."
-            
-            Self.logger.error("Extract error: Empty or invalid export destination")
-            
-            return
+        // Validate export destination
+        do {
+            try validateExportDestination()
+        } catch {
+            self.extractionProgress.markasFailed(
+                progressMessage: "Failed: Empty or invalid export destination",
+                alertMessage: "Failed: Empty or invalid export destination. Please select one."
+            )
         }
         
-        withAnimation {
-            self.extractionInProgresss = true
-        }
+        await prepareExtraction(for: urls)
         
-        // Handle the file URL
-        Self.logger.notice("Processing files: \(urls.map { $0.path(percentEncoded: false) })")
-        
-        self.progressPublisher.showProgress = true
-        self.progressPublisher.updateProgressTo(
-            progressMessage: "Begin to process \(urls.count) file\(urls.count > 1 ? "s": "")",
-            percentageCompleted: 2
-        )
-        
-        var filesCompleted = 0
-        var failedTasks: [ExtractionFailure] = []
+        // MARK: Perform extraction and upload in parallel (in case of multiple files
         
         await withTaskGroup(of: Void.self) { group in
             for url in urls {
                 group.addTask {
+                    var exportResult: ExportResult? = nil
+                    
+                    // Extract
                     do {
-                        let settings = try self.settings.store.markersExtractorSettings(
-                            fcpxmlFileUrl: url
-                        )
-                        
-                        let extractor = MarkersExtractor(settings)
-                        
-                        // Observe progress changes (only in case of a single file)
-                        if urls.count == 1 {
-                            await MainActor.run {
-                                self.observation = extractor.observe(
-                                    \.progress.fractionCompleted,
-                                     options: [.old, .new]
-                                ) { object, change in
-                                    Task {
-                                        await MainActor.run {
-                                            self.progressPublisher.updateProgressTo(
-                                                progressMessage: "Extracting...",
-                                                percentageCompleted: Int(change.newValue! * 100),
-                                                icon: "gearshape"
-                                            )
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        
-                        let exportResult = try await extractor.extract()
-                        
-                        Self.logger.notice("Successfully extracted: \(url.path(percentEncoded: false))")
-                        
-                        // If processing one file update progress to uploading
-                        if urls.count == 1 {
-                            await MainActor.run {
-                                self.progressPublisher.updateProgressTo(progressMessage: "Preparing to Upload...", percentageCompleted: 0, icon: "square.and.arrow.up")
-                            }
-                        }
-                        
-                        // Upload csv to notion or airtable
-                        if let csvURL = exportResult.csvManifestPath {
-                            do {
-                                Self.logger.notice("Upload started")
-                                
-                                try await self.uploadToDatabase(csvPath: csvURL, databaseManager: self.databaseManager)
-                                
-                                Self.logger.notice("Successfully uploaded: \(url.path(percentEncoded: false))")
-                            } catch {
-                                await MainActor.run {
-                                    Self.logger.error("Upload failed")
-                                    failedTasks.append(ExtractionFailure(url: url, exitStatus: .failedToUpload))
-                                }
-                            }
-                        } else {
-                            await MainActor.run {
-                                Self.logger.error("Upload failed: Couldn't retrieve json path")
-                                failedTasks.append(ExtractionFailure(url: url, exitStatus: .failedToUpload))
-                            }
-                        }
-                        
-                        await MainActor.run {
-                            filesCompleted += 1
-                            
-                            // All extractions complete
-                            if filesCompleted == urls.count {
-                                if failedTasks.isEmpty {
-                                    self.progressPublisher.updateProgressTo(
-                                        progressMessage: "Extraction completed",
-                                        percentageCompleted: 100,
-                                        icon: "checkmark"
-                                    )
-                                    
-                                    Self.logger.notice("All extractions successfull")
-                                } else {
-                                    var message = "Failed to complete the following files:"
-                                    
-                                    for failure in failedTasks {
-                                        message += "\n\(failure.url.lastPathComponent), reason: \(failure.exitStatus.rawValue)"
-                                    }
-                                    
-                                    Self.logger.error("\(message)")
-                                    
-                                    self.progressPublisher.markasFailed(errorMessage: "Failed to complete", alertMessage: message)
-                                }
-                                
-                                self.completedOutputFolder = settings.outputDir
-                                self.showOutputInFinder = true // Inform the user
-                            } else if urls.count > 1 {
-                                // Update progress in case of multiple files
-                                self.progressPublisher.updateProgressTo(
-                                    progressMessage: "Extracting files \(filesCompleted)/\(urls.count)...",
-                                    percentageCompleted: (100/urls.count) * filesCompleted,
-                                    icon: "gearshape"
-                                )
-                            }
-                        }
+                        exportResult = try await extractAndUpdateProgress(for: url)
                     } catch {
-                        self.progressPublisher.markasFailed(
-                            errorMessage: "Error: \(error.localizedDescription)"
-                        )
-                        
-                        self.errorViewModel.errorMessage = error.localizedDescription
-                        
-                        Self.logger.error("Extraction error: \(error.localizedDescription)")
+                        await MainActor.run {
+                            self.failedTasks.append(ExtractionFailure(url: url, exitStatus: .failedToExtract))
+                        }
+                    }
+                    
+                    // Upload to database (if a database profile is selected)
+                    do {
+                        try await uploadToDatabaseAndTrackProgress(url: url, exportResult: exportResult)
+                    } catch {
+                        await MainActor.run {
+                            self.failedTasks.append(ExtractionFailure(url: url, exitStatus: .failedToUpload))
+                        }
                     }
                 }
             }
         }
+        
+        // MARK: Show result
+        await MainActor.run {
+            if self.failedTasks.isEmpty {
+                // Successful extraction
+                Self.logger.notice("All extractions successfull")
+                self.exportResult = .success
+            } else {
+                // Failed extraction
+                self.exportResult = .failed
+                
+                var message = "Failed to complete the following files:"
+                for failure in failedTasks {
+                    message += "\n\(failure.url.lastPathComponent), reason: \(failure.exitStatus.rawValue)"
+                }
+
+                Self.logger.error("\(message)")
+
+                if failedTasks.contains(where: { $0.exitStatus == .failedToExtract }) {
+                    self.extractionProgress.markasFailed(
+                        progressMessage: "Failed to complete extraction",
+                        alertMessage: "See file specific information by clicking the info button below the progress bars."
+                    )
+                }
+                
+                if failedTasks.contains(where: { $0.exitStatus == .failedToUpload }) {
+                    self.uploadProgress.markasFailed(
+                        progressMessage: "Failed to complete upload",
+                        alertMessage: "See file specific information by clicking the info button below the progress bars."
+                    )
+                }
+            }
+
+            self.completedOutputFolder = settings.store.exportFolderURL
+        }
     }
     
-    private func uploadToDatabase(csvPath: URL, databaseManager: DatabaseManager) async throws {
-        guard let profile = databaseManager.selectedDatabaseProfile else {
-            Self.logger.notice("Skipping upload: No database profile selected")
-            return
-        }
-        
-        switch profile.plaform {
-        case .notion:
+    private func uploadToDatabase(url: URL, databaseProfile: DatabaseProfileModel) async throws {
+        func uploadToNotion() async throws {
             guard let csv2notionURL = Bundle.main.url(forResource: "csv2notion_neo", withExtension: nil) else {
                 Self.logger.error("Failed to upload to Notion: csv2notion executable not found")
                 throw DatabaseUploadError.csv2notionExecutableNotFound
@@ -278,7 +296,7 @@ class ExtractionModel: ObservableObject, DropDelegate {
             
             let executablePath = csv2notionURL.path(percentEncoded: false).quoted
             
-            guard let token = profile.notionCredentials?.token else {
+            guard let token = databaseProfile.notionCredentials?.token else {
                 Self.logger.error("Failed to upload to Notion: token not found.")
                 throw DatabaseUploadError.notionNoToken
             }
@@ -294,11 +312,11 @@ class ExtractionModel: ObservableObject, DropDelegate {
                 "--max-threads", "5",
                 "--merge",
                 "--log", logPath.quoted,
-                (csvPath.path(percentEncoded: false)).quoted
+                (url.path(percentEncoded: false)).quoted
             ]
             
             // Add database url if defined
-            if let databaseUrl = profile.notionCredentials?.databaseURL {
+            if let databaseUrl = databaseProfile.notionCredentials?.databaseURL {
                 arguments.insert(contentsOf: ["--url", databaseUrl.quoted], at: 2)
             }
             
@@ -312,11 +330,9 @@ class ExtractionModel: ObservableObject, DropDelegate {
             let cancellable = shellOutputStream.outputPublisher.sink(receiveValue: { output in
                 if let match = output.firstMatch(of: percentRegex),
                    let percent = match.1.int {
-                    self.progressPublisher.updateProgressTo(
-                        progressMessage: "Uploading...",
-                        percentageCompleted: percent,
-                        icon: "square.and.arrow.up"
-                    )
+                    Task {
+                        await self.uploadProgress.updateProgress(of: url, to: Int64(percent))
+                    }
                 }
             })
             
@@ -325,9 +341,18 @@ class ExtractionModel: ObservableObject, DropDelegate {
             cancellable.cancel()
             
             if result.didFail {
+                // Failure
                 Self.logger.error("Failed to upload to Notion. Command: \(command). Output: \(result.output)")
                 throw DatabaseUploadError.notionUploadError
+            } else {
+                // Success
+                await self.uploadProgress.markProcessAsFinished(url: url)
             }
+        }
+        
+        switch databaseProfile.plaform {
+        case .notion:
+            try await uploadToNotion()
         case .airtable:
             break
         }

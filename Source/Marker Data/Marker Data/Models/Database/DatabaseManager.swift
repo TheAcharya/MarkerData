@@ -19,12 +19,13 @@ class DatabaseManager: ObservableObject {
     @AppStorage("selectedExportFormat") var selectedExportFormat: ExportProfileFormat = .notion
     
     var selectedDatabaseProfile: DatabaseProfileModel? {
-        if let activeProfileName = UserDefaults.standard.string(forKey: "selectedDatabaseProfile"),
-           let profile = self.profiles.first(where: { $0.name == activeProfileName }) {
-            return profile
-        } else {
-            return nil
+        if !self.selectedDatabaseProfileName.isEmpty {
+            if let profile = self.profiles.first(where: { $0.name == self.selectedDatabaseProfileName }) {
+                return profile
+            }
         }
+        
+        return nil
     }
     
     static let logger = Logger()

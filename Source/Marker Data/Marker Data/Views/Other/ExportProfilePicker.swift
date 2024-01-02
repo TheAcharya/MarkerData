@@ -16,7 +16,7 @@ struct ExportProfilePicker: View {
     @State var selection: String = ExportProfileFormat.allExtractOnlyNames[0]
     
     var body: some View {
-        Picker("Profile", selection: $selection) {
+        Picker("Export Profile", selection: $selection) {
             Section("Extract Only (No Upload)") {
                 ForEach(ExportProfileFormat.allExtractOnlyNames, id: \.self) { name in
                     Text(name)
