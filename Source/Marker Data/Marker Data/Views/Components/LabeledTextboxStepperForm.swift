@@ -49,6 +49,7 @@ struct LabeledTextboxStepperForm<Value, Label, Format>: View where
             .textFieldStyle(.roundedBorder)
             .formControlLeadingAlignmentGuide()
             .frame(width: textFieldWidth)
+            
             Stepper(
                 "",
                 value: $value,

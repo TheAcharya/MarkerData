@@ -11,181 +11,86 @@ import UniformTypeIdentifiers
 import MarkersExtractor
 
 struct ContentView: View {
-    
-    @EnvironmentObject var settingsStore: SettingsStore
-
     @StateObject private var errorViewModel = ErrorViewModel()
 
     @ObservedObject var extractionModel: ExtractionModel
-    @ObservedObject var progressPublisher: ProgressPublisher
+    @Binding var sidebarSelection: MainViews
+    
+    @EnvironmentObject var configurationsModel: ConfigurationsModel
 
     //Main View Controller
     var body: some View {
-        VStack {
-            //Drag And Drop File Zone
-            VStack {
-                Spacer()
-                HStack {
-                    Spacer()
-                    //Text Prompt To Drop Final Cut Pro XML File
-                    Text("Drag and Drop FCP XML")
-                        .bold()
-                        .font(.title2)
-                    Spacer()
-                }
-                Spacer()
-            }
-            //Handle The Drop Of A File Or URL And Run The CLI Tool Library
-            .onDrop(
-                of: ExtractionModel.supportedContentTypes,
-                delegate: extractionModel
-            )
-
-            // .onDrop(of: [(kUTTypeFileURL as String)], isTargeted: nil, perform: { providers, _ in
-            //
-            //     DispatchQueue.main.async {
-            //         progressPublisher.showProgress = true
-            //         progressPublisher.updateProgressTo(progressMessage: "Received file", percentageCompleted: 1)
-            //     }
-            //     self.completedOutputFolder = nil
-            //     for provider in providers {
-            //         //UserDefaults.standard.set(nil, forKey:exportFolderPathKey)
-            //         // Check if the provider can load a file URL
-            //         if provider.canLoadObject(ofClass: URL.self) {
-            //             // Load the file URL from the provider
-            //             let _ = provider.loadObject(ofClass: URL.self) { url, error in
-            //                 if let fileURL = url {
-            //                     // Handle the file URL
-            //                     print("Dropped file URL: \(fileURL.absoluteString)")
-            //                     progressPublisher.updateProgressTo(
-            //                         progressMessage: "Begin to process file \(fileURL.absoluteString) ",
-            //                         percentageCompleted: 2
-            //                     )
-            //                     DispatchQueue.global(qos: .background).async {
-            //                         do {
-            //                             let settings = try settingsStore.markersExtractorSettings(
-            //                                 fcpxmlFileUrl: fileURL
-            //                             )
-            //                             progressPublisher.updateProgressTo(
-            //                                 progressMessage: "Extraction in progress...",
-            //                                 percentageCompleted: 2
-            //                             )
-            //                             try MarkersExtractor(settings).extract()
-            //                             progressPublisher.updateProgressTo(
-            //                                 progressMessage: "Extraction successful",
-            //                                 percentageCompleted: 100
-            //                             )
-            //                             self.completedOutputFolder = settings.outputDir
-            //                             showingOutputInfinder = true // inform the user
-            //                             print("Ok")
-            // 
-            //                         } catch {
-            //                             DispatchQueue.main.async {
-            //                                 progressPublisher.markasFailed(
-            //                                     errorMessage: "Error: \(error.localizedDescription)"
-            //                                 )
-            //
-            //                                 errorViewModel.errorMessage  = error.localizedDescription
-            //                                 print("Error: \(error.localizedDescription)")
-            //                             }
-            // 
-            //                         }
-            //                     }
-            //                 } else if let error = error {
-            //                     // Handle the error
-            //                     DispatchQueue.main.async {
-            //                         progressPublisher.markasFailed(
-            //                             errorMessage: "Error: \(error.localizedDescription)"
-            //                         )
-            //                         errorViewModel.errorMessage  = error.localizedDescription
-            //                         print("Error: \(error.localizedDescription)")
-            //                     }
-            //                 }
-            //             }
-            //         }
-            //     }
-            //     return true
-            // })
-
-
-            if progressPublisher.showProgress {
-                ProgressView(
-                    progressPublisher.message,
-                    value: progressPublisher.progress.fractionCompleted,
-                    total: 1
-                )
-            }
-            
-            //Divide Drag And Drop Zone From Quick Actions
-            Divider()
-            //Quick Access Title
-            Text("Quick Access")
-                .bold()
-                .padding()
-            //Quick Actions
-            HStack {
-                Spacer()
-                //Enable Upload Checkbox
-                ExportFormatPicker()
-                Toggle("Upload", isOn: $settingsStore.isUploadEnabled)
-                    .toggleStyle(CheckboxToggleStyle())
-                ExcludedRolesPicker()
-                ImageModePicker()
-                Spacer()
-            }
-            .padding(.bottom)
-        }
-        .overlay(UserAlertView(title: "Error", onDismiss: {
-                    // Perform any action you want when the user dismisses the alert.
-        })
-        .environmentObject(extractionModel.errorViewModel))
-        .alert(
-            "Extracted",
-            isPresented: $extractionModel.showOutputInFinder
-        ) {
-            Button("Show in finder") {
-                if let url = extractionModel.completedOutputFolder {
-                    NSWorkspace.shared.open(url)
+        NavigationSplitView {
+            List(selection: $sidebarSelection) {
+                Label("Extract", systemImage: "house")
+                    .tag(MainViews.extract)
+                
+                Section("Export Settings") {
+                    Label("General", systemImage: "gearshape")
+                        .tag(MainViews.general)
+                    
+                    Label("Image", systemImage: "photo")
+                        .tag(MainViews.image)
+                    
+                    Label("Label", systemImage: "tag")
+                        .tag(MainViews.label)
+                    
+                    Label("Configurations", systemImage: "briefcase")
+                        .if({
+                            return configurationsModel.checkForUnsavedChanges()
+                        }()) { view in
+                            view
+                                .badge(
+                                Text("Changed")
+                                    .font(.system(size: 7, weight: .black))
+                            )
+                        }
+                        .tag(MainViews.configurations)
+                    
+                    Label("Databases", systemImage: "server.rack")
+                        .tag(MainViews.databases)
+                    
+                    Label("About", systemImage: "info.circle")
+                        .tag(MainViews.about)
                 }
             }
-            Button("Ok") { }
-        } message: {
-            Text("Markers successfully extracted.")
+            .frame(minWidth: WindowSize.sidebarWidth)
+        } detail: {
+            Group {
+                switch sidebarSelection {
+                case .extract:
+                    ExtractView(extractionModel: extractionModel)
+                case .general:
+                    GeneralSettingsView()
+                case .image:
+                    ImageSettingsView()
+                case .label:
+                    LabelSettingsView()
+                case .configurations:
+                    ConfigurationSettingsView()
+                case .databases:
+                    DatabaseSettingsView()
+                case .about:
+                    AboutView()
+                }
+            }
+            .frame(width: WindowSize.detailWidth)
         }
-        // .alert(isPresented: $extractionModel.showOutputInFinder) {
-        //     Alert(
-        //         title: Text("Extracted"),
-        //         message: Text("Markers successfully extracted."),
-        //         primaryButton: .default(Text("Show in finder")) {
-        //             if let url = extractionModel.completedOutputFolder {
-        //                 NSWorkspace.shared.open(url)
-        //             }
-        //         },
-        //         secondaryButton: .default(Text("Ok"))
-        //     )
-        // }
-
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
+#Preview {
+    @StateObject var settings = SettingsContainer()
+    @StateObject var databaseManager = DatabaseManager()
 
-    @StateObject static private var settingsStore = SettingsStore()
-
-    @StateObject static private var progressPublisher = ProgressPublisher(
-        progress: Progress(totalUnitCount: 100)
+    @StateObject var extractionModel = ExtractionModel(
+        settings: settings,
+        databaseManager: databaseManager
     )
 
-    @StateObject static private var extractionModel = ExtractionModel(
-        settingsStore: Self.settingsStore,
-        progressPublisher: progressPublisher
+    return ContentView(
+        extractionModel: extractionModel,
+        sidebarSelection: .constant(.extract)
     )
-
-    static var previews: some View {
-        ContentView(
-            extractionModel: extractionModel,
-            progressPublisher: progressPublisher
-        )
-        .environmentObject(settingsStore)
-    }
+    .environmentObject(settings)
 }

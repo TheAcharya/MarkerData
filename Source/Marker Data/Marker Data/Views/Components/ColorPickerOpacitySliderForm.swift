@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import ColorWell
+import ColorWellKit
 
 /// Only use in a Form
 struct ColorPickerOpacitySliderForm: View {
@@ -19,9 +19,8 @@ struct ColorPickerOpacitySliderForm: View {
 
             Text("Color & Opacity:")
 
-            ColorWellView(color: $color)
-            // .border(.green)
-                .formControlLeadingAlignmentGuide()
+            ColorWellView(selection: $color, supportsOpacity: false)
+                .colorWellStyle(.minimal)
 
             Slider(value: $opacity, in: 0...1)
                 .frame(width: 75)
@@ -58,75 +57,11 @@ struct ColorPickerOpacitySliderForm_Previews: PreviewProvider {
     static let verticalSpacing: CGFloat = 10
 
     static var previews: some View {
-        VStack(alignment: .formControlAlignment) {
-            
-            // HStack {
-            //     // Text("")
-            //     // EmptyView()
-            //         // .alignmentGuide(.controlAlignment) { d in
-            //         //     d[.trailing]
-            //         // }
-            //
-            //     Toggle("toggle", isOn: .constant(true))
-            //         // .border(.green)
-            //         .alignmentGuide(.controlAlignment) { d in
-            //             d[.leading] - verticalSpacing
-            //         }
-            // }
-            
-            HStack {
-                Text("Color and opacity:")
-                ColorWellView(color: .constant(.red))
-                    .alignmentGuide(.formControlAlignment) { d in
-                        d[.leading]
-                    }
-                Slider(value: .constant(0))
-                    .frame(width: 100)
-            }
-            
-            Toggle("toggle", isOn: .constant(true))
-                .alignmentGuide(.formControlAlignment) { d in
-                    d[.leading]
-                }
-
-            HStack {
-                Text("Enter the Label man:")
-                TextField("", text: .constant(""))
-                    .alignmentGuide(.formControlAlignment) { d in
-                        d[.leading]
-                    }
-                    .frame(width: 150)
-            }
-            
-            HStack {
-                Text("Label:")
-                TextField("", text: .constant(""))
-                    .alignmentGuide(.formControlAlignment) { d in
-                        d[.leading]
-                    }
-                    .frame(width: 150)
-            }
-
-            // Button("Button", action: { })
-            //
-            // Toggle("Boolean", isOn: .constant(true))
-            //
-            // Picker("Pick Something Please:", selection: .constant(0)) {
-            //     ForEach(0..<3) { i in
-            //         Text(i, format: .number).tag(i)
-            //     }
-            // }
-            // .frame(width: 300)
-            //
-            // ColorPickerOpacitySliderForm(
-            //     color: $color,
-            //     opacity: $opacity
-            // )
-            
-        }
-        .border(Color.green)
+        ColorPickerOpacitySliderForm(
+            color: $color,
+            opacity: $opacity
+        )
         .padding()
-        .frame(width: 500, height: 500)
     }
     
 }

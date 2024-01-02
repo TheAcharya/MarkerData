@@ -6,42 +6,40 @@
 //
 
 import SwiftUI
-import AppUpdater
 
 @main
 struct Marker_DataApp: App {
+    // Environment objects
+    @StateObject private var settings: SettingsContainer
     
-    // @Environment(\.openWindow) var openWindow
-
-    @StateObject private var settingsStore: SettingsStore
-    @StateObject private var progressPublisher: ProgressPublisher
     @StateObject private var extractionModel: ExtractionModel
+    
+    @StateObject var configurationsModel: ConfigurationsModel
+    
+    @StateObject var databaseManager: DatabaseManager
+    
+    /// Currently selected detail view in the sidebar
+    @State var sidebarSelection: MainViews = .extract
 
     let persistenceController = PersistenceController.shared
-    
-    let appName: String = {
-        Bundle.main.object(
-            forInfoDictionaryKey: "CFBundleDisplayName"
-        ) as! String
-    }()
 
     init() {
-        let settingsStore = SettingsStore()
-
-        let progress = Progress(totalUnitCount: 0)
-        let progressPublisher = ProgressPublisher(progress: progress)
-
+        let settings = SettingsContainer()
+        let databaseManager = DatabaseManager()
+        
         let extractionModel = ExtractionModel(
-            settingsStore: settingsStore,
-            progressPublisher: progressPublisher
+            settings: settings,
+            databaseManager: databaseManager
         )
-        self._settingsStore = StateObject(wrappedValue: settingsStore)
-        self._progressPublisher = StateObject(wrappedValue: progressPublisher)
+        
+        let configurationsModel = ConfigurationsModel()
+        
+        self._settings = StateObject(wrappedValue: settings)
         self._extractionModel = StateObject(wrappedValue: extractionModel)
+        self._configurationsModel = StateObject(wrappedValue: configurationsModel)
+        self._databaseManager = StateObject(wrappedValue: databaseManager)
     }
-
-    //Link App Delegate To SwiftUI App Lifecycle
-    @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    
     var body: some Scene {
         //Make Main Window Group To Launch Into
         WindowGroup {
@@ -49,201 +47,52 @@ struct Marker_DataApp: App {
             // MARK: ContentView
             ContentView(
                 extractionModel: self.extractionModel,
-                progressPublisher: progressPublisher
+                sidebarSelection: $sidebarSelection
             )
-            .environmentObject(settingsStore)
+            .environmentObject(settings)
+            .environmentObject(configurationsModel)
+            .environmentObject(databaseManager)
             .environment(\.managedObjectContext, persistenceController.container.viewContext)
             // Force Dark Mode On Content View
             .preferredColorScheme(.dark)
-            // Set Main Window Min And Max Size
-            .frame(
-                minWidth: 750,
-                idealWidth: 750,
-                maxWidth: .infinity,
-                minHeight: 400,
-                idealHeight: 400,
-                maxHeight: .infinity,
-                alignment: .center
-            )
-            // Run Code On View Appear On Screen
-            .onAppear() {
-                appDelegate.userRequestedAnExplicitUpdateCheck()
-            }
-
+            // Set fix window size
+            .frame(width: WindowSize.fullWidth, height: WindowSize.fullHeight)
         }
-        // Add Settings Menu Bar Item And Pass In A View
-        Settings {
-            SettingsView()
-                .environmentObject(settingsStore)
-                .environment(
-                    \.managedObjectContext,
-                     persistenceController.container.viewContext
-                )
-                // Force Dark Mode On Settings View
-                .preferredColorScheme(.dark)
-            
-        }
+        // Set fix window size
+        .windowResizability(.contentSize)
         
-        //Customise Menu Bar Commands
+        // Customise Menu Bar Commands
         .commands {
+            // Removes New Window Menu Item
+            CommandGroup(replacing: .newItem) {}
+            
+            // Removes Toolbar Menu Items
+            CommandGroup(replacing: .toolbar) {}
+            
+            // TODO: Add "Install Share Extension" item
+            
+            // Replace about
+            CommandGroup(replacing: .appInfo) {
+                Button("About Marker Data") {
+                    sidebarSelection = .about
+                }
+            }
             
             SidebarCommands()
-
-            CommandGroup(replacing: .appInfo) {
-                Button("About \(appName)") {
-
-                    print("Open About in settings")
-
-                    settingsStore.settingsSection = .about
-
-                    if #available(macOS 13, *) {
-                        NSApp.sendAction(
-                            Selector(("showSettingsWindow:")),
-                            to: nil,
-                            from: nil
-                        )
-                    } else {
-                        NSApp.sendAction(
-                            Selector(("showPreferencesWindow:")),
-                            to: nil,
-                            from: nil
-                        )
-                    }
-
-
-                }
-            }
-
-            //Removes New Window Menu Item
-            CommandGroup(replacing: .newItem) {}
-            //Removes Toolbar Menu Items
-            CommandGroup(replacing: .toolbar) {}
-            //Add Check For Updates Button
-            CommandGroup(after: .appSettings) {
-                Button(action: {}) {
-                    Text("Check For Update...")
-                }
-            }
-            //Add Help And Debug Menu Buttons
-            CommandGroup(after: .help) {
-                //Button To Be Sent To App Website
-                Button(action: {}) {
-                    Text("Website")
-                }
-                //Button To Access The User Guide
-                Button(action: {}) {
-                    Text("User Guide")
-                }
-                //Button To Send App Feedback
-                Button(action: {}) {
-                    Text("Send Feedback")
-                }
-                //Button To Access App Discussion Page
-                Button(action: {}) {
-                    Text("Discussions")
-                }
-                //Debug Menu
-                Menu("Debug") {
-                    //Button To Open Debug Console
-                    Button(action: {}) {
-                        Text("Open Debug Console")
-                    }
-                    //Button To Open The App Log Folder
-                    Button(action: {}) {
-                        Text("Open Log Folder")
-                    }
-                }
-            }
-            //Add Custom Configurations Menu
-            CommandMenu("Configurations") {
-                //Set Default Configurations Button
-                Button(action: {}) {
-                    Text("Defaults")
-                }
-                //Button To Set Configuration Name 1
-                Button(action: {}) {
-                    Text("Name 1")
-                }
-                //Button To Set Configuration Name 2
-                Button(action: {}) {
-                    Text("Name 2")
-                }
-            }
-            //Add Custom Databases Menu
-            CommandMenu("Databases") {
-                //Upload Submenu
-                Menu("Upload") {
-                    //Button To Enable Upload
-                    Button(action: {}) {
-                        Text("Enable")
-                    }
-                    //Button To Disable Upload
-                    Button(action: {}) {
-                        Text("Disable")
-                    }
-                }
-                //Airtable Submenu
-                Menu("Airtable") {
-                    //Select Profile A Button
-                    Button(action: {}) {
-                        Text("Profile A")
-                    }
-                    //Select Profile B Button
-                    Button(action: {}) {
-                        Text("Profile B")
-                    }
-                    //Select Profile C Button
-                    Button(action: {}) {
-                        Text("Profile C")
-                    }
-                }
-                //Notion Submenu
-                Menu("Notion") {
-                    //Select Profile A Button
-                    Button(action: {}) {
-                        Text("Profile A")
-                    }
-                    //Select Profile B Button
-                    Button(action: {}) {
-                        Text("Profile B")
-                    }
-                    //Select Profile C Button
-                    Button(action: {}) {
-                        Text("Profile C")
-                    }
-                }
-            }
+            
+            ConfigurationCommands(
+                configurationsModel: configurationsModel,
+                settings: settings,
+                sidebarSelection: $sidebarSelection
+            )
+            
+            DatabaseCommands()
+            HelpCommands()
         }
-        // .modify { scene in
-        //     if #available(macOS 13.0, *) {
-        //         scene.commandsReplaced {
-        //             CommandGroup(replacing: .appInfo) {
-        //                 Button("About \(appName)") {
-        //                     print("About")
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
-
-    }
-    
-}
-
-//Init App Delegate
-class AppDelegate: NSObject, NSApplicationDelegate {
-    
-    //Declare Repo To Update From
-    let updater = AppUpdater(owner: "TheAcharya", repo: "MarkerData")
-
-    //Function To Request App Update Check
-    func userRequestedAnExplicitUpdateCheck() {
-        updater.check().catch(policy: .allErrors) { error in
-            if error.isCancelled {
-                print("Cancelled")
-            } else {
-                print("\(error.localizedDescription)")
-            }
+        
+        WindowGroup("Failed Tasks", for: [ExtractionFailure].self) { $failedExtractions in
+            FailedExtractionsView(failedExtractions: failedExtractions ?? [])
+                .preferredColorScheme(.dark)
         }
     }
 }
