@@ -85,7 +85,7 @@ struct GeneralLabelSettingsView: View {
                     LabeledTextboxStepperForm(
                         label: "Size:",
                         value: $settings.store.selectedStrokeSize,
-                        in: 6...100,
+                        in: 0...100,
                         format: .number,
                         textFieldWidth: 50
                     )
