@@ -10,9 +10,11 @@ import Foundation
 struct NotionCredentials: Codable {
     let token: String
     let databaseURL: String?
+    let renameKeyColumn: String?
 }
 
 struct AirtableCredentials: Codable {
     let apiKey: String
     let baseID: String
+    let renameKeyColumn: String?
 }

@@ -25,6 +25,8 @@ struct CreateDBProfileSheet: View {
     @State var airtableAPIKey = ""
     @State var airtableBaseID = ""
     
+    @State var renameKeyColumn = ""
+    
     @Environment(\.openURL) var openURL
     
     var inputValid: Bool {
@@ -99,12 +101,14 @@ struct CreateDBProfileSheet: View {
                     self.selectedPlatform = .notion
                     self.notionToken = notionCredentials.token
                     self.notionDatabaseURL = notionCredentials.databaseURL ?? ""
+                    self.renameKeyColumn = notionCredentials.renameKeyColumn ?? ""
                 }
                 
                 if let airtableCredentials = profile.airtableCredentials {
                     self.selectedPlatform = .airtable
                     self.airtableAPIKey = airtableCredentials.apiKey
                     self.airtableBaseID = airtableCredentials.baseID
+                    self.renameKeyColumn = airtableCredentials.renameKeyColumn ?? ""
                 }
             }
         }
@@ -112,21 +116,25 @@ struct CreateDBProfileSheet: View {
     
     var notionFromView: some View {
         VStack {
-            platformInfoTextField("Notion V2 Token", prompt: "Token", text: $notionToken, isRequired: true)
+            platformInfoTextField("Notion V2 Token", prompt: "Token", text: $notionToken, isRequired: true, secureField: true)
             
-            platformInfoTextField("Notion Database URL", prompt: "Database URL", text: $notionDatabaseURL, isRequired: false)
+            platformInfoTextField("Notion Database URL", prompt: "Database URL", text: $notionDatabaseURL, isRequired: false, secureField: true)
+            
+            platformInfoTextField("Rename Key Column", prompt: "Different key column name in Notion (Default is \"Marker ID\")", text: $renameKeyColumn, isRequired: false)
         }
     }
     
     var airtableFormView: some View {
         VStack {
-            platformInfoTextField("Airtable API Key", prompt: "API Key", text: $airtableAPIKey, isRequired: true)
+            platformInfoTextField("Airtable API Key", prompt: "API Key", text: $airtableAPIKey, isRequired: true, secureField: true)
             
-            platformInfoTextField("Airtable Base ID", prompt: "Database URL", text: $airtableBaseID, isRequired: true)
+            platformInfoTextField("Airtable Base ID", prompt: "Database URL", text: $airtableBaseID, isRequired: true, secureField: true)
+            
+            platformInfoTextField("Rename Key Column", prompt: "Different key column name in Notion (Default is \"Marker ID\")", text: $renameKeyColumn, isRequired: false)
         }
     }
     
-    func platformInfoTextField(_ title: String, prompt: LocalizedStringKey, text: Binding<String>, isRequired: Bool = false) -> some View {
+    func platformInfoTextField(_ title: String, prompt: LocalizedStringKey, text: Binding<String>, isRequired: Bool = false, secureField: Bool = false) -> some View {
         HStack {
             Group {
                 Text(title) +
@@ -135,17 +143,23 @@ struct CreateDBProfileSheet: View {
             }
             .padding(.trailing, -12)
             
-            PasswordField("", text: text) { isInputVisible in
-                // Visibility toggle button
-                Button {
-                    isInputVisible.wrappedValue = isInputVisible.wrappedValue.toggled()
-                } label: {
-                    Image(systemName: isInputVisible.wrappedValue ? "eye.slash" : "eye")
+            if secureField {
+                PasswordField("", text: text) { isInputVisible in
+                    // Visibility toggle button
+                    Button {
+                        isInputVisible.wrappedValue = isInputVisible.wrappedValue.toggled()
+                    } label: {
+                        Image(systemName: isInputVisible.wrappedValue ? "eye.slash" : "eye")
+                    }
+                    .buttonStyle(.plain)
                 }
-                .buttonStyle(.plain)
+                .visibilityControlPosition(.inlineOutside)
+                .textFieldStyle(.roundedBorder)
+            } else {
+                TextField(prompt, text: text)
+                    .padding(.leading, 8)
+                    .textFieldStyle(.roundedBorder)
             }
-            .visibilityControlPosition(.inlineOutside)
-            .textFieldStyle(.roundedBorder)
             
             Button {
                 text.wrappedValue = ""
@@ -206,7 +220,8 @@ struct CreateDBProfileSheet: View {
         case .notion:
             let credentials = NotionCredentials(
                 token: self.notionToken,
-                databaseURL: self.notionDatabaseURL
+                databaseURL: self.notionDatabaseURL, 
+                renameKeyColumn: self.renameKeyColumn
             )
             
             return DatabaseProfileModel(
@@ -219,7 +234,8 @@ struct CreateDBProfileSheet: View {
         case .airtable:
             let credentials = AirtableCredentials(
                 apiKey: airtableAPIKey,
-                baseID: airtableBaseID
+                baseID: airtableBaseID,
+                renameKeyColumn: renameKeyColumn
             )
             
             return DatabaseProfileModel(

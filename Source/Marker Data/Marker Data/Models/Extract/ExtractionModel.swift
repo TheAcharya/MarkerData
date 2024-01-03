@@ -327,14 +327,20 @@ class ExtractionModel: ObservableObject, DropDelegate {
                 "--payload-key-column", "Marker ID".quoted,
                 "--icon-column", "Icon Image".quoted,
                 "--max-threads", "5",
-                "--merge",
                 "--log", logPath.quoted,
                 (url.path(percentEncoded: false)).quoted
             ]
             
             // Add database url if defined
             if let databaseUrl = databaseProfile.notionCredentials?.databaseURL {
-                arguments.insert(contentsOf: ["--url", databaseUrl.quoted], at: 2)
+                arguments.insert(contentsOf: ["--url", databaseUrl.quoted, "--merge"], at: 2)
+            }
+            
+            // Add rename key column if defined
+            if let renameKeyColumn = databaseProfile.notionCredentials?.renameKeyColumn {
+                if !renameKeyColumn.isEmpty {
+                    arguments.append(contentsOf: ["--rename-notion-key-column", "Marker ID".quoted, renameKeyColumn.quoted])
+                }
             }
             
             let command = "\(executablePath) \(arguments.joined(separator: " "))"
