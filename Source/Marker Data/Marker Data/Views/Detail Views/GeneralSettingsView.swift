@@ -77,16 +77,6 @@ struct GeneralSettingsView: View {
 
                 HStack {
 
-                    Text("Clip Boundaries:")
-
-                    Toggle("", isOn: $settings.store.enabledClipBoundaries)
-                        .toggleStyle(CheckboxToggleStyle())
-                        .formControlLeadingAlignmentGuide()
-
-                }
-
-                HStack {
-
                     Text("No Media:")
 
                     Toggle("", isOn: $settings.store.enabledNoMedia)

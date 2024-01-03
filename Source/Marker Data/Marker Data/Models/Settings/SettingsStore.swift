@@ -32,7 +32,6 @@ class SettingsStore: ObservableObject {
     //Are Subframes Enabled
     @AppStorage("enabledSubframes") var enabledSubframes = false
     
-    @AppStorage("enabledClipBoundaries") var enabledClipBoundaries = false
     @AppStorage("enabledNoMedia") var enabledNoMedia = false
     
     
