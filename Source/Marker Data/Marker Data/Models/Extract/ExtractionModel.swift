@@ -219,9 +219,11 @@ class ExtractionModel: ObservableObject, DropDelegate {
             try validateExportDestination()
         } catch {
             self.extractionProgress.markasFailed(
-                progressMessage: "Failed: Empty or invalid export destination",
-                alertMessage: "Failed: Empty or invalid export destination. Please select one."
+                progressMessage: "Empty or invalid export destination",
+                alertMessage: "Empty or invalid export destination. Please select one."
             )
+            
+            return
         }
         
         await prepareExtraction(for: urls)

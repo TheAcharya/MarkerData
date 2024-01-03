@@ -180,10 +180,6 @@ class SettingsStore: ObservableObject {
         let outputDirURL: URL = self.exportFolderURL ?? URL.moviesDirectory
         let strokeSize: Int? = self.isStrokeSizeAuto ? nil : self.selectedStrokeSize
         
-        // TODO: Remove prints
-        print("Exporting settings")
-        print("overlays: \(self.overlays)")
-        
         let settings = try MarkersExtractor.Settings(
             fcpxml: .init(at: fcpxmlFileUrl),
             outputDir: outputDirURL,
@@ -208,12 +204,8 @@ class SettingsStore: ObservableObject {
             imageLabelAlignHorizontal: self.selectedHorizonalAlignment.markersExtractor,
             imageLabelAlignVertical: self.selectedVerticalAlignment.markersExtractor,
             imageLabelHideNames: self.hideLabelNames,
-//            resultFilePath: 
             exportFolderFormat: self.selectedFolderFormat.markersExtractor
         )
-        
-        // TODO: Remove print
-        print("exported settings: \(settings.imageLabels)")
         
         return settings
         
