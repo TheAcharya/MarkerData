@@ -16,7 +16,7 @@ class DatabaseManager: ObservableObject {
     /// List of database profiles
     @Published var profiles: [DatabaseProfileModel] = []
     @AppStorage("selectedDatabaseProfileName") var selectedDatabaseProfileName = ""
-    @AppStorage("selectedExportFormat") var selectedExportFormat: ExportProfileFormat = .notion
+    @AppStorage("selectedExportFormat") var selectedExportFormat: ExportProfileFormat = .csv
     
     var selectedDatabaseProfile: DatabaseProfileModel? {
         if !self.selectedDatabaseProfileName.isEmpty {

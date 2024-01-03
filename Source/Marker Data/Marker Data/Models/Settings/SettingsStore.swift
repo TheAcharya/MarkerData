@@ -20,7 +20,7 @@ class SettingsStore: ObservableObject {
         set { selectedFolderFormatRawValue = newValue.rawValue }
     }
     
-    @AppStorage("selectedExportFormat") private(set) var selectedExportFormat: ExportProfileFormat = .notion
+    @AppStorage("selectedExportFormat") private(set) var selectedExportFormat: ExportProfileFormat = .csv
 
     @AppStorage("selectedImageMode") private var selectedImageModeRawValue: Int = ImageMode.PNG.rawValue
     var selectedImageMode: ImageMode {
