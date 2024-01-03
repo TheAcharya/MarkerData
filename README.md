@@ -34,6 +34,8 @@
 
 - Notion (JSON)
 - Airtable (JSON)
+- Comma-separated values (CSV) - Compatible with spreadsheet applications
+- Tab-separated values (TSV) - Compatible with spreadsheet application
 - Standard MIDI File - Compatible with most audio DAWs
 
 ## Table of contents
