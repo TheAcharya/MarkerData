@@ -13,6 +13,8 @@ struct ExtractView: View {
     @ObservedObject var extractionModel: ExtractionModel
     @EnvironmentObject var settings: SettingsContainer
     
+    @Environment(\.openWindow) var openWindow
+    
     var body: some View {
         VStack {
             // Drag And Drop File Zone
@@ -49,10 +51,22 @@ struct ExtractView: View {
         .overlay(UserAlertView(title: "Error", onDismiss: {
             // Perform any action you want when the user dismisses the alert.
         })
-        .alert("Failed to exract completely", isPresented: $extractionModel.extractionProgress.showAlert) {} message: {
+        .alert("Failed to exract completely", isPresented: $extractionModel.extractionProgress.showAlert) {
+            Button("Show Error Details") {
+                openWindow(value: extractionModel.failedTasks)
+            }
+            
+            Button("Close", role: .cancel) {}
+        } message: {
             Text(extractionModel.extractionProgress.alertMessage)
         }
-        .alert("Failed to upload completely", isPresented: $extractionModel.uploadProgress.showAlert) {} message: {
+        .alert("Failed to upload completely", isPresented: $extractionModel.uploadProgress.showAlert) {
+            Button("Show Error Details") {
+                openWindow(value: extractionModel.failedTasks)
+            }
+            
+            Button("Close", role: .cancel) {}
+        } message: {
             Text(extractionModel.uploadProgress.alertMessage)
         }
         .environmentObject(extractionModel.errorViewModel))
@@ -139,7 +153,7 @@ struct ExtractView: View {
                             Button {
                                 openWindow(value: extractionModel.failedTasks)
                             } label: {
-                                Label("Show failed tasks", systemImage: "info.circle")
+                                Label("Show Error Details", systemImage: "info.circle")
                             }
                         }
                         

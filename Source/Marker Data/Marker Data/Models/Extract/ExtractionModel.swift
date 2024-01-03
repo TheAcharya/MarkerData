@@ -165,7 +165,7 @@ class ExtractionModel: ObservableObject, DropDelegate {
                 exportResult = try await extractor.extract()
             } catch {
                 await MainActor.run {
-                    failedTasks.append(ExtractionFailure(url: url, exitStatus: .failedToExtract))
+                    failedTasks.append(ExtractionFailure(url: url, exitStatus: .failedToExtract, errorMessage: error.localizedDescription))
                 }
             }
             
@@ -182,23 +182,26 @@ class ExtractionModel: ObservableObject, DropDelegate {
         @Sendable
         func uploadToDatabaseAndTrackProgress(url: URL, exportResult: ExportResult?) async throws {
             // Check if a database profile is set
-            if let databaseProfile = await self.databaseManager.selectedDatabaseProfile,
-               let exportInfo = exportResult,
-               let csvURL = exportInfo.csvManifestPath {
-                
-                Self.logger.notice("Upload started")
-                
-                // Add process to upload progress
-                await self.uploadProgress.addProcess(url: csvURL)
-                
-                // Upload
-                try await self.uploadToDatabase(url: csvURL, databaseProfile: databaseProfile)
-                
-                Self.logger.notice("Successfully uploaded: \(url.path(percentEncoded: false))")
-            } else {
+            guard let databaseProfile = await self.databaseManager.selectedDatabaseProfile else {
+                // Skip upload if no database profile is selected
                 Self.logger.notice("Skipping upload for: \(url)")
                 return
             }
+            
+            guard let jsonURL = exportResult?.jsonManifestPath else {
+                Self.logger.error("Failed to upload \(url): missing json URL")
+                throw DatabaseUploadError.missingJsonFile
+            }
+            
+            Self.logger.notice("Upload started")
+            
+            // Add process to upload progress
+            await self.uploadProgress.addProcess(url: jsonURL)
+            
+            // Upload
+            try await self.uploadToDatabase(url: jsonURL, databaseProfile: databaseProfile)
+            
+            Self.logger.notice("Successfully uploaded: \(url.path(percentEncoded: false))")
         }
         
         // MARK: Prepare for extraction
@@ -235,7 +238,9 @@ class ExtractionModel: ObservableObject, DropDelegate {
                         exportResult = try await extractAndUpdateProgress(for: url)
                     } catch {
                         await MainActor.run {
-                            self.failedTasks.append(ExtractionFailure(url: url, exitStatus: .failedToExtract))
+                            self.failedTasks.append(
+                                ExtractionFailure(url: url, exitStatus: .failedToExtract, errorMessage: error.localizedDescription)
+                            )
                         }
                     }
                     
@@ -244,7 +249,9 @@ class ExtractionModel: ObservableObject, DropDelegate {
                         try await uploadToDatabaseAndTrackProgress(url: url, exportResult: exportResult)
                     } catch {
                         await MainActor.run {
-                            self.failedTasks.append(ExtractionFailure(url: url, exitStatus: .failedToUpload))
+                            self.failedTasks.append(
+                                ExtractionFailure(url: url, exitStatus: .failedToUpload, errorMessage: error.localizedDescription)
+                            )
                         }
                     }
                 }
@@ -263,22 +270,31 @@ class ExtractionModel: ObservableObject, DropDelegate {
                 
                 var message = "Failed to complete the following files:"
                 for failure in failedTasks {
-                    message += "\n\(failure.url.lastPathComponent), reason: \(failure.exitStatus.rawValue)"
+                    message += "\n\(failure.url.lastPathComponent), reason: \(failure.errorMessage)"
                 }
 
                 Self.logger.error("\(message)")
+                
+                var alertMessage = "Multiple failures. Click \"Show Error Details\" for more information."
+                
+                // Show error message in case of only one extractoin
+                if urls.count == 1 {
+                    if let firstFailure = self.failedTasks.first {
+                        alertMessage = "Error message: \(firstFailure.errorMessage)"
+                    }
+                }
 
                 if failedTasks.contains(where: { $0.exitStatus == .failedToExtract }) {
                     self.extractionProgress.markasFailed(
                         progressMessage: "Failed to complete extraction",
-                        alertMessage: "See file specific information by clicking the info button below the progress bars."
+                        alertMessage: alertMessage
                     )
                 }
                 
                 if failedTasks.contains(where: { $0.exitStatus == .failedToUpload }) {
                     self.uploadProgress.markasFailed(
                         progressMessage: "Failed to complete upload",
-                        alertMessage: "See file specific information by clicking the info button below the progress bars."
+                        alertMessage: alertMessage
                     )
                 }
             }
@@ -308,6 +324,7 @@ class ExtractionModel: ObservableObject, DropDelegate {
                 "--image-column", "Image Filename".quoted,
                 "--image-column-keep",
                 "--mandatory-column", "Marker ID".quoted,
+                "--payload-key-column", "Marker ID".quoted,
                 "--icon-column", "Icon Image".quoted,
                 "--max-threads", "5",
                 "--merge",

@@ -11,3 +11,14 @@ enum ExtractError: Error {
     case invalidExportDestination
     case settingsReadError
 }
+
+extension ExtractError: LocalizedError {
+    public var errorDescription: String? {
+        switch self {
+        case .invalidExportDestination:
+            "Invalid export destination"
+        case .settingsReadError:
+            "Failed to read export settings"
+        }
+    }
+}

@@ -198,7 +198,6 @@ class SettingsStore: ObservableObject {
             gifFPS: Double(self.selectedGIFFPS),
             gifSpan: TimeInterval(self.selectedGIFLength),
             idNamingMode: self.selectedIDNamingMode.markersExtractor,
-            includeOutsideClipBoundaries:  self.enabledClipBoundaries,
             imageLabels: self.overlays,
             imageLabelCopyright: self.copyrightText,
             imageLabelFont: self.selectedFontNameType.markersExtractor,

@@ -16,18 +16,21 @@ struct FailedExtractionsView: View {
                 Text(failedTask.url.path(percentEncoded: false))
             }
                 
-            TableColumn("Exit Status", value: \.exitStatus.rawValue)
+            TableColumn("Error Type", value: \.exitStatus.rawValue)
+            
+            TableColumn("Error Message", value: \.errorMessage)
         }
     }
 }
 
 #Preview {
     let failedExtractions: [ExtractionFailure] = [
-        ExtractionFailure(url: URL(string: "/folder/file1")!, exitStatus: .failedToExtract),
-        ExtractionFailure(url: URL(string: "/folder/file2")!, exitStatus: .failedToExtract),
-        ExtractionFailure(url: URL(string: "/folde2/file1")!, exitStatus: .failedToUpload),
-        ExtractionFailure(url: URL(string: "/folde2/file2")!, exitStatus: .failedToUpload),
+        ExtractionFailure(url: URL(string: "/folder/file1")!, exitStatus: .failedToExtract, errorMessage: "No export destination selected"),
+        ExtractionFailure(url: URL(string: "/folder/file2")!, exitStatus: .failedToExtract, errorMessage: "Unexpected number of bananas"),
+        ExtractionFailure(url: URL(string: "/folde2/file1")!, exitStatus: .failedToUpload, errorMessage: "Unkown error"),
+        ExtractionFailure(url: URL(string: "/folde2/file2")!, exitStatus: .failedToUpload, errorMessage: "Couldn't locate ur mom"),
     ]
     
     return FailedExtractionsView(failedExtractions: failedExtractions)
+        .preferredColorScheme(.dark)
 }

@@ -34,9 +34,25 @@ enum DatabaseRemoveError: Error {
 }
 
 enum DatabaseUploadError: Error {
+    case missingJsonFile
     case notionNoToken
     case notionUploadError
     case csv2notionExecutableNotFound
+}
+
+extension DatabaseUploadError: LocalizedError {
+    public var errorDescription: String? {
+        switch self {
+        case .missingJsonFile:
+            "Couldn't locate json"
+        case .notionNoToken:
+            "Missing notion API token"
+        case .notionUploadError:
+            "Failed to upload to Notion"
+        case .csv2notionExecutableNotFound:
+            "CSV2Notion executable not found"
+        }
+    }
 }
 
 enum DatabaseProfileDuplicationError: Error {
