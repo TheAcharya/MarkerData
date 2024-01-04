@@ -34,13 +34,13 @@ class SettingsStore: ObservableObject {
     
     @AppStorage("enabledNoMedia") var enabledNoMedia = false
     
-    
     @AppStorage("selectedIDNamingMode") private var selectedIDNamingModeRawValue: Int = IdNamingMode.Timecode.rawValue
     var selectedIDNamingMode: IdNamingMode {
         get { IdNamingMode(rawValue: selectedIDNamingModeRawValue) ?? .Name }
         set { selectedIDNamingModeRawValue = newValue.rawValue }
     }
     
+    @AppStorage("selectedMarkersSource") var markersSource: MarkersSource = .markers
 
     //Default Selected JPG Image Quality
     @AppStorage("selectedImageQuality") var selectedImageQuality: Int = 100
@@ -185,6 +185,7 @@ class SettingsStore: ObservableObject {
             outputDir: outputDirURL,
             exportFormat: self.selectedExportFormat,
             enableSubframes: self.enabledSubframes,
+            markersSource: self.markersSource,
             imageFormat: self.selectedImageMode.markersExtractor,
             imageQuality: Int(self.selectedImageQuality),
             imageWidth: self.imageWidth,

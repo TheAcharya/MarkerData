@@ -367,7 +367,7 @@ class ExtractionModel: ObservableObject, DropDelegate {
             
             if result.didFail {
                 // Failure
-                Self.logger.error("Failed to upload to Notion. Command: \(command). Output: \(result.output)")
+                Self.logger.error("Failed to upload to Notion.\nCommand: \(command)\nOutput: \(result.output)")
                 throw DatabaseUploadError.notionUploadError
             } else {
                 // Success

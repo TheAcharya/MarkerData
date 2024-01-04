@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import MarkersExtractor
 
 struct ImageSettingsView: View {
     @EnvironmentObject var settings: SettingsContainer
@@ -13,28 +14,41 @@ struct ImageSettingsView: View {
     var body: some View {
         VStack(alignment: .formControlAlignment) {
             Group {
-
                 Text("File Creation")
                     .font(.headline)
-
+                
+                // Naming mode
                 HStack {
-
                     Text("Naming Mode:")
 
                     //Picker To Change Selected ID Naming Mode
                     Picker("", selection: $settings.store.selectedIDNamingMode) {
                         ForEach(IdNamingMode.allCases) { item in
-                            Text(item.displayName).tag(item)
+                            Text(item.displayName)
+                                .tag(item)
                         }
                     }
                     .labelsHidden()
                     .frame(width: 150)
                     .formControlLeadingAlignmentGuide()
-
                 }
-
+                
+                // Markers source
                 HStack {
-
+                    Text("Markers Source:")
+                    
+                    Picker("", selection: $settings.store.markersSource) {
+                        ForEach(MarkersSource.allCases, id: \.self) { source in
+                            Text(source.description)
+                        }
+                    }
+                    .labelsHidden()
+                    .frame(width: 150)
+                    .formControlLeadingAlignmentGuide()
+                }
+                
+                // Image format
+                HStack {
                     Text("Image Format:")
 
                     //Picker To Change Selected ID Naming Mode
@@ -42,10 +56,7 @@ struct ImageSettingsView: View {
                         .labelsHidden()
                         .frame(width: 150)
                         .formControlLeadingAlignmentGuide()
-
                 }
-
-
             }
 
             Group {
