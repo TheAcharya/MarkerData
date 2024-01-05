@@ -35,7 +35,7 @@ jobs:
 
     - name: Copy contents to virtual GitHub folder
       run: |
-        cp -r $GITHUB_WORKSPACE/. $GITHUB_WORKSPACE/Distribution/dmg-builds/
+        cp -r ./Distribution/dmg-builds/. $GITHUB_WORKSPACE/Distribution/dmg-builds/
 
     - name: Execute build-marker-data-dmg.sh
       run: |
