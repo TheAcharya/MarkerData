@@ -30,8 +30,15 @@ jobs:
     - name: Install node-appdmg
       run: npm install -g appdmg
 
+    - name: Create dmg-output folder
+      run: mkdir -p /Distribution/dmg-builds/dmg-output
+
+    - name: Copy contents to virtual GitHub folder
+      run: |
+        cp -r /Distribution/dmg-builds/. $GITHUB_WORKSPACE/Distribution/dmg-builds/
+
     - name: Execute build-marker-data-dmg.sh
       run: |
-        cd /Distribution/dmg-builds/
+        cd $GITHUB_WORKSPACE/Distribution/dmg-builds/
         chmod +x build-marker-data-dmg.sh
         ./build-marker-data-dmg.sh
