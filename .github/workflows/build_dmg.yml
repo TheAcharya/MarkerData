@@ -30,8 +30,8 @@ jobs:
     - name: Install node-appdmg
       run: npm install -g appdmg
 
-    - name: Create dmg-output folder
-      run: mkdir -p /Distribution/dmg-builds/dmg-output
+    - name: Create dmg-output folder in virtual GitHub folder
+      run: mkdir -p $GITHUB_WORKSPACE/Distribution/dmg-builds/dmg-output
 
     - name: Copy contents to virtual GitHub folder
       run: |
