@@ -20,9 +20,9 @@
 		4156196B2B3AE41F0032E82C /* ProgressViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4156196A2B3AE41F0032E82C /* ProgressViewModel.swift */; };
 		417272982B444211005A04BE /* ExportExitStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417272972B444211005A04BE /* ExportExitStatus.swift */; };
 		4172729A2B44533D005A04BE /* FailedExtractionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417272992B44533D005A04BE /* FailedExtractionsView.swift */; };
-		4172729E2B456CCA005A04BE /* csv2notion_neo in Resources */ = {isa = PBXBuildFile; fileRef = 4172729D2B456CCA005A04BE /* csv2notion_neo */; };
 		417272A02B46F65A005A04BE /* UnifiedExportProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4172729F2B46F65A005A04BE /* UnifiedExportProfile.swift */; };
 		417272A22B484B82005A04BE /* ExportDestinationPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417272A12B484B82005A04BE /* ExportDestinationPicker.swift */; };
+		417272A42B48665A005A04BE /* csv2notion_neo in Resources */ = {isa = PBXBuildFile; fileRef = 417272A32B48665A005A04BE /* csv2notion_neo */; };
 		417389632AC86BE600984FD8 /* ExtractView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417389622AC86BE600984FD8 /* ExtractView.swift */; };
 		41BFEB6D2B1B9B6400C8B551 /* Links.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BFEB6C2B1B9B6400C8B551 /* Links.swift */; };
 		41BFEB702B1BA4CC00C8B551 /* PasswordField in Frameworks */ = {isa = PBXBuildFile; productRef = 41BFEB6F2B1BA4CC00C8B551 /* PasswordField */; };
@@ -104,9 +104,9 @@
 		4156196A2B3AE41F0032E82C /* ProgressViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressViewModel.swift; sourceTree = "<group>"; };
 		417272972B444211005A04BE /* ExportExitStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportExitStatus.swift; sourceTree = "<group>"; };
 		417272992B44533D005A04BE /* FailedExtractionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FailedExtractionsView.swift; sourceTree = "<group>"; };
-		4172729D2B456CCA005A04BE /* csv2notion_neo */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = csv2notion_neo; sourceTree = "<group>"; };
 		4172729F2B46F65A005A04BE /* UnifiedExportProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnifiedExportProfile.swift; sourceTree = "<group>"; };
 		417272A12B484B82005A04BE /* ExportDestinationPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportDestinationPicker.swift; sourceTree = "<group>"; };
+		417272A32B48665A005A04BE /* csv2notion_neo */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = csv2notion_neo; sourceTree = "<group>"; };
 		417389622AC86BE600984FD8 /* ExtractView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractView.swift; sourceTree = "<group>"; };
 		41BFEB6C2B1B9B6400C8B551 /* Links.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Links.swift; sourceTree = "<group>"; };
 		41BFEB712B1BCE4600C8B551 /* ExportProfilePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportProfilePicker.swift; sourceTree = "<group>"; };
@@ -219,7 +219,7 @@
 		414262C32ADAC6B100FC6CFC /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				4172729D2B456CCA005A04BE /* csv2notion_neo */,
+				417272A32B48665A005A04BE /* csv2notion_neo */,
 				414262C42ADAC6EC00FC6CFC /* DefaultConfiguration.json */,
 			);
 			path = Resources;
@@ -533,7 +533,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4172729E2B456CCA005A04BE /* csv2notion_neo in Resources */,
+				417272A42B48665A005A04BE /* csv2notion_neo in Resources */,
 				D5F74A382972D32100EEE2FE /* Preview Assets.xcassets in Resources */,
 				D5F74A352972D32100EEE2FE /* Assets.xcassets in Resources */,
 				414262C52ADAC6EC00FC6CFC /* DefaultConfiguration.json in Resources */,

@@ -189,6 +189,11 @@ struct ExtractView: View {
             .padding()
             .background(Color.black)
             .clipShape(RoundedRectangle(cornerRadius: 8))
+            .onAppear {
+                if extractionModel.exportResult != .none {
+                    showAllCompleteFooter = true
+                }
+            }
             .onChange(of: extractionModel.exportResult) { result in
                 if result != .none {
                     withAnimation(.easeOut(duration: 1)) {
