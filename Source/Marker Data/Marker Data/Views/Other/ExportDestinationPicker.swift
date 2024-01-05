@@ -64,7 +64,7 @@ struct ExportDestinationPicker: View {
             }
             .buttonStyle(.plain)
         }
-        .frame(maxWidth: 250)
+        .frame(maxWidth: 300)
         .padding(5)
         .background(.black)
         .clipShape(RoundedRectangle(cornerRadius: 6))

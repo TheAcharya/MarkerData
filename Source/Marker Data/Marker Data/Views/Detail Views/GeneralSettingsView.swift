@@ -25,6 +25,7 @@ struct GeneralSettingsView: View {
                         .fixedSize(horizontal: true, vertical: false)
 
                     ExportDestinationPicker()
+                        .frame(maxWidth: 250)
                 }
 
                 HStack {

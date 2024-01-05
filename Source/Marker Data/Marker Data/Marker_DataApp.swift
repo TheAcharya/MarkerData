@@ -86,7 +86,6 @@ struct Marker_DataApp: App {
                 sidebarSelection: $sidebarSelection
             )
             
-            DatabaseCommands()
             HelpCommands()
         }
         

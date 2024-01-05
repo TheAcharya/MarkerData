@@ -36,6 +36,8 @@ struct ExtractView: View {
                         ExtractionAndUploadProgressView(extractionModel: extractionModel)
                     }
                 }
+                .padding(.horizontal)
+                .padding(.bottom, -12)
             }
             .padding(.vertical)
             // Handle file drop and perform extraction
@@ -249,7 +251,7 @@ struct ExtractView: View {
                             ExportDestinationPicker()
                         }
                     }
-                    .frame(minWidth: 250, alignment: .leading)
+                    .frame(minWidth: 300, alignment: .leading)
                     
                     Divider()
                         .padding(.horizontal, 3)
@@ -257,7 +259,11 @@ struct ExtractView: View {
                     
                     // Export profile picker
                     VStack(alignment: .leading) {
+                        Text("Export Profile")
+                            .bold()
+                        
                         ExportProfilePicker()
+                            .labelsHidden()
                         
                         HStack {
                             Text("Save data locally or upload to database")

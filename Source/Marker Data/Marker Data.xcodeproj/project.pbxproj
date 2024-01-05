@@ -32,7 +32,6 @@
 		41C538942AE1AFF200E8A8A1 /* SettingsContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C538932AE1AFF200E8A8A1 /* SettingsContainer.swift */; };
 		41C538992AE3062000E8A8A1 /* HelpCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C538982AE3062000E8A8A1 /* HelpCommands.swift */; };
 		41C5389B2AE3067900E8A8A1 /* ConfigurationCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C5389A2AE3067900E8A8A1 /* ConfigurationCommands.swift */; };
-		41C5389D2AE306C000E8A8A1 /* DatabaseCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C5389C2AE306C000E8A8A1 /* DatabaseCommands.swift */; };
 		41C538A22AE420EA00E8A8A1 /* ColorWellKit in Frameworks */ = {isa = PBXBuildFile; productRef = 41C538A12AE420EA00E8A8A1 /* ColorWellKit */; };
 		41EBAD502AF7B6F200E6AF7C /* WindowSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EBAD4F2AF7B6F200E6AF7C /* WindowSize.swift */; };
 		41EBAD522AF8172F00E6AF7C /* MainViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EBAD512AF8172F00E6AF7C /* MainViews.swift */; };
@@ -116,7 +115,6 @@
 		41C538932AE1AFF200E8A8A1 /* SettingsContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsContainer.swift; sourceTree = "<group>"; };
 		41C538982AE3062000E8A8A1 /* HelpCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpCommands.swift; sourceTree = "<group>"; };
 		41C5389A2AE3067900E8A8A1 /* ConfigurationCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationCommands.swift; sourceTree = "<group>"; };
-		41C5389C2AE306C000E8A8A1 /* DatabaseCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseCommands.swift; sourceTree = "<group>"; };
 		41EBAD4F2AF7B6F200E6AF7C /* WindowSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowSize.swift; sourceTree = "<group>"; };
 		41EBAD512AF8172F00E6AF7C /* MainViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViews.swift; sourceTree = "<group>"; };
 		41F88ADB2B029D4A004A3B58 /* ColorPickerForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickerForm.swift; sourceTree = "<group>"; };
@@ -249,14 +247,13 @@
 			path = Settings;
 			sourceTree = "<group>";
 		};
-		41C538952AE3018100E8A8A1 /* Commands */ = {
+		41C538952AE3018100E8A8A1 /* Menu Bar Commands */ = {
 			isa = PBXGroup;
 			children = (
 				41C538982AE3062000E8A8A1 /* HelpCommands.swift */,
 				41C5389A2AE3067900E8A8A1 /* ConfigurationCommands.swift */,
-				41C5389C2AE306C000E8A8A1 /* DatabaseCommands.swift */,
 			);
-			path = Commands;
+			path = "Menu Bar Commands";
 			sourceTree = "<group>";
 		};
 		41F88AE12B0C8360004A3B58 /* Shell */ = {
@@ -369,7 +366,7 @@
 				9B25815C2A079FBC002CED07 /* Detail Views */,
 				47B21A6E2A4DF96D004FECFA /* Other */,
 				474595352A40110F00EF100D /* Components */,
-				41C538952AE3018100E8A8A1 /* Commands */,
+				41C538952AE3018100E8A8A1 /* Menu Bar Commands */,
 				47411FD82A3EA121005890FE /* Buttons */,
 			);
 			path = Views;
@@ -590,7 +587,6 @@
 				9B653ABD29F2C64600C64999 /* ErrorViewModel.swift in Sources */,
 				41EBAD502AF7B6F200E6AF7C /* WindowSize.swift in Sources */,
 				41BFEB792B1F925800C8B551 /* ExportProcess.swift in Sources */,
-				41C5389D2AE306C000E8A8A1 /* DatabaseCommands.swift in Sources */,
 				41C538942AE1AFF200E8A8A1 /* SettingsContainer.swift in Sources */,
 				414262C02AD5CE3200FC6CFC /* ConfigurationErrors.swift in Sources */,
 				D5F74A312972D31D00EEE2FE /* Marker_DataApp.swift in Sources */,
