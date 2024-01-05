@@ -32,6 +32,6 @@ jobs:
 
     - name: Execute build-marker-data-dmg.sh
       run: |
-        cd MarkerData/Distribution/dmg-builds/
+        cd /Distribution/dmg-builds/
         chmod +x build-marker-data-dmg.sh
         ./build-marker-data-dmg.sh
