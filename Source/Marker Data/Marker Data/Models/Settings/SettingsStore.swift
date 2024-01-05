@@ -124,7 +124,7 @@ class SettingsStore: ObservableObject {
         set { selectedHorizonalAlignmentRawValue = newValue.rawValue }
     }
     
-    @AppStorage("selectedVerticallignment") private var selectedVerticalAlignmentRawValue: Int = LabelVerticalAlignment.Top.rawValue
+    @AppStorage("selectedVerticalAlignment") private var selectedVerticalAlignmentRawValue: Int = LabelVerticalAlignment.Top.rawValue
      var selectedVerticalAlignment: LabelVerticalAlignment {
         get { LabelVerticalAlignment(rawValue: selectedVerticalAlignmentRawValue) ?? .Top }
         set { selectedVerticalAlignmentRawValue = newValue.rawValue }
