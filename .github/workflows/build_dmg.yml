@@ -20,6 +20,3 @@ jobs:
 
     - name: Install appdmg
       run: npm install -g appdmg
-
-    - name: Display appdmg version
-      run: appdmg --version
