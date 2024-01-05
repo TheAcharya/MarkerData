@@ -17,14 +17,17 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v2
 
-    - name: Install Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18.16' # Updated Node.js version
+    - name: Install Homebrew
+      run: |
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        
+    - name: Install Node.js and NPM
+      run: |
+        brew install node
 
-    - name: Install appdmg
+    - name: Install node-appdmg
       run: npm install -g appdmg
 
     - name: Execute build-marker-data-dmg.sh
