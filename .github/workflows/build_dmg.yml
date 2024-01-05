@@ -1,0 +1,25 @@
+name: build_dmg
+
+on:
+  push:
+    branches:
+      - main # Change this to your main branch
+
+jobs:
+  install:
+    runs-on: macos-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Install Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '14' # You can choose another Node.js version
+
+    - name: Install appdmg
+      run: npm install -g appdmg
+
+    - name: Display appdmg version
+      run: appdmg --version
