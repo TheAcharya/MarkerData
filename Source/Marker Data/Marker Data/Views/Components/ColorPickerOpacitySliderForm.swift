@@ -10,49 +10,27 @@ import ColorWellKit
 
 /// Only use in a Form
 struct ColorPickerOpacitySliderForm: View {
-    
     @Binding var color: Color
     @Binding var opacity: Double
     
     var body: some View {
         HStack {
-
             Text("Color & Opacity:")
 
             ColorWellView(selection: $color, supportsOpacity: false)
                 .colorWellStyle(.minimal)
 
-            Slider(value: $opacity, in: 0...1)
+            Slider(value: $opacity, in: 0...100)
                 .frame(width: 75)
-
-            TextField(
-                "",
-                value: $opacity,
-                format: .percent.precision(.fractionLength(0))
-            )
-            .multilineTextAlignment(.center)
-            .textFieldStyle(.roundedBorder)
-            .frame(width: 60)
-
+            
+            Text("\(Int(opacity))%")
         }
     }
-    
-    var opacityTextboxStepperForm: some View {
-        LabeledTextboxStepperForm(
-            label: "",
-            value: $opacity,
-            in: 0...1,
-            format: .percent,
-            textFieldWidth: 60
-        )
-    }
-
 }
 
 struct ColorPickerOpacitySliderForm_Previews: PreviewProvider {
-    
     @State static private var color = Color.red
-    @State static private var opacity: Double = 1
+    @State static private var opacity: Double = 100
     
     static let verticalSpacing: CGFloat = 10
 

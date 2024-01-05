@@ -100,14 +100,7 @@ class SettingsStore: ObservableObject {
         }
     }
     
-    var selectedFontColorOpacity: Double {
-        get {
-            UserDefaults.standard.double(forKey: "selectedFontColorOpacity")
-        }
-        set(newValue) {
-            UserDefaults.standard.set(newValue, forKey: "selectedFontColorOpacity")
-        }
-    }
+    @AppStorage("selectedFontColorOpacity") var selectedFontColorOpacity: Double = 100
     
     // Stroke color
     var selectedStrokeColor: Color {
@@ -200,7 +193,7 @@ class SettingsStore: ObservableObject {
             imageLabelCopyright: self.copyrightText,
             imageLabelFont: self.selectedFontNameType.markersExtractor,
             imageLabelFontMaxSize: self.selectedFontSize,
-            imageLabelFontOpacity: Int(self.selectedFontColorOpacity),
+            imageLabelFontOpacity: Int(self.selectedFontColorOpacity).clamped(to: 0...100),
             imageLabelFontColor: self.selectedFontColor.hex,
             imageLabelFontStrokeColor: self.selectedStrokeColor.hex,
             imageLabelFontStrokeWidth: strokeSize,
