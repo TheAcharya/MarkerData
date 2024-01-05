@@ -8,40 +8,23 @@
 import Foundation
 import MarkersExtractor
 
-extension ExportProfileFormat {
+extension ExportProfileFormat: Codable {
     public var extractOnlyName: String {
         switch self {
         case .airtable:
-            return "Airtable (no upload)"
+            return "Airtable (No Upload)"
         case .midi:
-            return "MIDI file"
+            return "MIDI"
         case .notion:
-            return "Notion (no upload)"
+            return "Notion (No Upload)"
         case .csv:
-            return "CSV file"
+            return "CSV"
         case .tsv:
-            return "TSV file"
+            return "TSV"
         }
     }
     
     public static var allExtractOnlyNames: [String] {
         Self.allCases.map( { $0.extractOnlyName })
-    }
-    
-    init?(extractOnlyName: String) {
-        switch extractOnlyName {
-        case "Airtable (no upload)":
-            self = .airtable
-        case "MIDI file":
-            self = .midi
-        case "Notion (no upload)":
-            self = .notion
-        case "CSV file":
-            self = .csv
-        case "TSV file":
-            self = .tsv
-        default:
-            return nil
-        }
     }
 }

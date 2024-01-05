@@ -1,7 +1,6 @@
 {
     "exportFolderURL": "",
     "selectedFolderFormat": 1,
-    "selectedExportFormat": "csv",
     "selectedImageMode": 0,
     "isUploadEnabled": false,
     "enabledSubframes": false,
@@ -28,5 +27,11 @@
     "selectedVerticallignment": 0,
     "selectedOverlays": [],
     "copyrightText": "",
-    "hideLabelNames": false
+    "hideLabelNames": false,
+    "unifiedExportProfile": {
+        "displayName": "CSV",
+        "extractProfile": "csv",
+        "databaseProfileName": "",
+        "exportProfileType": "extractOnly"
+    }
 }

@@ -11,49 +11,55 @@ import MarkersExtractor
 struct ExportProfilePicker: View {
     @EnvironmentObject var settings: SettingsContainer
     @EnvironmentObject var databaseManager: DatabaseManager
+    @EnvironmentObject var configurationsModel: ConfigurationsModel
     
     /// Set in onAppear
-    @State var selection: String = ExportProfileFormat.allExtractOnlyNames[0]
+    @State var selection: UnifiedExportProfile? = UnifiedExportProfile.defaultProfile()
+    
+    @State var showFailedToSaveAlert = false
     
     var body: some View {
         Picker("Export Profile", selection: $selection) {
             Section("Extract Only (No Upload)") {
-                ForEach(ExportProfileFormat.allExtractOnlyNames, id: \.self) { name in
-                    Text(name)
-                        .tag(name)
+                ForEach(UnifiedExportProfile.noUploadProfiles) { profile in
+                    Text(profile.displayName)
+                        .tag(Optional(profile))
                 }
             }
             
             Divider()
             
             Section("Database Profiles (Upload)") {
-                ForEach(databaseManager.profiles, id: \.self.name) { DBProfile in
-                    Text(DBProfile.name)
-                        .tag(DBProfile.name)
+                ForEach(databaseManager.getUnifiedExportProfiles()) { profile in
+                    Text(profile.displayName)
+                        .tag(Optional(profile))
                 }
+            }
+        }
+        .onChange(of: selection) { newProfile in
+            do {
+                try newProfile?.save()
+            } catch {
+                showFailedToSaveAlert = true
             }
         }
         .onAppear {
-            // Set selection
-            if databaseManager.selectedDatabaseProfileName.isEmpty {
-                // No upload
-                selection = databaseManager.selectedExportFormat.extractOnlyName
-            } else {
-                // Upload
-                selection = databaseManager.selectedDatabaseProfileName
-            }
-        }
-        .onChange(of: selection) { newSelection in
-            if ExportProfileFormat.allExtractOnlyNames.contains(newSelection) {
-                // No upload
-                if let exportProfile = ExportProfileFormat(extractOnlyName: newSelection) {
-                    databaseManager.setExportProfile(exportProfile: exportProfile)
+            configurationsModel.changeHandlers.append {
+                if let unifiedProfile = UnifiedExportProfile.load() {
+                    self.selection = unifiedProfile
                 }
-            } else {
-                // Upload
-                databaseManager.setExportProfile(databaseProfileName: selection)
             }
+            
+            // To avoid getting errors like Picker: the selection ... is invalid
+            // Uncomment the code below to set the selection with a delay
+            // We need to wait until the picker is fully initialized to not get the error
+            // But the picker works anyways just the error is kinda annoying
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+//                self.selection = UnifiedExportProfile.load()
+//            }
+            self.selection = UnifiedExportProfile.load()
         }
+        .alert("Failed to save export profile", isPresented: $showFailedToSaveAlert) {}
     }
 }
 

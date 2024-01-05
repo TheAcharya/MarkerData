@@ -15,17 +15,36 @@ import os
 class DatabaseManager: ObservableObject {
     /// List of database profiles
     @Published var profiles: [DatabaseProfileModel] = []
-    @AppStorage("selectedDatabaseProfileName") var selectedDatabaseProfileName = ""
-    @AppStorage("selectedExportFormat") var selectedExportFormat: ExportProfileFormat = .csv
     
     var selectedDatabaseProfile: DatabaseProfileModel? {
-        if !self.selectedDatabaseProfileName.isEmpty {
-            if let profile = self.profiles.first(where: { $0.name == self.selectedDatabaseProfileName }) {
-                return profile
+        get {
+            let unifiedProfile = UnifiedExportProfile.load()
+            guard let databaseProfile = self.profiles.first(where: { $0.name == unifiedProfile?.databaseProfileName }) else {
+                return nil
             }
+            
+            return databaseProfile
         }
         
-        return nil
+        set(value) {
+            guard let databaseProfile = value else {
+                Self.logger.error("Failed to save database profile as UnifiedExportProfile. Nil value found.")
+                return
+            }
+            
+            let unifiedProfile = UnifiedExportProfile(
+                displayName: databaseProfile.name,
+                extractProfile: databaseProfile.plaform.asExportProfile,
+                databaseProfileName: databaseProfile.name,
+                exportProfileType: .extractAndUpload
+            )
+            
+            do {
+                try unifiedProfile.save()
+            } catch {
+                Self.logger.error("Failed to save database profile as UnifiedExportProfile")
+            }
+        }
     }
     
     static let logger = Logger()
@@ -50,20 +69,6 @@ class DatabaseManager: ObservableObject {
             }
         } catch {
             Self.logger.error("Failed to create Database folders")
-        }
-    }
-    
-    /// Set export profile without uploading to any database
-    public func setExportProfile(exportProfile profile: ExportProfileFormat) {
-        self.selectedExportFormat = profile
-        self.selectedDatabaseProfileName = ""
-    }
-    
-    /// Set export profile and database upload settings
-    public func setExportProfile(databaseProfileName: String) {
-        if let profile = self.profiles.first(where: { $0.name == databaseProfileName }) {
-            self.selectedExportFormat = profile.plaform.asExportProfile
-            self.selectedDatabaseProfileName = profile.name
         }
     }
     
@@ -98,7 +103,7 @@ class DatabaseManager: ObservableObject {
         Task {
             await MainActor.run {
                 if let profile = self.profiles.first(where: { $0.name == profileName }) {
-                    self.selectedDatabaseProfileName = profile.name
+                    self.selectedDatabaseProfile = profile
                 }
             }
         }
@@ -156,6 +161,20 @@ class DatabaseManager: ObservableObject {
                 }
             }
         }
+    }
+    
+    /// Returns all profiles as ``UnifiedExportProfile``
+    public func getUnifiedExportProfiles() -> [UnifiedExportProfile] {
+        let unifiedProfiles = self.profiles.map { profile in
+            UnifiedExportProfile(
+                displayName: profile.name,
+                extractProfile: profile.plaform.asExportProfile,
+                databaseProfileName: profile.name,
+                exportProfileType: .extractAndUpload
+            )
+        }
+        
+        return unifiedProfiles
     }
     
     /// Creates database profiles directory in Application Support if it doesn't exist already

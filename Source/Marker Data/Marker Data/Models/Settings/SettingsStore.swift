@@ -19,8 +19,6 @@ class SettingsStore: ObservableObject {
         get { UserFolderFormat(rawValue: selectedFolderFormatRawValue) ?? .Medium }
         set { selectedFolderFormatRawValue = newValue.rawValue }
     }
-    
-    @AppStorage("selectedExportFormat") private(set) var selectedExportFormat: ExportProfileFormat = .csv
 
     @AppStorage("selectedImageMode") private var selectedImageModeRawValue: Int = ImageMode.PNG.rawValue
     var selectedImageMode: ImageMode {
@@ -180,10 +178,14 @@ class SettingsStore: ObservableObject {
         let outputDirURL: URL = self.exportFolderURL ?? URL.moviesDirectory
         let strokeSize: Int? = self.isStrokeSizeAuto ? nil : self.selectedStrokeSize
         
+        guard let exportFormat = UnifiedExportProfile.load() else {
+            throw ExtractError.unifiedExportProfileReadError
+        }
+        
         let settings = try MarkersExtractor.Settings(
             fcpxml: .init(at: fcpxmlFileUrl),
             outputDir: outputDirURL,
-            exportFormat: self.selectedExportFormat,
+            exportFormat: exportFormat.extractProfile,
             enableSubframes: self.enabledSubframes,
             markersSource: self.markersSource,
             imageFormat: self.selectedImageMode.markersExtractor,

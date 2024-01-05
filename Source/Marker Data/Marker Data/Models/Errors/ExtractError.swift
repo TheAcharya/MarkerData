@@ -10,6 +10,7 @@ import Foundation
 enum ExtractError: Error {
     case invalidExportDestination
     case settingsReadError
+    case unifiedExportProfileReadError
 }
 
 extension ExtractError: LocalizedError {
@@ -19,6 +20,8 @@ extension ExtractError: LocalizedError {
             "Invalid export destination"
         case .settingsReadError:
             "Failed to read export settings"
+        case .unifiedExportProfileReadError:
+            "Couldn't read export profile"
         }
     }
 }

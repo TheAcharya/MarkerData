@@ -326,7 +326,7 @@ struct ConfigurationSettingsView: View {
             configurationAddAlertMessage = "Couldn't create configuration file"
             showConfigurationAddAlert = true
         } catch ConfigurationSaveError.jsonSerializationError {
-            configurationAddAlertMessage = "Couldn't load configuration contents"
+            configurationAddAlertMessage = "Couldn't serialize configurations"
             showConfigurationAddAlert = true
         } catch ConfigurationSaveError.nameAlreadyExists {
             configurationAddAlertMessage = "A configuration with the same name already exists"

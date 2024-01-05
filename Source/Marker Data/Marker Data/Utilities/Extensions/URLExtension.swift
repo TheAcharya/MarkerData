@@ -10,20 +10,20 @@ import UniformTypeIdentifiers
 
 extension URL {
     /// Path to ~/Library/Application Support/Marker Data
-    public static var applicationSupportAppDirectory: URL {
+    public static var markerDataLibraryFolder: URL {
         Self.applicationSupportDirectory
             .appendingPathComponent(Bundle.main.appName, conformingTo: .directory)
     }
     
     /// Path to ~/Library/Application Support/Marker Data/Configurations
     public static var configurationsFolder: URL {
-        Self.applicationSupportAppDirectory
+        Self.markerDataLibraryFolder
             .appendingPathComponent("Configurations", conformingTo: .directory)
     }
     
     /// Path to ~/Library/Application Support/Marker Data/Database
     public static var databaseFolder: URL {
-        Self.applicationSupportAppDirectory
+        Self.markerDataLibraryFolder
             .appendingPathComponent("Database", conformingTo: .directory)
     }
     
@@ -33,12 +33,18 @@ extension URL {
             .appendingPathComponent("Profiles", conformingTo: .directory)
     }
     
+    /// Path to ~/Library/Preferences/Marker Data/UnifiedExportProfile.json
+    public static var unifiedExportProfile: URL {
+        Self.markerDataLibraryFolder
+            .appendingPathComponent("UnifiedExportProfile.json", conformingTo: .json)
+    }
+    
     /// Path to ~/Library/Preferences/com.TheAcharya.Marker-Data.plist
     public static var preferencesPlistFile: URL {
         Self.libraryDirectory
             .appendingPathComponent("Preferences", conformingTo: .directory)
             .appendingPathComponent(
-                Bundle.main.bundleIdentifier ?? "com.TheAcharya.Marker-Data.plist" + ".plist",
+                Bundle.main.bundleIdentifier ?? "com.TheAcharya.Marker-Data.plist",
                 conformingTo: .propertyList)
     }
     

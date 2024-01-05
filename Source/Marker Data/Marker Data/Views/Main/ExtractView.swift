@@ -127,7 +127,7 @@ struct ExtractView: View {
                     .padding(.bottom, 5)
                 
                 // Upload progress
-                if databaseManager.selectedDatabaseProfile != nil {
+                if UnifiedExportProfile.load()?.exportProfileType == .extractAndUpload {
                     ExportProgressView(progressModel: extractionModel.uploadProgress)
                 }
                 
@@ -237,6 +237,7 @@ struct ExtractView: View {
         @EnvironmentObject var databaseManager: DatabaseManager
         
         @State var emptyExportDestination = false
+        @State var showHelp = false
         
         var body: some View {
             VStack(alignment: .leading) {
@@ -291,8 +292,20 @@ struct ExtractView: View {
                     VStack(alignment: .leading) {
                         ExportProfilePicker()
                         
-                        Text("Save data locally or upload to database")
-                            .fontWeight(.thin)
+                        HStack {
+                            Text("Save data locally or upload to database")
+                                .fontWeight(.thin)
+                            
+                            HelpButton {
+                                showHelp = true
+                            }
+                            .scaleEffect(0.8)
+                            .popover(isPresented: $showHelp) {
+                                Text("Select an export profile from the **No Upload** section to save the file locally only. Later, upload extracted files to a database according to the export profile from the **Recent Extractions** panel. Or select a database profile to upload immediately.")
+                                    .frame(maxWidth: 300, minHeight: 100)
+                                    .padding(10)
+                            }
+                        }
                     }
                     .frame(minWidth: 300, alignment: .leading)
                 }

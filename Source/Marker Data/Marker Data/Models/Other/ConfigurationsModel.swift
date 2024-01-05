@@ -22,11 +22,14 @@ class ConfigurationsModel: ObservableObject {
     /// Currently loaded configuration
     @AppStorage("selectedConfiguration") var activeConfiguration = "Default"
     
-    static let logger = Logger()
+    private static let logger = Logger()
     
     static let defaultConfigurationName = "Default"
     static let defaultConfigurationFileName = "DefaultConfiguration"
     static let configurationNameCharacterLimit = 50
+    
+    /// Used by other objects to update their state when configurations are modified
+    public var changeHandlers: [() -> Void] = []
     
     init() {
         // Create configurations directory in case it doesn't exist yet
@@ -68,11 +71,7 @@ class ConfigurationsModel: ObservableObject {
             throw ConfigurationSaveError.nameAlreadyExists
         }
         
-        // Get the current UserDefaults settings in a dictionary format
-        let defaults = UserDefaults.standard
-        let dictionary = defaults.dictionaryRepresentation().filter {
-            Self.keysToSave.contains($0.key)
-        }
+        let dictionary = try self.getUserDefaultsDictionary()
         
         // Turn into json
         guard let data = try? JSONSerialization.data(withJSONObject: dictionary, options: []) else {
@@ -111,15 +110,34 @@ class ConfigurationsModel: ObservableObject {
             throw ConfigurationLoadError.emptyConfigurationName
         }
         
+        Self.logger.info("Start load configuration: \(configurationName)")
+        
         // Load export settings into dictionary format
         do {
             let dictionary = if configurationName == Self.defaultConfigurationName {
                 try loadDefaultsDicitionary()
             } else {
-                try getConfigurationDictionary(configurationName: configurationName)
+                try loadConfigurationDictionary(configurationName: configurationName)
             }
             
+            Self.logger.info("Dictionary loaded")
+            
+            // Set user defaults
             UserDefaults.standard.setValuesForKeys(dictionary)
+            
+            Self.logger.info("UserDefaults updated")
+            
+            // Load UnifiedExportProfile
+            let decoder = JSONDecoder()
+            
+            let structData = try JSONSerialization.data(withJSONObject: dictionary["unifiedExportProfile"] as Any, options: [])
+            let unifiedExportProfile = try decoder.decode(UnifiedExportProfile.self, from: structData)
+            
+            Self.logger.info("UnifiedExportProfile loaded")
+            
+            try unifiedExportProfile.save()
+            
+            Self.logger.info("UnifiedExportProfile saved")
         } catch {
             Self.logger.error("Failed to load configuration file. Message: \(error.localizedDescription)")
             throw ConfigurationLoadError.fileDoesntExists
@@ -131,8 +149,31 @@ class ConfigurationsModel: ObservableObject {
             await settings.reloadStore()
         }
         
+        // Call change handlers
+        for hander in changeHandlers {
+            hander()
+        }
+        
         // Set active configuration
         self.activeConfiguration = configurationName
+    }
+    
+    private func getUserDefaultsDictionary() throws -> Dictionary<String, Any> {
+        let defaults = UserDefaults.standard
+        var dictionary = defaults.dictionaryRepresentation().filter {
+            Self.keysToSave.contains($0.key)
+        }
+        
+        // Add active UnifiedExportProfile profile to dictionary
+        let unifiedProfile: UnifiedExportProfile = UnifiedExportProfile.load() ?? UnifiedExportProfile.defaultProfile()
+        
+        let encoder = JSONEncoder()
+        let data = try encoder.encode(unifiedProfile)
+        let unifiedProfileAsDict = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+        
+        dictionary["unifiedExportProfile"] = unifiedProfileAsDict
+                
+        return dictionary
     }
     
     /// Renames configuration
@@ -182,11 +223,16 @@ class ConfigurationsModel: ObservableObject {
         }
     }
     
-    /// Loads a configuration from the configurations folder into a ``Dictionary`` format
+    /// Loads a configuration from the configurations folder into a ``Dictionary`` object
     ///
     /// - Parameters:
     ///     - configurationName: Name of the configuration
-    private func getConfigurationDictionary(configurationName: String) throws -> Dictionary<String, Any> {
+    private func loadConfigurationDictionary(configurationName: String) throws -> Dictionary<String, Any> {
+        // Load default
+        if configurationName == Self.defaultConfigurationName {
+            return try loadDefaultsDicitionary()
+        }
+        
         let url = URL.configurationsFolder.appendingPathComponent("\(configurationName).json", conformingTo: .json)
         
         guard let data = try? Data(contentsOf: url) else {
@@ -202,14 +248,6 @@ class ConfigurationsModel: ObservableObject {
     
     /// Loads default configuration from resources
     func loadDefaultsDicitionary() throws -> Dictionary<String, Any> {
-//        guard
-//            let url = Bundle.main.url(forResource: Self.defaultConfigurationFileName, withExtension: "json"),
-//            let data = try? Data(contentsOf: url),
-//            let configDict = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
-//        else {
-//            throw ConfigurationLoadError.fileDoesntExists
-//        }
-        
         do {
             if let url = Bundle.main.url(forResource: Self.defaultConfigurationFileName, withExtension: "json") {
                 let data = try Data(contentsOf: url)
@@ -228,18 +266,13 @@ class ConfigurationsModel: ObservableObject {
     /// Returns true if there are unsaved changes to active configuration
     func checkForUnsavedChanges() -> Bool {
         do {
-            let saved = if self.activeConfiguration == Self.defaultConfigurationName {
-                try loadDefaultsDicitionary()
-            } else {
-                try getConfigurationDictionary(configurationName: self.activeConfiguration)
-            }
+            let onDisk = try loadConfigurationDictionary(configurationName: self.activeConfiguration)
+
+            let current = try getUserDefaultsDictionary()
             
-            let current = UserDefaults.standard.dictionaryRepresentation().filter {
-                Self.keysToSave.contains($0.key)
-            }
-            
-            return !NSDictionary(dictionary: current).isEqual(to: saved)
+            return !NSDictionary(dictionary: current).isEqual(to: onDisk)
         } catch {
+            Self.logger.error("Failed to compare configurations for unsaved changes")
             return false
         }
     }
@@ -261,7 +294,7 @@ class ConfigurationsModel: ObservableObject {
     }
     
     /// The set of keys saved from the `UserDefaults` when creating a Configuration
-    private static let keysToSave = ["exportFolderURL", "selectedFolderFormat", "selectedExportFormat", "selectedImageMode", "selectedMarkersSource", "isUploadEnabled", "enabledSubframes", "enabledNoMedia", "selectedIDNamingMode", "selectedImageQuality", "imageWidth", "imageWidthEnabled", "imageHeight", "imageHeightEnabled", "selectedImageSize", "selectedGIFFPS", "selectedGIFLength", "selectedFontNameType", "selectedFontStyleType", "selectedFontSize", "selectedStrokeSize", "isStrokeSizeAuto", "selectedFontColor", "selectedFontColorOpacity", "selectedStrokeColor", "selectedHorizontalAlignment", "selectedVerticallignment", "selectedOverlays", "copyrightText", "hideLabelNames"]
+    private static let keysToSave = ["exportFolderURL", "selectedFolderFormat", "selectedImageMode", "selectedMarkersSource", "isUploadEnabled", "enabledSubframes", "enabledNoMedia", "selectedIDNamingMode", "selectedImageQuality", "imageWidth", "imageWidthEnabled", "imageHeight", "imageHeightEnabled", "selectedImageSize", "selectedGIFFPS", "selectedGIFLength", "selectedFontNameType", "selectedFontStyleType", "selectedFontSize", "selectedStrokeSize", "isStrokeSizeAuto", "selectedFontColor", "selectedFontColorOpacity", "selectedStrokeColor", "selectedHorizontalAlignment", "selectedVerticallignment", "selectedOverlays", "copyrightText", "hideLabelNames"]
 }
 
 struct ConfigurationItem: Identifiable, Hashable {
