@@ -47,7 +47,6 @@ struct ExtractView: View {
             // Quick Settings
             QuickSettingsView()
         }
-        .padding()
         .overlay(UserAlertView(title: "Error", onDismiss: {
             // Perform any action you want when the user dismisses the alert.
         })
@@ -236,57 +235,25 @@ struct ExtractView: View {
         @EnvironmentObject var settings: SettingsContainer
         @EnvironmentObject var databaseManager: DatabaseManager
         
-        @State var emptyExportDestination = false
         @State var showHelp = false
         
         var body: some View {
             VStack(alignment: .leading) {
-                // Divide Drag And Drop Zone From Quick Actions
-                Divider()
-                
-                // Quick Settings Title
-                Text("Quick Settings")
-                    .font(.title2)
-                    .bold()
-                    .padding(.bottom, -1)
-                
                 HStack(alignment: .top) {
                     VStack(alignment: .leading) {
                         // Export destination picker
                         VStack(alignment: .leading) {
-                            Text("Export Folder: ")
+                            Text("Export Folder")
+                                .bold()
                             
-                            FolderPicker(
-                                url: $settings.store.exportFolderURL,
-                                title: "Choose…"
-                            )
-                        }
-                        
-                        if emptyExportDestination {
-                            Text("Please select an export destination!")
-                                .foregroundStyle(.red)
+                            ExportDestinationPicker()
                         }
                     }
                     .frame(minWidth: 250, alignment: .leading)
-                    // Check for empty export destination
-                    .onChange(of: settings.store.exportFolderURL) { newURL in
-                        if let exportURL = settings.store.exportFolderURL {
-                            withAnimation {
-                                emptyExportDestination = exportURL.absoluteString.isEmpty
-                            }
-                        }
-                    }
-                    .onAppear {
-                        if let exportURL = settings.store.exportFolderURL {
-                            emptyExportDestination = exportURL.absoluteString.isEmpty
-                        } else {
-                            emptyExportDestination = true
-                        }
-                    }
                     
                     Divider()
                         .padding(.horizontal, 3)
-                        .frame(maxHeight: 42)
+                        .frame(maxHeight: 60)
                     
                     // Export profile picker
                     VStack(alignment: .leading) {
@@ -310,6 +277,9 @@ struct ExtractView: View {
                     .frame(minWidth: 300, alignment: .leading)
                 }
             }
+            .padding()
+            .background(.black)
+            .shadow(radius: 10)
         }
     }
     
@@ -358,6 +328,7 @@ struct ExtractView: View {
 #Preview {
     @StateObject var settings = SettingsContainer()
     @StateObject var databaseManager = DatabaseManager()
+    @StateObject var configurationsModel = ConfigurationsModel()
 
     @StateObject var extractionModel = ExtractionModel(
         settings: settings,
@@ -368,5 +339,6 @@ struct ExtractView: View {
         .frame(width: WindowSize.detailWidth, height: WindowSize.fullHeight)
         .environmentObject(settings)
         .environmentObject(databaseManager)
+        .environmentObject(configurationsModel)
         .preferredColorScheme(.dark)
 }

@@ -22,6 +22,7 @@
 		4172729A2B44533D005A04BE /* FailedExtractionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417272992B44533D005A04BE /* FailedExtractionsView.swift */; };
 		4172729E2B456CCA005A04BE /* csv2notion_neo in Resources */ = {isa = PBXBuildFile; fileRef = 4172729D2B456CCA005A04BE /* csv2notion_neo */; };
 		417272A02B46F65A005A04BE /* UnifiedExportProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4172729F2B46F65A005A04BE /* UnifiedExportProfile.swift */; };
+		417272A22B484B82005A04BE /* ExportDestinationPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417272A12B484B82005A04BE /* ExportDestinationPicker.swift */; };
 		417389632AC86BE600984FD8 /* ExtractView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417389622AC86BE600984FD8 /* ExtractView.swift */; };
 		41BFEB6D2B1B9B6400C8B551 /* Links.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BFEB6C2B1B9B6400C8B551 /* Links.swift */; };
 		41BFEB702B1BA4CC00C8B551 /* PasswordField in Frameworks */ = {isa = PBXBuildFile; productRef = 41BFEB6F2B1BA4CC00C8B551 /* PasswordField */; };
@@ -63,7 +64,6 @@
 		9B4D90DA2A0BAF9E00FE7603 /* GeneralLabelSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B4D90D92A0BAF9E00FE7603 /* GeneralLabelSettingsView.swift */; };
 		9B4D90DC2A0BB07500FE7603 /* ConfigurationSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B4D90DB2A0BB07500FE7603 /* ConfigurationSettingsView.swift */; };
 		9B4D90DE2A0BB11000FE7603 /* DatabaseSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B4D90DD2A0BB11000FE7603 /* DatabaseSettingsView.swift */; };
-		9B51D21129E9A01A00DF7836 /* FolderPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B51D21029E9A01A00DF7836 /* FolderPicker.swift */; };
 		9B51D21629E9B13400DF7836 /* SettingsModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B51D21529E9B13400DF7836 /* SettingsModels.swift */; };
 		9B61B44229F03866003EC14A /* libswiftCoreGraphics.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B61B44129F03866003EC14A /* libswiftCoreGraphics.tbd */; };
 		9B653ABB29F2C2E700C64999 /* UserAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B653ABA29F2C2E700C64999 /* UserAlertView.swift */; };
@@ -107,6 +107,7 @@
 		417272992B44533D005A04BE /* FailedExtractionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FailedExtractionsView.swift; sourceTree = "<group>"; };
 		4172729D2B456CCA005A04BE /* csv2notion_neo */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = csv2notion_neo; sourceTree = "<group>"; };
 		4172729F2B46F65A005A04BE /* UnifiedExportProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnifiedExportProfile.swift; sourceTree = "<group>"; };
+		417272A12B484B82005A04BE /* ExportDestinationPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportDestinationPicker.swift; sourceTree = "<group>"; };
 		417389622AC86BE600984FD8 /* ExtractView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractView.swift; sourceTree = "<group>"; };
 		41BFEB6C2B1B9B6400C8B551 /* Links.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Links.swift; sourceTree = "<group>"; };
 		41BFEB712B1BCE4600C8B551 /* ExportProfilePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportProfilePicker.swift; sourceTree = "<group>"; };
@@ -146,7 +147,6 @@
 		9B4D90D92A0BAF9E00FE7603 /* GeneralLabelSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralLabelSettingsView.swift; sourceTree = "<group>"; };
 		9B4D90DB2A0BB07500FE7603 /* ConfigurationSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationSettingsView.swift; sourceTree = "<group>"; };
 		9B4D90DD2A0BB11000FE7603 /* DatabaseSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseSettingsView.swift; sourceTree = "<group>"; };
-		9B51D21029E9A01A00DF7836 /* FolderPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderPicker.swift; sourceTree = "<group>"; };
 		9B51D21529E9B13400DF7836 /* SettingsModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsModels.swift; sourceTree = "<group>"; };
 		9B61B44129F03866003EC14A /* libswiftCoreGraphics.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libswiftCoreGraphics.tbd; path = usr/lib/swift/libswiftCoreGraphics.tbd; sourceTree = SDKROOT; };
 		9B61B44329F0387C003EC14A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -340,11 +340,11 @@
 		47B21A6E2A4DF96D004FECFA /* Other */ = {
 			isa = PBXGroup;
 			children = (
-				9B51D21029E9A01A00DF7836 /* FolderPicker.swift */,
 				9B653ABA29F2C2E700C64999 /* UserAlertView.swift */,
 				9B35FE6729F94C110035B760 /* PickerViews.swift */,
 				41BFEB712B1BCE4600C8B551 /* ExportProfilePicker.swift */,
 				417272992B44533D005A04BE /* FailedExtractionsView.swift */,
+				417272A12B484B82005A04BE /* ExportDestinationPicker.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -552,6 +552,7 @@
 			files = (
 				4156196B2B3AE41F0032E82C /* ProgressViewModel.swift in Sources */,
 				4741202E2A3EFC42005890FE /* Miscellaneous Utilities.swift in Sources */,
+				417272A22B484B82005A04BE /* ExportDestinationPicker.swift in Sources */,
 				9B244B3E2A24AB5D005620D8 /* MarkerData.xcdatamodeld in Sources */,
 				47411FDC2A3EA140005890FE /* ViewExtensions.swift in Sources */,
 				41F88AEC2B0E9224004A3B58 /* DatabasePlatform.swift in Sources */,
@@ -604,7 +605,6 @@
 				414262C22AD5D34D00FC6CFC /* ConfigurationsModel.swift in Sources */,
 				41BFEB6D2B1B9B6400C8B551 /* Links.swift in Sources */,
 				4172729A2B44533D005A04BE /* FailedExtractionsView.swift in Sources */,
-				9B51D21129E9A01A00DF7836 /* FolderPicker.swift in Sources */,
 				41F88AE52B0C83DE004A3B58 /* ShellResult.swift in Sources */,
 				9B9CA1172A1A9BBB004E337A /* PersistenceController.swift in Sources */,
 				474595372A40113000EF100D /* LabeledTextboxStepperForm.swift in Sources */,
