@@ -24,7 +24,6 @@ struct ExportDestinationPicker: View {
             Text(exportDestinationText)
                 .padding(.horizontal)
                 .truncationMode(.head)
-                .font(.system(.body, design: .monospaced))
                 .lineLimit(1)
                 .foregroundStyle(showWarning ? Color.red : .primary)
                 .onAppear {
@@ -54,21 +53,29 @@ struct ExportDestinationPicker: View {
             } label: {
                 Image(systemName: "folder")
             }
-            
-            // Clear button
-            Button {
-                settings.store.exportFolderURL = nil
-                updateExportDestinationText()
-            } label: {
-                Image(systemName: "trash")
-            }
-            .buttonStyle(.plain)
         }
         .frame(maxWidth: 300)
         .padding(5)
         .background(.black)
         .clipShape(RoundedRectangle(cornerRadius: 6))
         .shadow(color: .white, radius: 1)
+        .contextMenu {
+            // Full path
+            Section("Full Path") {
+                Text(settings.store.exportFolderURL?.path(percentEncoded: false) ?? "Empty Path")
+                    .truncationMode(.head)
+                    .frame(maxWidth: 250)
+            }
+            
+            // Clear button
+            Button {
+                settings.store.exportFolderURL = nil
+                updateExportDestinationText()
+            } label: {
+                Label("Clear Path", systemImage: "trash")
+            }
+            .labelStyle(.titleAndIcon)
+        }
     }
     
     /// Updates the export destination url text and checks if the folder exists
