@@ -106,7 +106,8 @@ class SettingsStore: ObservableObject {
     var selectedStrokeColor: Color {
         get {
             guard let hexString: String = UserDefaults.standard.string(forKey: "selectedStrokeColor") else {
-                return .white
+                // Default
+                return .black
             }
             
             return Color(hex: hexString)

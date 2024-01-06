@@ -22,7 +22,7 @@
     "isStrokeSizeAuto": true,
     "selectedFontColor": "#FFFFFF",
     "selectedFontColorOpacity": 100,
-    "selectedStrokeColor": "#FFFFFF",
+    "selectedStrokeColor": "#000000",
     "selectedHorizontalAlignment": 0,
     "selectedVerticalAlignment": 0,
     "selectedOverlays": [],
