@@ -10,6 +10,8 @@ import MarkersExtractor
 
 struct ImageSettingsView: View {
     @EnvironmentObject var settings: SettingsContainer
+    
+    let pickerWidth: CGFloat = 170
 
     var body: some View {
         VStack(alignment: .formControlAlignment) {
@@ -29,7 +31,7 @@ struct ImageSettingsView: View {
                         }
                     }
                     .labelsHidden()
-                    .frame(width: 150)
+                    .frame(width: self.pickerWidth)
                     .formControlLeadingAlignmentGuide()
                 }
                 
@@ -43,7 +45,7 @@ struct ImageSettingsView: View {
                         }
                     }
                     .labelsHidden()
-                    .frame(width: 150)
+                    .frame(width: self.pickerWidth)
                     .formControlLeadingAlignmentGuide()
                 }
                 
@@ -54,7 +56,7 @@ struct ImageSettingsView: View {
                     //Picker To Change Selected ID Naming Mode
                     ImageModePicker()
                         .labelsHidden()
-                        .frame(width: 150)
+                        .frame(width: self.pickerWidth)
                         .formControlLeadingAlignmentGuide()
                 }
             }

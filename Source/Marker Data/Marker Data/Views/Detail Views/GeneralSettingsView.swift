@@ -26,6 +26,7 @@ struct GeneralSettingsView: View {
 
                     ExportDestinationPicker()
                         .frame(maxWidth: 250)
+                        .formControlLeadingAlignmentGuide()
                 }
 
                 HStack {

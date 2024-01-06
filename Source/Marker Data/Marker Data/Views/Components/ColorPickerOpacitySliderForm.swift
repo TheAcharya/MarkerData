@@ -15,8 +15,6 @@ struct ColorPickerOpacitySliderForm: View {
     
     var body: some View {
         HStack {
-            Text("Color & Opacity:")
-
             ColorWellView(selection: $color, supportsOpacity: false)
                 .colorWellStyle(.minimal)
 

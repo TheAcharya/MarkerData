@@ -36,12 +36,10 @@ struct GeneralLabelSettingsView: View {
 
     var body: some View {
         VStack(alignment: .formControlAlignment) {
-
             Text("Font")
                 .font(.headline)
 
             Group {
-
                 HStack {
                     Text("Typeface:")
 
@@ -53,12 +51,12 @@ struct GeneralLabelSettingsView: View {
 
                 HStack {
                     Text("Style:")
+                    
                     FontStylePicker()
                         .padding(.leading, -8)
                         .formControlLeadingAlignmentGuide()
                         .frame(width: 150)
                 }
-
 
                 LabeledTextboxStepperForm(
                     label: "Size:",
@@ -68,10 +66,16 @@ struct GeneralLabelSettingsView: View {
                     textFieldWidth: 50
                 )
 
-                ColorPickerOpacitySliderForm(
-                    color: $settings.store.selectedFontColor,
-                    opacity: $settings.store.selectedFontColorOpacity
-                )
+                // Color & Opacity
+                HStack {
+                    Text("Color & Opacity:")
+                    
+                    ColorPickerOpacitySliderForm(
+                        color: $settings.store.selectedFontColor,
+                        opacity: $settings.store.selectedFontColorOpacity
+                    )
+                    .formControlLeadingAlignmentGuide()
+                }
             }
 
             Divider()
@@ -108,7 +112,6 @@ struct GeneralLabelSettingsView: View {
                 .font(.headline)
 
             Group {
-
                 HStack {
                     Text("Horizontal:")
                     Picker("", selection: $settings.store.selectedHorizonalAlignment) {
@@ -120,6 +123,7 @@ struct GeneralLabelSettingsView: View {
                     .formControlLeadingAlignmentGuide()
                     .frame(width: 150)
                 }
+                
                 HStack {
                     Text("Vertical:")
                     Picker("", selection: $settings.store.selectedVerticalAlignment) {
@@ -131,22 +135,17 @@ struct GeneralLabelSettingsView: View {
                     .formControlLeadingAlignmentGuide()
                     .frame(width: 150)
                 }
-
             }
-
         }
         .navigationTitle("Label Settings")
     }
-    
 }
 
 struct GeneralLabelSettingsView_Previews: PreviewProvider {
-
     @StateObject static private var settings = SettingsContainer()
     
     static var previews: some View {
         GeneralLabelSettingsView()
             .environmentObject(settings)
     }
-    
 }
