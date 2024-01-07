@@ -43,6 +43,7 @@ struct ContentView: View {
                                 .badge(
                                 Text("Changed")
                                     .font(.system(size: 7, weight: .black))
+                                    .foregroundColor(.orange)
                             )
                         }
                         .tag(MainViews.configurations)
