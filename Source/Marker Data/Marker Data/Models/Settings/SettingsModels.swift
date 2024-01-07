@@ -8,6 +8,16 @@
 import Foundation
 import MarkersExtractor
 
+enum OverrideImageSizeOption: Int, CaseIterable, Identifiable {
+    case noOverride = 0
+    case overrideImageSizePercent
+    case overrideImageWidthAndHeight
+    
+    var id: Int {
+        self.rawValue
+    }
+}
+
 enum IdNamingMode: Int, CaseIterable, Identifiable {
 
     case Timecode = 0

@@ -62,73 +62,74 @@ struct ImageSettingsView: View {
             }
 
             Group {
-
                 Divider()
 
-                Text("Image Size")
+                Text("Image Size Override")
                     .font(.headline)
-
-                HStack {
-
-                    Text("Width:")
-
-                    // Picker To Change Selected ID Naming Mode
-                    TextField(
-                        "",
-                        value: $settings.store.imageWidth,
-                        format: .emptyOrInt
-                    )
-                    .labelsHidden()
-                    .frame(width: 75)
-                    .formControlLeadingAlignmentGuide()
-
-                    Toggle("", isOn: $settings.store.imageWidthEnabled)
-
+                
+                Picker("", selection: $settings.store.overrideImageSize) {
+                    Text("No Override")
+                        .tag(OverrideImageSizeOption.noOverride)
+                    
+                    // Image size percent
+                    HStack {
+                        Text("Size (%):")
+                        
+                        TextField(
+                            "",
+                            value: $settings.store.selectedImageSizePercent,
+                            format: .percent
+                        )
+                        .labelsHidden()
+                        .frame(width: 50)
+                        .formControlLeadingAlignmentGuide()
+                        
+                        Stepper(
+                            "",
+                            value: $settings.store.selectedImageSizePercent,
+                            in: 0...100
+                        )
+                        .labelsHidden()
+                        .padding(.leading, -5)
+                    }
+                    .padding(.vertical)
+                    .tag(OverrideImageSizeOption.overrideImageSizePercent)
+                    .disabled(settings.store.overrideImageSize != OverrideImageSizeOption.overrideImageSizePercent)
+                    
+                    // Image width and height
+                    VStack {
+                        HStack {
+                            Text("Width:")
+                            
+                            TextField(
+                                "",
+                                value: $settings.store.imageWidth,
+                                format: .number
+                            )
+                            .labelsHidden()
+                            .frame(width: 75)
+                            .formControlLeadingAlignmentGuide()
+                        }
+                        
+                        HStack {
+                            Text("Height:")
+                            
+                            TextField(
+                                "",
+                                value: $settings.store.imageHeight,
+                                format: .number
+                            )
+                            .labelsHidden()
+                            .frame(width: 75)
+                            .formControlLeadingAlignmentGuide()
+                        }
+                    }
+                    .tag(OverrideImageSizeOption.overrideImageWidthAndHeight)
+                    .disabled(settings.store.overrideImageSize != .overrideImageWidthAndHeight)
                 }
-
-                HStack {
-
-                    Text("Height:")
-
-                    //Picker To Change Selected ID Naming Mode
-                    TextField(
-                        "",
-                        value: $settings.store.imageHeight,
-                        format: .emptyOrInt
-                    )
-                    .labelsHidden()
-                    .frame(width: 75)
-                    .formControlLeadingAlignmentGuide()
-
-                    Toggle("", isOn: $settings.store.imageHeightEnabled)
-
-                }
-
-                HStack {
-
-                    Text("Size (%):")
-
-                    TextField(
-                        "",
-                        // text: imageSizeBinding
-                        value: $settings.store.selectedImageSize,
-                        format: .percent
-                    )
-                    .labelsHidden()
-                    .frame(width: 50)
-                    .formControlLeadingAlignmentGuide()
-
-                    Stepper(
-                        "",
-                        value: $settings.store.selectedImageSize,
-                        in: 0...100
-                    )
-                    .labelsHidden()
-                    .padding(.leading, -5)
-
-                }
+                .pickerStyle(.radioGroup)
+                .padding(.bottom)
             }
-
 
             Group {
 
@@ -143,7 +144,7 @@ struct ImageSettingsView: View {
 
                     TextField(
                         "",
-                        value: $settings.store.selectedImageQuality,
+                        value: $settings.store.selectedJPEGImageQuality,
                         format: .percent
                     )
                     .labelsHidden()
@@ -152,7 +153,7 @@ struct ImageSettingsView: View {
 
                     Stepper(
                         "",
-                        value: $settings.store.selectedImageQuality,
+                        value: $settings.store.selectedJPEGImageQuality,
                         in: 0...100
                     )
                     .labelsHidden()

@@ -294,7 +294,7 @@ class ConfigurationsModel: ObservableObject {
     }
     
     /// The set of keys saved from the `UserDefaults` when creating a Configuration
-    private static let keysToSave = ["exportFolderURL", "selectedFolderFormat", "selectedImageMode", "selectedMarkersSource", "isUploadEnabled", "enabledSubframes", "enabledNoMedia", "selectedIDNamingMode", "selectedImageQuality", "imageWidth", "imageWidthEnabled", "imageHeight", "imageHeightEnabled", "selectedImageSize", "selectedGIFFPS", "selectedGIFLength", "selectedFontNameType", "selectedFontStyleType", "selectedFontSize", "selectedStrokeSize", "isStrokeSizeAuto", "selectedFontColor", "selectedFontColorOpacity", "selectedStrokeColor", "selectedHorizontalAlignment", "selectedVerticalAlignment", "selectedOverlays", "copyrightText", "hideLabelNames"]
+    private static let keysToSave = ["exportFolderURL", "selectedFolderFormat", "selectedImageMode", "selectedMarkersSource", "enabledSubframes", "enabledNoMedia", "selectedIDNamingMode", "selectedJPEGImageQuality", "overrideImageSize", "imageWidth", "imageHeight", "selectedImageSizePercent", "selectedGIFFPS", "selectedGIFLength", "selectedFontNameType", "selectedFontStyleType", "selectedFontSize", "selectedStrokeSize", "isStrokeSizeAuto", "selectedFontColor", "selectedFontColorOpacity", "selectedStrokeColor", "selectedHorizontalAlignment", "selectedVerticalAlignment", "selectedOverlays", "copyrightText", "hideLabelNames"]
 }
 
 struct ConfigurationItem: Identifiable, Hashable {

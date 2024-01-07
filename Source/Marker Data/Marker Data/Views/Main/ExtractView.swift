@@ -195,10 +195,8 @@ struct ExtractView: View {
                 }
             }
             .onChange(of: extractionModel.exportResult) { result in
-                if result != .none {
-                    withAnimation(.easeOut(duration: 1)) {
-                        showAllCompleteFooter = true
-                    }
+                withAnimation(.easeOut(duration: 1)) {
+                    showAllCompleteFooter = result != .none
                 }
             }
         }

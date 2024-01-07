@@ -40,21 +40,24 @@ class SettingsStore: ObservableObject {
     
     @AppStorage("selectedMarkersSource") var markersSource: MarkersSource = .markers
 
+    // MARK: Overall image size settings
+    
+    // If .noOverride image size, image width andd image hight will be ignored
+    @AppStorage("overrideImageSize") var overrideImageSize: OverrideImageSizeOption = .noOverride
+    
+    // Will be ignored if override image size is off
+    @AppStorage("selectedImageSizePercent") var selectedImageSizePercent: Int = 100
+    
+    // Will be ignored if override image size is off
+    @AppStorage("imageWidth") var imageWidth: Int = 1920
+
+    // Will be ignored if override image size is off
+    @AppStorage("imageHeight") var imageHeight: Int = 1080
+    
+    // MARK: Image file type specific settings
+    
     //Default Selected JPG Image Quality
-    @AppStorage("selectedImageQuality") var selectedImageQuality: Int = 100
-
-    //Default Image Width
-    @AppStorage("imageWidth") var imageWidth: Int?  // 1920
-
-    @AppStorage("imageWidthEnabled") var imageWidthEnabled = false
-
-    //Default Image Height
-    @AppStorage("imageHeight") var imageHeight: Int?  // 1080
-
-    @AppStorage("imageHeightEnabled") var imageHeightEnabled = false
-
-    //Default Image Scale Size
-    @AppStorage("selectedImageSize") var selectedImageSize: Int = 100
+    @AppStorage("selectedJPEGImageQuality") var selectedJPEGImageQuality: Int = 100
 
     //Default Set GIF FPS
     @AppStorage("selectedGIFFPS") var selectedGIFFPS: Int = 10
@@ -169,12 +172,31 @@ class SettingsStore: ObservableObject {
     // MARK: CLI settings
     
     func markersExtractorSettings(fcpxmlFileUrl: URL) throws -> MarkersExtractor.Settings {
-        let outputDirURL: URL = self.exportFolderURL ?? URL.moviesDirectory
-        let strokeSize: Int? = self.isStrokeSizeAuto ? nil : self.selectedStrokeSize
-        
+        // Export format
         guard let exportFormat = UnifiedExportProfile.load() else {
             throw ExtractError.unifiedExportProfileReadError
         }
+        
+        // Output dir
+        let outputDirURL: URL = self.exportFolderURL ?? URL.moviesDirectory
+        
+        // Image size override
+        var imageWidth: Int? = nil
+        var imageHeight: Int? = nil
+        var imageSizePercent: Int? = nil
+        
+        switch self.overrideImageSize {
+        case .noOverride:
+            break
+        case .overrideImageSizePercent:
+            imageSizePercent = self.selectedImageSizePercent
+        case .overrideImageWidthAndHeight:
+            imageWidth = self.imageWidth
+            imageHeight = self.imageHeight
+        }
+        
+        // Stroke size
+        let strokeSize: Int? = self.isStrokeSizeAuto ? nil : self.selectedStrokeSize
         
         let settings = try MarkersExtractor.Settings(
             fcpxml: .init(at: fcpxmlFileUrl),
@@ -183,10 +205,10 @@ class SettingsStore: ObservableObject {
             enableSubframes: self.enabledSubframes,
             markersSource: self.markersSource,
             imageFormat: self.selectedImageMode.markersExtractor,
-            imageQuality: Int(self.selectedImageQuality),
-            imageWidth: self.imageWidth,
-            imageHeight: self.imageHeight,
-            imageSizePercent: Int(self.selectedImageSize),
+            imageQuality: Int(self.selectedJPEGImageQuality),
+            imageWidth: imageWidth,
+            imageHeight: imageHeight,
+            imageSizePercent: imageSizePercent,
             gifFPS: Double(self.selectedGIFFPS),
             gifSpan: TimeInterval(self.selectedGIFLength),
             idNamingMode: self.selectedIDNamingMode.markersExtractor,
@@ -205,6 +227,5 @@ class SettingsStore: ObservableObject {
         )
         
         return settings
-        
     }
 }
