@@ -92,7 +92,7 @@ struct ImageSettingsView: View {
                         .labelsHidden()
                         .padding(.leading, -5)
                     }
-                    .padding(.vertical)
+                    .padding(.vertical, 6)
                     .tag(OverrideImageSizeOption.overrideImageSizePercent)
                     .disabled(settings.store.overrideImageSize != OverrideImageSizeOption.overrideImageSizePercent)
                     

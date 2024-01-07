@@ -14,6 +14,16 @@ struct ConfigurationCommands: Commands {
     
     var body: some Commands {
         CommandMenu("Configurations") {
+            Button("Update Active Configuration") {
+                do {
+                    try configurationsModel.saveConfiguration(configurationName: configurationsModel.activeConfiguration, replace: true)
+                } catch {
+                    print("Failed to update configuration from Menu Bar Command")
+                }
+            }
+            .disabled(configurationsModel.activeConfiguration == ConfigurationsModel.defaultConfigurationName)
+            .keyboardShortcut("s", modifiers: .command)
+            
             Button("Open Configurations Panel") {
                 sidebarSelection = .configurations
             }

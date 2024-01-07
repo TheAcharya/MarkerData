@@ -37,7 +37,7 @@ struct ContentView: View {
                     
                     Label("Configurations", systemImage: "briefcase")
                         .if({
-                            return configurationsModel.checkForUnsavedChanges()
+                            return configurationsModel.unsavedChanges
                         }()) { view in
                             view
                                 .badge(
@@ -76,6 +76,10 @@ struct ContentView: View {
                 }
             }
             .frame(width: WindowSize.detailWidth)
+        }
+        // Check for unsaved configuration changes every time a new view is selected
+        .onChange(of: sidebarSelection) { _ in
+            self.configurationsModel.checkForUnsavedChanges()
         }
     }
 }

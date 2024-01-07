@@ -22,6 +22,8 @@ class ConfigurationsModel: ObservableObject {
     /// Currently loaded configuration
     @AppStorage("selectedConfiguration") var activeConfiguration = "Default"
     
+    @Published var unsavedChanges = false
+    
     private static let logger = Logger()
     
     static let defaultConfigurationName = "Default"
@@ -54,6 +56,8 @@ class ConfigurationsModel: ObservableObject {
             // TODO: handle load error
             //            throw ConfigurationInitializationError.failedToReadDirectory
         }
+        
+        self.checkForUnsavedChanges()
     }
     
     /// Saves a new configuration under the given name
@@ -61,6 +65,11 @@ class ConfigurationsModel: ObservableObject {
     /// - Parameters:
     ///     - configurationName: Name of the configuration
     func saveConfiguration(configurationName: String, replace: Bool = false) throws {
+        // Check if name is default
+        if configurationName == Self.defaultConfigurationName {
+            throw ConfigurationSaveError.nameAlreadyExists
+        }
+        
         // Limit name length
         if configurationName.count > Self.configurationNameCharacterLimit {
             throw ConfigurationSaveError.nameTooLong
@@ -97,6 +106,8 @@ class ConfigurationsModel: ObservableObject {
         
         // Set active configuration to new configuration
         self.activeConfiguration = configurationName
+        
+        self.checkForUnsavedChanges()
     }
     
     /// Loads a configuration from the configurations folder
@@ -156,6 +167,8 @@ class ConfigurationsModel: ObservableObject {
         
         // Set active configuration
         self.activeConfiguration = configurationName
+        
+        self.checkForUnsavedChanges()
     }
     
     private func getUserDefaultsDictionary() throws -> Dictionary<String, Any> {
@@ -221,6 +234,8 @@ class ConfigurationsModel: ObservableObject {
         if self.activeConfiguration == name && !self.configurations.isEmpty {
             self.activeConfiguration = self.configurations.first!.name
         }
+        
+        self.checkForUnsavedChanges()
     }
     
     /// Loads a configuration from the configurations folder into a ``Dictionary`` object
@@ -264,16 +279,15 @@ class ConfigurationsModel: ObservableObject {
     }
     
     /// Returns true if there are unsaved changes to active configuration
-    func checkForUnsavedChanges() -> Bool {
+    func checkForUnsavedChanges() {
         do {
             let onDisk = try loadConfigurationDictionary(configurationName: self.activeConfiguration)
 
             let current = try getUserDefaultsDictionary()
             
-            return !NSDictionary(dictionary: current).isEqual(to: onDisk)
+            self.unsavedChanges = !NSDictionary(dictionary: current).isEqual(to: onDisk)
         } catch {
             Self.logger.error("Failed to compare configurations for unsaved changes")
-            return false
         }
     }
     

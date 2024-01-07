@@ -21,9 +21,6 @@ struct ConfigurationSettingsView: View {
     /// Add or rename configuration text field value
     @State var configurationNameText = ""
     
-    /// Whether the current configuration has unsaved changes
-    @State var unsavedChanges = false
-    
     // Alerts
     @State var showAddUnsavedChangesDialog = false
     @State var showSwitchUnsavedChangesDialog = false
@@ -59,7 +56,7 @@ struct ConfigurationSettingsView: View {
         .overlayHelpButton(url: Links.configurationSettingsURL)
         .navigationTitle("Configuration Settings")
         .onAppear {
-            unsavedChanges = configurationsModel.checkForUnsavedChanges()
+            configurationsModel.checkForUnsavedChanges()
         }
         .alert("Couldn't create configuration", isPresented: $showConfigurationAddAlert) {
             Button("OK") { }
@@ -116,7 +113,7 @@ struct ConfigurationSettingsView: View {
         List(self.configurationsModel.configurations, selection: $selectedConfiguration) { configuration in
             let isActive = configurationsModel.activeConfiguration == configuration.name
             
-            let unsavedChangesText = if isActive && unsavedChanges {
+            let unsavedChangesText = if isActive && configurationsModel.unsavedChanges {
                 if isDefaultConfigurationActive {
                     "(unsaved changes, Default configuration cannot be modified)"
                 } else {
@@ -127,7 +124,7 @@ struct ConfigurationSettingsView: View {
             }
             
             let stateIndicatorColor = if isActive {
-                if unsavedChanges {
+                if configurationsModel.unsavedChanges {
                     Color.orange
                 } else {
                     Color.green
@@ -160,7 +157,7 @@ struct ConfigurationSettingsView: View {
             // Add configuration Button
             Button {
                 withAnimation {
-                    if unsavedChanges && configurationsModel.activeConfiguration != ConfigurationsModel.defaultConfigurationName {
+                    if configurationsModel.unsavedChanges && configurationsModel.activeConfiguration != ConfigurationsModel.defaultConfigurationName {
                         showAddUnsavedChangesDialog = true
                     } else {
                         showAddConfigurationSheet = true
@@ -195,7 +192,7 @@ struct ConfigurationSettingsView: View {
             } label: {
                 Label("Update Active Configuration", systemImage: "gearshape.arrow.triangle.2.circlepath")
             }
-            .disabled(!unsavedChanges || isDefaultConfigurationActive)
+            .disabled(!configurationsModel.unsavedChanges || isDefaultConfigurationActive)
         }
         .padding(.vertical)
         .sheet(isPresented: $showAddConfigurationSheet) {
@@ -239,7 +236,7 @@ struct ConfigurationSettingsView: View {
                 } label: {
                     Label("Discard Changes", systemImage: "circle.slash")
                 }
-                .disabled(!unsavedChanges)
+                .disabled(!configurationsModel.unsavedChanges)
             }
             
             // If not default configuration
@@ -251,7 +248,7 @@ struct ConfigurationSettingsView: View {
                     } label: {
                         Label("Update", systemImage: "gearshape.arrow.triangle.2.circlepath")
                     }
-                    .disabled(!unsavedChanges)
+                    .disabled(!configurationsModel.unsavedChanges)
                 }
                 
                 // Rename configuration
@@ -341,7 +338,6 @@ struct ConfigurationSettingsView: View {
     
         configurationNameText = ""
         showAddConfigurationSheet = false
-        unsavedChanges = false
     }
     
     private func removeConfiguration(_ name: String) {
@@ -352,18 +348,16 @@ struct ConfigurationSettingsView: View {
         } catch {
             showConfigurationDelteAlert = true
         }
-        
-        unsavedChanges = configurationsModel.checkForUnsavedChanges()
     }
     
     private func loadConfiguration(_ name: String, ignoreChanges: Bool = false) {
-        if unsavedChanges && !ignoreChanges {
+        if configurationsModel.unsavedChanges && !ignoreChanges {
             showSwitchUnsavedChangesDialog = true
         } else {
             do {
                 try withAnimation {
                     try configurationsModel.loadConfiguration(configurationName: name, settings: settings)
-                    unsavedChanges = false
+                    configurationsModel.unsavedChanges = false
                 }
             } catch {
                 showConfigurationLoadAlert = true
@@ -375,7 +369,6 @@ struct ConfigurationSettingsView: View {
         do {
             try withAnimation {
                 try configurationsModel.saveConfiguration(configurationName: name, replace: true)
-                unsavedChanges = false
             }
         } catch {
             showConfigurationUpdateAlert = true
