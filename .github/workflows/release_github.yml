@@ -1,0 +1,105 @@
+name: release_github
+
+on:
+  workflow_dispatch:
+    inputs:
+      release:
+        description: 'Release after build'
+        required: true
+        default: 'no'
+      
+jobs:
+  install:
+    runs-on: macos-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Install Homebrew
+      run: |
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        
+    - name: Install Node Package Manager
+      run: |
+        brew install node
+
+    - name: Install node-appdmg
+      run: npm install -g appdmg
+      
+    - name: Create Distribution Directory
+      run: mkdir -p dist/dmg-builds
+
+    - name: Copy Local Distribution 
+      run: |
+        mkdir -p dist/dmg-builds
+        cp -R ./Distribution/dmg-builds/. ./dist/dmg-builds
+
+    - name: Verify Copied Files
+      run: |
+        echo "Checking copied files..."
+        ls -l ./dist/dmg-builds
+        ls -l ./dist/dmg-builds/latest-build
+        
+    - name: Create Distribution Directory
+      run: mkdir -p dist/dmg-builds/dmg-output
+      
+    - name: Verify Copied Files
+      run: |
+        echo "Checking copied files..."
+        ls -l ./dist/dmg-builds/dmg-output
+
+    - name: Prepare Directories
+      run: |
+        PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+        VER="1.0.0.dmg"
+        mkdir -p "$PARENT/dist/dmg-builds"
+        mkdir -p "$PARENT/dist/dmg-builds/latest-build"
+        mkdir -p "$PARENT/dist/dmg-builds/dmg-output"
+
+        cp -R ./Distribution/dmg-builds/build-marker-data-dmg.json "$PARENT/dist/dmg-builds/"
+        cp -R ./Distribution/dmg-builds/latest-build/Marker\ Data.app "$PARENT/dist/dmg-builds/latest-build/"
+        cp -R ./Distribution/dmg-builds/latest-build/Uninstall\ Marker\ Data.app "$PARENT/dist/dmg-builds/latest-build/"
+        cp -R ./Distribution/dmg-builds/dmg-background.png "$PARENT/dist/dmg-builds/"
+        cp -R ./Distribution/dmg-builds/marker-data-dmg-icon.icns "$PARENT/dist/dmg-builds/"
+
+
+        
+    - name: Build DMG
+      run: |
+        PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+        VER="1.0.0.dmg"
+        JSON="$PARENT/dist/dmg-builds/build-marker-data-dmg.json"
+        OUTPUT="$PARENT/dist/dmg-builds/dmg-output/Marker Data-"
+        
+        appdmg "$JSON" "$OUTPUT""$VER"
+        
+
+    - name: Verify DMG
+      run: |
+        echo "Checking copied files..."
+        ls -l ./dist/dmg-builds/dmg-output
+    
+    - name: Create Environment Files
+      run: |
+        PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+        VER="1.0.0.dmg"
+        echo "PARENT=$PARENT" >> $GITHUB_ENV
+        echo "VER=$VER" >> $GITHUB_ENV
+
+    - name: Save DMG as Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: marker-data-dmg
+        path: ${{ env.PARENT }}/dist/dmg-builds/dmg-output/Marker Data_${{ env.VER }}
+    
+    - name: Release on Github
+      if: ${{ github.event.inputs.release == 'yes' }}
+      uses: ncipollo/release-action@v1
+      with:
+        artifacts: "${{ env.PARENT }}/dist/dmg-builds/dmg-output/Marker Data_${{ env.VER }}"
+        token: ${{ secrets.GITHUB_TOKEN }}
+        tag: ${{ env.VER }}
+        draft: true
+
+

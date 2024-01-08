@@ -9,11 +9,7 @@
   },
   "contents": [
     { "x": 375, "y": 230, "type": "link", "path": "/Applications" },
-    { "x": 145, "y": 230, "type": "file", "path": "../dmg-builds/latest-build/Marker Data.app" },
-    { "x": 605, "y": 230, "type": "file", "path": "../dmg-builds/latest-build/Uninstall Marker Data.app" }
-  ],
-  "code-sign": {
-    "signing-identity" : "The Acharya",
-    "identifier" : "com.TheAcharya.Marker-Data"
-  }
+    { "x": 145, "y": 230, "type": "file", "path": "latest-build/Marker Data.app" },
+    { "x": 605, "y": 230, "type": "file", "path": "latest-build/Uninstall Marker Data.app" }
+  ]
 }

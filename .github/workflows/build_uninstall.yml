@@ -1,0 +1,61 @@
+name: Build Uninstaller Marker Data
+
+on:
+  workflow_dispatch:
+    inputs:
+      release:
+        description: 'Release after build'
+        required: true
+        default: 'no'
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Create Distribution directory
+      run: mkdir -p dist/dmg-builds
+
+    - name: Copy Local Distribution 
+      run: |
+        mkdir -p dist/dmg-builds
+        cp -R ./Distribution/dmg-builds/. ./dist/dmg-builds
+
+    - name: Verify Copied Files
+      run: |
+        echo "Checking copied files..."
+        ls -l ./dist/dmg-builds
+        ls -l ./dist/dmg-builds/latest-build
+        ls -l ./dist/dmg-builds/uninstaller/include
+
+    - name: Prepare Directories
+      run: |
+        PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+        mkdir -p "$PARENT/dist/dmg-builds/latest-build"
+        mkdir -p "$PARENT/dist/dmg-builds/uninstaller/include"
+
+    - name: Copy Local Resources
+      run: |
+        PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+        cp -R ./Distribution/dmg-builds/uninstaller/include/applet.icns "$PARENT/dist/dmg-builds/uninstaller/include/"
+        cp -R ./Distribution/dmg-builds/uninstaller/include/Uninstall\ Marker\ Data.scpt "$PARENT/dist/dmg-builds/uninstaller/include/"
+
+    - name: Build Uninstaller
+      run: |
+        PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+        APP="$PARENT/dist/dmg-builds/latest-build/Uninstall Marker Data.app"
+        SCRIPT="$PARENT/dist/dmg-builds/uninstaller/include/Uninstall Marker Data.scpt"
+        ICON="$PARENT/dist/dmg-builds/uninstaller/include/applet.icns"
+
+        rm -rf "$APP"
+        osacompile -x -o "$APP" "$SCRIPT"
+        cp "$ICON" "$APP"/Contents/Resources/applet.icns
+        xattr -cr "$APP"
+
+    - name: Verify Uninstaller
+      run: |
+        echo "Checking copied files..."
+        ls -l ./dist/dmg-builds/latest-build
