@@ -20,7 +20,7 @@ jobs:
       run: |
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
         
-    - name: Install Node Package Manager
+    - name: Install NPM
       run: |
         brew install node
 
@@ -40,6 +40,7 @@ jobs:
         echo "Checking copied files..."
         ls -l ./dist/dmg-builds
         ls -l ./dist/dmg-builds/latest-build
+        ls -l ./dist/dmg-builds/uninstaller/include
         
     - name: Create Distribution Directory
       run: mkdir -p dist/dmg-builds/dmg-output
@@ -49,32 +50,47 @@ jobs:
         echo "Checking copied files..."
         ls -l ./dist/dmg-builds/dmg-output
 
-    - name: Prepare Directories
+    - name: Prepare VM Directories
       run: |
         PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
-        VER="1.0.0.dmg"
         mkdir -p "$PARENT/dist/dmg-builds"
         mkdir -p "$PARENT/dist/dmg-builds/latest-build"
         mkdir -p "$PARENT/dist/dmg-builds/dmg-output"
-
+        mkdir -p "$PARENT/dist/dmg-builds/uninstaller/include"
+        
+        cp -R ./Distribution/dmg-builds/uninstaller/include/applet.icns "$PARENT/dist/dmg-builds/uninstaller/include/"
+        cp -R ./Distribution/dmg-builds/uninstaller/include/Uninstall\ Marker\ Data.scpt "$PARENT/dist/dmg-builds/uninstaller/include/"
         cp -R ./Distribution/dmg-builds/build-marker-data-dmg.json "$PARENT/dist/dmg-builds/"
         cp -R ./Distribution/dmg-builds/latest-build/Marker\ Data.app "$PARENT/dist/dmg-builds/latest-build/"
-        cp -R ./Distribution/dmg-builds/latest-build/Uninstall\ Marker\ Data.app "$PARENT/dist/dmg-builds/latest-build/"
         cp -R ./Distribution/dmg-builds/dmg-background.png "$PARENT/dist/dmg-builds/"
         cp -R ./Distribution/dmg-builds/marker-data-dmg-icon.icns "$PARENT/dist/dmg-builds/"
+        
+    - name: Build Uninstaller
+      run: |
+        PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+        APP="$PARENT/dist/dmg-builds/latest-build/Uninstall Marker Data.app"
+        SCRIPT="$PARENT/dist/dmg-builds/uninstaller/include/Uninstall Marker Data.scpt"
+        ICON="$PARENT/dist/dmg-builds/uninstaller/include/applet.icns"
 
+        rm -rf "$APP"
+        osacompile -x -o "$APP" "$SCRIPT"
+        cp "$ICON" "$APP"/Contents/Resources/applet.icns
+        xattr -cr "$APP"
 
+    - name: Verify Uninstaller
+      run: |
+        echo "Checking copied files..."
+        ls -l ./dist/dmg-builds/latest-build
         
     - name: Build DMG
       run: |
         PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
-        VER="1.0.0.dmg"
+        VER=$(cat ./Distribution/version.txt)
         JSON="$PARENT/dist/dmg-builds/build-marker-data-dmg.json"
-        OUTPUT="$PARENT/dist/dmg-builds/dmg-output/Marker Data-"
+        OUTPUT="$PARENT/dist/dmg-builds/dmg-output/Marker Data_"
         
-        appdmg "$JSON" "$OUTPUT""$VER"
+        appdmg "$JSON" "$OUTPUT""$VER.dmg"
         
-
     - name: Verify DMG
       run: |
         echo "Checking copied files..."
@@ -83,7 +99,7 @@ jobs:
     - name: Create Environment Files
       run: |
         PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
-        VER="1.0.0.dmg"
+        VER=$(cat ./Distribution/version.txt)
         echo "PARENT=$PARENT" >> $GITHUB_ENV
         echo "VER=$VER" >> $GITHUB_ENV
 
@@ -91,15 +107,13 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: marker-data-dmg
-        path: ${{ env.PARENT }}/dist/dmg-builds/dmg-output/Marker Data_${{ env.VER }}
+        path: ${{ env.PARENT }}/dist/dmg-builds/dmg-output/Marker Data_${{ env.VER }}.dmg
     
-    - name: Release on Github
+    - name: Release Github
       if: ${{ github.event.inputs.release == 'yes' }}
       uses: ncipollo/release-action@v1
       with:
-        artifacts: "${{ env.PARENT }}/dist/dmg-builds/dmg-output/Marker Data_${{ env.VER }}"
+        artifacts: "${{ env.PARENT }}/dist/dmg-builds/dmg-output/Marker Data_${{ env.VER }}.dmg"
         token: ${{ secrets.GITHUB_TOKEN }}
         tag: ${{ env.VER }}
         draft: true
-
-
