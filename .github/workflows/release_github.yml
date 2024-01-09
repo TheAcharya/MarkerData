@@ -81,27 +81,48 @@ jobs:
       run: |
         echo "Checking copied files..."
         ls -l ./dist/dmg-builds/latest-build
-        
-    - name: Build DMG
+    
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.11
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install xmltodict
+
+    - name: Extract Version from XML
+      id: extract_version
+      run: |
+        VERSION=$(python - <<EOF
+        import xmltodict
+        with open('./appcast.xml') as f:
+          rss_dict = xmltodict.parse(f.read())
+          version = rss_dict['rss']['channel']['item'][0]['sparkle:shortVersionString']
+          print(version)
+        EOF
+        )
+
+        echo "VER=v$VERSION" >> $GITHUB_ENV
+
+    - name: Create Environment Files
       run: |
         PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
-        VER=$(cat ./Distribution/version.txt)
-        JSON="$PARENT/dist/dmg-builds/build-marker-data-dmg.json"
-        OUTPUT="$PARENT/dist/dmg-builds/dmg-output/Marker Data_"
+        echo "PARENT=$PARENT" >> $GITHUB_ENV
+
+    - name: Build DMG
+      run: |
+        JSON="${{ env.PARENT }}/dist/dmg-builds/build-marker-data-dmg.json"
+        OUTPUT="${{ env.PARENT }}/dist/dmg-builds/dmg-output/Marker Data_"
         
-        appdmg "$JSON" "$OUTPUT""$VER.dmg"
+        appdmg "$JSON" "$OUTPUT""${{ env.VER }}.dmg"
         
     - name: Verify DMG
       run: |
         echo "Checking copied files..."
         ls -l ./dist/dmg-builds/dmg-output
-    
-    - name: Create Environment Files
-      run: |
-        PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
-        VER=$(cat ./Distribution/version.txt)
-        echo "PARENT=$PARENT" >> $GITHUB_ENV
-        echo "VER=$VER" >> $GITHUB_ENV
+        
 
     - name: Save DMG as Artifact
       uses: actions/upload-artifact@v4
@@ -115,5 +136,6 @@ jobs:
       with:
         artifacts: "${{ env.PARENT }}/dist/dmg-builds/dmg-output/Marker Data_${{ env.VER }}.dmg"
         token: ${{ secrets.GITHUB_TOKEN }}
+        name: Marker Data ${{ env.VER }}
         tag: ${{ env.VER }}
         draft: true
