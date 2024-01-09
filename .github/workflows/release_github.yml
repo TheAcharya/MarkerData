@@ -114,7 +114,7 @@ jobs:
     - name: Build DMG
       run: |
         JSON="${{ env.PARENT }}/dist/dmg-builds/build-marker-data-dmg.json"
-        OUTPUT="${{ env.PARENT }}/dist/dmg-builds/dmg-output/Marker Data_"
+        OUTPUT="${{ env.PARENT }}/dist/dmg-builds/dmg-output/Marker-Data_"
         
         appdmg "$JSON" "$OUTPUT""${{ env.VER }}.dmg"
         
@@ -128,13 +128,13 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: marker-data-dmg
-        path: ${{ env.PARENT }}/dist/dmg-builds/dmg-output/Marker Data_${{ env.VER }}.dmg
+        path: ${{ env.PARENT }}/dist/dmg-builds/dmg-output/Marker-Data_${{ env.VER }}.dmg
     
     - name: Release Github
       if: ${{ github.event.inputs.release == 'yes' }}
       uses: ncipollo/release-action@v1
       with:
-        artifacts: "${{ env.PARENT }}/dist/dmg-builds/dmg-output/Marker Data_${{ env.VER }}.dmg"
+        artifacts: "${{ env.PARENT }}/dist/dmg-builds/dmg-output/Marker-Data_${{ env.VER }}.dmg"
         token: ${{ secrets.GITHUB_TOKEN }}
         name: Marker Data ${{ env.VER }}
         tag: ${{ env.VER }}
