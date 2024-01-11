@@ -68,61 +68,90 @@ jobs:
     - name: Build Uninstaller
       run: |
         PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
-        APP="$PARENT/dist/dmg-builds/latest-build/Uninstall Marker Data.app"
+        UAPP="$PARENT/dist/dmg-builds/latest-build/Uninstall Marker Data.app"
         SCRIPT="$PARENT/dist/dmg-builds/uninstaller/include/Uninstall Marker Data.scpt"
         ICON="$PARENT/dist/dmg-builds/uninstaller/include/applet.icns"
 
-        rm -rf "$APP"
-        osacompile -x -o "$APP" "$SCRIPT"
-        cp "$ICON" "$APP"/Contents/Resources/applet.icns
-        xattr -cr "$APP"
-
+        rm -rf "$UAPP"
+        osacompile -x -o "$UAPP" "$SCRIPT"
+        cp "$ICON" "$UAPP"/Contents/Resources/applet.icns
+        xattr -cr "$UAPP"
+        
     - name: Verify Uninstaller
       run: |
         echo "Checking copied files..."
         ls -l ./dist/dmg-builds/latest-build
-    
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.11
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install xmltodict
-
-    - name: Extract Version from XML
-      id: extract_version
-      run: |
-        VERSION=$(python - <<EOF
-        import xmltodict
-        with open('./appcast.xml') as f:
-          rss_dict = xmltodict.parse(f.read())
-          version = rss_dict['rss']['channel']['item'][0]['sparkle:shortVersionString']
-          print(version)
-        EOF
-        )
-
-        echo "VER=v$VERSION" >> $GITHUB_ENV
-
-    - name: Create Environment Files
+    - name: Codesign Uninstaller
+      env: 
+        APPLE_CERT_DATA: ${{ secrets.APPLE_CERT_DATA }}
+        APPLE_CERT_PASSWORD: ${{ secrets.APPLE_CERT_PASSWORD }}
+        KEYCHAIN_PASSWORD_U: ${{ secrets.KEYCHAIN_PASSWORD_U }}
+        APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
       run: |
         PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
-        echo "PARENT=$PARENT" >> $GITHUB_ENV
+        UAPP="$PARENT/dist/dmg-builds/latest-build/Uninstall Marker Data.app"
+        
+        echo $APPLE_CERT_DATA | base64 --decode > certificate.p12
+        security create-keychain -p $KEYCHAIN_PASSWORD_U build-u.keychain
+        security default-keychain -s build-u.keychain
+        security unlock-keychain -p $KEYCHAIN_PASSWORD_U build-u.keychain
+        security import certificate.p12 -k build-u.keychain -P $APPLE_CERT_PASSWORD -T /usr/bin/codesign
+        security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k $KEYCHAIN_PASSWORD_U build-u.keychain
+        /usr/bin/codesign --force -s $APPLE_TEAM_ID "$UAPP" -v
+        
+    - name: Verify Codesign Uninstaller
+      run: |
+        PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+        UAPP="$PARENT/dist/dmg-builds/latest-build/Uninstall Marker Data.app"
 
+        /usr/bin/codesign -dv --verbose=4 "$UAPP"
+        
+    - name: Codesign Marker Data
+      env: 
+        APPLE_CERT_DATA: ${{ secrets.APPLE_CERT_DATA }}
+        APPLE_CERT_PASSWORD: ${{ secrets.APPLE_CERT_PASSWORD }}
+        KEYCHAIN_PASSWORD_M: ${{ secrets.KEYCHAIN_PASSWORD_M }}
+        APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+      run: |
+        PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+        APP="$PARENT/dist/dmg-builds/latest-build/Marker Data.app"
+        
+        echo $APPLE_CERT_DATA | base64 --decode > certificate.p12
+        security create-keychain -p $KEYCHAIN_PASSWORD_M build-m.keychain
+        security default-keychain -s build-m.keychain
+        security unlock-keychain -p $KEYCHAIN_PASSWORD_M build-m.keychain
+        security import certificate.p12 -k build-m.keychain -P $APPLE_CERT_PASSWORD -T /usr/bin/codesign
+        security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k $KEYCHAIN_PASSWORD_M build-m.keychain
+        /usr/bin/codesign --force -s $APPLE_TEAM_ID "$APP" -v
+        
+    - name: Verify Codesign Marker Data
+      run: |
+        PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+        APP="$PARENT/dist/dmg-builds/latest-build/Marker Data.app"
+
+        /usr/bin/codesign -dv --verbose=4 "$APP"
+        
     - name: Build DMG
       run: |
-        JSON="${{ env.PARENT }}/dist/dmg-builds/build-marker-data-dmg.json"
-        OUTPUT="${{ env.PARENT }}/dist/dmg-builds/dmg-output/Marker-Data_"
+        PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+        VER=$(cat ./Distribution/version.txt)
+        JSON="$PARENT/dist/dmg-builds/build-marker-data-dmg.json"
+        OUTPUT="$PARENT/dist/dmg-builds/dmg-output/Marker-Data_"
         
-        appdmg "$JSON" "$OUTPUT""${{ env.VER }}.dmg"
+        appdmg "$JSON" "$OUTPUT""$VER.dmg"
         
     - name: Verify DMG
       run: |
         echo "Checking copied files..."
         ls -l ./dist/dmg-builds/dmg-output
-        
+    
+    - name: Create Environment Files
+      run: |
+        PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+        VER=$(cat ./Distribution/version.txt)
+        echo "PARENT=$PARENT" >> $GITHUB_ENV
+        echo "VER=$VER" >> $GITHUB_ENV
 
     - name: Save DMG as Artifact
       uses: actions/upload-artifact@v4
