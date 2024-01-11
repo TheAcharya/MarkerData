@@ -16,14 +16,6 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Install Homebrew
-      run: |
-        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-        
-    - name: Install NPM
-      run: |
-        brew install node
-
     - name: Install node-appdmg
       run: npm install -g appdmg
       
