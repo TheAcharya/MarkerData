@@ -123,7 +123,7 @@ jobs:
         security unlock-keychain -p $KEYCHAIN_PASSWORD_M build-m.keychain
         security import certificate.p12 -k build-m.keychain -P $APPLE_CERT_PASSWORD -T /usr/bin/codesign
         security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k $KEYCHAIN_PASSWORD_M build-m.keychain
-        /usr/bin/codesign --force -s $APPLE_TEAM_ID "$APP" -v
+        /usr/bin/codesign --force --deep -s $APPLE_TEAM_ID "$APP" -v
         
     - name: Verify Codesign Marker Data
       run: |
