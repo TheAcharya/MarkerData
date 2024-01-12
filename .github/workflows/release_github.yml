@@ -90,7 +90,28 @@ jobs:
         security unlock-keychain -p $KEYCHAIN_PASSWORD_U build-u.keychain
         security import certificate.p12 -k build-u.keychain -P $APPLE_CERT_PASSWORD -T /usr/bin/codesign
         security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k $KEYCHAIN_PASSWORD_U build-u.keychain
-        /usr/bin/codesign --force -s $APPLE_TEAM_ID "$UAPP" -v
+        /usr/bin/codesign --force -s $APPLE_TEAM_ID --options runtime "$UAPP" -v
+        
+    - name: Notarize Uninstaller
+      env:
+        APPLE_DEV_ID: ${{ secrets.APPLE_DEV_ID }}
+        APPLE_DEV_ID_PASSWORD: ${{ secrets.APPLE_DEV_ID_PASSWORD }}
+        APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+      run: |
+        PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+        UAPP="$PARENT/dist/dmg-builds/latest-build/Uninstall Marker Data.app"
+    
+        echo "Create keychain profile"
+        xcrun notarytool store-credentials "notarytool-profile" --apple-id $APPLE_DEV_ID --password $APPLE_DEV_ID_PASSWORD --team-id $APPLE_TEAM_ID
+        
+        echo "Creating temp notarization archive"
+        ditto -c -k --keepParent "$UAPP" "notarization-u.zip"
+        
+        echo "Notarize app"
+        xcrun notarytool submit "notarization-u.zip" --keychain-profile "notarytool-profile" --progress --wait
+        
+        echo "Attach staple"
+        xcrun stapler staple "$UAPP"
         
     - name: Verify Codesign Uninstaller
       run: |
@@ -115,7 +136,28 @@ jobs:
         security unlock-keychain -p $KEYCHAIN_PASSWORD_M build-m.keychain
         security import certificate.p12 -k build-m.keychain -P $APPLE_CERT_PASSWORD -T /usr/bin/codesign
         security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k $KEYCHAIN_PASSWORD_M build-m.keychain
-        /usr/bin/codesign --force -s $APPLE_TEAM_ID "$APP" -v
+        /usr/bin/codesign --force -s $APPLE_TEAM_ID --options runtime "$APP" -v
+        
+    - name: Notarize Marker Data
+      env:
+        APPLE_DEV_ID: ${{ secrets.APPLE_DEV_ID }}
+        APPLE_DEV_ID_PASSWORD: ${{ secrets.APPLE_DEV_ID_PASSWORD }}
+        APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+      run: |
+        PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+        APP="$PARENT/dist/dmg-builds/latest-build/Marker Data.app"
+    
+        echo "Create keychain profile"
+        xcrun notarytool store-credentials "notarytool-profile" --apple-id $APPLE_DEV_ID --password $APPLE_DEV_ID_PASSWORD --team-id $APPLE_TEAM_ID
+        
+        echo "Creating temp notarization archive"
+        ditto -c -k --keepParent "$APP" "notarization-m.zip"
+        
+        echo "Notarize app"
+        xcrun notarytool submit "notarization-m.zip" --keychain-profile "notarytool-profile" --progress --wait
+        
+        echo "Attach staple"
+        xcrun stapler staple "$APP"
         
     - name: Verify Codesign Marker Data
       run: |
@@ -137,6 +179,52 @@ jobs:
       run: |
         echo "Checking copied files..."
         ls -l ./dist/dmg-builds/dmg-output
+        
+    - name: Codesign DMG
+      env: 
+        APPLE_CERT_DATA: ${{ secrets.APPLE_CERT_DATA }}
+        APPLE_CERT_PASSWORD: ${{ secrets.APPLE_CERT_PASSWORD }}
+        KEYCHAIN_PASSWORD_D: ${{ secrets.KEYCHAIN_PASSWORD_D }}
+        APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+      run: |
+        PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+        VER=$(cat ./Distribution/version.txt)
+        DMG="$PARENT/dist/dmg-builds/dmg-output/Marker-Data_"
+        
+        echo $APPLE_CERT_DATA | base64 --decode > certificate.p12
+        security create-keychain -p $KEYCHAIN_PASSWORD_D build-d.keychain
+        security default-keychain -s build-d.keychain
+        security unlock-keychain -p $KEYCHAIN_PASSWORD_D build-d.keychain
+        security import certificate.p12 -k build-d.keychain -P $APPLE_CERT_PASSWORD -T /usr/bin/codesign
+        security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k $KEYCHAIN_PASSWORD_D build-d.keychain
+        /usr/bin/codesign --force -s $APPLE_TEAM_ID --options runtime "$DMG""$VER.dmg" -v
+        
+    - name: Notarize DMG
+      env:
+        APPLE_DEV_ID: ${{ secrets.APPLE_DEV_ID }}
+        APPLE_DEV_ID_PASSWORD: ${{ secrets.APPLE_DEV_ID_PASSWORD }}
+        APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+      run: |
+        PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+        VER=$(cat ./Distribution/version.txt)
+        DMG="$PARENT/dist/dmg-builds/dmg-output/Marker-Data_"
+    
+        echo "Create keychain profile"
+        xcrun notarytool store-credentials "notarytool-profile" --apple-id $APPLE_DEV_ID --password $APPLE_DEV_ID_PASSWORD --team-id $APPLE_TEAM_ID
+        
+        echo "Notarize DMG"
+        xcrun notarytool submit "$DMG""$VER.dmg" --keychain-profile "notarytool-profile" --progress --wait
+        
+        echo "Attach staple"
+        xcrun stapler staple "$DMG""$VER.dmg"
+        
+    - name: Verify Codesign DMG
+      run: |
+        PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+        VER=$(cat ./Distribution/version.txt)
+        DMG="$PARENT/dist/dmg-builds/dmg-output/Marker-Data_"
+    
+        /usr/bin/codesign -dv --verbose=4 "$DMG""$VER.dmg"
     
     - name: Create Environment Files
       run: |
