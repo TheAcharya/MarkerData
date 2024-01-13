@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>BuildMachineOSBuild</key>
-	<string>22F66</string>
+	<string>23C71</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -37,19 +37,19 @@
 	<key>DTPlatformName</key>
 	<string>macosx</string>
 	<key>DTPlatformVersion</key>
-	<string>13.3</string>
+	<string>14.0</string>
 	<key>DTSDKBuild</key>
-	<string>22E245</string>
+	<string>23A334</string>
 	<key>DTSDKName</key>
-	<string>macosx13.3</string>
+	<string>macosx14.0</string>
 	<key>DTXcode</key>
-	<string>1431</string>
+	<string>1501</string>
 	<key>DTXcodeBuild</key>
-	<string>14E300c</string>
+	<string>15A507</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.utilities</string>
 	<key>LSMinimumSystemVersion</key>
-	<string>12.0</string>
+	<string>13.0</string>
 	<key>NSAccentColorName</key>
 	<string>AccentColor</string>
 	<key>NSDesktopFolderUsageDescription</key>
