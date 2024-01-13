@@ -197,7 +197,7 @@ jobs:
         security unlock-keychain -p $KEYCHAIN_PASSWORD_D build-d.keychain
         security import certificate.p12 -k build-d.keychain -P $APPLE_CERT_PASSWORD -T /usr/bin/codesign
         security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k $KEYCHAIN_PASSWORD_D build-d.keychain
-        /usr/bin/codesign --force -s $APPLE_TEAM_ID --options runtime "$DMG""$VER.dmg" -v
+        /usr/bin/codesign --force -s $APPLE_TEAM_ID --identifier "Marker Data Installer" --options runtime "$DMG""$VER.dmg" -v
         
     - name: Notarize DMG
       env:
