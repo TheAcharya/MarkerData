@@ -11,6 +11,7 @@
 		4100D5E42AD1616D0081F0EC /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4100D5E32AD1616D0081F0EC /* ColorExtension.swift */; };
 		4100D5E72AD19C980081F0EC /* FilePicker in Frameworks */ = {isa = PBXBuildFile; productRef = 4100D5E62AD19C980081F0EC /* FilePicker */; };
 		4100D5EC2AD1A1F80081F0EC /* UTTypeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4100D5EB2AD1A1F80081F0EC /* UTTypeExtension.swift */; };
+		410E3B812B4B0FF8005280FD /* LogManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 410E3B802B4B0FF8005280FD /* LogManager.swift */; };
 		414262BB2AD2E1AC00FC6CFC /* URLExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414262BA2AD2E1AC00FC6CFC /* URLExtension.swift */; };
 		414262BD2AD2E24A00FC6CFC /* BundleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414262BC2AD2E24A00FC6CFC /* BundleExtension.swift */; };
 		414262C02AD5CE3200FC6CFC /* ConfigurationErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414262BF2AD5CE3200FC6CFC /* ConfigurationErrors.swift */; };
@@ -95,6 +96,7 @@
 		4100D5DD2AD052010081F0EC /* OverlaySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlaySettingsView.swift; sourceTree = "<group>"; };
 		4100D5E32AD1616D0081F0EC /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
 		4100D5EB2AD1A1F80081F0EC /* UTTypeExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UTTypeExtension.swift; sourceTree = "<group>"; };
+		410E3B802B4B0FF8005280FD /* LogManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogManager.swift; sourceTree = "<group>"; };
 		414262BA2AD2E1AC00FC6CFC /* URLExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLExtension.swift; sourceTree = "<group>"; };
 		414262BC2AD2E24A00FC6CFC /* BundleExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleExtension.swift; sourceTree = "<group>"; };
 		414262BF2AD5CE3200FC6CFC /* ConfigurationErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationErrors.swift; sourceTree = "<group>"; };
@@ -388,6 +390,7 @@
 				41F88AE12B0C8360004A3B58 /* Shell */,
 				4100D5E22AD161570081F0EC /* Extensions */,
 				4741202D2A3EFC42005890FE /* Miscellaneous Utilities.swift */,
+				410E3B802B4B0FF8005280FD /* LogManager.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -593,6 +596,7 @@
 				41F88AF82B0FDCF7004A3B58 /* ProfileCredentialModel.swift in Sources */,
 				41F88ADC2B029D4A004A3B58 /* ColorPickerForm.swift in Sources */,
 				474595582A40254E00EF100D /* ColorPickerOpacitySliderForm.swift in Sources */,
+				410E3B812B4B0FF8005280FD /* LogManager.swift in Sources */,
 				41F88AE82B0E9176004A3B58 /* DatabaseProfileModel.swift in Sources */,
 				47411FDA2A3EA121005890FE /* HelpButton.swift in Sources */,
 				9B4D90DC2A0BB07500FE7603 /* ConfigurationSettingsView.swift in Sources */,
@@ -761,7 +765,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.TheAcharya.Marker-Data";
+				PRODUCT_BUNDLE_IDENTIFIER = co.theacharya.MarkerData;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -803,7 +807,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.TheAcharya.Marker-Data";
+				PRODUCT_BUNDLE_IDENTIFIER = co.theacharya.MarkerData;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;

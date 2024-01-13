@@ -8,7 +8,7 @@
 import Foundation
 import MarkersExtractor
 
-/// Holds both extract profile (``ExportProfileFormat``) and database profile
+/// Holds both extract profile and database profile
 ///
 /// Selected profile is saved to application support
 struct UnifiedExportProfile: Codable, Hashable, Identifiable {

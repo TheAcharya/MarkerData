@@ -7,7 +7,7 @@
 
 import Foundation
 import SwiftUI
-import os
+import OSLog
 
 /// Holds and modifies configurations
 ///
@@ -24,7 +24,7 @@ class ConfigurationsModel: ObservableObject {
     
     @Published var unsavedChanges = false
     
-    private static let logger = Logger()
+    private static let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "ConfigurationsModel")
     
     static let defaultConfigurationName = "Default"
     static let defaultConfigurationFileName = "DefaultConfiguration"

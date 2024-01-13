@@ -28,7 +28,7 @@ class ExtractionModel: ObservableObject, DropDelegate {
     let errorViewModel: ErrorViewModel
     let settings: SettingsContainer
     
-    static let logger = Logger()
+    static let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "ExtractionModel")
 
     init(settings: SettingsContainer, databaseManager: DatabaseManager) {
         self.errorViewModel = ErrorViewModel()
@@ -145,6 +145,9 @@ class ExtractionModel: ObservableObject, DropDelegate {
             guard let settings = try? self.settings.store.markersExtractorSettings(fcpxmlFileUrl: url) else {
                 throw ExtractError.settingsReadError
             }
+            
+//            let markersExtractorLogger = Logger(subsystem: "co.TheAcharya.MarkersExtractor", category: "extract")
+//            let markersExtractorLogger = Logger(label: "MarkersExtractor")
             
             let extractor = MarkersExtractor(settings)
             

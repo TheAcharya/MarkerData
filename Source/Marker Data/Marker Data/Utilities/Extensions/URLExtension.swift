@@ -39,6 +39,12 @@ extension URL {
             .appendingPathComponent("UnifiedExportProfile.json", conformingTo: .json)
     }
     
+    /// Path to ~/Library/Preferences/Marker Data/Logs
+    public static var logsFolder: URL {
+        Self.markerDataLibraryFolder
+            .appendingPathComponent("Logs", conformingTo: .folder)
+    }
+    
     /// Path to ~/Library/Preferences/com.TheAcharya.Marker-Data.plist
     public static var preferencesPlistFile: URL {
         Self.libraryDirectory

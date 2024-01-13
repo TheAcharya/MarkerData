@@ -2,10 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>com.apple.proapps.MediaAssetProtocol</key>
-	<dict/>
 	<key>NSUserSelectedFileURLsReadWrite</key>
 	<string>Please allow access to so we can read the folder that contains the .fcpxml(d) file and folder, and also the output folder.</string>
+	<key>com.apple.proapps.MediaAssetProtocol</key>
+	<dict/>
 	<key>com.apple.security.temporary-exception.files.home-relative-path.read-write</key>
 	<array>
 		<string>/</string>

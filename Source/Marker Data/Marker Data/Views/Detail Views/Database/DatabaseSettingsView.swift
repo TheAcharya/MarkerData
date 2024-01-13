@@ -122,9 +122,7 @@ struct DatabaseSettingsView: View {
     var linksView: some View {
         HStack {
             Button() {
-                NSWorkspace.shared.open(
-                    URL(fileURLWithPath: URL.databaseFolder.path().removingPercentEncoding ?? "")
-                )
+                NSWorkspace.shared.open(URL.databaseFolder)
             } label: {
                 Label("Open Database Folder in Finder", systemImage: "folder")
             }

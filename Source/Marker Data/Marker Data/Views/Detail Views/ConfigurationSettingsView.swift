@@ -210,9 +210,7 @@ struct ConfigurationSettingsView: View {
     /// Opens the configurations directory in Finder
     private var showConfigurationsFolder: some View {
         Button("Open Configuration Folder in Finder") {
-            NSWorkspace.shared.open(
-                URL(fileURLWithPath: URL.configurationsFolder.path().removingPercentEncoding ?? "")
-            )
+            NSWorkspace.shared.open(URL.configurationsFolder)
         }
         .buttonStyle(.link)
     }

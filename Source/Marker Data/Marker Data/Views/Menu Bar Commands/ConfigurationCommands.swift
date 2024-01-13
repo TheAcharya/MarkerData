@@ -29,9 +29,7 @@ struct ConfigurationCommands: Commands {
             }
             
             Button("Open Configuration Folder in Finder") {
-                NSWorkspace.shared.open(
-                    URL(fileURLWithPath: URL.configurationsFolder.path().removingPercentEncoding ?? "")
-                )
+                NSWorkspace.shared.open(URL.configurationsFolder)
             }
             
             Divider()

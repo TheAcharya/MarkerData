@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 import MarkersExtractor
-import os
+import OSLog
 
 /// Holds and manages database profiles
 @MainActor
@@ -47,7 +47,7 @@ class DatabaseManager: ObservableObject {
         }
     }
     
-    static let logger = Logger()
+    static let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "DatabaseManager")
     
     init() {
         self.createConfigurationsDirectory()

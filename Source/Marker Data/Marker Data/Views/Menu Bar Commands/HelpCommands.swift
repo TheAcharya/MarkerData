@@ -29,6 +29,7 @@ struct HelpCommands: Commands {
             
             // Open Console
             Button("Debug") {
+                // Open Console.app
                 guard let url = NSWorkspace.shared.urlForApplication(withBundleIdentifier: "com.apple.Console") else { return }
 
                 let path = "/bin"
@@ -37,6 +38,15 @@ struct HelpCommands: Commands {
                 NSWorkspace.shared.openApplication(at: url,
                                                    configuration: configuration,
                                                    completionHandler: nil)
+            }
+            
+            Button("Export Logs") {
+                Task {
+                    await LogManager.export()
+                    
+                    // Open log folder in Finder
+                    NSWorkspace.shared.open(URL.logsFolder)
+                }
             }
         }
     }

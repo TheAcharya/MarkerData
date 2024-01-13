@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import os
+import OSLog
 
 /// Holds the list of subprocesses and calculates the total progress
 class ProgressViewModel: ObservableObject {
@@ -28,7 +28,7 @@ class ProgressViewModel: ObservableObject {
     @Published var showAlert: Bool = false
     @Published var alertMessage: String = ""
     
-    static let logger = Logger(subsystem: "ProgressViewModel", category: "")
+    static let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "ProgressViewModel")
     
     init(taskDescription: String) {
         self.message = "\(taskDescription) - waiting..."

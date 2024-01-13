@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import os
+import OSLog
 
 fileprivate let shellPath = "/bin/zsh"
 
@@ -20,7 +20,7 @@ fileprivate let shellPath = "/bin/zsh"
 func shell(_ command: String) -> ShellResult {
     let task = Process()
     let pipe = Pipe()
-    let logger = Logger()
+    let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "shell")
     
     task.standardOutput = pipe
     task.standardError = pipe
