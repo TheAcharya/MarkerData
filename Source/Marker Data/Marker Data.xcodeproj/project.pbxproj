@@ -34,6 +34,23 @@
 		41C538992AE3062000E8A8A1 /* HelpCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C538982AE3062000E8A8A1 /* HelpCommands.swift */; };
 		41C5389B2AE3067900E8A8A1 /* ConfigurationCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C5389A2AE3067900E8A8A1 /* ConfigurationCommands.swift */; };
 		41C538A22AE420EA00E8A8A1 /* ColorWellKit in Frameworks */ = {isa = PBXBuildFile; productRef = 41C538A12AE420EA00E8A8A1 /* ColorWellKit */; };
+		41C839312B52C82A00C6B133 /* OSAScriptingDefinition.sdef in Resources */ = {isa = PBXBuildFile; fileRef = 41C839302B52C82A00C6B133 /* OSAScriptingDefinition.sdef */; };
+		41C839342B52C94000C6B133 /* ApplicationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C839332B52C94000C6B133 /* ApplicationDelegate.swift */; };
+		41C839822B52C9E300C6B133 /* ScriptingSupportCategories.m in Sources */ = {isa = PBXBuildFile; fileRef = 41C8396B2B52C9E300C6B133 /* ScriptingSupportCategories.m */; };
+		41C839832B52C9E300C6B133 /* Object.m in Sources */ = {isa = PBXBuildFile; fileRef = 41C8396C2B52C9E300C6B133 /* Object.m */; };
+		41C839842B52C9E300C6B133 /* Document.m in Sources */ = {isa = PBXBuildFile; fileRef = 41C8396D2B52C9E300C6B133 /* Document.m */; };
+		41C839852B52C9E300C6B133 /* DocumentController.m in Sources */ = {isa = PBXBuildFile; fileRef = 41C8396E2B52C9E300C6B133 /* DocumentController.m */; };
+		41C839862B52C9E300C6B133 /* Asset.m in Sources */ = {isa = PBXBuildFile; fileRef = 41C8396F2B52C9E300C6B133 /* Asset.m */; };
+		41C839872B52C9E300C6B133 /* FCPXMetadataKeys.m in Sources */ = {isa = PBXBuildFile; fileRef = 41C839712B52C9E300C6B133 /* FCPXMetadataKeys.m */; };
+		41C839882B52C9E300C6B133 /* OutlineViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 41C839722B52C9E300C6B133 /* OutlineViewDataSource.m */; };
+		41C839892B52C9E300C6B133 /* NewAssetSheet.xib in Resources */ = {isa = PBXBuildFile; fileRef = 41C839732B52C9E300C6B133 /* NewAssetSheet.xib */; };
+		41C8398A2B52C9E300C6B133 /* Document.xib in Resources */ = {isa = PBXBuildFile; fileRef = 41C839752B52C9E300C6B133 /* Document.xib */; };
+		41C8398B2B52C9E300C6B133 /* MediaAssetHelperKeys.m in Sources */ = {isa = PBXBuildFile; fileRef = 41C839762B52C9E300C6B133 /* MediaAssetHelperKeys.m */; };
+		41C8398C2B52C9E300C6B133 /* MakeCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 41C839782B52C9E300C6B133 /* MakeCommand.m */; };
+		41C8398D2B52C9E300C6B133 /* ApplicationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 41C8397D2B52C9E300C6B133 /* ApplicationDelegate.m */; };
+		41C8398E2B52C9E300C6B133 /* WindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 41C839802B52C9E300C6B133 /* WindowController.m */; };
+		41C839992B52D77200C6B133 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C839982B52D77200C6B133 /* Cocoa.framework */; };
+		41C8399B2B52D78900C6B133 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C8399A2B52D78900C6B133 /* AVFoundation.framework */; };
 		41EBAD502AF7B6F200E6AF7C /* WindowSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EBAD4F2AF7B6F200E6AF7C /* WindowSize.swift */; };
 		41EBAD522AF8172F00E6AF7C /* MainViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EBAD512AF8172F00E6AF7C /* MainViews.swift */; };
 		41EC60CB2AFFBC0700F0A131 /* MarkersExtractor in Frameworks */ = {isa = PBXBuildFile; productRef = 41EC60CA2AFFBC0700F0A131 /* MarkersExtractor */; };
@@ -117,6 +134,35 @@
 		41C538932AE1AFF200E8A8A1 /* SettingsContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsContainer.swift; sourceTree = "<group>"; };
 		41C538982AE3062000E8A8A1 /* HelpCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpCommands.swift; sourceTree = "<group>"; };
 		41C5389A2AE3067900E8A8A1 /* ConfigurationCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationCommands.swift; sourceTree = "<group>"; };
+		41C839302B52C82A00C6B133 /* OSAScriptingDefinition.sdef */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = OSAScriptingDefinition.sdef; sourceTree = "<group>"; };
+		41C839332B52C94000C6B133 /* ApplicationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationDelegate.swift; sourceTree = "<group>"; };
+		41C8396A2B52C9E300C6B133 /* MakeCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MakeCommand.h; sourceTree = "<group>"; };
+		41C8396B2B52C9E300C6B133 /* ScriptingSupportCategories.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScriptingSupportCategories.m; sourceTree = "<group>"; };
+		41C8396C2B52C9E300C6B133 /* Object.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Object.m; sourceTree = "<group>"; };
+		41C8396D2B52C9E300C6B133 /* Document.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Document.m; sourceTree = "<group>"; };
+		41C8396E2B52C9E300C6B133 /* DocumentController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DocumentController.m; sourceTree = "<group>"; };
+		41C8396F2B52C9E300C6B133 /* Asset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Asset.m; sourceTree = "<group>"; };
+		41C839702B52C9E300C6B133 /* ApplicationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplicationDelegate.h; sourceTree = "<group>"; };
+		41C839712B52C9E300C6B133 /* FCPXMetadataKeys.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FCPXMetadataKeys.m; sourceTree = "<group>"; };
+		41C839722B52C9E300C6B133 /* OutlineViewDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OutlineViewDataSource.m; sourceTree = "<group>"; };
+		41C839732B52C9E300C6B133 /* NewAssetSheet.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewAssetSheet.xib; sourceTree = "<group>"; };
+		41C839742B52C9E300C6B133 /* WindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowController.h; sourceTree = "<group>"; };
+		41C839752B52C9E300C6B133 /* Document.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Document.xib; sourceTree = "<group>"; };
+		41C839762B52C9E300C6B133 /* MediaAssetHelperKeys.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaAssetHelperKeys.m; sourceTree = "<group>"; };
+		41C839772B52C9E300C6B133 /* ScriptingSupportCategories.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScriptingSupportCategories.h; sourceTree = "<group>"; };
+		41C839782B52C9E300C6B133 /* MakeCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MakeCommand.m; sourceTree = "<group>"; };
+		41C839792B52C9E300C6B133 /* DocumentController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DocumentController.h; sourceTree = "<group>"; };
+		41C8397A2B52C9E300C6B133 /* Document.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Document.h; sourceTree = "<group>"; };
+		41C8397B2B52C9E300C6B133 /* Object.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Object.h; sourceTree = "<group>"; };
+		41C8397C2B52C9E300C6B133 /* FCPXMetadataKeys.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCPXMetadataKeys.h; sourceTree = "<group>"; };
+		41C8397D2B52C9E300C6B133 /* ApplicationDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplicationDelegate.m; sourceTree = "<group>"; };
+		41C8397E2B52C9E300C6B133 /* Asset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Asset.h; sourceTree = "<group>"; };
+		41C8397F2B52C9E300C6B133 /* MediaAssetHelperKeys.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaAssetHelperKeys.h; sourceTree = "<group>"; };
+		41C839802B52C9E300C6B133 /* WindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WindowController.m; sourceTree = "<group>"; };
+		41C839812B52C9E300C6B133 /* OutlineViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OutlineViewDataSource.h; sourceTree = "<group>"; };
+		41C839942B52CBE900C6B133 /* ShareDestinationKit-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ShareDestinationKit-Bridging-Header.h"; sourceTree = "<group>"; };
+		41C839982B52D77200C6B133 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		41C8399A2B52D78900C6B133 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		41EBAD4F2AF7B6F200E6AF7C /* WindowSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowSize.swift; sourceTree = "<group>"; };
 		41EBAD512AF8172F00E6AF7C /* MainViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViews.swift; sourceTree = "<group>"; };
 		41F88ADB2B029D4A004A3B58 /* ColorPickerForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickerForm.swift; sourceTree = "<group>"; };
@@ -171,10 +217,12 @@
 			files = (
 				4100D5E72AD19C980081F0EC /* FilePicker in Frameworks */,
 				41EC60CB2AFFBC0700F0A131 /* MarkersExtractor in Frameworks */,
+				41C8399B2B52D78900C6B133 /* AVFoundation.framework in Frameworks */,
 				9B61B44229F03866003EC14A /* libswiftCoreGraphics.tbd in Frameworks */,
 				41C538A22AE420EA00E8A8A1 /* ColorWellKit in Frameworks */,
 				D5F74A512973019000EEE2FE /* OrderedCollections in Frameworks */,
 				D5F74A4F2973019000EEE2FE /* DequeModule in Frameworks */,
+				41C839992B52D77200C6B133 /* Cocoa.framework in Frameworks */,
 				41BFEB702B1BA4CC00C8B551 /* PasswordField in Frameworks */,
 				D5F74A4D2973019000EEE2FE /* Collections in Frameworks */,
 				D5F74A472972FE7C00EEE2FE /* AirtableKit in Frameworks */,
@@ -221,6 +269,7 @@
 		414262C32ADAC6B100FC6CFC /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				41C839302B52C82A00C6B133 /* OSAScriptingDefinition.sdef */,
 				417272A32B48665A005A04BE /* csv2notion_neo */,
 				414262C42ADAC6EC00FC6CFC /* DefaultConfiguration.json */,
 			);
@@ -256,6 +305,87 @@
 				41C5389A2AE3067900E8A8A1 /* ConfigurationCommands.swift */,
 			);
 			path = "Menu Bar Commands";
+			sourceTree = "<group>";
+		};
+		41C839322B52C91600C6B133 /* FCP Share Destination */ = {
+			isa = PBXGroup;
+			children = (
+				41C839692B52C9E300C6B133 /* Objective-C Code */,
+				41C839332B52C94000C6B133 /* ApplicationDelegate.swift */,
+			);
+			path = "FCP Share Destination";
+			sourceTree = "<group>";
+		};
+		41C839692B52C9E300C6B133 /* Objective-C Code */ = {
+			isa = PBXGroup;
+			children = (
+				41C8398F2B52C9F600C6B133 /* UI */,
+				41C839902B52CA3300C6B133 /* Scripting */,
+				41C839912B52CAA600C6B133 /* Document Controller */,
+				41C839922B52CADF00C6B133 /* Application Delegate */,
+				41C839932B52CB2400C6B133 /* Swift Bridging Header */,
+			);
+			path = "Objective-C Code";
+			sourceTree = "<group>";
+		};
+		41C8398F2B52C9F600C6B133 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				41C839742B52C9E300C6B133 /* WindowController.h */,
+				41C839802B52C9E300C6B133 /* WindowController.m */,
+				41C839812B52C9E300C6B133 /* OutlineViewDataSource.h */,
+				41C839722B52C9E300C6B133 /* OutlineViewDataSource.m */,
+				41C839752B52C9E300C6B133 /* Document.xib */,
+				41C839732B52C9E300C6B133 /* NewAssetSheet.xib */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		41C839902B52CA3300C6B133 /* Scripting */ = {
+			isa = PBXGroup;
+			children = (
+				41C8396A2B52C9E300C6B133 /* MakeCommand.h */,
+				41C839782B52C9E300C6B133 /* MakeCommand.m */,
+				41C8397B2B52C9E300C6B133 /* Object.h */,
+				41C8396C2B52C9E300C6B133 /* Object.m */,
+				41C8397E2B52C9E300C6B133 /* Asset.h */,
+				41C8396F2B52C9E300C6B133 /* Asset.m */,
+				41C8397A2B52C9E300C6B133 /* Document.h */,
+				41C8396D2B52C9E300C6B133 /* Document.m */,
+				41C839772B52C9E300C6B133 /* ScriptingSupportCategories.h */,
+				41C8396B2B52C9E300C6B133 /* ScriptingSupportCategories.m */,
+				41C8397C2B52C9E300C6B133 /* FCPXMetadataKeys.h */,
+				41C839712B52C9E300C6B133 /* FCPXMetadataKeys.m */,
+				41C8397F2B52C9E300C6B133 /* MediaAssetHelperKeys.h */,
+				41C839762B52C9E300C6B133 /* MediaAssetHelperKeys.m */,
+			);
+			path = Scripting;
+			sourceTree = "<group>";
+		};
+		41C839912B52CAA600C6B133 /* Document Controller */ = {
+			isa = PBXGroup;
+			children = (
+				41C839792B52C9E300C6B133 /* DocumentController.h */,
+				41C8396E2B52C9E300C6B133 /* DocumentController.m */,
+			);
+			path = "Document Controller";
+			sourceTree = "<group>";
+		};
+		41C839922B52CADF00C6B133 /* Application Delegate */ = {
+			isa = PBXGroup;
+			children = (
+				41C839702B52C9E300C6B133 /* ApplicationDelegate.h */,
+				41C8397D2B52C9E300C6B133 /* ApplicationDelegate.m */,
+			);
+			path = "Application Delegate";
+			sourceTree = "<group>";
+		};
+		41C839932B52CB2400C6B133 /* Swift Bridging Header */ = {
+			isa = PBXGroup;
+			children = (
+				41C839942B52CBE900C6B133 /* ShareDestinationKit-Bridging-Header.h */,
+			);
+			path = "Swift Bridging Header";
 			sourceTree = "<group>";
 		};
 		41F88AE12B0C8360004A3B58 /* Shell */ = {
@@ -377,6 +507,8 @@
 		9B39B0CA29E19B740055F31E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				41C8399A2B52D78900C6B133 /* AVFoundation.framework */,
+				41C839982B52D77200C6B133 /* Cocoa.framework */,
 				9B61B44329F0387C003EC14A /* CoreGraphics.framework */,
 				9B61B44129F03866003EC14A /* libswiftCoreGraphics.tbd */,
 				9B39B0CB29E19B740055F31E /* CoreImage.framework */,
@@ -443,6 +575,7 @@
 				9B51D21429E9B10500DF7836 /* Models */,
 				9B51D20F29E99FFD00DF7836 /* Utilities */,
 				414262C32ADAC6B100FC6CFC /* Resources */,
+				41C839322B52C91600C6B133 /* FCP Share Destination */,
 				D5F74A3F2972DFD800EEE2FE /* Marker-Data-Info.plist */,
 				D5F74A342972D32100EEE2FE /* Assets.xcassets */,
 				D5F74A392972D32100EEE2FE /* Marker_Data.entitlements */,
@@ -536,10 +669,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				41C8398A2B52C9E300C6B133 /* Document.xib in Resources */,
 				417272A42B48665A005A04BE /* csv2notion_neo in Resources */,
 				D5F74A382972D32100EEE2FE /* Preview Assets.xcassets in Resources */,
 				D5F74A352972D32100EEE2FE /* Assets.xcassets in Resources */,
+				41C839892B52C9E300C6B133 /* NewAssetSheet.xib in Resources */,
 				414262C52ADAC6EC00FC6CFC /* DefaultConfiguration.json in Resources */,
+				41C839312B52C82A00C6B133 /* OSAScriptingDefinition.sdef in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -550,6 +686,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				41C839832B52C9E300C6B133 /* Object.m in Sources */,
 				4156196B2B3AE41F0032E82C /* ProgressViewModel.swift in Sources */,
 				4741202E2A3EFC42005890FE /* Miscellaneous Utilities.swift in Sources */,
 				417272A22B484B82005A04BE /* ExportDestinationPicker.swift in Sources */,
@@ -564,10 +701,12 @@
 				414262BB2AD2E1AC00FC6CFC /* URLExtension.swift in Sources */,
 				41F88B032B1A4D40004A3B58 /* ShellOutputStream.swift in Sources */,
 				41F88AFE2B126439004A3B58 /* ExtractionResult.swift in Sources */,
+				41C8398E2B52C9E300C6B133 /* WindowController.m in Sources */,
 				9B51D21629E9B13400DF7836 /* SettingsModels.swift in Sources */,
 				414262BD2AD2E24A00FC6CFC /* BundleExtension.swift in Sources */,
 				4100D5EC2AD1A1F80081F0EC /* UTTypeExtension.swift in Sources */,
 				4100D5DE2AD052010081F0EC /* OverlaySettingsView.swift in Sources */,
+				41C839872B52C9E300C6B133 /* FCPXMetadataKeys.m in Sources */,
 				9B4D90D82A0BAE3900FE7603 /* ImageSettingsView.swift in Sources */,
 				41C5389B2AE3067900E8A8A1 /* ConfigurationCommands.swift in Sources */,
 				9B25815E2A07A286002CED07 /* GeneralSettingsView.swift in Sources */,
@@ -577,27 +716,36 @@
 				417272982B444211005A04BE /* ExportExitStatus.swift in Sources */,
 				41F88AF12B0E9367004A3B58 /* DatabaseManager.swift in Sources */,
 				4100D5E42AD1616D0081F0EC /* ColorExtension.swift in Sources */,
+				41C8398D2B52C9E300C6B133 /* ApplicationDelegate.m in Sources */,
 				9B4D90DE2A0BB11000FE7603 /* DatabaseSettingsView.swift in Sources */,
 				9B653ABB29F2C2E700C64999 /* UserAlertView.swift in Sources */,
 				41F88AF62B0E9DBF004A3B58 /* CreateDBProfileSheet.swift in Sources */,
 				9B35FE6829F94C110035B760 /* PickerViews.swift in Sources */,
+				41C839842B52C9E300C6B133 /* Document.m in Sources */,
 				41EBAD522AF8172F00E6AF7C /* MainViews.swift in Sources */,
+				41C839862B52C9E300C6B133 /* Asset.m in Sources */,
+				41C8398B2B52C9E300C6B133 /* MediaAssetHelperKeys.m in Sources */,
 				D5F74A332972D31D00EEE2FE /* ContentView.swift in Sources */,
 				41F88AE32B0C839B004A3B58 /* Shell.swift in Sources */,
 				4779AF592A4FC06C00F1B48B /* LabelSettingsView.swift in Sources */,
 				9B4D90DA2A0BAF9E00FE7603 /* GeneralLabelSettingsView.swift in Sources */,
 				47F5CDF82A60CA43005D9A98 /* ExtractionModel.swift in Sources */,
 				9B653ABD29F2C64600C64999 /* ErrorViewModel.swift in Sources */,
+				41C839852B52C9E300C6B133 /* DocumentController.m in Sources */,
 				41EBAD502AF7B6F200E6AF7C /* WindowSize.swift in Sources */,
+				41C8398C2B52C9E300C6B133 /* MakeCommand.m in Sources */,
 				41BFEB792B1F925800C8B551 /* ExportProcess.swift in Sources */,
 				41C538942AE1AFF200E8A8A1 /* SettingsContainer.swift in Sources */,
 				414262C02AD5CE3200FC6CFC /* ConfigurationErrors.swift in Sources */,
 				D5F74A312972D31D00EEE2FE /* Marker_DataApp.swift in Sources */,
 				41F88AF82B0FDCF7004A3B58 /* ProfileCredentialModel.swift in Sources */,
 				41F88ADC2B029D4A004A3B58 /* ColorPickerForm.swift in Sources */,
+				41C839882B52C9E300C6B133 /* OutlineViewDataSource.m in Sources */,
+				41C839822B52C9E300C6B133 /* ScriptingSupportCategories.m in Sources */,
 				474595582A40254E00EF100D /* ColorPickerOpacitySliderForm.swift in Sources */,
 				410E3B812B4B0FF8005280FD /* LogManager.swift in Sources */,
 				41F88AE82B0E9176004A3B58 /* DatabaseProfileModel.swift in Sources */,
+				41C839342B52C94000C6B133 /* ApplicationDelegate.swift in Sources */,
 				47411FDA2A3EA121005890FE /* HelpButton.swift in Sources */,
 				9B4D90DC2A0BB07500FE7603 /* ConfigurationSettingsView.swift in Sources */,
 				41BFEB722B1BCE4600C8B551 /* ExportProfilePicker.swift in Sources */,

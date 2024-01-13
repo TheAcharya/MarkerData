@@ -40,6 +40,7 @@ struct Marker_DataApp: App {
         self._databaseManager = StateObject(wrappedValue: databaseManager)
     }
     
+    @NSApplicationDelegateAdaptor(ApplicationDelegate.self) var appDelegate
     var body: some Scene {
         //Make Main Window Group To Launch Into
         WindowGroup {
