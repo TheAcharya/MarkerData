@@ -64,11 +64,11 @@ struct ImageSettingsView: View {
             Group {
                 Divider()
 
-                Text("Image Size Override")
+                Text("Image Size")
                     .font(.headline)
                 
                 Picker("", selection: $settings.store.overrideImageSize) {
-                    Text("No Override")
+                    Text("Default")
                         .tag(OverrideImageSizeOption.noOverride)
                     
                     // Image size percent
