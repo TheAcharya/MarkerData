@@ -90,7 +90,7 @@ jobs:
         security unlock-keychain -p $KEYCHAIN_PASSWORD_U build-u.keychain
         security import certificate.p12 -k build-u.keychain -P $APPLE_CERT_PASSWORD -T /usr/bin/codesign
         security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k $KEYCHAIN_PASSWORD_U build-u.keychain
-        /usr/bin/codesign --force -s $APPLE_TEAM_ID --options runtime "$UAPP" -v
+        /usr/bin/codesign --force -s $APPLE_TEAM_ID --identifier "co.theacharya.MarkerData.Uninstaller" --options runtime "$UAPP" -v
         
     - name: Notarize Uninstaller
       env:
