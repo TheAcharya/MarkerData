@@ -24,6 +24,7 @@ struct UnifiedExportProfile: Codable, Hashable, Identifiable {
     /// Saves a ``UnifiedExportProfile`` to disk
     public func save() throws {
         let encoder = JSONEncoder()
+        encoder.outputFormatting = .prettyPrinted
         
         let data = try encoder.encode(self)
         

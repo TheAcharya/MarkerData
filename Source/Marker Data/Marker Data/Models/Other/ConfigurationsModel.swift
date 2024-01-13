@@ -83,7 +83,7 @@ class ConfigurationsModel: ObservableObject {
         let dictionary = try self.getUserDefaultsDictionary()
         
         // Turn into json
-        guard let data = try? JSONSerialization.data(withJSONObject: dictionary, options: []) else {
+        guard let data = try? JSONSerialization.data(withJSONObject: dictionary, options: [.prettyPrinted]) else {
             throw ConfigurationSaveError.jsonSerializationError
         }
         
@@ -181,6 +181,7 @@ class ConfigurationsModel: ObservableObject {
         let unifiedProfile: UnifiedExportProfile = UnifiedExportProfile.load() ?? UnifiedExportProfile.defaultProfile()
         
         let encoder = JSONEncoder()
+        encoder.outputFormatting = .prettyPrinted
         let data = try encoder.encode(unifiedProfile)
         let unifiedProfileAsDict = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
         

@@ -125,6 +125,7 @@ class DatabaseManager: ObservableObject {
     /// Saves a profile to disk
     private func saveProfileToDisk(_ profile: DatabaseProfileModel) throws {
         let encoder = JSONEncoder()
+        encoder.outputFormatting = .prettyPrinted
         
         let data = try encoder.encode(profile)
         let url = URL.databaseProfilesFolder.appendingPathComponent(profile.name, conformingTo: .json)
