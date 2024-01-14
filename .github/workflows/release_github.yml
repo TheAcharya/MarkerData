@@ -51,6 +51,7 @@ jobs:
         mkdir -p "$PARENT/dist/dmg-builds/uninstaller/include"
         
         cp -R ./Distribution/dmg-builds/uninstaller/include/applet.icns "$PARENT/dist/dmg-builds/uninstaller/include/"
+        cp -R ./Distribution/dmg-builds/uninstaller/include/entitlements.plist "$PARENT/dist/dmg-builds/uninstaller/include/"
         cp -R ./Distribution/dmg-builds/uninstaller/include/Uninstall\ Marker\ Data.scpt "$PARENT/dist/dmg-builds/uninstaller/include/"
         cp -R ./Distribution/dmg-builds/build-marker-data-dmg.json "$PARENT/dist/dmg-builds/"
         cp -R ./Distribution/dmg-builds/latest-build/Marker\ Data.app "$PARENT/dist/dmg-builds/latest-build/"
