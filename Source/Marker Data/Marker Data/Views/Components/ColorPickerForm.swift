@@ -15,7 +15,7 @@ struct ColorPickerForm: View {
         HStack {
             Text("Color:")
             
-            ColorWellView(selection: $color, supportsOpacity: false)
+            ColorWell(selection: $color, supportsOpacity: false)
                 .colorWellStyle(.minimal)
         }
     }

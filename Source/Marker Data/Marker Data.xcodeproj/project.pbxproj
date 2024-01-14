@@ -74,7 +74,6 @@
 		D5F74A332972D31D00EEE2FE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F74A322972D31D00EEE2FE /* ContentView.swift */; };
 		D5F74A352972D32100EEE2FE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5F74A342972D32100EEE2FE /* Assets.xcassets */; };
 		D5F74A382972D32100EEE2FE /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5F74A372972D32100EEE2FE /* Preview Assets.xcassets */; };
-		D5F74A472972FE7C00EEE2FE /* AirtableKit in Frameworks */ = {isa = PBXBuildFile; productRef = D5F74A462972FE7C00EEE2FE /* AirtableKit */; };
 		D5F74A4D2973019000EEE2FE /* Collections in Frameworks */ = {isa = PBXBuildFile; productRef = D5F74A4C2973019000EEE2FE /* Collections */; };
 		D5F74A4F2973019000EEE2FE /* DequeModule in Frameworks */ = {isa = PBXBuildFile; productRef = D5F74A4E2973019000EEE2FE /* DequeModule */; };
 		D5F74A512973019000EEE2FE /* OrderedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = D5F74A502973019000EEE2FE /* OrderedCollections */; };
@@ -177,7 +176,6 @@
 				D5F74A4F2973019000EEE2FE /* DequeModule in Frameworks */,
 				41BFEB702B1BA4CC00C8B551 /* PasswordField in Frameworks */,
 				D5F74A4D2973019000EEE2FE /* Collections in Frameworks */,
-				D5F74A472972FE7C00EEE2FE /* AirtableKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -477,7 +475,6 @@
 			);
 			name = "Marker Data";
 			packageProductDependencies = (
-				D5F74A462972FE7C00EEE2FE /* AirtableKit */,
 				D5F74A4C2973019000EEE2FE /* Collections */,
 				D5F74A4E2973019000EEE2FE /* DequeModule */,
 				D5F74A502973019000EEE2FE /* OrderedCollections */,
@@ -515,7 +512,6 @@
 			);
 			mainGroup = D5F74A242972D31C00EEE2FE;
 			packageReferences = (
-				D5F74A452972FE7C00EEE2FE /* XCRemoteSwiftPackageReference "AirtableKit" */,
 				D5F74A4B2973019000EEE2FE /* XCRemoteSwiftPackageReference "swift-collections" */,
 				4100D5E52AD19C980081F0EC /* XCRemoteSwiftPackageReference "FilePicker" */,
 				41C538A02AE420EA00E8A8A1 /* XCRemoteSwiftPackageReference "ColorWellKit" */,
@@ -860,7 +856,7 @@
 			repositoryURL = "https://github.com/jordanbaird/ColorWellKit";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.1.0;
+				minimumVersion = 1.1.2;
 			};
 		};
 		41EC60C92AFFBC0700F0A131 /* XCRemoteSwiftPackageReference "MarkersExtractor" */ = {
@@ -869,14 +865,6 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 0.2.3;
-			};
-		};
-		D5F74A452972FE7C00EEE2FE /* XCRemoteSwiftPackageReference "AirtableKit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "http://github.com/appledeveloperacademypucrs/AirtableKit.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
 			};
 		};
 		D5F74A4B2973019000EEE2FE /* XCRemoteSwiftPackageReference "swift-collections" */ = {
@@ -909,11 +897,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 41EC60C92AFFBC0700F0A131 /* XCRemoteSwiftPackageReference "MarkersExtractor" */;
 			productName = MarkersExtractor;
-		};
-		D5F74A462972FE7C00EEE2FE /* AirtableKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = D5F74A452972FE7C00EEE2FE /* XCRemoteSwiftPackageReference "AirtableKit" */;
-			productName = AirtableKit;
 		};
 		D5F74A4C2973019000EEE2FE /* Collections */ = {
 			isa = XCSwiftPackageProductDependency;

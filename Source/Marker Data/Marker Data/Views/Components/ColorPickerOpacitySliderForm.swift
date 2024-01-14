@@ -15,7 +15,7 @@ struct ColorPickerOpacitySliderForm: View {
     
     var body: some View {
         HStack {
-            ColorWellView(selection: $color, supportsOpacity: false)
+            ColorWell(selection: $color, supportsOpacity: false)
                 .colorWellStyle(.minimal)
 
             Slider(value: $opacity, in: 0...100)
