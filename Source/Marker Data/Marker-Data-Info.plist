@@ -51,7 +51,7 @@
 			<key>LSHandlerRank</key>
 			<string>Default</string>
 			<key>NSDocumentClass</key>
-			<string>Document</string>
+			<string></string>
 		</dict>
 		<dict>
 			<key>CFBundleTypeExtensions</key>
@@ -67,7 +67,7 @@
 			<key>LSHandlerRank</key>
 			<string>Default</string>
 			<key>NSDocumentClass</key>
-			<string>Document</string>
+			<string></string>
 		</dict>
 	</array>
 	<key>NSAppleScriptEnabled</key>

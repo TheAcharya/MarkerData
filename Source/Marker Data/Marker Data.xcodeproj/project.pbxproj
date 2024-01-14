@@ -12,6 +12,7 @@
 		4100D5E72AD19C980081F0EC /* FilePicker in Frameworks */ = {isa = PBXBuildFile; productRef = 4100D5E62AD19C980081F0EC /* FilePicker */; };
 		4100D5EC2AD1A1F80081F0EC /* UTTypeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4100D5EB2AD1A1F80081F0EC /* UTTypeExtension.swift */; };
 		410E3B812B4B0FF8005280FD /* LogManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 410E3B802B4B0FF8005280FD /* LogManager.swift */; };
+		411F37392B53D84200CC05E6 /* MakeCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 411F37382B53D84200CC05E6 /* MakeCommand.m */; };
 		414262BB2AD2E1AC00FC6CFC /* URLExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414262BA2AD2E1AC00FC6CFC /* URLExtension.swift */; };
 		414262BD2AD2E24A00FC6CFC /* BundleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414262BC2AD2E24A00FC6CFC /* BundleExtension.swift */; };
 		414262C02AD5CE3200FC6CFC /* ConfigurationErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414262BF2AD5CE3200FC6CFC /* ConfigurationErrors.swift */; };
@@ -46,7 +47,6 @@
 		41C839892B52C9E300C6B133 /* NewAssetSheet.xib in Resources */ = {isa = PBXBuildFile; fileRef = 41C839732B52C9E300C6B133 /* NewAssetSheet.xib */; };
 		41C8398A2B52C9E300C6B133 /* Document.xib in Resources */ = {isa = PBXBuildFile; fileRef = 41C839752B52C9E300C6B133 /* Document.xib */; };
 		41C8398B2B52C9E300C6B133 /* MediaAssetHelperKeys.m in Sources */ = {isa = PBXBuildFile; fileRef = 41C839762B52C9E300C6B133 /* MediaAssetHelperKeys.m */; };
-		41C8398C2B52C9E300C6B133 /* MakeCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 41C839782B52C9E300C6B133 /* MakeCommand.m */; };
 		41C8398D2B52C9E300C6B133 /* ApplicationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 41C8397D2B52C9E300C6B133 /* ApplicationDelegate.m */; };
 		41C8398E2B52C9E300C6B133 /* WindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 41C839802B52C9E300C6B133 /* WindowController.m */; };
 		41C839992B52D77200C6B133 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C839982B52D77200C6B133 /* Cocoa.framework */; };
@@ -114,6 +114,7 @@
 		4100D5E32AD1616D0081F0EC /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
 		4100D5EB2AD1A1F80081F0EC /* UTTypeExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UTTypeExtension.swift; sourceTree = "<group>"; };
 		410E3B802B4B0FF8005280FD /* LogManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogManager.swift; sourceTree = "<group>"; };
+		411F37382B53D84200CC05E6 /* MakeCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MakeCommand.m; sourceTree = "<group>"; };
 		414262BA2AD2E1AC00FC6CFC /* URLExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLExtension.swift; sourceTree = "<group>"; };
 		414262BC2AD2E24A00FC6CFC /* BundleExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleExtension.swift; sourceTree = "<group>"; };
 		414262BF2AD5CE3200FC6CFC /* ConfigurationErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationErrors.swift; sourceTree = "<group>"; };
@@ -150,7 +151,6 @@
 		41C839752B52C9E300C6B133 /* Document.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Document.xib; sourceTree = "<group>"; };
 		41C839762B52C9E300C6B133 /* MediaAssetHelperKeys.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaAssetHelperKeys.m; sourceTree = "<group>"; };
 		41C839772B52C9E300C6B133 /* ScriptingSupportCategories.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScriptingSupportCategories.h; sourceTree = "<group>"; };
-		41C839782B52C9E300C6B133 /* MakeCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MakeCommand.m; sourceTree = "<group>"; };
 		41C839792B52C9E300C6B133 /* DocumentController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DocumentController.h; sourceTree = "<group>"; };
 		41C8397A2B52C9E300C6B133 /* Document.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Document.h; sourceTree = "<group>"; };
 		41C8397B2B52C9E300C6B133 /* Object.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Object.h; sourceTree = "<group>"; };
@@ -345,7 +345,7 @@
 			isa = PBXGroup;
 			children = (
 				41C8396A2B52C9E300C6B133 /* MakeCommand.h */,
-				41C839782B52C9E300C6B133 /* MakeCommand.m */,
+				411F37382B53D84200CC05E6 /* MakeCommand.m */,
 				41C8397B2B52C9E300C6B133 /* Object.h */,
 				41C8396C2B52C9E300C6B133 /* Object.m */,
 				41C8397E2B52C9E300C6B133 /* Asset.h */,
@@ -729,11 +729,11 @@
 				41F88AE32B0C839B004A3B58 /* Shell.swift in Sources */,
 				4779AF592A4FC06C00F1B48B /* LabelSettingsView.swift in Sources */,
 				9B4D90DA2A0BAF9E00FE7603 /* GeneralLabelSettingsView.swift in Sources */,
+				411F37392B53D84200CC05E6 /* MakeCommand.m in Sources */,
 				47F5CDF82A60CA43005D9A98 /* ExtractionModel.swift in Sources */,
 				9B653ABD29F2C64600C64999 /* ErrorViewModel.swift in Sources */,
 				41C839852B52C9E300C6B133 /* DocumentController.m in Sources */,
 				41EBAD502AF7B6F200E6AF7C /* WindowSize.swift in Sources */,
-				41C8398C2B52C9E300C6B133 /* MakeCommand.m in Sources */,
 				41BFEB792B1F925800C8B551 /* ExportProcess.swift in Sources */,
 				41C538942AE1AFF200E8A8A1 /* SettingsContainer.swift in Sources */,
 				414262C02AD5CE3200FC6CFC /* ConfigurationErrors.swift in Sources */,

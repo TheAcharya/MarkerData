@@ -11,7 +11,24 @@ import Cocoa
 class ApplicationDelegate: NSObject, NSApplicationDelegate {
     func application(_ application: NSApplication, open urls: [URL]) {
         for url in urls {
-            NSLog("Dropped file URL: \(url)")
+            // ------------------------------------------------------------
+            // Media File & FCPXML Received:
+            // ------------------------------------------------------------
+            NSLog("File Received: \(url.path)")
+            
+            // ------------------------------------------------------------
+            // Create an alert:
+            // ------------------------------------------------------------
+            let alert = NSAlert()
+            alert.messageText = "File Received"
+            alert.informativeText = "File Received: \(url.path)"
+            alert.alertStyle = .informational
+            alert.addButton(withTitle: "OK")
+            
+            // ------------------------------------------------------------
+            // Display the alert:
+            // ------------------------------------------------------------
+            alert.runModal()
         }
     }
 }

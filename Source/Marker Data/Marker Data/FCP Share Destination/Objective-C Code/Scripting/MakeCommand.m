@@ -10,6 +10,7 @@
 #import "Document.h"
 #import "Asset.h"
 #import "ScriptingSupportCategories.h"
+#import "MediaAssetHelperKeys.h"
 
 @implementation MakeCommand
 
@@ -88,9 +89,11 @@
         // our user interface:
         // ------------------------------------------------------------
         NSUInteger interactionLevel = [self appleEventUserInteractionLevel];
-        
-        if ( interactionLevel == kAECanInteract ||interactionLevel == kAEAlwaysInteract || interactionLevel == kAECanSwitchLayer ) {
-            
+
+        BOOL shouldShowUI = false;
+
+        if ( shouldShowUI & (interactionLevel == kAECanInteract || interactionLevel == kAEAlwaysInteract || interactionLevel == kAECanSwitchLayer) ) {
+
             NSLog(@"[ShareDestinationKit] INFO - Apple Script says we're allowed to interact with the user!");
             
             // ------------------------------------------------------------
@@ -137,8 +140,42 @@
             // Create a new asset at a default location if user
             // interaction is not allowed:
             // ------------------------------------------------------------
-            NSDictionary *defaultLocation = [currentDocument defaultAssetLocation];
-            NSInteger assetIndex = [currentDocument addAssetAtLocation:defaultLocation
+            //NSDictionary *defaultLocation = [currentDocument defaultAssetLocation];
+
+//            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDesktopDirectory, NSUserDomainMask, YES);
+//            NSString *outputDirectory = [paths firstObject];
+//
+//            NSLog(@"[ShareDestinationKit] INFO - Writing files to directory: %@", outputDirectory);
+
+            // Replace "/Your/Custom/Path" with the actual path to your custom directory
+            NSString *homeDirectory = NSHomeDirectory();
+            NSString *customDirectoryPath = [homeDirectory stringByAppendingPathComponent:@"/Library/Application Support/Marker Data/FCPTempExport/tempdata"];
+            NSFileManager *fileManager = [NSFileManager defaultManager];
+            
+            // Create the custom directory if it doesn't exist
+            if (![fileManager fileExistsAtPath:customDirectoryPath]) {
+                NSError *error = nil;
+                [fileManager createDirectoryAtPath:customDirectoryPath withIntermediateDirectories:YES attributes:nil error:&error];
+                
+                if (error) {
+                    NSLog(@"Error creating custom directory: %@", error.localizedDescription);
+                    // Handle the error appropriately
+                    return nil;
+                }
+            }
+            
+            NSString *outputDirectory = customDirectoryPath;
+            
+            NSLog(@"[ShareDestinationKit] INFO - Writing files to directory: %@", outputDirectory);
+            
+            NSDictionary *desktopLocation =  [NSDictionary dictionaryWithObjectsAndKeys:
+                                             [NSURL fileURLWithPath:outputDirectory],             kMediaAssetLocationFolderKey,
+                                             @"",                                                 kMediaAssetLocationBasenameKey,
+                                             [NSNumber numberWithBool:YES],                       kMediaAssetLocationHasMediaKey,
+                                             [NSNumber numberWithBool:YES],                       kMediaAssetLocationHasDescriptionKey,
+                                             nil];
+
+            NSInteger assetIndex = [currentDocument addAssetAtLocation:desktopLocation
                                                                content:FALSE
                                                               metadata:metadataParameter
                                                            dataOptions:dataOptionsParameter];
