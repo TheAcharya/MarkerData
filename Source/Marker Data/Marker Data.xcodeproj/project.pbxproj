@@ -43,11 +43,7 @@
 		41C839852B52C9E300C6B133 /* DocumentController.m in Sources */ = {isa = PBXBuildFile; fileRef = 41C8396E2B52C9E300C6B133 /* DocumentController.m */; };
 		41C839862B52C9E300C6B133 /* Asset.m in Sources */ = {isa = PBXBuildFile; fileRef = 41C8396F2B52C9E300C6B133 /* Asset.m */; };
 		41C839872B52C9E300C6B133 /* FCPXMetadataKeys.m in Sources */ = {isa = PBXBuildFile; fileRef = 41C839712B52C9E300C6B133 /* FCPXMetadataKeys.m */; };
-		41C839882B52C9E300C6B133 /* OutlineViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 41C839722B52C9E300C6B133 /* OutlineViewDataSource.m */; };
-		41C839892B52C9E300C6B133 /* PrepareExport.xib in Resources */ = {isa = PBXBuildFile; fileRef = 41C839732B52C9E300C6B133 /* PrepareExport.xib */; };
 		41C8398B2B52C9E300C6B133 /* MediaAssetHelperKeys.m in Sources */ = {isa = PBXBuildFile; fileRef = 41C839762B52C9E300C6B133 /* MediaAssetHelperKeys.m */; };
-		41C8398D2B52C9E300C6B133 /* ApplicationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 41C8397D2B52C9E300C6B133 /* ApplicationDelegate.m */; };
-		41C8398E2B52C9E300C6B133 /* WindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 41C839802B52C9E300C6B133 /* WindowController.m */; };
 		41C839992B52D77200C6B133 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C839982B52D77200C6B133 /* Cocoa.framework */; };
 		41C8399B2B52D78900C6B133 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C8399A2B52D78900C6B133 /* AVFoundation.framework */; };
 		41EBAD502AF7B6F200E6AF7C /* WindowSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EBAD4F2AF7B6F200E6AF7C /* WindowSize.swift */; };
@@ -142,22 +138,15 @@
 		41C8396D2B52C9E300C6B133 /* Document.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Document.m; sourceTree = "<group>"; };
 		41C8396E2B52C9E300C6B133 /* DocumentController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DocumentController.m; sourceTree = "<group>"; };
 		41C8396F2B52C9E300C6B133 /* Asset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Asset.m; sourceTree = "<group>"; };
-		41C839702B52C9E300C6B133 /* ApplicationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplicationDelegate.h; sourceTree = "<group>"; };
 		41C839712B52C9E300C6B133 /* FCPXMetadataKeys.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FCPXMetadataKeys.m; sourceTree = "<group>"; };
-		41C839722B52C9E300C6B133 /* OutlineViewDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OutlineViewDataSource.m; sourceTree = "<group>"; };
-		41C839732B52C9E300C6B133 /* PrepareExport.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PrepareExport.xib; sourceTree = "<group>"; };
-		41C839742B52C9E300C6B133 /* WindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowController.h; sourceTree = "<group>"; };
 		41C839762B52C9E300C6B133 /* MediaAssetHelperKeys.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaAssetHelperKeys.m; sourceTree = "<group>"; };
 		41C839772B52C9E300C6B133 /* ScriptingSupportCategories.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScriptingSupportCategories.h; sourceTree = "<group>"; };
 		41C839792B52C9E300C6B133 /* DocumentController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DocumentController.h; sourceTree = "<group>"; };
 		41C8397A2B52C9E300C6B133 /* Document.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Document.h; sourceTree = "<group>"; };
 		41C8397B2B52C9E300C6B133 /* Object.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Object.h; sourceTree = "<group>"; };
 		41C8397C2B52C9E300C6B133 /* FCPXMetadataKeys.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCPXMetadataKeys.h; sourceTree = "<group>"; };
-		41C8397D2B52C9E300C6B133 /* ApplicationDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplicationDelegate.m; sourceTree = "<group>"; };
 		41C8397E2B52C9E300C6B133 /* Asset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Asset.h; sourceTree = "<group>"; };
 		41C8397F2B52C9E300C6B133 /* MediaAssetHelperKeys.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaAssetHelperKeys.h; sourceTree = "<group>"; };
-		41C839802B52C9E300C6B133 /* WindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WindowController.m; sourceTree = "<group>"; };
-		41C839812B52C9E300C6B133 /* OutlineViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OutlineViewDataSource.h; sourceTree = "<group>"; };
 		41C839942B52CBE900C6B133 /* ShareDestinationKit-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ShareDestinationKit-Bridging-Header.h"; sourceTree = "<group>"; };
 		41C839982B52D77200C6B133 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		41C8399A2B52D78900C6B133 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -317,25 +306,11 @@
 		41C839692B52C9E300C6B133 /* Objective-C Code */ = {
 			isa = PBXGroup;
 			children = (
-				41C8398F2B52C9F600C6B133 /* UI */,
 				41C839902B52CA3300C6B133 /* Scripting */,
 				41C839912B52CAA600C6B133 /* Document Controller */,
-				41C839922B52CADF00C6B133 /* Application Delegate */,
 				41C839932B52CB2400C6B133 /* Swift Bridging Header */,
 			);
 			path = "Objective-C Code";
-			sourceTree = "<group>";
-		};
-		41C8398F2B52C9F600C6B133 /* UI */ = {
-			isa = PBXGroup;
-			children = (
-				41C839742B52C9E300C6B133 /* WindowController.h */,
-				41C839802B52C9E300C6B133 /* WindowController.m */,
-				41C839812B52C9E300C6B133 /* OutlineViewDataSource.h */,
-				41C839722B52C9E300C6B133 /* OutlineViewDataSource.m */,
-				41C839732B52C9E300C6B133 /* PrepareExport.xib */,
-			);
-			path = UI;
 			sourceTree = "<group>";
 		};
 		41C839902B52CA3300C6B133 /* Scripting */ = {
@@ -366,15 +341,6 @@
 				41C8396E2B52C9E300C6B133 /* DocumentController.m */,
 			);
 			path = "Document Controller";
-			sourceTree = "<group>";
-		};
-		41C839922B52CADF00C6B133 /* Application Delegate */ = {
-			isa = PBXGroup;
-			children = (
-				41C839702B52C9E300C6B133 /* ApplicationDelegate.h */,
-				41C8397D2B52C9E300C6B133 /* ApplicationDelegate.m */,
-			);
-			path = "Application Delegate";
 			sourceTree = "<group>";
 		};
 		41C839932B52CB2400C6B133 /* Swift Bridging Header */ = {
@@ -669,7 +635,6 @@
 				417272A42B48665A005A04BE /* csv2notion_neo in Resources */,
 				D5F74A382972D32100EEE2FE /* Preview Assets.xcassets in Resources */,
 				D5F74A352972D32100EEE2FE /* Assets.xcassets in Resources */,
-				41C839892B52C9E300C6B133 /* PrepareExport.xib in Resources */,
 				414262C52ADAC6EC00FC6CFC /* DefaultConfiguration.json in Resources */,
 				41C839312B52C82A00C6B133 /* OSAScriptingDefinition.sdef in Resources */,
 			);
@@ -697,7 +662,6 @@
 				414262BB2AD2E1AC00FC6CFC /* URLExtension.swift in Sources */,
 				41F88B032B1A4D40004A3B58 /* ShellOutputStream.swift in Sources */,
 				41F88AFE2B126439004A3B58 /* ExtractionResult.swift in Sources */,
-				41C8398E2B52C9E300C6B133 /* WindowController.m in Sources */,
 				9B51D21629E9B13400DF7836 /* SettingsModels.swift in Sources */,
 				414262BD2AD2E24A00FC6CFC /* BundleExtension.swift in Sources */,
 				4100D5EC2AD1A1F80081F0EC /* UTTypeExtension.swift in Sources */,
@@ -712,7 +676,6 @@
 				417272982B444211005A04BE /* ExportExitStatus.swift in Sources */,
 				41F88AF12B0E9367004A3B58 /* DatabaseManager.swift in Sources */,
 				4100D5E42AD1616D0081F0EC /* ColorExtension.swift in Sources */,
-				41C8398D2B52C9E300C6B133 /* ApplicationDelegate.m in Sources */,
 				9B4D90DE2A0BB11000FE7603 /* DatabaseSettingsView.swift in Sources */,
 				9B653ABB29F2C2E700C64999 /* UserAlertView.swift in Sources */,
 				41F88AF62B0E9DBF004A3B58 /* CreateDBProfileSheet.swift in Sources */,
@@ -736,7 +699,6 @@
 				D5F74A312972D31D00EEE2FE /* Marker_DataApp.swift in Sources */,
 				41F88AF82B0FDCF7004A3B58 /* ProfileCredentialModel.swift in Sources */,
 				41F88ADC2B029D4A004A3B58 /* ColorPickerForm.swift in Sources */,
-				41C839882B52C9E300C6B133 /* OutlineViewDataSource.m in Sources */,
 				41C839822B52C9E300C6B133 /* ScriptingSupportCategories.m in Sources */,
 				474595582A40254E00EF100D /* ColorPickerOpacitySliderForm.swift in Sources */,
 				410E3B812B4B0FF8005280FD /* LogManager.swift in Sources */,

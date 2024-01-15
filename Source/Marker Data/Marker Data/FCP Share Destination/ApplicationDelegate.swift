@@ -14,6 +14,7 @@ class ApplicationDelegate: NSObject, NSApplicationDelegate {
         // If it's not here the events are not set up correctly for some reason
         // and the file URL is not recieved.
         DispatchQueue.main.async {
+            // Setup an Apple Event hander for the "Open" event
             NSAppleEventManager.shared().setEventHandler(self,
                                                          andSelector: #selector(self.handleOpen(event:replyEvent:)),
                                                          forEventClass: AEEventClass(kCoreEventClass),

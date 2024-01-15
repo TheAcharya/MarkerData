@@ -84,105 +84,40 @@
             NSLog(@"[ShareDestinationKit] INFO - dataOptionsParameter: %@", dataOptionsParameter);
         }
         
-        // ------------------------------------------------------------
-        // Get the user interaction level and see if we can bring up
-        // our user interface:
-        // ------------------------------------------------------------
-        NSUInteger interactionLevel = [self appleEventUserInteractionLevel];
-
-        BOOL shouldShowUI = false;
-
-        if ( shouldShowUI & (interactionLevel == kAECanInteract || interactionLevel == kAEAlwaysInteract || interactionLevel == kAECanSwitchLayer) ) {
-
-            NSLog(@"[ShareDestinationKit] INFO - Apple Script says we're allowed to interact with the user!");
+        NSString *homeDirectory = NSHomeDirectory();
+        NSString *customDirectoryPath = [homeDirectory stringByAppendingPathComponent:@"/Library/Application Support/Marker Data/FCPTempExport/tempdata"];
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        
+        // Create the custom directory if it doesn't exist
+        if (![fileManager fileExistsAtPath:customDirectoryPath]) {
+            NSError *error = nil;
+            [fileManager createDirectoryAtPath:customDirectoryPath withIntermediateDirectories:YES attributes:nil error:&error];
             
-            // ------------------------------------------------------------
-            // If we wanted to, we could implement our window controller
-            // here:
-            // ------------------------------------------------------------
-            WindowController *currentWindowController = currentDocument.primaryWindowController;
-            
-            // ------------------------------------------------------------
-            // Suspend the script execution and invoke the user interface:
-            // ------------------------------------------------------------
-            [self suspendExecution];
-            
-            // ------------------------------------------------------------
-            // If we wanted to, we could show our user interface here:
-            // ------------------------------------------------------------
-            [currentWindowController newAssetWithName:nameParameter
-                                             metadata:metadataParameter
-                                          dataOptions:dataOptionsParameter
-                                    completionHandler:^(Asset *newAsset) {
-                if ( newAsset != nil ) {
-                    NSScriptObjectSpecifier *theSpec = [newAsset objectSpecifier];
-                    
-                    // ------------------------------------------------------------
-                    // Resume the execution with the result:
-                    // ------------------------------------------------------------
-                    [self resumeExecutionWithResult:theSpec];
-                } else {
-                    // ------------------------------------------------------------
-                    // Indicate that the user has canceled the operation and 
-                    // resume script execution:
-                    // ------------------------------------------------------------
-                    [self setScriptErrorNumber:userCanceledErr];
-                    [self resumeExecutionWithResult:nil];
-                }
-            }];
-            
-            
-        } else {
-            
-            NSLog(@"[ShareDestinationKit] INFO - Apple Script says we're NOT allowed to interact with the user");
-            
-            // ------------------------------------------------------------
-            // Create a new asset at a default location if user
-            // interaction is not allowed:
-            // ------------------------------------------------------------
-            //NSDictionary *defaultLocation = [currentDocument defaultAssetLocation];
-
-//            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDesktopDirectory, NSUserDomainMask, YES);
-//            NSString *outputDirectory = [paths firstObject];
-//
-//            NSLog(@"[ShareDestinationKit] INFO - Writing files to directory: %@", outputDirectory);
-
-            // Replace "/Your/Custom/Path" with the actual path to your custom directory
-            NSString *homeDirectory = NSHomeDirectory();
-            NSString *customDirectoryPath = [homeDirectory stringByAppendingPathComponent:@"/Library/Application Support/Marker Data/FCPTempExport/tempdata"];
-            NSFileManager *fileManager = [NSFileManager defaultManager];
-            
-            // Create the custom directory if it doesn't exist
-            if (![fileManager fileExistsAtPath:customDirectoryPath]) {
-                NSError *error = nil;
-                [fileManager createDirectoryAtPath:customDirectoryPath withIntermediateDirectories:YES attributes:nil error:&error];
-                
-                if (error) {
-                    NSLog(@"Error creating custom directory: %@", error.localizedDescription);
-                    // Handle the error appropriately
-                    return nil;
-                }
+            if (error) {
+                NSLog(@"Error creating custom directory: %@", error.localizedDescription);
+                // Handle the error appropriately
+                return nil;
             }
-            
-            NSString *outputDirectory = customDirectoryPath;
-            
-            NSLog(@"[ShareDestinationKit] INFO - Writing files to directory: %@", outputDirectory);
-            
-            NSDictionary *desktopLocation =  [NSDictionary dictionaryWithObjectsAndKeys:
-                                             [NSURL fileURLWithPath:outputDirectory],             kMediaAssetLocationFolderKey,
-                                             @"",                                                 kMediaAssetLocationBasenameKey,
-                                             [NSNumber numberWithBool:YES],                       kMediaAssetLocationHasMediaKey,
-                                             [NSNumber numberWithBool:YES],                       kMediaAssetLocationHasDescriptionKey,
-                                             nil];
-
-            NSInteger assetIndex = [currentDocument addAssetAtLocation:desktopLocation
-                                                               content:FALSE
-                                                              metadata:metadataParameter
-                                                           dataOptions:dataOptionsParameter];
-            Asset *newAsset = [currentDocument.assets objectAtIndex:assetIndex];
-            
-            result = [newAsset objectSpecifier];
         }
+        
+        NSString *outputDirectory = customDirectoryPath;
+        
+        NSLog(@"[ShareDestinationKit] INFO - Writing files to directory: %@", outputDirectory);
+        
+        NSDictionary *desktopLocation =  [NSDictionary dictionaryWithObjectsAndKeys:
+                                         [NSURL fileURLWithPath:outputDirectory],             kMediaAssetLocationFolderKey,
+                                         @"",                                                 kMediaAssetLocationBasenameKey,
+                                         [NSNumber numberWithBool:YES],                       kMediaAssetLocationHasMediaKey,
+                                         [NSNumber numberWithBool:YES],                       kMediaAssetLocationHasDescriptionKey,
+                                         nil];
+
+        NSInteger assetIndex = [currentDocument addAssetAtLocation:desktopLocation
+                                                           content:FALSE
+                                                          metadata:metadataParameter
+                                                       dataOptions:dataOptionsParameter];
+        Asset *newAsset = [currentDocument.assets objectAtIndex:assetIndex];
+        
+        result = [newAsset objectSpecifier];
     }
     else {
         // ------------------------------------------------------------

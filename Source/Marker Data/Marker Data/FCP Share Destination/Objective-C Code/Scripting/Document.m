@@ -12,7 +12,6 @@
 
 #import "FCPXMetadataKeys.h"
 #import "MediaAssetHelperKeys.h"
-#import "WindowController.h"
 
 // ------------------------------------------------------------
 // Document:
@@ -68,11 +67,6 @@
     // Default location for new asset:
     // ------------------------------------------------------------
     NSDictionary* defaultAssetLocation;
-	
-    // ------------------------------------------------------------
-    // The window controller for the document window:
-    // ------------------------------------------------------------
-    WindowController *primaryWindowController;
 }
 
 // ------------------------------------------------------------
@@ -122,23 +116,11 @@
 	return self;
 }
 
-// ------------------------------------------------------------
-// Make Window Controllers:
-// ------------------------------------------------------------
-- (void)makeWindowControllers
-{
-    NSLog(@"[ShareDestinationKit] INFO - makeWindowControllers triggered!");
-    primaryWindowController = [[WindowController alloc] init];
-    [self addWindowController:primaryWindowController];
-}
-
 @synthesize collectionName;
 @synthesize collectionDescription;
 @synthesize collection;
 
 @synthesize defaultAssetLocation;
-
-@synthesize primaryWindowController;
 
 #pragma mark Scripting Support Methods
 
@@ -373,13 +355,6 @@
         }
     }
     
-    // ------------------------------------------------------------
-    // Update the User Interface:
-    // ------------------------------------------------------------
-    NSLog(@"[ShareDestinationKit] INFO - Refresh the user interface...");
-    [primaryWindowController updateOutlineView:nil];
-    [primaryWindowController updateSelectionDetailFields];
-    
     return assetIndex;
 }
 
@@ -458,13 +433,6 @@
         // ------------------------------------------------------------
         assetIndex = [self addAssetAtURL:url content:load metadata:metadataset dataOptions:dataOptions];
     }
-
-    // ------------------------------------------------------------
-    // Update the user interface:
-    // ------------------------------------------------------------
-    NSLog(@"[ShareDestinationKit] INFO - Refresh the user interface...");
-    [primaryWindowController updateOutlineView:nil];
-    [primaryWindowController updateSelectionDetailFields];
 
     return assetIndex;
 }
