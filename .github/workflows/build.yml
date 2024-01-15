@@ -25,7 +25,7 @@ on:
   workflow_dispatch:
     
   schedule:
-    - cron: '30 10 * * *'   # once a day @ 10:30am UTC (3:30am PST)
+    - cron: '0 2 * * 6'   # every Saturday at 10:00am Singapore Time (UTC+8)
 
 jobs:
   build:
