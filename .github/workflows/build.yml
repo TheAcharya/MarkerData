@@ -1,0 +1,61 @@
+name: build
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - '**/*.md'       # .md files anywhere in the repo
+      - '**/LICENSE'    # LICENSE files anywhere in the repo
+      - '**/.gitignore' # .gitignore files anywhere in the repo
+      - '**/*.png'      # .png image files anywhere in the repo
+      - '**/*.gif'      # .png image files anywhere in the repo
+      - '**/*.pdf'      # .pdf files anywhere in the repo
+      
+  pull_request:
+    branches: [main]
+    paths-ignore:
+      - '**/*.md'       # .md files anywhere in the repo
+      - '**/LICENSE'    # LICENSE files anywhere in the repo
+      - '**/.gitignore' # .gitignore files anywhere in the repo
+      - '**/*.png'      # .png image files anywhere in the repo
+      - '**/*.png'      # .png image files anywhere in the repo
+      - '**/*.gif'      # .png image files anywhere in the repo
+      - '**/*.pdf'      # .pdf files anywhere in the repo
+      
+  workflow_dispatch:
+    
+  schedule:
+    - cron: '30 10 * * *'   # once a day @ 10:30am UTC (3:30am PST)
+
+jobs:
+  build:
+    runs-on: macos-13
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: List Xcode installations
+      run: sudo ls -1 /Applications | grep "Xcode"
+      
+    - name: Select Xcode 15.2
+      run: sudo xcode-select -s /Applications/Xcode_15.2.app/Contents/Developer
+    
+    - name: Change to Project Directory
+      run: cd Source/Marker\ Data
+
+    - name: Prepare Directories
+      run: |
+        PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+        mkdir -p "$PARENT/dist/dmg-builds/app-build"
+
+    - name: Build Marker Data
+      run: |
+        PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+        PROJECT_PATH="Source/Marker Data/Marker Data.xcodeproj"
+        SCHEME="Marker Data"
+        CONFIGURATION="Debug"
+        DESTINATION="platform=macOS"
+        BUILD_FOLDER="$PARENT/dist/dmg-builds/app-build"
+        
+        xcodebuild -project "$PROJECT_PATH" -scheme "$SCHEME" -configuration "$CONFIGURATION" -destination "$DESTINATION" -derivedDataPath "$BUILD_FOLDER" clean build CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO -allowProvisioningUpdates
