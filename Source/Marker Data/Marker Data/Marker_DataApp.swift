@@ -22,6 +22,8 @@ struct Marker_DataApp: App {
     @State var sidebarSelection: MainViews = .extract
 
     let persistenceController = PersistenceController.shared
+    
+    @State var showLibraryFolderCreationAlert = false
 
     init() {
         let settings = SettingsContainer()
@@ -58,10 +60,18 @@ struct Marker_DataApp: App {
             .preferredColorScheme(.dark)
             // Set fix window size
             .frame(width: WindowSize.fullWidth, height: WindowSize.fullHeight)
+            .task {
+                // Check Library folders and create missing
+                do {
+                    try await LibraryFolders.checkAndCreateMissing()
+                } catch {
+                    self.showLibraryFolderCreationAlert = true
+                }
+            }
+            .alert("Failed to initialize all Library folders", isPresented: $showLibraryFolderCreationAlert) {}
         }
         // Set fix window size
         .windowResizability(.contentSize)
-        
         // Customise Menu Bar Commands
         .commands {
             // Removes New Window Menu Item
