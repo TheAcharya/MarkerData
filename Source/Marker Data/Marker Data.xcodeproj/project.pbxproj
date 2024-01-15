@@ -147,7 +147,6 @@
 		41C8397C2B52C9E300C6B133 /* FCPXMetadataKeys.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCPXMetadataKeys.h; sourceTree = "<group>"; };
 		41C8397E2B52C9E300C6B133 /* Asset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Asset.h; sourceTree = "<group>"; };
 		41C8397F2B52C9E300C6B133 /* MediaAssetHelperKeys.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaAssetHelperKeys.h; sourceTree = "<group>"; };
-		41C839942B52CBE900C6B133 /* ShareDestinationKit-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ShareDestinationKit-Bridging-Header.h"; sourceTree = "<group>"; };
 		41C839982B52D77200C6B133 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		41C8399A2B52D78900C6B133 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		41EBAD4F2AF7B6F200E6AF7C /* WindowSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowSize.swift; sourceTree = "<group>"; };
@@ -308,7 +307,6 @@
 			children = (
 				41C839902B52CA3300C6B133 /* Scripting */,
 				41C839912B52CAA600C6B133 /* Document Controller */,
-				41C839932B52CB2400C6B133 /* Swift Bridging Header */,
 			);
 			path = "Objective-C Code";
 			sourceTree = "<group>";
@@ -341,14 +339,6 @@
 				41C8396E2B52C9E300C6B133 /* DocumentController.m */,
 			);
 			path = "Document Controller";
-			sourceTree = "<group>";
-		};
-		41C839932B52CB2400C6B133 /* Swift Bridging Header */ = {
-			isa = PBXGroup;
-			children = (
-				41C839942B52CBE900C6B133 /* ShareDestinationKit-Bridging-Header.h */,
-			);
-			path = "Swift Bridging Header";
 			sourceTree = "<group>";
 		};
 		41F88AE12B0C8360004A3B58 /* Shell */ = {
