@@ -44,8 +44,7 @@
 		41C839862B52C9E300C6B133 /* Asset.m in Sources */ = {isa = PBXBuildFile; fileRef = 41C8396F2B52C9E300C6B133 /* Asset.m */; };
 		41C839872B52C9E300C6B133 /* FCPXMetadataKeys.m in Sources */ = {isa = PBXBuildFile; fileRef = 41C839712B52C9E300C6B133 /* FCPXMetadataKeys.m */; };
 		41C839882B52C9E300C6B133 /* OutlineViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 41C839722B52C9E300C6B133 /* OutlineViewDataSource.m */; };
-		41C839892B52C9E300C6B133 /* NewAssetSheet.xib in Resources */ = {isa = PBXBuildFile; fileRef = 41C839732B52C9E300C6B133 /* NewAssetSheet.xib */; };
-		41C8398A2B52C9E300C6B133 /* Document.xib in Resources */ = {isa = PBXBuildFile; fileRef = 41C839752B52C9E300C6B133 /* Document.xib */; };
+		41C839892B52C9E300C6B133 /* PrepareExport.xib in Resources */ = {isa = PBXBuildFile; fileRef = 41C839732B52C9E300C6B133 /* PrepareExport.xib */; };
 		41C8398B2B52C9E300C6B133 /* MediaAssetHelperKeys.m in Sources */ = {isa = PBXBuildFile; fileRef = 41C839762B52C9E300C6B133 /* MediaAssetHelperKeys.m */; };
 		41C8398D2B52C9E300C6B133 /* ApplicationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 41C8397D2B52C9E300C6B133 /* ApplicationDelegate.m */; };
 		41C8398E2B52C9E300C6B133 /* WindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 41C839802B52C9E300C6B133 /* WindowController.m */; };
@@ -146,9 +145,8 @@
 		41C839702B52C9E300C6B133 /* ApplicationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplicationDelegate.h; sourceTree = "<group>"; };
 		41C839712B52C9E300C6B133 /* FCPXMetadataKeys.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FCPXMetadataKeys.m; sourceTree = "<group>"; };
 		41C839722B52C9E300C6B133 /* OutlineViewDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OutlineViewDataSource.m; sourceTree = "<group>"; };
-		41C839732B52C9E300C6B133 /* NewAssetSheet.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewAssetSheet.xib; sourceTree = "<group>"; };
+		41C839732B52C9E300C6B133 /* PrepareExport.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PrepareExport.xib; sourceTree = "<group>"; };
 		41C839742B52C9E300C6B133 /* WindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowController.h; sourceTree = "<group>"; };
-		41C839752B52C9E300C6B133 /* Document.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Document.xib; sourceTree = "<group>"; };
 		41C839762B52C9E300C6B133 /* MediaAssetHelperKeys.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaAssetHelperKeys.m; sourceTree = "<group>"; };
 		41C839772B52C9E300C6B133 /* ScriptingSupportCategories.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScriptingSupportCategories.h; sourceTree = "<group>"; };
 		41C839792B52C9E300C6B133 /* DocumentController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DocumentController.h; sourceTree = "<group>"; };
@@ -335,8 +333,7 @@
 				41C839802B52C9E300C6B133 /* WindowController.m */,
 				41C839812B52C9E300C6B133 /* OutlineViewDataSource.h */,
 				41C839722B52C9E300C6B133 /* OutlineViewDataSource.m */,
-				41C839752B52C9E300C6B133 /* Document.xib */,
-				41C839732B52C9E300C6B133 /* NewAssetSheet.xib */,
+				41C839732B52C9E300C6B133 /* PrepareExport.xib */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -669,11 +666,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				41C8398A2B52C9E300C6B133 /* Document.xib in Resources */,
 				417272A42B48665A005A04BE /* csv2notion_neo in Resources */,
 				D5F74A382972D32100EEE2FE /* Preview Assets.xcassets in Resources */,
 				D5F74A352972D32100EEE2FE /* Assets.xcassets in Resources */,
-				41C839892B52C9E300C6B133 /* NewAssetSheet.xib in Resources */,
+				41C839892B52C9E300C6B133 /* PrepareExport.xib in Resources */,
 				414262C52ADAC6EC00FC6CFC /* DefaultConfiguration.json in Resources */,
 				41C839312B52C82A00C6B133 /* OSAScriptingDefinition.sdef in Resources */,
 			);

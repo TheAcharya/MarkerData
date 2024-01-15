@@ -57,6 +57,7 @@
 			<key>CFBundleTypeExtensions</key>
 			<array>
 				<string>fcpxml</string>
+				<string>fcpxmld</string>
 			</array>
 			<key>CFBundleTypeIconSystemGenerated</key>
 			<integer>1</integer>

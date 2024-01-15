@@ -12,6 +12,6 @@
 
 @interface ApplicationDelegate : NSObject <NSApplicationDelegate>
 
-- (void)application:(NSApplication *)sender openFiles:(NSArray *)filenames;
+//- (void)application:(NSApplication *)sender openFiles:(NSArray *)filenames;
 
 @end
