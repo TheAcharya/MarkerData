@@ -7,6 +7,7 @@
 
 import Foundation
 import Cocoa
+import OSLog
 
 class ApplicationDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
@@ -29,15 +30,11 @@ class ApplicationDelegate: NSObject, NSApplicationDelegate {
             if let fileDescriptor = descriptorList.atIndex(index),
                let urlString = fileDescriptor.stringValue,
                let url = URL(string: urlString) {
-                print("kAEOpen received file at URL: \(url)")
                 
-                let alert = NSAlert()
-                alert.messageText = "kAEOpen Received"
-                alert.informativeText = "File Received: \(url.path)"
-                alert.alertStyle = .informational
-                alert.addButton(withTitle: "OK")
+                let logger = Logger()
+                logger.notice("Open event has received file at URL: \(url)")
                 
-                alert.runModal()
+                NotificationCenter.default.post(name: Notification.Name("OpenFile"), object: nil, userInfo: ["url": url])
             }
         }
     }
