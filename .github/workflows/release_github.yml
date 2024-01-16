@@ -10,17 +10,32 @@ on:
       
 jobs:
   install:
-    runs-on: macos-latest
+    runs-on: macos-13
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
+      
+    - name: List Xcode installations
+      run: sudo ls -1 /Applications | grep "Xcode"
+      
+    - name: Select Xcode 15.2
+      run: sudo xcode-select -s /Applications/Xcode_15.2.app/Contents/Developer
+    
+    - name: Change to Xcode Project Directory
+      run: cd Source/Marker\ Data
 
     - name: Install node-appdmg
       run: npm install -g appdmg
       
     - name: Create Distribution Directory
       run: mkdir -p dist/dmg-builds
+    
+    - name: Prepare Directories
+      run: |
+        PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+        mkdir -p "$PARENT/dist/dmg-builds/latest-build"
+        mkdir -p "$PARENT/dist/dmg-builds/app-build"
 
     - name: Copy Local Distribution 
       run: |
@@ -42,6 +57,19 @@ jobs:
         echo "Checking copied files..."
         ls -l ./dist/dmg-builds/dmg-output
 
+    - name: Build Marker Data
+      run: |
+        PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+        PROJECT_PATH="Source/Marker Data/Marker Data.xcodeproj"
+        SCHEME="Marker Data"
+        CONFIGURATION="Release"
+        DESTINATION="platform=macOS"
+        BUILD_FOLDER="$PARENT/dist/dmg-builds/app-build"
+        echo "PARENT=$PARENT" >> $GITHUB_ENV
+        echo "CONFIG=$CONFIGURATION" >> $GITHUB_ENV
+
+        xcodebuild -project "$PROJECT_PATH" -scheme "$SCHEME" -configuration "$CONFIGURATION" -destination "$DESTINATION" -derivedDataPath "$BUILD_FOLDER" clean build CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO -allowProvisioningUpdates | xcpretty
+        
     - name: Prepare VM Directories
       run: |
         PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
@@ -51,77 +79,11 @@ jobs:
         mkdir -p "$PARENT/dist/dmg-builds/uninstaller/include"
         
         cp -R ./Distribution/dmg-builds/uninstaller/include/applet.icns "$PARENT/dist/dmg-builds/uninstaller/include/"
-        cp -R ./Distribution/dmg-builds/uninstaller/include/entitlements.plist "$PARENT/dist/dmg-builds/uninstaller/include/"
         cp -R ./Distribution/dmg-builds/uninstaller/include/Uninstall\ Marker\ Data.scpt "$PARENT/dist/dmg-builds/uninstaller/include/"
         cp -R ./Distribution/dmg-builds/build-marker-data-dmg.json "$PARENT/dist/dmg-builds/"
-        cp -R ./Distribution/dmg-builds/latest-build/Marker\ Data.app "$PARENT/dist/dmg-builds/latest-build/"
+        cp -R $PARENT/dist/dmg-builds/app-build/Build/Products/${{ env.CONFIG }}/Marker\ Data.app "$PARENT/dist/dmg-builds/latest-build/"
         cp -R ./Distribution/dmg-builds/dmg-background.png "$PARENT/dist/dmg-builds/"
         cp -R ./Distribution/dmg-builds/marker-data-dmg-icon.icns "$PARENT/dist/dmg-builds/"
-        
-    - name: Build Uninstaller
-      run: |
-        PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
-        UAPP="$PARENT/dist/dmg-builds/latest-build/Uninstall Marker Data.app"
-        SCRIPT="$PARENT/dist/dmg-builds/uninstaller/include/Uninstall Marker Data.scpt"
-        ENTITLE="$PARENT/dist/dmg-builds/uninstaller/include/entitlements.plist"
-        ICON="$PARENT/dist/dmg-builds/uninstaller/include/applet.icns"
-
-        rm -rf "$UAPP"
-        osacompile -x -o "$UAPP" "$SCRIPT"
-        cp "$ICON" "$UAPP"/Contents/Resources/applet.icns
-        xattr -cr "$UAPP"
-        
-    - name: Verify Uninstaller
-      run: |
-        echo "Checking copied files..."
-        ls -l ./dist/dmg-builds/latest-build
-
-    - name: Codesign Uninstaller
-      env: 
-        APPLE_CERT_DATA: ${{ secrets.APPLE_CERT_DATA }}
-        APPLE_CERT_PASSWORD: ${{ secrets.APPLE_CERT_PASSWORD }}
-        KEYCHAIN_PASSWORD_U: ${{ secrets.KEYCHAIN_PASSWORD_U }}
-        APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
-      run: |
-        PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
-        ENTITLE="$PARENT/dist/dmg-builds/uninstaller/include/entitlements.plist"
-        UAPP="$PARENT/dist/dmg-builds/latest-build/Uninstall Marker Data.app"
-        
-        echo $APPLE_CERT_DATA | base64 --decode > certificate.p12
-        security create-keychain -p $KEYCHAIN_PASSWORD_U build-u.keychain
-        security default-keychain -s build-u.keychain
-        security unlock-keychain -p $KEYCHAIN_PASSWORD_U build-u.keychain
-        security import certificate.p12 -k build-u.keychain -P $APPLE_CERT_PASSWORD -T /usr/bin/codesign
-        security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k $KEYCHAIN_PASSWORD_U build-u.keychain
-        /usr/bin/codesign --force -s $APPLE_TEAM_ID --identifier "co.theacharya.MarkerData.Uninstaller" --options runtime --entitlements "$ENTITLE" "$UAPP" -v
-        
-    - name: Notarize Uninstaller
-      env:
-        APPLE_DEV_ID: ${{ secrets.APPLE_DEV_ID }}
-        APPLE_DEV_ID_PASSWORD: ${{ secrets.APPLE_DEV_ID_PASSWORD }}
-        APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
-      run: |
-        PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
-        UAPP="$PARENT/dist/dmg-builds/latest-build/Uninstall Marker Data.app"
-    
-        echo "Create keychain profile"
-        xcrun notarytool store-credentials "notarytool-profile" --apple-id $APPLE_DEV_ID --password $APPLE_DEV_ID_PASSWORD --team-id $APPLE_TEAM_ID
-        
-        echo "Creating temp notarization archive"
-        ditto -c -k --keepParent "$UAPP" "notarization-u.zip"
-        
-        echo "Notarize app"
-        xcrun notarytool submit "notarization-u.zip" --keychain-profile "notarytool-profile" --progress --wait
-        
-        echo "Attach staple"
-        xcrun stapler staple "$UAPP"
-        
-    - name: Verify Codesign Uninstaller
-      run: |
-        PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
-        UAPP="$PARENT/dist/dmg-builds/latest-build/Uninstall Marker Data.app"
-
-        /usr/bin/codesign -dv --verbose=4 "$UAPP"
         
     - name: Codesign Marker Data
       env: 
@@ -162,12 +124,61 @@ jobs:
         echo "Attach staple"
         xcrun stapler staple "$APP"
         
-    - name: Verify Codesign Marker Data
+    - name: Build Uninstaller
       run: |
         PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
-        APP="$PARENT/dist/dmg-builds/latest-build/Marker Data.app"
+        UAPP="$PARENT/dist/dmg-builds/latest-build/Uninstall Marker Data.app"
+        SCRIPT="$PARENT/dist/dmg-builds/uninstaller/include/Uninstall Marker Data.scpt"
+        ICON="$PARENT/dist/dmg-builds/uninstaller/include/applet.icns"
 
-        /usr/bin/codesign -dv --verbose=4 "$APP"
+        rm -rf "$UAPP"
+        osacompile -x -o "$UAPP" "$SCRIPT"
+        cp "$ICON" "$UAPP"/Contents/Resources/applet.icns
+        xattr -cr "$UAPP"
+        
+    - name: Verify Uninstaller
+      run: |
+        echo "Checking copied files..."
+        ls -l ./dist/dmg-builds/latest-build
+
+    - name: Codesign Uninstaller
+      env: 
+        APPLE_CERT_DATA: ${{ secrets.APPLE_CERT_DATA }}
+        APPLE_CERT_PASSWORD: ${{ secrets.APPLE_CERT_PASSWORD }}
+        KEYCHAIN_PASSWORD_U: ${{ secrets.KEYCHAIN_PASSWORD_U }}
+        APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+      run: |
+        PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+        UAPP="$PARENT/dist/dmg-builds/latest-build/Uninstall Marker Data.app"
+        
+        echo $APPLE_CERT_DATA | base64 --decode > certificate.p12
+        security create-keychain -p $KEYCHAIN_PASSWORD_U build-u.keychain
+        security default-keychain -s build-u.keychain
+        security unlock-keychain -p $KEYCHAIN_PASSWORD_U build-u.keychain
+        security import certificate.p12 -k build-u.keychain -P $APPLE_CERT_PASSWORD -T /usr/bin/codesign
+        security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k $KEYCHAIN_PASSWORD_U build-u.keychain
+        /usr/bin/codesign --force -s $APPLE_TEAM_ID --options runtime "$UAPP" -v
+        
+    - name: Notarize Uninstaller
+      env:
+        APPLE_DEV_ID: ${{ secrets.APPLE_DEV_ID }}
+        APPLE_DEV_ID_PASSWORD: ${{ secrets.APPLE_DEV_ID_PASSWORD }}
+        APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+      run: |
+        PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+        UAPP="$PARENT/dist/dmg-builds/latest-build/Uninstall Marker Data.app"
+    
+        echo "Create keychain profile"
+        xcrun notarytool store-credentials "notarytool-profile" --apple-id $APPLE_DEV_ID --password $APPLE_DEV_ID_PASSWORD --team-id $APPLE_TEAM_ID
+        
+        echo "Creating temp notarization archive"
+        ditto -c -k --keepParent "$UAPP" "notarization-u.zip"
+        
+        echo "Notarize app"
+        xcrun notarytool submit "notarization-u.zip" --keychain-profile "notarytool-profile" --progress --wait
+        
+        echo "Attach staple"
+        xcrun stapler staple "$UAPP"
         
     - name: Build DMG
       run: |
@@ -200,7 +211,7 @@ jobs:
         security unlock-keychain -p $KEYCHAIN_PASSWORD_D build-d.keychain
         security import certificate.p12 -k build-d.keychain -P $APPLE_CERT_PASSWORD -T /usr/bin/codesign
         security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k $KEYCHAIN_PASSWORD_D build-d.keychain
-        /usr/bin/codesign --force -s $APPLE_TEAM_ID --identifier "Marker Data Installer" --options runtime "$DMG""$VER.dmg" -v
+        /usr/bin/codesign --force -s $APPLE_TEAM_ID --options runtime "$DMG""$VER.dmg" -v
         
     - name: Notarize DMG
       env:
@@ -220,14 +231,6 @@ jobs:
         
         echo "Attach staple"
         xcrun stapler staple "$DMG""$VER.dmg"
-        
-    - name: Verify Codesign DMG
-      run: |
-        PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
-        VER=$(cat ./Distribution/version.txt)
-        DMG="$PARENT/dist/dmg-builds/dmg-output/Marker-Data_"
-    
-        /usr/bin/codesign -dv --verbose=4 "$DMG""$VER.dmg"
     
     - name: Create Environment Files
       run: |
