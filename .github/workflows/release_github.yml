@@ -79,6 +79,7 @@ jobs:
         mkdir -p "$PARENT/dist/dmg-builds/uninstaller/include"
         
         cp -R ./Distribution/dmg-builds/uninstaller/include/applet.icns "$PARENT/dist/dmg-builds/uninstaller/include/"
+        cp -R ./Distribution/dmg-builds/uninstaller/include/entitlements.plist "$PARENT/dist/dmg-builds/uninstaller/include/"
         cp -R ./Distribution/dmg-builds/uninstaller/include/Uninstall\ Marker\ Data.scpt "$PARENT/dist/dmg-builds/uninstaller/include/"
         cp -R ./Distribution/dmg-builds/build-marker-data-dmg.json "$PARENT/dist/dmg-builds/"
         cp -R $PARENT/dist/dmg-builds/app-build/Build/Products/${{ env.CONFIG }}/Marker\ Data.app "$PARENT/dist/dmg-builds/latest-build/"
@@ -129,6 +130,7 @@ jobs:
         PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
         UAPP="$PARENT/dist/dmg-builds/latest-build/Uninstall Marker Data.app"
         SCRIPT="$PARENT/dist/dmg-builds/uninstaller/include/Uninstall Marker Data.scpt"
+        ENTITLE="$PARENT/dist/dmg-builds/uninstaller/include/entitlements.plist"
         ICON="$PARENT/dist/dmg-builds/uninstaller/include/applet.icns"
 
         rm -rf "$UAPP"
@@ -149,6 +151,7 @@ jobs:
         APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
       run: |
         PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+        ENTITLE="$PARENT/dist/dmg-builds/uninstaller/include/entitlements.plist"
         UAPP="$PARENT/dist/dmg-builds/latest-build/Uninstall Marker Data.app"
         
         echo $APPLE_CERT_DATA | base64 --decode > certificate.p12
@@ -157,7 +160,7 @@ jobs:
         security unlock-keychain -p $KEYCHAIN_PASSWORD_U build-u.keychain
         security import certificate.p12 -k build-u.keychain -P $APPLE_CERT_PASSWORD -T /usr/bin/codesign
         security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k $KEYCHAIN_PASSWORD_U build-u.keychain
-        /usr/bin/codesign --force -s $APPLE_TEAM_ID --options runtime "$UAPP" -v
+        /usr/bin/codesign --force -s $APPLE_TEAM_ID --identifier "co.theacharya.MarkerData.Uninstaller" --options runtime --entitlements "$ENTITLE" "$UAPP" -v
         
     - name: Notarize Uninstaller
       env:
@@ -211,7 +214,7 @@ jobs:
         security unlock-keychain -p $KEYCHAIN_PASSWORD_D build-d.keychain
         security import certificate.p12 -k build-d.keychain -P $APPLE_CERT_PASSWORD -T /usr/bin/codesign
         security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k $KEYCHAIN_PASSWORD_D build-d.keychain
-        /usr/bin/codesign --force -s $APPLE_TEAM_ID --options runtime "$DMG""$VER.dmg" -v
+        /usr/bin/codesign --force -s $APPLE_TEAM_ID --identifier "Marker Data Installer" --options runtime "$DMG""$VER.dmg" -v
         
     - name: Notarize DMG
       env:
