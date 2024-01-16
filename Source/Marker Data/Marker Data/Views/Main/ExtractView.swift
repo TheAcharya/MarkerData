@@ -15,6 +15,8 @@ struct ExtractView: View {
     
     @Environment(\.openWindow) var openWindow
     
+    @AppStorage("showFCPShareDestinationCard") var showInstallShareDestination = true
+    
     var body: some View {
         VStack {
             // Drag And Drop File Zone
@@ -29,10 +31,12 @@ struct ExtractView: View {
                     Spacer()
                     
                     // Install share destination card
-                    InstallShareDestinationCard()
+                    if showInstallShareDestination {
+                        InstallShareDestinationView()
+                    }
                     
                     // Progress
-                    if extractionModel.showProgress {
+                    if extractionModel.showProgressUI {
                         ExtractionAndUploadProgressView(extractionModel: extractionModel)
                     }
                 }
@@ -123,66 +127,55 @@ struct ExtractView: View {
     
         var body: some View {
             VStack(alignment: .leading) {
-                // Extraction progress
-                ExportProgressView(progressModel: extractionModel.extractionProgress)
-                    .padding(.bottom, 5)
-                
-                // Upload progress
-                if UnifiedExportProfile.load()?.exportProfileType == .extractAndUpload {
-                    ExportProgressView(progressModel: extractionModel.uploadProgress)
+                // External file
+                if extractionModel.externalFileRecieved {
+                    HStack {
+                        PulsingIcon(
+                            icon: "folder.circle.fill",
+                            iconSize: 36
+                        )
+                        
+                        VStack(alignment: .leading) {
+                            Text("External File Recieved")
+                                .font(.title2)
+                            
+                            Text("Select export profile then contiue.")
+                        }
+                        
+                        Spacer()
+                        
+                        // Start extraction button
+                        Button {
+                            withAnimation {
+                                extractionModel.processExternalFile()
+                            }
+                        } label: {
+                            Label("Extract", systemImage: "gearshape.2")
+                        }
+                        .buttonStyle(.borderedProminent)
+
+                        Button("Cancel") {
+                            withAnimation {
+                                extractionModel.cancelExternalFile()
+                            }
+                        }
+                    }
+                } else {
+                    // Extraction progress
+                    ExportProgressView(progressModel: extractionModel.extractionProgress)
+                        .padding(.bottom, 5)
+                    
+                    // Upload progress
+                    if UnifiedExportProfile.load()?.exportProfileType == .extractAndUpload {
+                        ExportProgressView(progressModel: extractionModel.uploadProgress)
+                    }
                 }
                 
                 // All complete footer
                 if showAllCompleteFooter {
                     Divider()
                     
-                    HStack {
-                        // Show exit status
-                        Group {
-                            if extractionModel.exportResult == .success {
-                                Label("All Complete", systemImage: "checkmark.circle")
-                                    .foregroundStyle(.green)
-                            } else {
-                                Label("Error", systemImage: "exclamationmark.circle")
-                                    .foregroundStyle(.yellow)
-                            }
-                        }
-                        .font(.title3)
-                        
-                        // Show failed tasks button
-                        if extractionModel.exportResult == .failed {
-                            Button {
-                                openWindow(value: extractionModel.failedTasks)
-                            } label: {
-                                Label("Show Error Details", systemImage: "info.circle")
-                            }
-                        }
-                        
-                        Spacer()
-                        
-                        // Open in Finder button
-                        Button {
-                            if let url = extractionModel.completedOutputFolder {
-                                NSWorkspace.shared.open(url)
-                            }
-                        } label: {
-                            Label("Show in Finder", systemImage: "folder")
-                        }
-                        
-                        // Close button
-                        Button {
-                            Task {
-                                await MainActor.run {
-                                    withAnimation {
-                                        showAllCompleteFooter = false
-                                        extractionModel.showProgress = false
-                                    }
-                                }
-                            }
-                        } label: {
-                            Label("Close", systemImage: "xmark")
-                        }
-                    }
+                    allCompleteFooter
                     .padding(.top, 5)
                 }
             }
@@ -197,6 +190,55 @@ struct ExtractView: View {
             .onChange(of: extractionModel.exportResult) { result in
                 withAnimation(.easeOut(duration: 1)) {
                     showAllCompleteFooter = result != .none
+                }
+            }
+        }
+        
+        /// Footer shown when all extractions are complete
+        var allCompleteFooter: some View {
+            HStack {
+                // Show exit status
+                Group {
+                    if extractionModel.exportResult == .success {
+                        Label("All Complete", systemImage: "checkmark.circle")
+                            .foregroundStyle(.green)
+                    } else {
+                        Label("Error", systemImage: "exclamationmark.circle")
+                            .foregroundStyle(.yellow)
+                    }
+                }
+                .font(.title3)
+                
+                // Show failed tasks button
+                if extractionModel.exportResult == .failed {
+                    Button {
+                        openWindow(value: extractionModel.failedTasks)
+                    } label: {
+                        Label("Show Error Details", systemImage: "info.circle")
+                    }
+                }
+                
+                Spacer()
+                
+                // Open in Finder button
+                Button {
+                    if let url = extractionModel.completedOutputFolder {
+                        NSWorkspace.shared.open(url)
+                    }
+                } label: {
+                    Label("Show in Finder", systemImage: "folder")
+                }
+                
+                // Close button
+                Button {
+                    withAnimation {
+                        self.showAllCompleteFooter = false
+                        extractionModel.showProgressUI = false
+                    }
+                    
+                    extractionModel.clearProgress()
+                } label: {
+                    Label("Close", systemImage: "xmark")
                 }
             }
         }
@@ -289,47 +331,6 @@ struct ExtractView: View {
             .padding()
             .background(.black)
             .shadow(radius: 10)
-        }
-    }
-    
-    struct InstallShareDestinationCard: View {
-        @AppStorage("showFCPShareDestinationCard") var showSelf = true
-        
-        var body: some View {
-            if showSelf {
-                HStack {
-                    VStack(alignment: .leading) {
-                        Text("Install Final Cut Pro Share Extension")
-                            .bold()
-                        
-                        Text("Simplify your workflow by adding Marker Data to FCP share menu")
-                            .fontWeight(.light)
-                    }
-                    
-                    Spacer()
-                    
-                    Button {
-                        
-                    } label: {
-                        Label("Install", systemImage: "square.and.arrow.down.fill")
-                    }
-                    
-                    Button {
-                        withAnimation {
-                            showSelf = false
-                        }
-                    } label: {
-                        Label("Don't show again", systemImage: "xmark")
-                    }
-                    .labelStyle(.iconOnly)
-                    .help("Don't show again")
-                }
-                .padding()
-                .background(.linearGradient(colors: [.black, Color.darkPurple], startPoint: .leading, endPoint: .trailing))
-                .clipShape(RoundedRectangle(cornerRadius: 8))
-            } else {
-                EmptyView()
-            }
         }
     }
 }

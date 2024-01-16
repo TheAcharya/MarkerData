@@ -22,6 +22,8 @@ struct Marker_DataApp: App {
     @State var sidebarSelection: MainViews = .extract
 
     let persistenceController = PersistenceController.shared
+    
+    @State var showLibraryFolderCreationAlert = false
 
     init() {
         let settings = SettingsContainer()
@@ -40,10 +42,10 @@ struct Marker_DataApp: App {
         self._databaseManager = StateObject(wrappedValue: databaseManager)
     }
     
+    @NSApplicationDelegateAdaptor(ApplicationDelegate.self) var appDelegate
     var body: some Scene {
         //Make Main Window Group To Launch Into
         WindowGroup {
-
             // MARK: ContentView
             ContentView(
                 extractionModel: self.extractionModel,
@@ -57,10 +59,18 @@ struct Marker_DataApp: App {
             .preferredColorScheme(.dark)
             // Set fix window size
             .frame(width: WindowSize.fullWidth, height: WindowSize.fullHeight)
+            .task {
+                // Check Library folders and create missing
+                do {
+                    try await LibraryFolders.checkAndCreateMissing()
+                } catch {
+                    self.showLibraryFolderCreationAlert = true
+                }
+            }
+            .alert("Failed to initialize all Library folders", isPresented: $showLibraryFolderCreationAlert) {}
         }
         // Set fix window size
         .windowResizability(.contentSize)
-        
         // Customise Menu Bar Commands
         .commands {
             // Removes New Window Menu Item
@@ -69,14 +79,7 @@ struct Marker_DataApp: App {
             // Removes Toolbar Menu Items
             CommandGroup(replacing: .toolbar) {}
             
-            // TODO: Add "Install Share Extension" item
-            
-            // Replace about
-            CommandGroup(replacing: .appInfo) {
-                Button("About Marker Data") {
-                    sidebarSelection = .about
-                }
-            }
+            AppCommands(sidebarSelection: $sidebarSelection)
             
             SidebarCommands()
             

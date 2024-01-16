@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import Combine
 import OSLog
 
 /// Holds and modifies configurations
@@ -31,7 +32,7 @@ class ConfigurationsModel: ObservableObject {
     static let configurationNameCharacterLimit = 50
     
     /// Used by other objects to update their state when configurations are modified
-    public var changeHandlers: [() -> Void] = []
+    public let changePublisher = PassthroughSubject<Void, Never>()
     
     init() {
         // Create configurations directory in case it doesn't exist yet
@@ -161,9 +162,7 @@ class ConfigurationsModel: ObservableObject {
         }
         
         // Call change handlers
-        for hander in changeHandlers {
-            hander()
-        }
+        self.changePublisher.send()
         
         // Set active configuration
         self.activeConfiguration = configurationName

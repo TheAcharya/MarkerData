@@ -15,8 +15,14 @@ class ExtractionModel: ObservableObject, DropDelegate {
     @Published var dropPoint: CGPoint? = nil
     @Published var isDropping = false
     
+    /// Controls whether progress UI is shown in the ExtractView
+    @Published var showProgressUI = false
+    /// Extraction currently is in progress
     @Published var extractionInProgress = false
-    @Published var showProgress = false
+    /// External file recieved
+    @Published var externalFileRecieved = false
+    @Published var externalFileURL: URL? = nil
+    /// Extraction exit result/status
     @Published var exportResult: ExportExitStatus = .none
     @Published var completedOutputFolder: URL? = nil
     
@@ -34,6 +40,20 @@ class ExtractionModel: ObservableObject, DropDelegate {
         self.errorViewModel = ErrorViewModel()
         self.settings = settings
         self.databaseManager = databaseManager
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(handleOpenDocument(notification:)), name: Notification.Name("OpenFile"), object: nil)
+    }
+    
+    @objc func handleOpenDocument(notification: Notification) {
+        if let url = notification.userInfo?["url"] as? URL {
+            Self.logger.notice("DocumentHandler: Received url: \(url)")
+            
+            if url.conformsToType(Self.supportedContentTypes) {
+                self.showProgressUI = true
+                self.externalFileRecieved = true
+                self.externalFileURL = url
+            }
+        }
     }
 
     func dropEntered(info: DropInfo) {
@@ -106,13 +126,38 @@ class ExtractionModel: ObservableObject, DropDelegate {
         return info.hasItemsConforming(to: Self.supportedContentTypes)
     }
     
-    func performExtraction(_ urls: [URL]) async {
+    public func processExternalFile() {
+        defer {
+            self.externalFileRecieved = false
+            self.externalFileURL = nil
+        }
+        
+        guard let url = self.externalFileURL else {
+            return
+        }
+        
+        Task {
+            await self.performExtraction([url])
+        }
+    }
+    
+    public func cancelExternalFile() {
+        self.showProgressUI = false
+        self.externalFileRecieved = false
+        self.externalFileURL = nil
+    }
+    
+    public func clearProgress() {
+        self.exportResult = .none
+        self.completedOutputFolder = nil
+        self.failedTasks.removeAll()
+        self.extractionProgress.reset()
+        self.uploadProgress.reset()
+    }
+    
+    public func performExtraction(_ urls: [URL]) async {
         func resetVariables() {
-            self.exportResult = .none
-            self.completedOutputFolder = nil
-            self.failedTasks.removeAll()
-            self.extractionProgress.reset()
-            self.uploadProgress.reset()
+            self.clearProgress()
         }
         
         func validateExportDestination() throws {
@@ -135,7 +180,7 @@ class ExtractionModel: ObservableObject, DropDelegate {
             
             // Show extraction progress
             await MainActor.run {
-                self.showProgress = true
+                self.showProgressUI = true
             }
         }
         

@@ -6,13 +6,17 @@
 //
 
 import SwiftUI
+import Combine
 import FilePicker
 
 struct ExportDestinationPicker: View {
     @EnvironmentObject var settings: SettingsContainer
+    @EnvironmentObject var configurationsModel: ConfigurationsModel
     
     @State var exportDestinationText = ""
     @State var showWarning = false
+    
+    @State var configurationUpdaterCancellable: AnyCancellable? = nil
     
     var body: some View {
         HStack {
@@ -59,6 +63,17 @@ struct ExportDestinationPicker: View {
         .background(.black)
         .clipShape(RoundedRectangle(cornerRadius: 6))
         .shadow(color: .white, radius: 1)
+        .onAppear {
+            self.configurationUpdaterCancellable = configurationsModel.changePublisher
+                .sink {
+                    updateExportDestinationText()
+                }
+        }
+        .onDisappear {
+            if let cancellable = self.configurationUpdaterCancellable {
+                cancellable.cancel()
+            }
+        }
         .contextMenu {
             // Full path
             Section("Full Path") {

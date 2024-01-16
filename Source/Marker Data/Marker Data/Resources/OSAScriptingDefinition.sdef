@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dictionary SYSTEM "file://localhost/System/Library/DTDs/sdef.dtd">
+
+<!-- declare the namespace for using XInclude so you can include the standard suite -->
+<dictionary xmlns:xi="http://www.w3.org/2003/XInclude">
+ 
+  <!-- use XInclude to include the standard suite -->
+  <xi:include href="file:///System/Library/ScriptingDefinitions/CocoaStandard.sdef" xpointer="xpointer(/dictionary/suite)"/>
+ 
+  <!-- specific suite(s) for the application follow... -->
+  <suite name="ProVideo Asset Management" code="pvam" description="Scripting terminology for Pro Video Asset Management applications.">
+ 
+    <record-type name="asset location" code="aslc">
+      <access-group identifier="com.apple.proapps.assetmanagement.import" access="rw"/>
+      <property name="folder" code="asfd" type="file" description="Directory in which the asset files exist.">
+        <cocoa key="folder"/>
+      </property>
+      <property name="base name" code="asbn" type="text" description="Base file name of the asset files.">
+        <cocoa key="basename"/>
+      </property>
+      <property name="has media" code="ashm" type="boolean" description="Whether the asset has rendered media">
+        <cocoa key="hasMedia"/>
+      </property>
+      <property name="has description" code="ashd" type="boolean" description="Whether the asset has an XML description">
+        <cocoa key="hasDescription"/>
+      </property>
+    </record-type>
+ 
+    <!-- record type for library access -->
+    <record-type name="library location" code="lblc">
+      <access-group identifier="com.apple.proapps.assetmanagement.import" access="rw"/>
+      <property name="library folder" code="lbfd" type="file" description="Directory in which the library files exist.">
+        <cocoa key="folder"/>
+      </property>
+      <property name="library base name" code="lbbn" type="text" description="Base file name of the library files.">
+        <cocoa key="basename"/>
+      </property>
+      <property name="has archive" code="lbha" type="boolean" description="Whether the library has data for archive.">
+        <cocoa key="hasArchive"/>
+      </property>
+      <property name="has library description" code="lbhd" type="boolean" description="Whether the library has an XML description.">
+        <cocoa key="hasDescription"/>
+      </property>
+    </record-type>
+ 
+    <value-type name="user defined record" code="usrf">
+      <cocoa class="NSDictionary"/>
+    </value-type>
+ 
+    <command name="open" code="aevtodoc" description="Open a document.">
+      <access-group identifier="com.apple.proapps.assetmanagement.import" access="rw"/>
+      <direct-parameter description="The file(s) to be opened.">
+        <type type="file"/>
+        <type type="file" list="yes"/>
+      </direct-parameter>
+      <result description="The opened document(s).">
+        <type type="document"/>
+        <type type="document" list="yes"/>
+      </result>
+    </command>
+ 
+    <command name="make" code="corecrel" description="Create a new object.">
+      <access-group identifier="com.apple.proapps.assetmanagement.import" access="rw"/>
+      <cocoa class="MakeCommand"/>
+      <parameter name="new" code="kocl" type="type" description="The class of the new object.">
+        <cocoa key="ObjectClass"/>
+      </parameter>
+      <parameter name="at" code="insh" type="location specifier" optional="yes" description="The location at which to insert the object.">
+        <cocoa key="Location"/>
+      </parameter>
+      <parameter name="with data" code="data" type="any" optional="yes" description="The initial contents of the object.">
+        <cocoa key="ObjectData"/>
+      </parameter>
+      <parameter name="with properties" code="prdt" type="record" optional="yes" description="The initial values for properties of the object.">
+        <cocoa key="KeyDictionary"/>
+      </parameter>
+      <result type="specifier" description="The new object."/>
+    </command>
+ 
+    <class-extension name="application" extends="application">
+      <access-group identifier="com.apple.proapps.assetmanagement.import" access="rw"/>
+      <cocoa class="NSApplication"/>
+      <property name="name" code="pnam" type="text" access="r" description="The name of the application.">
+        <access-group identifier="com.apple.proapps.assetmanagement.import" access="rw"/>
+      </property>
+      <element type="document">
+        <access-group identifier="com.apple.proapps.assetmanagement.import" access="rw"/>
+      </element>
+    </class-extension>
+ 
+    <class name="document" code="docu" description="A document." inherits="document">
+      <access-group identifier="com.apple.proapps.assetmanagement.import" access="rw"/>
+      <cocoa class="Document"/>
+      <property name="name" code="pnam" type="text" access="r" description="The name of the application.">
+        <access-group identifier="com.apple.assetmanagement.import" access="rw"/>
+      </property>
+      <property name="id" code="ID  " type="text" access="r" description="The unique identifier of the asset">
+        <access-group identifier="com.apple.assetmanagement.import" access="rw"/>
+      </property>
+      <element type="asset">
+        <access-group identifier="com.apple.assetmanagement.import" access="rw"/>
+        <cocoa key="assets"/>
+      </element>
+    </class>
+ 
+    <class name="asset" code="aset" description="A media asset.">
+      <access-group identifier="com.apple.assetmanagement.import" access="rw"/>
+      <cocoa class="Asset"/>
+      <property name="id" code="ID  " type="text" access="r" description="The unique identifier of the asset">
+        <access-group identifier="com.apple.assetmanagement.import" access="rw"/>
+        <cocoa key="uniqueID"/>
+      </property>
+      <property name="name" code="pnam" type="text" access="r" description="Its name.">
+        <access-group identifier="com.apple.assetmanagement.import" access="rw"/>
+        <cocoa key="name"/>
+      </property>
+      <property name="location info" code="locn" type="asset location" access="r" description="Location information of the asset.">
+        <access-group identifier="com.apple.assetmanagement.import" access="rw"/>
+        <cocoa key="locationInfo"/>
+      </property>
+      <property name="library info" code="lbry" type="library location" access="r" description="Location information of the containing library in the source.">
+        <access-group identifier="com.apple.assetmanagement.import" access="rw"/>
+        <cocoa key="libraryInfo"/>
+      </property>
+      <property name="metadata" code="meta" type="user defined record" access="rw" description="Metadata associated to the asset.">
+        <access-group identifier="com.apple.assetmanagement.import" access="rw"/>
+        <cocoa key="metadata"/>
+      </property>
+      <property name="data options" code="dopt" type="user defined record" access="rw" description="Data creation options for the asset.">
+        <access-group identifier="com.apple.assetmanagement.import" access="rw"/>
+        <cocoa key="dataOptions"/>
+      </property>
+    </class>
+    <enumeration name="saveable file format" code="savf">
+      <enumerator name="document" code="docu" description="A document."/>
+    </enumeration>
+  </suite>
+</dictionary>
