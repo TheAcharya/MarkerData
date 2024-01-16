@@ -1,0 +1,109 @@
+name: test_build
+
+on:
+  workflow_dispatch:
+    inputs:
+      release:
+        description: 'Create Test Build'
+        required: true
+        default: 'no'
+
+jobs:
+  build:
+    runs-on: macos-13
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: List Xcode installations
+      run: sudo ls -1 /Applications | grep "Xcode"
+      
+    - name: Select Xcode 15.2
+      run: sudo xcode-select -s /Applications/Xcode_15.2.app/Contents/Developer
+    
+    - name: Change to Xcode Project Directory
+      run: cd Source/Marker\ Data
+
+    - name: Prepare Directories
+      run: |
+        PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+        mkdir -p "$PARENT/dist/dmg-builds/latest-build"
+        mkdir -p "$PARENT/dist/dmg-builds/app-build"
+
+    - name: Build Marker Data
+      run: |
+        PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+        PROJECT_PATH="Source/Marker Data/Marker Data.xcodeproj"
+        SCHEME="Marker Data"
+        CONFIGURATION="Release"
+        DESTINATION="platform=macOS"
+        BUILD_FOLDER="$PARENT/dist/dmg-builds/app-build"
+        echo "PARENT=$PARENT" >> $GITHUB_ENV
+        echo "CONFIG=$CONFIGURATION" >> $GITHUB_ENV
+
+        xcodebuild -project "$PROJECT_PATH" -scheme "$SCHEME" -configuration "$CONFIGURATION" -destination "$DESTINATION" -derivedDataPath "$BUILD_FOLDER" clean build CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO -allowProvisioningUpdates | xcpretty
+        
+    - name: Prepare VM Directories
+      run: |
+        PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+        mkdir -p "$PARENT/dist/dmg-builds"
+        mkdir -p "$PARENT/dist/dmg-builds/latest-build"
+        
+        cp -R $PARENT/dist/dmg-builds/app-build/Build/Products/${{ env.CONFIG }}/Marker\ Data.app "$PARENT/dist/dmg-builds/latest-build/"
+        
+    - name: Codesign Marker Data
+      env: 
+        APPLE_CERT_DATA: ${{ secrets.APPLE_CERT_DATA }}
+        APPLE_CERT_PASSWORD: ${{ secrets.APPLE_CERT_PASSWORD }}
+        KEYCHAIN_PASSWORD_M: ${{ secrets.KEYCHAIN_PASSWORD_M }}
+        APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+      run: |
+        PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+        APP="$PARENT/dist/dmg-builds/latest-build/Marker Data.app"
+        
+        echo $APPLE_CERT_DATA | base64 --decode > certificate.p12
+        security create-keychain -p $KEYCHAIN_PASSWORD_M build-m.keychain
+        security default-keychain -s build-m.keychain
+        security unlock-keychain -p $KEYCHAIN_PASSWORD_M build-m.keychain
+        security import certificate.p12 -k build-m.keychain -P $APPLE_CERT_PASSWORD -T /usr/bin/codesign
+        security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k $KEYCHAIN_PASSWORD_M build-m.keychain
+        /usr/bin/codesign --force -s $APPLE_TEAM_ID --options runtime "$APP" -v
+        
+    - name: Notarize Marker Data
+      env:
+        APPLE_DEV_ID: ${{ secrets.APPLE_DEV_ID }}
+        APPLE_DEV_ID_PASSWORD: ${{ secrets.APPLE_DEV_ID_PASSWORD }}
+        APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+      run: |
+        PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+        APP="$PARENT/dist/dmg-builds/latest-build/Marker Data.app"
+    
+        echo "Create keychain profile"
+        xcrun notarytool store-credentials "notarytool-profile" --apple-id $APPLE_DEV_ID --password $APPLE_DEV_ID_PASSWORD --team-id $APPLE_TEAM_ID
+        
+        echo "Creating temp notarization archive"
+        ditto -c -k --keepParent "$APP" "notarization-m.zip"
+        
+        echo "Notarize app"
+        xcrun notarytool submit "notarization-m.zip" --keychain-profile "notarytool-profile" --progress --wait
+        
+        echo "Attach staple"
+        xcrun stapler staple "$APP"
+    
+    - name: Make Directory for Zip
+      run: mkdir test_build
+      
+    - name: Build Zip with Marker Data
+      run: |
+        mkdir -p dist
+        PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+        cp -R $PARENT/dist/dmg-builds/latest-build/Marker\ Data.app "test_build/"
+        zip -q -r test_build/marker_data_test-build.zip "test_build/"
+        rm -rf test_build/Marker\ Data.app
+
+    - name: Save App as Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: Marker Data
+        path: test_build
