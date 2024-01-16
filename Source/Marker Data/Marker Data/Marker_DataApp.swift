@@ -24,6 +24,8 @@ struct Marker_DataApp: App {
     let persistenceController = PersistenceController.shared
     
     @State var showLibraryFolderCreationAlert = false
+    
+    let openEventHandler = OpenEventHandler()
 
     init() {
         let settings = SettingsContainer()
@@ -40,9 +42,11 @@ struct Marker_DataApp: App {
         self._extractionModel = StateObject(wrappedValue: extractionModel)
         self._configurationsModel = StateObject(wrappedValue: configurationsModel)
         self._databaseManager = StateObject(wrappedValue: databaseManager)
+        
+        openEventHandler.setupHandler()
     }
     
-    @NSApplicationDelegateAdaptor(ApplicationDelegate.self) var appDelegate
+//    @NSApplicationDelegateAdaptor(ApplicationDelegate.self) var appDelegate
     var body: some Scene {
         //Make Main Window Group To Launch Into
         WindowGroup {

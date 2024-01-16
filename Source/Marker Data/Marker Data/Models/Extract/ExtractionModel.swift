@@ -46,7 +46,7 @@ class ExtractionModel: ObservableObject, DropDelegate {
     
     @objc func handleOpenDocument(notification: Notification) {
         if let url = notification.userInfo?["url"] as? URL {
-            Self.logger.notice("DocumentHandler: Received url: \(url)")
+            Self.logger.notice("ExtractionModel: Received url: \(url)")
             
             if url.conformsToType(Self.supportedContentTypes) {
                 self.showProgressUI = true

@@ -6,9 +6,14 @@
 //
 
 import Foundation
+import OSLog
 
 struct ShareDestinationInstaller {
+    static let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "ShareDestinationInstaller")
+    
     public static func install() async throws {
+        Self.logger.notice("Start install Share Destination")
+        
         guard let fcpxdestURL = Bundle.main.url(forResource: "MarkerData", withExtension: "fcpxdest") else {
             throw ShareDestinationInstallError.failedToLocateFCPXDEST
         }
@@ -25,6 +30,7 @@ end tell
         let result = script?.executeAndReturnError(&errorInfo)
         
         if result == nil {
+            Self.logger.error("Failed to install Share Destination, error info: \(errorInfo, privacy: .public)")
             throw ShareDestinationInstallError.nilResult
         }
     }

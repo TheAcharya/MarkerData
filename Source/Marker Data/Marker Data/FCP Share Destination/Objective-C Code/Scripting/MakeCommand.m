@@ -22,6 +22,12 @@
     
     NSLog(@"[ShareDestinationKit] INFO - MakeCommand performDefaultImplementation");
     
+    // Notify OpenEventHandler to setup hander
+    // This is to make sure when FCP tries to send the file it is received
+    NSLog(@"[ShareDestinationKit] INFO - Send start notification");
+    NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
+    [nc postNotificationName:@"FCPShareStart" object:self];
+    
     NSDictionary * theArguments = [self evaluatedArguments];
     
     // ------------------------------------------------------------
