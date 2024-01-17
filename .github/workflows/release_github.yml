@@ -9,7 +9,7 @@ on:
         default: 'no'
       
 jobs:
-  install:
+  build:
     runs-on: macos-13
 
     steps:
