@@ -2,6 +2,6 @@
 
 ### 1.0.0
 **🎉 Released:**
-- 15th December 2023
+- Release Date
 
 This is the first public release of **Marker Data**!
