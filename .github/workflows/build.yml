@@ -1,31 +1,12 @@
 name: build
 
 on:
-  push:
-    branches: [main]
-    paths-ignore:
-      - '**/*.md'       # .md files anywhere in the repo
-      - '**/LICENSE'    # LICENSE files anywhere in the repo
-      - '**/.gitignore' # .gitignore files anywhere in the repo
-      - '**/*.png'      # .png image files anywhere in the repo
-      - '**/*.gif'      # .png image files anywhere in the repo
-      - '**/*.pdf'      # .pdf files anywhere in the repo
-      
-  pull_request:
-    branches: [main]
-    paths-ignore:
-      - '**/*.md'       # .md files anywhere in the repo
-      - '**/LICENSE'    # LICENSE files anywhere in the repo
-      - '**/.gitignore' # .gitignore files anywhere in the repo
-      - '**/*.png'      # .png image files anywhere in the repo
-      - '**/*.png'      # .png image files anywhere in the repo
-      - '**/*.gif'      # .png image files anywhere in the repo
-      - '**/*.pdf'      # .pdf files anywhere in the repo
-      
   workflow_dispatch:
-    
-  schedule:
-    - cron: '0 2 * * 6'   # every Saturday at 10:00am Singapore Time (UTC+8)
+    inputs:
+      release:
+        description: 'Check Build'
+        required: true
+        default: 'no'
 
 jobs:
   build:
