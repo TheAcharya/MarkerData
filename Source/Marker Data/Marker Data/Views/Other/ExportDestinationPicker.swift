@@ -16,6 +16,7 @@ struct ExportDestinationPicker: View {
     @State var exportDestinationText = ""
     @State var showWarning = false
     
+    @State var settingsUpdateCancallable: AnyCancellable? = nil
     @State var configurationUpdaterCancellable: AnyCancellable? = nil
     
     var body: some View {
@@ -68,11 +69,15 @@ struct ExportDestinationPicker: View {
                 .sink {
                     updateExportDestinationText()
                 }
+            
+            self.settingsUpdateCancallable = self.settings.store.objectWillChange
+                .sink {
+                    updateExportDestinationText()
+                }
         }
         .onDisappear {
-            if let cancellable = self.configurationUpdaterCancellable {
-                cancellable.cancel()
-            }
+            self.settingsUpdateCancallable?.cancel()
+            self.configurationUpdaterCancellable?.cancel()
         }
         .contextMenu {
             // Full path

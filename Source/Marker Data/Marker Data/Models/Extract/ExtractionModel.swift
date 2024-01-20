@@ -45,14 +45,33 @@ class ExtractionModel: ObservableObject, DropDelegate {
     }
     
     @objc func handleOpenDocument(notification: Notification) {
-        if let url = notification.userInfo?["url"] as? URL {
-            Self.logger.notice("ExtractionModel: Received url: \(url)")
+        guard let url = notification.userInfo?["url"] as? URL else {
+            Self.logger.error("HandleOpen: Couldn't find URL info")
+            return
+        }
+        
+        Self.logger.notice("HandleOpen: Received url: \(url)")
+        
+        // Check if URL conforms to supported file types
+        if !url.conformsToType(Self.supportedContentTypes) {
+            Self.logger.error("HandleOpen: File type not supported (\(url.pathExtension))")
+            return
+        }
+        
+        // Show UI
+        self.showProgressUI = true
             
-            if url.conformsToType(Self.supportedContentTypes) {
-                self.showProgressUI = true
-                self.externalFileRecieved = true
-                self.externalFileURL = url
+        // Check if destination folder exists
+        if let exportFolder = self.settings.store.exportFolderURL,
+           exportFolder.fileExists {
+            // Extract
+            Task {
+                await self.performExtraction([url])
             }
+        } else {
+            // Default to opening external file recieved popup
+            self.externalFileRecieved = true
+            self.externalFileURL = url
         }
     }
 

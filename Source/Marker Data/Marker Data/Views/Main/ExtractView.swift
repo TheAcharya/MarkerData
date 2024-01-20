@@ -37,7 +37,10 @@ struct ExtractView: View {
                     
                     // Progress
                     if extractionModel.showProgressUI {
-                        ExtractionAndUploadProgressView(extractionModel: extractionModel)
+                        ExtractionAndUploadProgressView(
+                            settingsStore: self.settings.store,
+                            extractionModel: extractionModel
+                        )
                     }
                 }
                 .padding(.horizontal)
@@ -119,6 +122,7 @@ struct ExtractView: View {
     }
     
     struct ExtractionAndUploadProgressView: View {
+        @ObservedObject var settingsStore: SettingsStore
         @EnvironmentObject var databaseManager: DatabaseManager
         @Environment(\.openWindow) var openWindow
         
@@ -129,37 +133,7 @@ struct ExtractView: View {
             VStack(alignment: .leading) {
                 // External file
                 if extractionModel.externalFileRecieved {
-                    HStack {
-                        PulsingIcon(
-                            icon: "folder.circle.fill",
-                            iconSize: 36
-                        )
-                        
-                        VStack(alignment: .leading) {
-                            Text("External File Recieved")
-                                .font(.title2)
-                            
-                            Text("Select export profile then contiue.")
-                        }
-                        
-                        Spacer()
-                        
-                        // Start extraction button
-                        Button {
-                            withAnimation {
-                                extractionModel.processExternalFile()
-                            }
-                        } label: {
-                            Label("Extract", systemImage: "gearshape.2")
-                        }
-                        .buttonStyle(.borderedProminent)
-
-                        Button("Cancel") {
-                            withAnimation {
-                                extractionModel.cancelExternalFile()
-                            }
-                        }
-                    }
+                    externalFilePopup
                 } else {
                     // Extraction progress
                     ExportProgressView(progressModel: extractionModel.extractionProgress)
@@ -190,6 +164,42 @@ struct ExtractView: View {
             .onChange(of: extractionModel.exportResult) { result in
                 withAnimation(.easeOut(duration: 1)) {
                     showAllCompleteFooter = result != .none
+                }
+            }
+        }
+        
+        var externalFilePopup: some View {
+            HStack {
+                PulsingIcon(
+                    icon: "folder.circle.fill",
+                    iconSize: 36
+                )
+                
+                VStack(alignment: .leading) {
+                    Text("External File Recieved")
+                        .font(.title2)
+                    
+                    Text("Select Export Folder to contiue.")
+                        .foregroundColor(.red)
+                }
+                
+                Spacer()
+                
+                // Start extraction button
+                Button {
+                    withAnimation {
+                        extractionModel.processExternalFile()
+                    }
+                } label: {
+                    Label("Extract", systemImage: "gearshape.2")
+                }
+                .buttonStyle(.borderedProminent)
+                .disabled(!(self.settingsStore.exportFolderURL?.fileExists ?? false))
+                
+                Button("Cancel") {
+                    withAnimation {
+                        extractionModel.cancelExternalFile()
+                    }
                 }
             }
         }
