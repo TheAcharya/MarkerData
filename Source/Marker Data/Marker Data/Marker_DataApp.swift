@@ -83,6 +83,8 @@ struct Marker_DataApp: App {
             
             AppCommands(sidebarSelection: $sidebarSelection)
             
+            FileCommands()
+            
             SidebarCommands()
             
             ConfigurationCommands(

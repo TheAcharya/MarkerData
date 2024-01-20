@@ -17,19 +17,5 @@ struct AppCommands: Commands {
                 sidebarSelection = .about
             }
         }
-        //Add Help And Debug Menu Buttons
-        CommandGroup(after: .appInfo) {
-            Divider()
-            
-            Button("Install FCP Share Destination") {
-                Task {
-                    do {
-                        try await ShareDestinationInstaller.install()
-                    } catch {
-                        print("Failed to install FCP Share Destination from menu bar")
-                    }
-                }
-            }
-        }
     }
 }
