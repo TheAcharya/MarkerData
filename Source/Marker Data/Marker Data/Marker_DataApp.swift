@@ -42,8 +42,6 @@ struct Marker_DataApp: App {
         self._extractionModel = StateObject(wrappedValue: extractionModel)
         self._configurationsModel = StateObject(wrappedValue: configurationsModel)
         self._databaseManager = StateObject(wrappedValue: databaseManager)
-        
-        openEventHandler.setupHandler()
     }
     
 //    @NSApplicationDelegateAdaptor(ApplicationDelegate.self) var appDelegate

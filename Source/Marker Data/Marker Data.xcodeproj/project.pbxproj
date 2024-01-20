@@ -17,9 +17,10 @@
 		411F37452B56DE7400CC05E6 /* PulsingIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 411F37442B56DE7400CC05E6 /* PulsingIcon.swift */; };
 		411F37472B56F11400CC05E6 /* InstallShareDestinationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 411F37462B56F11400CC05E6 /* InstallShareDestinationView.swift */; };
 		411F374A2B56F22300CC05E6 /* ShareDestinationInstaller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 411F37492B56F22300CC05E6 /* ShareDestinationInstaller.swift */; };
-		411F374C2B56F3F400CC05E6 /* MarkerData.fcpxdest in Resources */ = {isa = PBXBuildFile; fileRef = 411F374B2B56F3F400CC05E6 /* MarkerData.fcpxdest */; };
 		411F374E2B56FB5B00CC05E6 /* AppCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 411F374D2B56FB5B00CC05E6 /* AppCommands.swift */; };
 		411F37532B57255A00CC05E6 /* OpenEventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 411F37522B57255A00CC05E6 /* OpenEventHandler.swift */; };
+		411F37552B59010B00CC05E6 /* Marker Data Source.fcpxdest in Resources */ = {isa = PBXBuildFile; fileRef = 411F37542B59010B00CC05E6 /* Marker Data Source.fcpxdest */; };
+		411F37572B59011300CC05E6 /* Marker Data H.264.fcpxdest in Resources */ = {isa = PBXBuildFile; fileRef = 411F37562B59011300CC05E6 /* Marker Data H.264.fcpxdest */; };
 		414262BB2AD2E1AC00FC6CFC /* URLExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414262BA2AD2E1AC00FC6CFC /* URLExtension.swift */; };
 		414262BD2AD2E24A00FC6CFC /* BundleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414262BC2AD2E24A00FC6CFC /* BundleExtension.swift */; };
 		414262C02AD5CE3200FC6CFC /* ConfigurationErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414262BF2AD5CE3200FC6CFC /* ConfigurationErrors.swift */; };
@@ -120,9 +121,10 @@
 		411F37442B56DE7400CC05E6 /* PulsingIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PulsingIcon.swift; sourceTree = "<group>"; };
 		411F37462B56F11400CC05E6 /* InstallShareDestinationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstallShareDestinationView.swift; sourceTree = "<group>"; };
 		411F37492B56F22300CC05E6 /* ShareDestinationInstaller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareDestinationInstaller.swift; sourceTree = "<group>"; };
-		411F374B2B56F3F400CC05E6 /* MarkerData.fcpxdest */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = MarkerData.fcpxdest; sourceTree = "<group>"; };
 		411F374D2B56FB5B00CC05E6 /* AppCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCommands.swift; sourceTree = "<group>"; };
 		411F37522B57255A00CC05E6 /* OpenEventHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenEventHandler.swift; sourceTree = "<group>"; };
+		411F37542B59010B00CC05E6 /* Marker Data Source.fcpxdest */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = "Marker Data Source.fcpxdest"; sourceTree = "<group>"; };
+		411F37562B59011300CC05E6 /* Marker Data H.264.fcpxdest */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = "Marker Data H.264.fcpxdest"; sourceTree = "<group>"; };
 		414262BA2AD2E1AC00FC6CFC /* URLExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLExtension.swift; sourceTree = "<group>"; };
 		414262BC2AD2E24A00FC6CFC /* BundleExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleExtension.swift; sourceTree = "<group>"; };
 		414262BF2AD5CE3200FC6CFC /* ConfigurationErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationErrors.swift; sourceTree = "<group>"; };
@@ -277,9 +279,10 @@
 			isa = PBXGroup;
 			children = (
 				41C839302B52C82A00C6B133 /* OSAScriptingDefinition.sdef */,
-				411F374B2B56F3F400CC05E6 /* MarkerData.fcpxdest */,
 				417272A32B48665A005A04BE /* csv2notion_neo */,
 				414262C42ADAC6EC00FC6CFC /* DefaultConfiguration.json */,
+				411F37542B59010B00CC05E6 /* Marker Data Source.fcpxdest */,
+				411F37562B59011300CC05E6 /* Marker Data H.264.fcpxdest */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -650,9 +653,10 @@
 				417272A42B48665A005A04BE /* csv2notion_neo in Resources */,
 				D5F74A382972D32100EEE2FE /* Preview Assets.xcassets in Resources */,
 				D5F74A352972D32100EEE2FE /* Assets.xcassets in Resources */,
+				411F37572B59011300CC05E6 /* Marker Data H.264.fcpxdest in Resources */,
 				414262C52ADAC6EC00FC6CFC /* DefaultConfiguration.json in Resources */,
-				411F374C2B56F3F400CC05E6 /* MarkerData.fcpxdest in Resources */,
 				41C839312B52C82A00C6B133 /* OSAScriptingDefinition.sdef in Resources */,
+				411F37552B59010B00CC05E6 /* Marker Data Source.fcpxdest in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

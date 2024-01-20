@@ -15,6 +15,7 @@ class OpenEventHandler: NSObject {
     override init() {
         super.init()
         NotificationCenter.default.addObserver(self, selector: #selector(self.setupHandler), name: Notification.Name("FCPShareStart"), object: nil)
+        self.setupHandler()
     }
     
     @objc func setupHandler() {

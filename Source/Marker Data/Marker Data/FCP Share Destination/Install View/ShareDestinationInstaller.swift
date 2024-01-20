@@ -14,24 +14,27 @@ struct ShareDestinationInstaller {
     public static func install() async throws {
         Self.logger.notice("Start install Share Destination")
         
-        guard let fcpxdestURL = Bundle.main.url(forResource: "MarkerData", withExtension: "fcpxdest") else {
+        guard let fcpxdestSourceURL = Bundle.main.url(forResource: "Marker Data Source", withExtension: "fcpxdest"),
+              let fcpxdestH264 = Bundle.main.url(forResource: "Marker Data H.264", withExtension: "fcpxdest") else {
+            
             throw ShareDestinationInstallError.failedToLocateFCPXDEST
         }
         
-        let installScript = """
+        for url in [fcpxdestSourceURL, fcpxdestH264] {
+            let installScript = """
 tell application "Final Cut Pro"
     activate
-    open POSIX file "\(fcpxdestURL.path(percentEncoded: false))"
+    open POSIX file "\(url.path(percentEncoded: false))"
 end tell
 """
-        
-        let script = NSAppleScript(source: installScript)
-        var errorInfo: NSDictionary? = nil
-        let result = script?.executeAndReturnError(&errorInfo)
-        
-        if result == nil {
-            Self.logger.error("Failed to install Share Destination, error info: \(errorInfo, privacy: .public)")
-            throw ShareDestinationInstallError.nilResult
+            let script = NSAppleScript(source: installScript)
+            var errorInfo: NSDictionary? = nil
+            let result = script?.executeAndReturnError(&errorInfo)
+            
+            if result == nil {
+                Self.logger.error("Failed to install Share Destination, error info: \(errorInfo, privacy: .public)")
+                throw ShareDestinationInstallError.nilResult
+            }
         }
     }
 }
