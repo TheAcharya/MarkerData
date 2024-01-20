@@ -45,12 +45,6 @@ extension URL {
             .appendingPathComponent("Logs", conformingTo: .folder)
     }
     
-    /// Path to ~/Library/Application Support/Marker Data/FCPTempExport
-    public static var FCPTemporaryExportFolder: URL {
-        Self.markerDataLibraryFolder
-            .appendingPathComponent("FCPTempExport", conformingTo: .folder)
-    }
-    
     /// Path to ~/Library/Preferences/com.TheAcharya.Marker-Data.plist
     public static var preferencesPlistFile: URL {
         Self.libraryDirectory
@@ -58,6 +52,18 @@ extension URL {
             .appendingPathComponent(
                 Bundle.main.bundleIdentifier ?? "com.TheAcharya.Marker-Data.plist",
                 conformingTo: .propertyList)
+    }
+    
+    /// Path to ~/Library/Caches/Marker Data
+    public static var marerDataCacheFolder: URL {
+        Self.cachesDirectory
+            .appendingPathComponent("Marker Data", conformingTo: .directory)
+    }
+    
+    /// Path to ~/Library/Caches/Marker Data/FCPTempExport
+    public static var FCPExportCacheFolder: URL {
+        Self.marerDataCacheFolder
+            .appendingPathComponent("FCPTempExport", conformingTo: .folder)
     }
     
     func conformsToType(_ types: [UTType]) -> Bool {

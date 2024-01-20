@@ -90,28 +90,42 @@
             NSLog(@"[ShareDestinationKit] INFO - dataOptionsParameter: %@", dataOptionsParameter);
         }
         
+        // Get export folder from User Defaults
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSString *homeDirectory = NSHomeDirectory();
-        NSString *customDirectoryPath = [homeDirectory stringByAppendingPathComponent:@"/Library/Application Support/Marker Data/FCPTempExport/tempdata"];
-        NSFileManager *fileManager = [NSFileManager defaultManager];
         
-        // Create the custom directory if it doesn't exist
-        if (![fileManager fileExistsAtPath:customDirectoryPath]) {
-            NSError *error = nil;
-            [fileManager createDirectoryAtPath:customDirectoryPath withIntermediateDirectories:YES attributes:nil error:&error];
+        NSString *exportFolderURLString = [defaults objectForKey:@"exportFolderURL"];
+        exportFolderURLString = [exportFolderURLString stringByReplacingOccurrencesOfString:@"~" withString:homeDirectory];
+        
+        NSURL *exportFolderURL;
+        
+        if ([exportFolderURLString length] == 0) {
+            // If export folder is empty default to Chache folder
+            exportFolderURL = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/Library/Caches/Marker Data/FCPTempExport/%@", homeDirectory, nameParameter]];
+        } else {
+            exportFolderURL = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/_FCPExport/%@", exportFolderURLString, nameParameter]];
+        }
+        
+        // Create directory if missing
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        if (![fileManager fileExistsAtPath:[exportFolderURL path]]) {
+            NSLog(@"[ShareDestinationKit] NOTICE Eport destination missing, attempting to create it: %@", [exportFolderURL path]);
+            
+            NSError *error;
+            [fileManager createDirectoryAtURL:exportFolderURL withIntermediateDirectories:YES attributes:nil error:&error];
             
             if (error) {
-                NSLog(@"Error creating custom directory: %@", error.localizedDescription);
-                // Handle the error appropriately
+                NSLog(@"[ShareDestinationKit] ERROR Error creating export directory: %@", error);
                 return nil;
             }
         }
         
-        NSString *outputDirectory = customDirectoryPath;
+        NSString *outputFileURL = [[exportFolderURL path] stringByAppendingPathComponent:nameParameter];
         
-        NSLog(@"[ShareDestinationKit] INFO - Writing files to directory: %@", outputDirectory);
+        NSLog(@"[ShareDestinationKit] INFO - Writing files to directory: %@", outputFileURL);
         
         NSDictionary *desktopLocation =  [NSDictionary dictionaryWithObjectsAndKeys:
-                                         [NSURL fileURLWithPath:outputDirectory],             kMediaAssetLocationFolderKey,
+                                         [NSURL fileURLWithPath:outputFileURL],               kMediaAssetLocationFolderKey,
                                          @"",                                                 kMediaAssetLocationBasenameKey,
                                          [NSNumber numberWithBool:YES],                       kMediaAssetLocationHasMediaKey,
                                          [NSNumber numberWithBool:YES],                       kMediaAssetLocationHasDescriptionKey,

@@ -19,8 +19,7 @@ struct LibraryFolders {
             URL.configurationsFolder,
             URL.databaseFolder,
             URL.databaseProfilesFolder,
-            URL.logsFolder,
-            URL.FCPTemporaryExportFolder
+            URL.logsFolder
         ]
         
         let fileManager = FileManager.default
@@ -32,6 +31,32 @@ struct LibraryFolders {
             }
         }
         
+        Self.deleteOldCache()
+        
         Self.logger.info("All Library folders OK")
+    }
+    
+    public static func deleteOldCache() {
+        let directory = URL.FCPExportCacheFolder
+        let fileManager = FileManager.default
+        let oneMonthAgo = Calendar.current.date(byAdding: .month, value: -1, to: Date())!
+        
+        do {
+            let resourceKeys: Set<URLResourceKey> = [.isDirectoryKey, .contentModificationDateKey]
+            let directoryContents = try fileManager.contentsOfDirectory(at: directory, includingPropertiesForKeys: Array(resourceKeys), options: .skipsHiddenFiles)
+            
+            for url in directoryContents {
+                let resourceValues = try url.resourceValues(forKeys: resourceKeys)
+                
+                if let isDirectory = resourceValues.isDirectory, isDirectory,
+                   let modificationDate = resourceValues.contentModificationDate,
+                   modificationDate < oneMonthAgo {
+                    Self.logger.notice("Cached file \(url.path(percentEncoded: false)) is older than a month. Deleting it.")
+                    try fileManager.removeItem(at: url)
+                }
+            }
+        } catch {
+            Self.logger.error("Error while enumerating files \(directory.path): \(error.localizedDescription)")
+        }
     }
 }
