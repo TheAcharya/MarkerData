@@ -1,5 +1,6 @@
 .DS_Store
 .build
+.nova
 *.dmg
 Package.resolved
 xcuserdata/
