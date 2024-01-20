@@ -17,6 +17,7 @@ struct ColorPickerForm: View {
             
             ColorWell(selection: $color, supportsOpacity: false)
                 .colorWellStyle(.minimal)
+                .formControlLeadingAlignmentGuide()
         }
     }
 }
