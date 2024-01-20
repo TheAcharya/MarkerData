@@ -381,15 +381,16 @@ class ExtractionModel: ObservableObject, DropDelegate {
             
             let executablePath = csv2notionURL.path(percentEncoded: false).quoted
             
-            guard let token = databaseProfile.notionCredentials?.token else {
-                Self.logger.error("Failed to upload to Notion: token not found.")
+            guard let credentials = databaseProfile.notionCredentials else {
+                Self.logger.error("Failed to upload to Notion: couldn't retrieve credentials")
                 throw DatabaseUploadError.notionNoToken
             }
             
             let logPath = URL.databaseFolder.appendingPathComponent("csv2notion_log.txt", conformingTo: .plainText).path(percentEncoded: false)
             
             var arguments: [String] = [
-                "--token", token.quoted,
+                "--workspace", credentials.workspaceName.quoted,
+                "--token", credentials.token.quoted,
                 "--image-column", "Image Filename".quoted,
                 "--image-column-keep",
                 "--mandatory-column", "Marker ID".quoted,
@@ -434,7 +435,7 @@ class ExtractionModel: ObservableObject, DropDelegate {
             
             if result.didFail {
                 // Failure
-                Self.logger.error("Failed to upload to Notion.\nCommand: \(command)\nOutput: \(result.output)")
+                Self.logger.error("Failed to upload to Notion.\nCommand: \(command, privacy: .private)\nOutput: \(result.output)")
                 throw DatabaseUploadError.notionUploadError
             } else {
                 // Success

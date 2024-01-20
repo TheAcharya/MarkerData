@@ -19,6 +19,7 @@ struct CreateDBProfileSheet: View {
     @State var nameText: String = ""
     @State var selectedPlatform: DatabasePlatform = .notion
     
+    @State var notionWorkspace = ""
     @State var notionToken = ""
     @State var notionDatabaseURL = ""
     
@@ -33,7 +34,7 @@ struct CreateDBProfileSheet: View {
         if !nameText.isEmpty {
             switch self.selectedPlatform {
             case .notion:
-                return !notionToken.isEmpty
+                return !notionToken.isEmpty && !notionWorkspace.isEmpty
             case .airtable:
                 return !airtableAPIKey.isEmpty && !airtableBaseID.isEmpty
             }
@@ -99,6 +100,7 @@ struct CreateDBProfileSheet: View {
                 
                 if let notionCredentials = profile.notionCredentials {
                     self.selectedPlatform = .notion
+                    self.notionWorkspace = notionCredentials.workspaceName
                     self.notionToken = notionCredentials.token
                     self.notionDatabaseURL = notionCredentials.databaseURL ?? ""
                     self.renameKeyColumn = notionCredentials.renameKeyColumn ?? ""
@@ -116,6 +118,8 @@ struct CreateDBProfileSheet: View {
     
     var notionFromView: some View {
         VStack {
+            platformInfoTextField("Notion Workspace", prompt: "Workspace Name", text: $notionWorkspace, isRequired: true, secureField: false)
+            
             platformInfoTextField("Notion V2 Token", prompt: "Token", text: $notionToken, isRequired: true, secureField: true)
             
             platformInfoTextField("Notion Database URL", prompt: "Database URL", text: $notionDatabaseURL, isRequired: false, secureField: true)
@@ -219,6 +223,7 @@ struct CreateDBProfileSheet: View {
         switch self.selectedPlatform {
         case .notion:
             let credentials = NotionCredentials(
+                workspaceName: self.notionWorkspace,
                 token: self.notionToken,
                 databaseURL: self.notionDatabaseURL, 
                 renameKeyColumn: self.renameKeyColumn

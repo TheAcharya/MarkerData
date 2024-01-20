@@ -8,6 +8,7 @@
 import Foundation
 
 struct NotionCredentials: Codable {
+    let workspaceName: String
     let token: String
     let databaseURL: String?
     let renameKeyColumn: String?
