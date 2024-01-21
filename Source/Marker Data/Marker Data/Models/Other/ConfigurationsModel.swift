@@ -282,10 +282,9 @@ class ConfigurationsModel: ObservableObject {
     func checkForUnsavedChanges() {
         do {
             let onDisk = try loadConfigurationDictionary(configurationName: self.activeConfiguration)
-
             let current = try getUserDefaultsDictionary()
             
-            self.unsavedChanges = !NSDictionary(dictionary: current).isEqual(to: onDisk)
+            self.unsavedChanges = !onDisk.isEqualTo(current)
         } catch {
             Self.logger.error("Failed to compare configurations for unsaved changes")
         }

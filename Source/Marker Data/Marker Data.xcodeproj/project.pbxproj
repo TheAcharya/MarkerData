@@ -32,6 +32,7 @@
 		4155B6C52B5D3709008D3505 /* DockProgress in Frameworks */ = {isa = PBXBuildFile; productRef = 4155B6C42B5D3709008D3505 /* DockProgress */; };
 		4155B6C82B5D391E008D3505 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B6C72B5D391E008D3505 /* SettingsView.swift */; };
 		4155B6CB2B5D3B3B008D3505 /* NotificationFrequency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B6CA2B5D3B3B008D3505 /* NotificationFrequency.swift */; };
+		4155B6CD2B5D4652008D3505 /* DicitionaryExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B6CC2B5D4652008D3505 /* DicitionaryExtension.swift */; };
 		415619672B3A18D60032E82C /* ExtractError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 415619662B3A18D60032E82C /* ExtractError.swift */; };
 		4156196B2B3AE41F0032E82C /* ProgressViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4156196A2B3AE41F0032E82C /* ProgressViewModel.swift */; };
 		417272982B444211005A04BE /* ExportExitStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417272972B444211005A04BE /* ExportExitStatus.swift */; };
@@ -140,6 +141,7 @@
 		4155B6C12B5D309C008D3505 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		4155B6C72B5D391E008D3505 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		4155B6CA2B5D3B3B008D3505 /* NotificationFrequency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationFrequency.swift; sourceTree = "<group>"; };
+		4155B6CC2B5D4652008D3505 /* DicitionaryExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DicitionaryExtension.swift; sourceTree = "<group>"; };
 		415619662B3A18D60032E82C /* ExtractError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractError.swift; sourceTree = "<group>"; };
 		4156196A2B3AE41F0032E82C /* ProgressViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressViewModel.swift; sourceTree = "<group>"; };
 		417272972B444211005A04BE /* ExportExitStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportExitStatus.swift; sourceTree = "<group>"; };
@@ -261,6 +263,7 @@
 				414262BA2AD2E1AC00FC6CFC /* URLExtension.swift */,
 				414262BC2AD2E24A00FC6CFC /* BundleExtension.swift */,
 				41BFEB762B1E63EA00C8B551 /* ExportProfileFormatExtrension.swift */,
+				4155B6CC2B5D4652008D3505 /* DicitionaryExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -714,6 +717,7 @@
 				47411FDE2A3EA1BA005890FE /* AboutView.swift in Sources */,
 				414262BB2AD2E1AC00FC6CFC /* URLExtension.swift in Sources */,
 				41F88B032B1A4D40004A3B58 /* ShellOutputStream.swift in Sources */,
+				4155B6CD2B5D4652008D3505 /* DicitionaryExtension.swift in Sources */,
 				41F88AFE2B126439004A3B58 /* ExtractionResult.swift in Sources */,
 				9B51D21629E9B13400DF7836 /* SettingsModels.swift in Sources */,
 				414262BD2AD2E24A00FC6CFC /* BundleExtension.swift in Sources */,
