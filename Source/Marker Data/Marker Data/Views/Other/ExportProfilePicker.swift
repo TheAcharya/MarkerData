@@ -25,8 +25,12 @@ struct ExportProfilePicker: View {
         Picker("Export Profile", selection: $selection) {
             Section("Extract Only (No Upload)") {
                 ForEach(UnifiedExportProfile.noUploadProfiles) { profile in
-                    Text(profile.displayName)
-                        .tag(Optional(profile))
+                    Label {
+                        Text(profile.displayName)
+                    } icon: {
+                        Image(profile.iconImageName)
+                    }
+                    .tag(Optional(profile))
                 }
             }
             
@@ -34,11 +38,16 @@ struct ExportProfilePicker: View {
             
             Section("Database Profiles (Upload)") {
                 ForEach(databaseManager.getUnifiedExportProfiles()) { profile in
-                    Text(profile.displayName)
-                        .tag(Optional(profile))
+                    Label {
+                        Text(profile.displayName)
+                    } icon: {
+                        Image(profile.iconImageName)
+                    }
+                    .tag(Optional(profile))
                 }
             }
         }
+        .labelStyle(.titleAndIcon)
         .onChange(of: selection) { newProfile in
             do {
                 try newProfile?.save()

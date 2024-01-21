@@ -63,7 +63,7 @@ struct UnifiedExportProfile: Codable, Hashable, Identifiable {
     
     /// Returns the no upload extraction proifles as a list of ``UnifiedExportProfile``
     public static var noUploadProfiles: [UnifiedExportProfile] {
-        let unifiledProfiles = ExportProfileFormat.allCases.map { exportFormat in
+        let unifiledProfiles = ExportProfileFormat.allCasesInUIOrder.map { exportFormat in
             UnifiedExportProfile(
                 displayName: exportFormat.extractOnlyName,
                 extractProfile: exportFormat.self,
@@ -73,6 +73,22 @@ struct UnifiedExportProfile: Codable, Hashable, Identifiable {
         }
         
         return unifiledProfiles
+    }
+    
+    /// Icon name
+    public var iconImageName: String {
+        switch self.extractProfile {
+        case .airtable:
+            return "AirtableLogo"
+        case .csv:
+            return "NumbersIcon"
+        case .midi:
+            return "MusicIcon"
+        case .notion:
+            return "NotionLogo"
+        case .tsv:
+            return "NumbersIcon"
+        }
     }
 }
 

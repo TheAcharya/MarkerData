@@ -9,6 +9,12 @@ import Foundation
 import MarkersExtractor
 
 extension ExportProfileFormat: Codable {
+    static var allCasesInUIOrder: [ExportProfileFormat] {
+        let inUIOrder = [Self.csv, Self.tsv, Self.midi, Self.notion, Self.airtable]
+        assert(inUIOrder.count == Self.allCases.count, "ExportProfileFormat.allCasesInUIOrder has invalid number of elements")
+        return inUIOrder
+    }
+    
     public var extractOnlyName: String {
         switch self {
         case .airtable:
