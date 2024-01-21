@@ -21,7 +21,7 @@ struct ResizedImage: View {
     
     var body: some View {
         if let image = NSImage(named: resourceName) {
-            let imageResized = image.scalePreservingAspectRatio(targetSize: NSSize(width: 20, height: 20))
+            let imageResized = image.scalePreservingAspectRatio(targetSize: NSSize(width: width, height: height))
             Image(nsImage: imageResized)
         } else {
             // Default questionmark if image is not found
