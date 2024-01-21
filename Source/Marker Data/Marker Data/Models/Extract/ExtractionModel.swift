@@ -73,6 +73,13 @@ class ExtractionModel: ObservableObject, DropDelegate {
             self.externalFileRecieved = true
             self.externalFileURL = url
         }
+        
+        // Send notification
+        NotificationManager.sendNotification(
+            taskFinished: false,
+            title: "Recieved External File",
+            body: "\(url.path(percentEncoded: false))"
+        )
     }
 
     func dropEntered(info: DropInfo) {
@@ -333,6 +340,9 @@ class ExtractionModel: ObservableObject, DropDelegate {
                 // Successful extraction
                 Self.logger.notice("All extractions successfull")
                 self.exportResult = .success
+                
+                // Send notification
+                NotificationManager.sendNotification(taskFinished: true, title: "All complete")
             } else {
                 // Failed extraction
                 self.exportResult = .failed

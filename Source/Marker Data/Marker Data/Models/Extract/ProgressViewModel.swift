@@ -7,6 +7,7 @@
 
 import Foundation
 import OSLog
+import DockProgress
 
 /// Holds the list of subprocesses and calculates the total progress
 class ProgressViewModel: ObservableObject {
@@ -39,11 +40,26 @@ class ProgressViewModel: ObservableObject {
     /// Initializes new export processes
     public func setProcesses(urls: [URL]) {
         self.processes = urls.map { ExportProcess(url: $0) }
+        
+        Task {
+            await MainActor.run {
+                DockProgress.progressInstance = self.progress
+            }
+        }
     }
     
     /// Adds a process
     public func addProcess(url: URL) {
         self.processes.append(ExportProcess(url: url))
+        
+        // Only set on first addition
+        if self.processes.count == 1 {
+            Task {
+                await MainActor.run {
+                    DockProgress.progressInstance = self.progress
+                }
+            }
+        }
     }
     
     /// Update progress of a single process
@@ -68,6 +84,13 @@ class ProgressViewModel: ObservableObject {
         process.isFinished = true
         
         await self.updateTotalProgress()
+        
+        // Send notification
+        NotificationManager.sendNotification(
+            taskFinished: false,
+            title: "\(self.message)",
+            body: "\(url.path(percentEncoded: false))"
+        )
     }
     
     /// Calculate and update current progress
