@@ -40,7 +40,7 @@ struct GeneralSettingsView: View {
                         }
                     }
                     .labelsHidden()
-                    .frame(width: 150)
+                    .frame(width: 250)
                     .formControlLeadingAlignmentGuide()
 
                 }
@@ -59,7 +59,7 @@ struct GeneralSettingsView: View {
 
                     ExportProfilePicker()
                         .labelsHidden()
-                        .frame(width: 150)
+                        .frame(width: 250)
                         .formControlLeadingAlignmentGuide()
 
                 }
