@@ -33,6 +33,8 @@
 		4155B6C82B5D391E008D3505 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B6C72B5D391E008D3505 /* SettingsView.swift */; };
 		4155B6CB2B5D3B3B008D3505 /* NotificationFrequency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B6CA2B5D3B3B008D3505 /* NotificationFrequency.swift */; };
 		4155B6CD2B5D4652008D3505 /* DicitionaryExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B6CC2B5D4652008D3505 /* DicitionaryExtension.swift */; };
+		4155B6CF2B5D929A008D3505 /* NSImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B6CE2B5D929A008D3505 /* NSImageExtension.swift */; };
+		4155B6D12B5D93BA008D3505 /* ResizedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B6D02B5D93BA008D3505 /* ResizedImage.swift */; };
 		415619672B3A18D60032E82C /* ExtractError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 415619662B3A18D60032E82C /* ExtractError.swift */; };
 		4156196B2B3AE41F0032E82C /* ProgressViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4156196A2B3AE41F0032E82C /* ProgressViewModel.swift */; };
 		417272982B444211005A04BE /* ExportExitStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417272972B444211005A04BE /* ExportExitStatus.swift */; };
@@ -142,6 +144,8 @@
 		4155B6C72B5D391E008D3505 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		4155B6CA2B5D3B3B008D3505 /* NotificationFrequency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationFrequency.swift; sourceTree = "<group>"; };
 		4155B6CC2B5D4652008D3505 /* DicitionaryExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DicitionaryExtension.swift; sourceTree = "<group>"; };
+		4155B6CE2B5D929A008D3505 /* NSImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSImageExtension.swift; sourceTree = "<group>"; };
+		4155B6D02B5D93BA008D3505 /* ResizedImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResizedImage.swift; sourceTree = "<group>"; };
 		415619662B3A18D60032E82C /* ExtractError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractError.swift; sourceTree = "<group>"; };
 		4156196A2B3AE41F0032E82C /* ProgressViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressViewModel.swift; sourceTree = "<group>"; };
 		417272972B444211005A04BE /* ExportExitStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportExitStatus.swift; sourceTree = "<group>"; };
@@ -264,6 +268,7 @@
 				414262BC2AD2E24A00FC6CFC /* BundleExtension.swift */,
 				41BFEB762B1E63EA00C8B551 /* ExportProfileFormatExtrension.swift */,
 				4155B6CC2B5D4652008D3505 /* DicitionaryExtension.swift */,
+				4155B6CE2B5D929A008D3505 /* NSImageExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -475,6 +480,7 @@
 				474595572A40254E00EF100D /* ColorPickerOpacitySliderForm.swift */,
 				41F88ADB2B029D4A004A3B58 /* ColorPickerForm.swift */,
 				411F37442B56DE7400CC05E6 /* PulsingIcon.swift */,
+				4155B6D02B5D93BA008D3505 /* ResizedImage.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -752,6 +758,7 @@
 				411F374A2B56F22300CC05E6 /* ShareDestinationInstaller.swift in Sources */,
 				47F5CDF82A60CA43005D9A98 /* ExtractionModel.swift in Sources */,
 				411F374E2B56FB5B00CC05E6 /* AppCommands.swift in Sources */,
+				4155B6CF2B5D929A008D3505 /* NSImageExtension.swift in Sources */,
 				9B653ABD29F2C64600C64999 /* ErrorViewModel.swift in Sources */,
 				41C839852B52C9E300C6B133 /* DocumentController.m in Sources */,
 				41EBAD502AF7B6F200E6AF7C /* WindowSize.swift in Sources */,
@@ -771,6 +778,7 @@
 				41C839342B52C94000C6B133 /* ApplicationDelegate.swift in Sources */,
 				47411FDA2A3EA121005890FE /* HelpButton.swift in Sources */,
 				9B4D90DC2A0BB07500FE7603 /* ConfigurationSettingsView.swift in Sources */,
+				4155B6D12B5D93BA008D3505 /* ResizedImage.swift in Sources */,
 				41BFEB722B1BCE4600C8B551 /* ExportProfilePicker.swift in Sources */,
 				417272A02B46F65A005A04BE /* UnifiedExportProfile.swift in Sources */,
 				414262C22AD5D34D00FC6CFC /* ConfigurationsModel.swift in Sources */,

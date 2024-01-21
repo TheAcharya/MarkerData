@@ -28,7 +28,7 @@ struct ExportProfilePicker: View {
                     Label {
                         Text(profile.displayName)
                     } icon: {
-                        Image(profile.iconImageName)
+                        ResizedImage(profile.iconImageName, width: 20, height: 20)
                     }
                     .tag(Optional(profile))
                 }
@@ -41,7 +41,7 @@ struct ExportProfilePicker: View {
                     Label {
                         Text(profile.displayName)
                     } icon: {
-                        Image(profile.iconImageName)
+                        ResizedImage(profile.iconImageName, width: 20, height: 20)
                     }
                     .tag(Optional(profile))
                 }
