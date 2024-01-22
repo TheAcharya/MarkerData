@@ -37,13 +37,18 @@ class ProgressViewModel: ObservableObject {
         self.taskDescription = taskDescription
     }
     
+    // Default: true
+    private var showDockProgress: Bool {
+        return UserDefaults.standard.boolOptional(forKey: "showDockProgress") ?? true
+    }
+    
     /// Initializes new export processes
     public func setProcesses(urls: [URL]) {
         self.processes = urls.map { ExportProcess(url: $0) }
         
         Task {
             await MainActor.run {
-                DockProgress.progressInstance = self.progress
+                DockProgress.progressInstance = self.showDockProgress ? self.progress : nil
             }
         }
     }
@@ -56,7 +61,7 @@ class ProgressViewModel: ObservableObject {
         if self.processes.count == 1 {
             Task {
                 await MainActor.run {
-                    DockProgress.progressInstance = self.progress
+                    DockProgress.progressInstance = self.showDockProgress ? self.progress : nil
                 }
             }
         }

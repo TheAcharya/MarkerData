@@ -169,6 +169,11 @@ class SettingsStore: ObservableObject {
     
     @AppStorage("hideLabelNames") var hideLabelNames: Bool = false
     
+    // MARK: Progress reporting settings
+    
+    @AppStorage("notificationFrequency") var notificationFrequency: NotificationFrequency = .onlyOnCompletion
+    @AppStorage("showDockProgress") var showDockProgress: Bool = true
+    
     // MARK: CLI settings
     
     func markersExtractorSettings(fcpxmlFileUrl: URL) throws -> MarkersExtractor.Settings {

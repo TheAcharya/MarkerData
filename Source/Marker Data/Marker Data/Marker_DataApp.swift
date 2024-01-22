@@ -96,12 +96,6 @@ struct Marker_DataApp: App {
             HelpCommands()
         }
         
-        Settings {
-            SettingsView()
-                .preferredColorScheme(.dark)
-        }
-        .windowResizability(.contentSize)
-        
         WindowGroup("Failed Tasks", for: [ExtractionFailure].self) { $failedExtractions in
             FailedExtractionsView(failedExtractions: failedExtractions ?? [])
                 .preferredColorScheme(.dark)
