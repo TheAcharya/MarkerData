@@ -54,16 +54,16 @@ extension URL {
                 conformingTo: .propertyList)
     }
     
-    /// Path to ~/Library/Caches/Marker Data
-    public static var marerDataCacheFolder: URL {
-        Self.cachesDirectory
-            .appendingPathComponent("Marker Data", conformingTo: .directory)
+    /// Path to ~/Movies/Marker Data Cache
+    public static var FCPExportCacheFolder: URL {
+        Self.moviesDirectory
+            .appendingPathComponent("Marker Data Cache", conformingTo: .folder)
     }
     
-    /// Path to ~/Library/Caches/Marker Data/FCPTempExport
-    public static var FCPExportCacheFolder: URL {
-        Self.marerDataCacheFolder
-            .appendingPathComponent("FCPTempExport", conformingTo: .folder)
+    /// Path to ~/Movies/Marker Data Cache/WorkflowExtensionExport.fcpxml
+    public static var workflowExtensionExportFCPXML: URL {
+        Self.FCPExportCacheFolder
+            .appendingPathComponent("WorkflowExtensionExport.fcpxml", conformingTo: .fcpxml)
     }
     
     func conformsToType(_ types: [UTType]) -> Bool {

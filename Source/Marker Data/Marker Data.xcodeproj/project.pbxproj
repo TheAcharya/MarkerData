@@ -39,6 +39,7 @@
 		4155B6E32B602694008D3505 /* Workflow Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 4155B6D62B602694008D3505 /* Workflow Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		4155B7022B612592008D3505 /* WorkflowExtensionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B7012B612592008D3505 /* WorkflowExtensionView.swift */; };
 		4155B7032B612592008D3505 /* WorkflowExtensionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B7012B612592008D3505 /* WorkflowExtensionView.swift */; };
+		4155B70A2B616723008D3505 /* UTTypeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B7092B616723008D3505 /* UTTypeExtension.swift */; };
 		415619672B3A18D60032E82C /* ExtractError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 415619662B3A18D60032E82C /* ExtractError.swift */; };
 		4156196B2B3AE41F0032E82C /* ProgressViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4156196A2B3AE41F0032E82C /* ProgressViewModel.swift */; };
 		417272982B444211005A04BE /* ExportExitStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417272972B444211005A04BE /* ExportExitStatus.swift */; };
@@ -175,6 +176,7 @@
 		4155B6DF2B602694008D3505 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4155B6E02B602694008D3505 /* WorkflowExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WorkflowExtension.entitlements; sourceTree = "<group>"; };
 		4155B7012B612592008D3505 /* WorkflowExtensionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowExtensionView.swift; sourceTree = "<group>"; };
+		4155B7092B616723008D3505 /* UTTypeExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UTTypeExtension.swift; path = "Marker Data/Utilities/Extensions/UTTypeExtension.swift"; sourceTree = SOURCE_ROOT; };
 		415619662B3A18D60032E82C /* ExtractError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractError.swift; sourceTree = "<group>"; };
 		4156196A2B3AE41F0032E82C /* ProgressViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressViewModel.swift; sourceTree = "<group>"; };
 		417272972B444211005A04BE /* ExportExitStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportExitStatus.swift; sourceTree = "<group>"; };
@@ -352,12 +354,21 @@
 			children = (
 				4155B6DD2B602694008D3505 /* WorkflowExtensionViewController.swift */,
 				4155B7012B612592008D3505 /* WorkflowExtensionView.swift */,
+				4155B7072B61668A008D3505 /* Extensions */,
 				4155B6DC2B602694008D3505 /* WorkflowExtension-Bridging-Header.h */,
 				4155B6DF2B602694008D3505 /* Info.plist */,
 				4155B6D82B602694008D3505 /* Assets.xcassets */,
 				4155B6E02B602694008D3505 /* WorkflowExtension.entitlements */,
 			);
 			path = "Workflow Extension";
+			sourceTree = "<group>";
+		};
+		4155B7072B61668A008D3505 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				4155B7092B616723008D3505 /* UTTypeExtension.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		41BFEB732B1BD15A00C8B551 /* Other */ = {
@@ -777,6 +788,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4155B70A2B616723008D3505 /* UTTypeExtension.swift in Sources */,
 				4155B6DE2B602694008D3505 /* WorkflowExtensionViewController.swift in Sources */,
 				4155B7032B612592008D3505 /* WorkflowExtensionView.swift in Sources */,
 			);
@@ -1133,6 +1145,7 @@
 				INFOPLIST_FILE = "Marker-Data-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Marker Data";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSAppleEventsUsageDescription = "Extensions can interact with Final Cut Pro.";
 				INFOPLIST_KEY_NSDesktopFolderUsageDescription = "To Use Files On The Desktop, You Must Allow Access.";
 				INFOPLIST_KEY_NSDocumentsFolderUsageDescription = "To Use Files In The Documents Folder, You Must Allow Access.";
 				INFOPLIST_KEY_NSDownloadsFolderUsageDescription = "To Use Files In The Downloads Folder, You Must Allow Access.";
@@ -1180,6 +1193,7 @@
 				INFOPLIST_FILE = "Marker-Data-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Marker Data";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSAppleEventsUsageDescription = "Extensions can interact with Final Cut Pro.";
 				INFOPLIST_KEY_NSDesktopFolderUsageDescription = "To Use Files On The Desktop, You Must Allow Access.";
 				INFOPLIST_KEY_NSDocumentsFolderUsageDescription = "To Use Files In The Documents Folder, You Must Allow Access.";
 				INFOPLIST_KEY_NSDownloadsFolderUsageDescription = "To Use Files In The Downloads Folder, You Must Allow Access.";

@@ -62,6 +62,10 @@ struct Marker_DataApp: App {
             // Set fix window size
             .frame(width: WindowSize.fullWidth, height: WindowSize.fullHeight)
             .task {
+                DispatchQueue.main.async {
+                    self.openEventHandler.setupHandler()
+                }
+                
                 // Check Library folders and create missing
                 do {
                     try await LibraryFolders.checkAndCreateMissing()

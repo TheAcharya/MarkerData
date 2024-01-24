@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct WorkflowExtensionView: View {
-    @State var droppedData = "no data"
+    @State var errorMessage = ""
     
     var body: some View {
         VStack {
@@ -28,15 +28,13 @@ struct WorkflowExtensionView: View {
                     }
             }
             
-            Text(droppedData)
-            
             Spacer()
         }
         .frame(width: 600, height: 400)
         .padding()
     }
     
-    var titleHeaderView: some View {
+    private var titleHeaderView: some View {
         HStack {
             VStack(alignment: .leading) {
                 Text("Marker Data")
@@ -53,11 +51,16 @@ struct WorkflowExtensionView: View {
         }
     }
     
-    var extractTabView: some View {
+    private var extractTabView: some View {
         VStack {
             Spacer()
             
             Text("Drag & Drop FCP Project Here")
+            
+            if !self.errorMessage.isEmpty {
+                Text("Failed to receive file: \(self.errorMessage)")
+                    .foregroundColor(Color.red)
+            }
             
             Spacer()
             
@@ -70,19 +73,41 @@ struct WorkflowExtensionView: View {
         .onDrop(of: ["com.apple.finalcutpro.xml.v1-10", "com.apple.finalcutpro.xml.v1-9", "com.apple.finalcutpro.xml"], isTargeted: nil) { providers -> Bool in
             for provider in providers {
                 provider.loadDataRepresentation(forTypeIdentifier: "com.apple.finalcutpro.xml") { data, error in
-                    if let data = data, let xmlString = String(data: data, encoding: .utf8) {
-                        
-                        droppedData = xmlString
-                        print(xmlString)
-                        
-                    }
+                    self.handleDrop(data: data)
                 }
             }
             return true
         }
     }
     
-    var rolesTabView: some View {
+    private func handleDrop(data: Data?) {
+        do {
+            // Reset error message
+            self.errorMessage = ""
+            
+            // Create file in cache
+            let url = URL.moviesDirectory
+                .appendingPathComponent("Marker Data Cache", conformingTo: .folder)
+                .appendingPathComponent("WorkflowExtensionExport.fcpxml", conformingTo: .fcpxml)
+            
+            try data?.write(to: url)
+            
+            openApp("Marker Data")
+            
+            // Notify Marker Data that the file is available
+            DistributedNotificationCenter.default().post(name: Notification.Name("WorkflowExtensionFileReceived"), object: nil)
+        } catch {
+            // Show error message
+            self.errorMessage = error.localizedDescription
+        }
+    }
+    
+    @discardableResult
+    private func openApp(_ named: String) -> Bool {
+        NSWorkspace.shared.launchApplication(named)
+    }
+    
+    private var rolesTabView: some View {
         Text("Roles")
     }
 }
