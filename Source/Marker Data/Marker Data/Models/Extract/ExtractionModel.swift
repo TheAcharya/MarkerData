@@ -31,13 +31,11 @@ class ExtractionModel: ObservableObject, DropDelegate {
     
     public var failedTasks: [ExtractionFailure] = []
 
-    let errorViewModel: ErrorViewModel
     let settings: SettingsContainer
     
     static let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "ExtractionModel")
 
     init(settings: SettingsContainer, databaseManager: DatabaseManager) {
-        self.errorViewModel = ErrorViewModel()
         self.settings = settings
         self.databaseManager = databaseManager
         
@@ -125,17 +123,7 @@ class ExtractionModel: ObservableObject, DropDelegate {
                             Self.logger.notice("Skipping file \(url?.path(percentEncoded: false) ?? ""). Not supported.")
                         }
                     } else if let error = error {
-                        // Handle the error
-                        DispatchQueue.main.async {
-                            self.extractionProgress.markasFailed(
-                                progressMessage: "Failed to load files",
-                                alertMessage: "Error: \(error.localizedDescription)"
-                            )
-                            
-                            self.errorViewModel.errorMessage  = error.localizedDescription
-                            
-                            Self.logger.error("File drop error: \(error.localizedDescription)")
-                        }
+                        Self.logger.error("File drop error: \(error.localizedDescription, privacy: .public)")
                     }
                 }
             }

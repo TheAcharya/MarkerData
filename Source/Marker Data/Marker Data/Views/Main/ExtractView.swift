@@ -8,8 +8,7 @@
 import SwiftUI
 import FilePicker
 
-struct ExtractView: View {
-    @StateObject private var errorViewModel = ErrorViewModel()
+public struct ExtractView: View {
     @ObservedObject var extractionModel: ExtractionModel
     @EnvironmentObject var settings: SettingsContainer
     
@@ -17,7 +16,7 @@ struct ExtractView: View {
     
     @AppStorage("showFCPShareDestinationCard") var showInstallShareDestination = true
     
-    var body: some View {
+    public var body: some View {
         VStack {
             // Drag And Drop File Zone
             ZStack {
@@ -56,9 +55,6 @@ struct ExtractView: View {
             // Quick Settings
             QuickSettingsView()
         }
-        .overlay(UserAlertView(title: "Error", onDismiss: {
-            // Perform any action you want when the user dismisses the alert.
-        })
         .alert("Failed to exract completely", isPresented: $extractionModel.extractionProgress.showAlert) {
             Button("Show Error Details") {
                 openWindow(value: extractionModel.failedTasks)
@@ -77,7 +73,6 @@ struct ExtractView: View {
         } message: {
             Text(extractionModel.uploadProgress.alertMessage)
         }
-        .environmentObject(extractionModel.errorViewModel))
     }
     
     var titleAndFileOpenView: some View {

@@ -98,8 +98,6 @@
 		9B4D90DE2A0BB11000FE7603 /* DatabaseSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B4D90DD2A0BB11000FE7603 /* DatabaseSettingsView.swift */; };
 		9B51D21629E9B13400DF7836 /* SettingsModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B51D21529E9B13400DF7836 /* SettingsModels.swift */; };
 		9B61B44229F03866003EC14A /* libswiftCoreGraphics.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B61B44129F03866003EC14A /* libswiftCoreGraphics.tbd */; };
-		9B653ABB29F2C2E700C64999 /* UserAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B653ABA29F2C2E700C64999 /* UserAlertView.swift */; };
-		9B653ABD29F2C64600C64999 /* ErrorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B653ABC29F2C64600C64999 /* ErrorViewModel.swift */; };
 		9B9CA1172A1A9BBB004E337A /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9CA1162A1A9BBB004E337A /* PersistenceController.swift */; };
 		9BACA4D129FA9B5100EF6837 /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BACA4D029FA9B5100EF6837 /* SettingsStore.swift */; };
 		D5F74A312972D31D00EEE2FE /* Marker_DataApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F74A302972D31D00EEE2FE /* Marker_DataApp.swift */; };
@@ -243,8 +241,6 @@
 		9B51D21529E9B13400DF7836 /* SettingsModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsModels.swift; sourceTree = "<group>"; };
 		9B61B44129F03866003EC14A /* libswiftCoreGraphics.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libswiftCoreGraphics.tbd; path = usr/lib/swift/libswiftCoreGraphics.tbd; sourceTree = SDKROOT; };
 		9B61B44329F0387C003EC14A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		9B653ABA29F2C2E700C64999 /* UserAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAlertView.swift; sourceTree = "<group>"; };
-		9B653ABC29F2C64600C64999 /* ErrorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorViewModel.swift; sourceTree = "<group>"; };
 		9B9CA0F42A1A9ADD004E337A /* MarkerData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MarkerData.xcdatamodel; sourceTree = "<group>"; };
 		9B9CA1162A1A9BBB004E337A /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
 		9BACA4D029FA9B5100EF6837 /* SettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStore.swift; sourceTree = "<group>"; };
@@ -323,7 +319,6 @@
 		414262BE2AD5CE1900FC6CFC /* Errors */ = {
 			isa = PBXGroup;
 			children = (
-				9B653ABC29F2C64600C64999 /* ErrorViewModel.swift */,
 				414262BF2AD5CE3200FC6CFC /* ConfigurationErrors.swift */,
 				41F88AF92B0FF62A004A3B58 /* DatabaseErrors.swift */,
 				415619662B3A18D60032E82C /* ExtractError.swift */,
@@ -531,7 +526,6 @@
 		47B21A6E2A4DF96D004FECFA /* Other */ = {
 			isa = PBXGroup;
 			children = (
-				9B653ABA29F2C2E700C64999 /* UserAlertView.swift */,
 				9B35FE6729F94C110035B760 /* PickerViews.swift */,
 				41BFEB712B1BCE4600C8B551 /* ExportProfilePicker.swift */,
 				417272992B44533D005A04BE /* FailedExtractionsView.swift */,
@@ -824,7 +818,6 @@
 				41F88AF12B0E9367004A3B58 /* DatabaseManager.swift in Sources */,
 				4100D5E42AD1616D0081F0EC /* ColorExtension.swift in Sources */,
 				9B4D90DE2A0BB11000FE7603 /* DatabaseSettingsView.swift in Sources */,
-				9B653ABB29F2C2E700C64999 /* UserAlertView.swift in Sources */,
 				41F88AF62B0E9DBF004A3B58 /* CreateDBProfileSheet.swift in Sources */,
 				9B35FE6829F94C110035B760 /* PickerViews.swift in Sources */,
 				41C839842B52C9E300C6B133 /* Document.m in Sources */,
@@ -842,7 +835,6 @@
 				47F5CDF82A60CA43005D9A98 /* ExtractionModel.swift in Sources */,
 				411F374E2B56FB5B00CC05E6 /* AppCommands.swift in Sources */,
 				4155B6CF2B5D929A008D3505 /* NSImageExtension.swift in Sources */,
-				9B653ABD29F2C64600C64999 /* ErrorViewModel.swift in Sources */,
 				41C839852B52C9E300C6B133 /* DocumentController.m in Sources */,
 				41EBAD502AF7B6F200E6AF7C /* WindowSize.swift in Sources */,
 				41BFEB792B1F925800C8B551 /* ExportProcess.swift in Sources */,
