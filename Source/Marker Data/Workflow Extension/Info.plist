@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleIconFile</key>
+	<string>ExtensionIcon</string>
+	<key>NSExtension</key>
+	<dict>
+		<key>NSExtensionPointIdentifier</key>
+		<string>com.apple.FinalCut.WorkflowExtension</string>
+		<key>ProExtensionPrincipalViewControllerClass</key>
+		<string>$(PRODUCT_MODULE_NAME).WorkflowExtensionViewController</string>
+		<key>NSAppleEventsUsageDescription</key>
+		<string>Extensions can interact with Final Cut Pro.</string>
+	</dict>
+</dict>
+</plist>

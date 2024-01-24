@@ -34,6 +34,10 @@
 		4155B6CD2B5D4652008D3505 /* DicitionaryExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B6CC2B5D4652008D3505 /* DicitionaryExtension.swift */; };
 		4155B6CF2B5D929A008D3505 /* NSImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B6CE2B5D929A008D3505 /* NSImageExtension.swift */; };
 		4155B6D12B5D93BA008D3505 /* ResizedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B6D02B5D93BA008D3505 /* ResizedImage.swift */; };
+		4155B6D92B602694008D3505 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4155B6D82B602694008D3505 /* Assets.xcassets */; };
+		4155B6DB2B602694008D3505 /* WorkflowExtensionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4155B6DA2B602694008D3505 /* WorkflowExtensionViewController.xib */; };
+		4155B6DE2B602694008D3505 /* WorkflowExtensionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B6DD2B602694008D3505 /* WorkflowExtensionViewController.swift */; };
+		4155B6E32B602694008D3505 /* Workflow Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 4155B6D62B602694008D3505 /* Workflow Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		415619672B3A18D60032E82C /* ExtractError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 415619662B3A18D60032E82C /* ExtractError.swift */; };
 		4156196B2B3AE41F0032E82C /* ProgressViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4156196A2B3AE41F0032E82C /* ProgressViewModel.swift */; };
 		417272982B444211005A04BE /* ExportExitStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417272972B444211005A04BE /* ExportExitStatus.swift */; };
@@ -106,7 +110,28 @@
 		D5F74A512973019000EEE2FE /* OrderedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = D5F74A502973019000EEE2FE /* OrderedCollections */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		4155B6E12B602694008D3505 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D5F74A252972D31C00EEE2FE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4155B6D52B602694008D3505;
+			remoteInfo = WorkflowExtension;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXCopyFilesBuildPhase section */
+		4155B6E72B602694008D3505 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				4155B6E32B602694008D3505 /* Workflow Extension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D5F74A552974A24600EEE2FE /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -144,6 +169,13 @@
 		4155B6CC2B5D4652008D3505 /* DicitionaryExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DicitionaryExtension.swift; sourceTree = "<group>"; };
 		4155B6CE2B5D929A008D3505 /* NSImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSImageExtension.swift; sourceTree = "<group>"; };
 		4155B6D02B5D93BA008D3505 /* ResizedImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResizedImage.swift; sourceTree = "<group>"; };
+		4155B6D62B602694008D3505 /* Workflow Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Workflow Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4155B6D82B602694008D3505 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		4155B6DA2B602694008D3505 /* WorkflowExtensionViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WorkflowExtensionViewController.xib; sourceTree = "<group>"; };
+		4155B6DC2B602694008D3505 /* WorkflowExtension-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WorkflowExtension-Bridging-Header.h"; sourceTree = "<group>"; };
+		4155B6DD2B602694008D3505 /* WorkflowExtensionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowExtensionViewController.swift; sourceTree = "<group>"; };
+		4155B6DF2B602694008D3505 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4155B6E02B602694008D3505 /* WorkflowExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WorkflowExtension.entitlements; sourceTree = "<group>"; };
 		415619662B3A18D60032E82C /* ExtractError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractError.swift; sourceTree = "<group>"; };
 		4156196A2B3AE41F0032E82C /* ProgressViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressViewModel.swift; sourceTree = "<group>"; };
 		417272972B444211005A04BE /* ExportExitStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportExitStatus.swift; sourceTree = "<group>"; };
@@ -225,6 +257,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		4155B6D32B602694008D3505 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D5F74A2A2972D31C00EEE2FE /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -310,6 +349,19 @@
 				4155B6CA2B5D3B3B008D3505 /* NotificationFrequency.swift */,
 			);
 			path = Notifications;
+			sourceTree = "<group>";
+		};
+		4155B6D72B602694008D3505 /* Workflow Extension */ = {
+			isa = PBXGroup;
+			children = (
+				4155B6D82B602694008D3505 /* Assets.xcassets */,
+				4155B6DA2B602694008D3505 /* WorkflowExtensionViewController.xib */,
+				4155B6DC2B602694008D3505 /* WorkflowExtension-Bridging-Header.h */,
+				4155B6DD2B602694008D3505 /* WorkflowExtensionViewController.swift */,
+				4155B6DF2B602694008D3505 /* Info.plist */,
+				4155B6E02B602694008D3505 /* WorkflowExtension.entitlements */,
+			);
+			path = "Workflow Extension";
 			sourceTree = "<group>";
 		};
 		41BFEB732B1BD15A00C8B551 /* Other */ = {
@@ -565,6 +617,7 @@
 			isa = PBXGroup;
 			children = (
 				D5F74A2F2972D31C00EEE2FE /* Marker Data */,
+				4155B6D72B602694008D3505 /* Workflow Extension */,
 				D5F74A2E2972D31C00EEE2FE /* Products */,
 				9B39B0CA29E19B740055F31E /* Frameworks */,
 			);
@@ -574,6 +627,7 @@
 			isa = PBXGroup;
 			children = (
 				D5F74A2D2972D31C00EEE2FE /* Marker Data.app */,
+				4155B6D62B602694008D3505 /* Workflow Extension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -606,6 +660,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		4155B6D52B602694008D3505 /* Workflow Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4155B6E42B602694008D3505 /* Build configuration list for PBXNativeTarget "Workflow Extension" */;
+			buildPhases = (
+				4155B6D22B602694008D3505 /* Sources */,
+				4155B6D32B602694008D3505 /* Frameworks */,
+				4155B6D42B602694008D3505 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Workflow Extension";
+			productName = WorkflowExtension;
+			productReference = 4155B6D62B602694008D3505 /* Workflow Extension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		D5F74A2C2972D31C00EEE2FE /* Marker Data */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = D5F74A3C2972D32100EEE2FE /* Build configuration list for PBXNativeTarget "Marker Data" */;
@@ -614,10 +685,12 @@
 				D5F74A2A2972D31C00EEE2FE /* Frameworks */,
 				D5F74A2B2972D31C00EEE2FE /* Resources */,
 				D5F74A552974A24600EEE2FE /* CopyFiles */,
+				4155B6E72B602694008D3505 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				4155B6E22B602694008D3505 /* PBXTargetDependency */,
 			);
 			name = "Marker Data";
 			packageProductDependencies = (
@@ -641,9 +714,12 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1420;
+				LastSwiftUpdateCheck = 1520;
 				LastUpgradeCheck = 1500;
 				TargetAttributes = {
+					4155B6D52B602694008D3505 = {
+						CreatedOnToolsVersion = 15.2;
+					};
 					D5F74A2C2972D31C00EEE2FE = {
 						CreatedOnToolsVersion = 14.2;
 					};
@@ -671,11 +747,21 @@
 			projectRoot = "";
 			targets = (
 				D5F74A2C2972D31C00EEE2FE /* Marker Data */,
+				4155B6D52B602694008D3505 /* Workflow Extension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		4155B6D42B602694008D3505 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4155B6D92B602694008D3505 /* Assets.xcassets in Resources */,
+				4155B6DB2B602694008D3505 /* WorkflowExtensionViewController.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D5F74A2B2972D31C00EEE2FE /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -693,6 +779,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		4155B6D22B602694008D3505 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4155B6DE2B602694008D3505 /* WorkflowExtensionViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D5F74A292972D31C00EEE2FE /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -781,7 +875,128 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		4155B6E22B602694008D3505 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4155B6D52B602694008D3505 /* Workflow Extension */;
+			targetProxy = 4155B6E12B602694008D3505 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		4155B6E52B602694008D3505 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ADDITIONAL_SDKS = /Library/Developer/SDKs/WorkflowExtensionSDK.sdk;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CODE_SIGN_ENTITLEMENTS = "Workflow Extension/WorkflowExtension.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 99HS259QDZ;
+				ENABLE_HARDENED_RUNTIME = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					/Library/Frameworks,
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				HEADER_SEARCH_PATHS = (
+					/usr/include,
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "Workflow Extension/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Marker Data";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					/usr/lib,
+					"$(inherited)",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACH_O_TYPE = mh_execute;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-fapplication-extension",
+					"-e_ProExtensionMain",
+					"-lProExtension",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = co.theacharya.MarkerData.WorkflowExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Workflow Extension/WorkflowExtension-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				WRAPPER_EXTENSION = appex;
+			};
+			name = Debug;
+		};
+		4155B6E62B602694008D3505 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ADDITIONAL_SDKS = /Library/Developer/SDKs/WorkflowExtensionSDK.sdk;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CODE_SIGN_ENTITLEMENTS = "Workflow Extension/WorkflowExtension.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 99HS259QDZ;
+				ENABLE_HARDENED_RUNTIME = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					/Library/Frameworks,
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				HEADER_SEARCH_PATHS = (
+					/usr/include,
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "Workflow Extension/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Marker Data";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					/usr/lib,
+					"$(inherited)",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACH_O_TYPE = mh_execute;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-fapplication-extension",
+					"-e_ProExtensionMain",
+					"-lProExtension",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = co.theacharya.MarkerData.WorkflowExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Workflow Extension/WorkflowExtension-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				WRAPPER_EXTENSION = appex;
+			};
+			name = Release;
+		};
 		D5F74A3A2972D32100EEE2FE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -902,6 +1117,7 @@
 		D5F74A3D2972D32100EEE2FE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Marker Data/Marker_Data.entitlements";
@@ -909,12 +1125,16 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Marker Data/Preview Content\"";
-				DEVELOPMENT_TEAM = 9CLTNBW4Z3;
+				DEVELOPMENT_TEAM = 99HS259QDZ;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Marker-Data-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Marker Data";
@@ -932,7 +1152,7 @@
 					"$(SDKROOT)/usr/lib/swift",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = co.theacharya.MarkerData;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -944,6 +1164,7 @@
 		D5F74A3E2972D32100EEE2FE /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Marker Data/Marker_Data.entitlements";
@@ -951,12 +1172,16 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Marker Data/Preview Content\"";
-				DEVELOPMENT_TEAM = 9CLTNBW4Z3;
+				DEVELOPMENT_TEAM = 99HS259QDZ;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Marker-Data-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Marker Data";
@@ -974,7 +1199,7 @@
 					"$(SDKROOT)/usr/lib/swift",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = co.theacharya.MarkerData;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -986,6 +1211,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		4155B6E42B602694008D3505 /* Build configuration list for PBXNativeTarget "Workflow Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4155B6E52B602694008D3505 /* Debug */,
+				4155B6E62B602694008D3505 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		D5F74A282972D31C00EEE2FE /* Build configuration list for PBXProject "Marker Data" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

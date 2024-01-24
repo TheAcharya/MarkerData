@@ -111,5 +111,7 @@
 	<string>OSAScriptingDefinition.sdef</string>
 	<key>com.apple.proapps.MediaAssetProtocol</key>
 	<dict/>
+	<key>NSAppleEventsUsageDescription</key>
+	<string>Extensions can interact with Final Cut Pro.</string>
 </dict>
 </plist>
