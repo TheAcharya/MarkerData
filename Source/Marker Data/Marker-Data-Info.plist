@@ -113,5 +113,12 @@
 	<dict/>
 	<key>NSAppleEventsUsageDescription</key>
 	<string>Extensions can interact with Final Cut Pro.</string>
+	<key>ProExtensionAttributes</key>
+  	<dict>
+    <key>ContentViewMinimumWidth</key>
+    <integer>600</integer>
+    <key>ContentViewMinimumHeight</key>
+    <integer>400</integer>
+	</dict>
 </dict>
 </plist>

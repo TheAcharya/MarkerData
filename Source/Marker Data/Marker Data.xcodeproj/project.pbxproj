@@ -35,9 +35,10 @@
 		4155B6CF2B5D929A008D3505 /* NSImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B6CE2B5D929A008D3505 /* NSImageExtension.swift */; };
 		4155B6D12B5D93BA008D3505 /* ResizedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B6D02B5D93BA008D3505 /* ResizedImage.swift */; };
 		4155B6D92B602694008D3505 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4155B6D82B602694008D3505 /* Assets.xcassets */; };
-		4155B6DB2B602694008D3505 /* WorkflowExtensionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4155B6DA2B602694008D3505 /* WorkflowExtensionViewController.xib */; };
 		4155B6DE2B602694008D3505 /* WorkflowExtensionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B6DD2B602694008D3505 /* WorkflowExtensionViewController.swift */; };
 		4155B6E32B602694008D3505 /* Workflow Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 4155B6D62B602694008D3505 /* Workflow Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		4155B7022B612592008D3505 /* WorkflowExtensionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B7012B612592008D3505 /* WorkflowExtensionView.swift */; };
+		4155B7032B612592008D3505 /* WorkflowExtensionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B7012B612592008D3505 /* WorkflowExtensionView.swift */; };
 		415619672B3A18D60032E82C /* ExtractError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 415619662B3A18D60032E82C /* ExtractError.swift */; };
 		4156196B2B3AE41F0032E82C /* ProgressViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4156196A2B3AE41F0032E82C /* ProgressViewModel.swift */; };
 		417272982B444211005A04BE /* ExportExitStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417272972B444211005A04BE /* ExportExitStatus.swift */; };
@@ -171,11 +172,11 @@
 		4155B6D02B5D93BA008D3505 /* ResizedImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResizedImage.swift; sourceTree = "<group>"; };
 		4155B6D62B602694008D3505 /* Workflow Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Workflow Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4155B6D82B602694008D3505 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		4155B6DA2B602694008D3505 /* WorkflowExtensionViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WorkflowExtensionViewController.xib; sourceTree = "<group>"; };
 		4155B6DC2B602694008D3505 /* WorkflowExtension-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WorkflowExtension-Bridging-Header.h"; sourceTree = "<group>"; };
 		4155B6DD2B602694008D3505 /* WorkflowExtensionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowExtensionViewController.swift; sourceTree = "<group>"; };
 		4155B6DF2B602694008D3505 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4155B6E02B602694008D3505 /* WorkflowExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WorkflowExtension.entitlements; sourceTree = "<group>"; };
+		4155B7012B612592008D3505 /* WorkflowExtensionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowExtensionView.swift; sourceTree = "<group>"; };
 		415619662B3A18D60032E82C /* ExtractError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractError.swift; sourceTree = "<group>"; };
 		4156196A2B3AE41F0032E82C /* ProgressViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressViewModel.swift; sourceTree = "<group>"; };
 		417272972B444211005A04BE /* ExportExitStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportExitStatus.swift; sourceTree = "<group>"; };
@@ -354,11 +355,11 @@
 		4155B6D72B602694008D3505 /* Workflow Extension */ = {
 			isa = PBXGroup;
 			children = (
-				4155B6D82B602694008D3505 /* Assets.xcassets */,
-				4155B6DA2B602694008D3505 /* WorkflowExtensionViewController.xib */,
-				4155B6DC2B602694008D3505 /* WorkflowExtension-Bridging-Header.h */,
 				4155B6DD2B602694008D3505 /* WorkflowExtensionViewController.swift */,
+				4155B7012B612592008D3505 /* WorkflowExtensionView.swift */,
+				4155B6DC2B602694008D3505 /* WorkflowExtension-Bridging-Header.h */,
 				4155B6DF2B602694008D3505 /* Info.plist */,
+				4155B6D82B602694008D3505 /* Assets.xcassets */,
 				4155B6E02B602694008D3505 /* WorkflowExtension.entitlements */,
 			);
 			path = "Workflow Extension";
@@ -758,7 +759,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				4155B6D92B602694008D3505 /* Assets.xcassets in Resources */,
-				4155B6DB2B602694008D3505 /* WorkflowExtensionViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -784,6 +784,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4155B6DE2B602694008D3505 /* WorkflowExtensionViewController.swift in Sources */,
+				4155B7032B612592008D3505 /* WorkflowExtensionView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -848,6 +849,7 @@
 				41C538942AE1AFF200E8A8A1 /* SettingsContainer.swift in Sources */,
 				411F37632B5C5F5D00CC05E6 /* FileCommands.swift in Sources */,
 				414262C02AD5CE3200FC6CFC /* ConfigurationErrors.swift in Sources */,
+				4155B7022B612592008D3505 /* WorkflowExtensionView.swift in Sources */,
 				411F37532B57255A00CC05E6 /* OpenEventHandler.swift in Sources */,
 				D5F74A312972D31D00EEE2FE /* Marker_DataApp.swift in Sources */,
 				41F88AF82B0FDCF7004A3B58 /* ProfileCredentialModel.swift in Sources */,
