@@ -282,7 +282,7 @@ class ConfigurationsModel: ObservableObject {
     /// Loads default configuration from resources
     func loadDefaultsDicitionary() throws -> Dictionary<String, Any> {
         do {
-            if let url = Bundle.main.url(forResource: Self.defaultConfigurationFileName, withExtension: "json") {
+            if let url = URL.defaultConfigurationJSON {
                 let data = try Data(contentsOf: url)
                 let configDict = try JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
                 
@@ -318,7 +318,17 @@ class ConfigurationsModel: ObservableObject {
                 .sorted()
             
             // Load configuration from disk
-            let url = URL.configurationsFolder.appendingPathComponent(self.activeConfiguration, conformingTo: .json)
+            guard let url = if self.activeConfiguration == Self.defaultConfigurationName {
+                URL.defaultConfigurationJSON
+            } else {
+                URL.configurationsFolder.appendingPathComponent(self.activeConfiguration, conformingTo: .json)
+            }
+            // guard else
+            else {
+                Self.logger.error("Failed get on disk url during JSON comparison")
+                return
+            }
+            
             guard let onDiskData = try? Data(contentsOf: url) else {
                 Self.logger.error("Failed get on disk data during JSON comparison")
                 return

@@ -56,6 +56,11 @@ extension URL {
             .appendingPathComponent("WorkflowExtensionExport.fcpxml", conformingTo: .fcpxml)
     }
     
+    // Path to DefaultConfiguration.json
+    public static var defaultConfigurationJSON: URL? {
+        return Bundle.main.url(forResource: "DefaultConfiguration", withExtension: "json")
+    }
+    
     func conformsToType(_ types: [UTType]) -> Bool {
         let fileExtensions = types
             .map { $0.preferredFilenameExtension }
