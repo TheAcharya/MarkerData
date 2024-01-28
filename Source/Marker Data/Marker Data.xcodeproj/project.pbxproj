@@ -53,6 +53,7 @@
 		4155B7262B6574A8008D3505 /* RolesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B7252B6574A8008D3505 /* RolesManager.swift */; };
 		4155B7272B657710008D3505 /* RolesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B7252B6574A8008D3505 /* RolesManager.swift */; };
 		4155B7282B657741008D3505 /* URLExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414262BA2AD2E1AC00FC6CFC /* URLExtension.swift */; };
+		4155B7292B668179008D3505 /* HelpButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47411FD92A3EA121005890FE /* HelpButton.swift */; };
 		415619672B3A18D60032E82C /* ExtractError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 415619662B3A18D60032E82C /* ExtractError.swift */; };
 		4156196B2B3AE41F0032E82C /* ProgressViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4156196A2B3AE41F0032E82C /* ProgressViewModel.swift */; };
 		417272982B444211005A04BE /* ExportExitStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417272972B444211005A04BE /* ExportExitStatus.swift */; };
@@ -826,6 +827,7 @@
 				4155B71A2B62E182008D3505 /* UTTypeExtension.swift in Sources */,
 				4155B6DE2B602694008D3505 /* WorkflowExtensionViewController.swift in Sources */,
 				4155B7032B612592008D3505 /* WorkflowExtensionView.swift in Sources */,
+				4155B7292B668179008D3505 /* HelpButton.swift in Sources */,
 				4155B7272B657710008D3505 /* RolesManager.swift in Sources */,
 				4155B7282B657741008D3505 /* URLExtension.swift in Sources */,
 				4155B7172B62E131008D3505 /* RolesSettingsView.swift in Sources */,

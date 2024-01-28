@@ -10,6 +10,8 @@ import SwiftUI
 struct WorkflowExtensionView: View {
     @State var errorMessage = ""
     
+    @Environment(\.openURL) var openURL
+    
     var body: some View {
         VStack {
             titleHeaderView
@@ -28,11 +30,18 @@ struct WorkflowExtensionView: View {
                         Label("Roles", systemImage: "movieclapper")
                     }
             }
+            .padding(.bottom)
             
             Spacer()
         }
         .frame(width: 600, height: 400)
         .padding()
+        .overlay(alignment: .bottomTrailing) {
+            HelpButton {
+                self.openURL(URL(string: "https://markerdata.theacharya.co/user-guide/workflow-extension/")!)
+            }
+            .padding([.trailing, .bottom], 10)
+        }
     }
     
     private var titleHeaderView: some View {
