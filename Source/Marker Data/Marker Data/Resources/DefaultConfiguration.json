@@ -31,5 +31,6 @@
         "extractProfile": "csv",
         "databaseProfileName": "",
         "exportProfileType": "extractOnly"
-    }
+    },
+    "roles": []
 }

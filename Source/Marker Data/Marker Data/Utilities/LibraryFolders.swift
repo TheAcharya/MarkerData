@@ -17,9 +17,10 @@ struct LibraryFolders {
         let foldersToCheck: [URL] = [
             URL.markerDataLibraryFolder,
             URL.configurationsFolder,
-            URL.databaseFolder,
             URL.databaseProfilesFolder,
-            URL.logsFolder
+            URL.databaseProfilesFolder,
+            URL.logsFolder,
+            URL.FCPExportCacheFolder
         ]
         
         let fileManager = FileManager.default
@@ -36,6 +37,7 @@ struct LibraryFolders {
         Self.logger.info("All Library folders OK")
     }
     
+    /// Deletes cache older then a month
     public static func deleteOldCache() {
         let directory = URL.FCPExportCacheFolder
         let fileManager = FileManager.default

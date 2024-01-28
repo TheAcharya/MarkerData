@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 /// Streams the output of a shell command in real time
-public class ShellOutputStream {
+class ShellOutputStream {
     public let outputPublisher = PassthroughSubject<String, Never>()
     
     private var output: String = ""

@@ -31,36 +31,81 @@ class ExtractionModel: ObservableObject, DropDelegate {
     
     public var failedTasks: [ExtractionFailure] = []
 
-    let errorViewModel: ErrorViewModel
     let settings: SettingsContainer
     
     static let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "ExtractionModel")
 
     init(settings: SettingsContainer, databaseManager: DatabaseManager) {
-        self.errorViewModel = ErrorViewModel()
         self.settings = settings
         self.databaseManager = databaseManager
         
-        NotificationCenter.default.addObserver(self, selector: #selector(handleOpenDocument(notification:)), name: Notification.Name("OpenFile"), object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleOpenDocument(notification:)),
+            name: Notification.Name("OpenFile"),
+            object: nil)
+        
+        DistributedNotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleWorkflowExtensionEvent),
+            name: Notification.Name("WorkflowExtensionFileReceived"),
+            object: nil)
     }
     
+    /// Handles the Open Document event, called when file is dragged to dock icon or FCP Share Destination exports
     @objc func handleOpenDocument(notification: Notification) {
         guard let url = notification.userInfo?["url"] as? URL else {
-            Self.logger.error("HandleOpen: Couldn't find URL info")
+            Self.logger.error("handleOpenDocument: Couldn't find URL info")
             return
         }
         
-        Self.logger.notice("HandleOpen: Received url: \(url)")
+        Self.logger.notice("handleOpenDocument: Received url: \(url)")
         
         // Check if URL conforms to supported file types
         if !url.conformsToType(Self.supportedContentTypes) {
-            Self.logger.error("HandleOpen: File type not supported (\(url.pathExtension))")
+            Self.logger.error("handleOpenDocument: File type not supported (\(url.pathExtension, privacy: .public))")
             return
         }
         
         // Show UI
         self.showProgressUI = true
             
+        // Check if destination folder exists
+        if let exportFolder = self.settings.store.exportFolderURL,
+           exportFolder.fileExists {
+            // Extract
+            Task {
+                await self.performExtraction([url])
+            }
+        } else {
+            // Default to opening external file recieved popup
+            self.externalFileRecieved = true
+            self.externalFileURL = url
+        }
+        
+        // Send notification
+        NotificationManager.sendNotification(
+            taskFinished: false,
+            title: "Recieved External File",
+            body: "\(url.path(percentEncoded: false))"
+        )
+    }
+    
+    /// Handles Workflow Extension notification, and starts the extraction
+    @objc func handleWorkflowExtensionEvent() {
+        Self.logger.notice("handleWorkflowExtensionEvent: Recieved notification")
+        
+        let url = URL.workflowExtensionExportFCPXML
+        
+        // Check if URL conforms to supported file types
+        if !url.fileExists {
+            Self.logger.error("handleWorkflowExtensionEvent: \(url.path(percentEncoded: false)) doesn't exist")
+            return
+        }
+        
+        // Show UI
+        self.showProgressUI = true
+        
         // Check if destination folder exists
         if let exportFolder = self.settings.store.exportFolderURL,
            exportFolder.fileExists {
@@ -125,17 +170,7 @@ class ExtractionModel: ObservableObject, DropDelegate {
                             Self.logger.notice("Skipping file \(url?.path(percentEncoded: false) ?? ""). Not supported.")
                         }
                     } else if let error = error {
-                        // Handle the error
-                        DispatchQueue.main.async {
-                            self.extractionProgress.markasFailed(
-                                progressMessage: "Failed to load files",
-                                alertMessage: "Error: \(error.localizedDescription)"
-                            )
-                            
-                            self.errorViewModel.errorMessage  = error.localizedDescription
-                            
-                            Self.logger.error("File drop error: \(error.localizedDescription)")
-                        }
+                        Self.logger.error("File drop error: \(error.localizedDescription, privacy: .public)")
                     }
                 }
             }
@@ -238,6 +273,7 @@ class ExtractionModel: ObservableObject, DropDelegate {
                 // Do extraction
                 exportResult = try await extractor.extract()
             } catch {
+                Self.logger.error("Failed to extract: \(error.localizedDescription)")
                 await MainActor.run {
                     failedTasks.append(ExtractionFailure(url: url, exitStatus: .failedToExtract, errorMessage: error.localizedDescription))
                 }
@@ -258,12 +294,12 @@ class ExtractionModel: ObservableObject, DropDelegate {
             // Check if a database profile is set
             guard let databaseProfile = await self.databaseManager.selectedDatabaseProfile else {
                 // Skip upload if no database profile is selected
-                Self.logger.notice("Skipping upload for: \(url)")
+                Self.logger.notice("Skipping upload for: \(url.path(percentEncoded: true))")
                 return
             }
             
             guard let jsonURL = exportResult?.jsonManifestPath else {
-                Self.logger.error("Failed to upload \(url): missing json URL")
+                Self.logger.error("Failed to upload \(url): missing json URL. Most likely no markers were extracted.")
                 throw DatabaseUploadError.missingJsonFile
             }
             
@@ -396,7 +432,7 @@ class ExtractionModel: ObservableObject, DropDelegate {
                 throw DatabaseUploadError.notionNoToken
             }
             
-            let logPath = URL.databaseFolder.appendingPathComponent("csv2notion_log.txt", conformingTo: .plainText).path(percentEncoded: false)
+            let logPath = URL.logsFolder.appendingPathComponent("csv2notion_log.txt", conformingTo: .plainText).path(percentEncoded: false)
             
             var arguments: [String] = [
                 "--workspace", credentials.workspaceName.quoted,

@@ -11,8 +11,6 @@ import UniformTypeIdentifiers
 import MarkersExtractor
 
 struct ContentView: View {
-    @StateObject private var errorViewModel = ErrorViewModel()
-
     @ObservedObject var extractionModel: ExtractionModel
     @Binding var sidebarSelection: MainViews
     

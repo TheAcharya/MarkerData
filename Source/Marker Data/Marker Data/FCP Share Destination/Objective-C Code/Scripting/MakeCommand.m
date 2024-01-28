@@ -91,20 +91,8 @@
         }
         
         // Get export folder from User Defaults
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSString *homeDirectory = NSHomeDirectory();
-        
-        NSString *exportFolderURLString = [defaults objectForKey:@"exportFolderURL"];
-        exportFolderURLString = [exportFolderURLString stringByReplacingOccurrencesOfString:@"~" withString:homeDirectory];
-        
-        NSURL *exportFolderURL;
-        
-        if ([exportFolderURLString length] == 0) {
-            // If export folder is empty default to Chache folder
-            exportFolderURL = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/Library/Caches/Marker Data/FCPTempExport/%@", homeDirectory, nameParameter]];
-        } else {
-            exportFolderURL = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/_FCPExport/%@", exportFolderURLString, nameParameter]];
-        }
+        NSURL *exportFolderURL = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/Movies/Marker Data Cache/%@", homeDirectory, nameParameter]];;
         
         // Create directory if missing
         NSFileManager *fileManager = [NSFileManager defaultManager];

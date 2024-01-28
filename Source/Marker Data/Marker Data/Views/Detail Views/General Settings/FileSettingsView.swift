@@ -1,16 +1,13 @@
 //
-//  Marker Data • https://github.com/TheAcharya/MarkerData
-//  Licensed under MIT License
+//  FileSettingsView.swift
+//  Marker Data
 //
-//  Maintained by Peter Schorn
+//  Created by Milán Várady on 25/01/2024.
 //
 
 import SwiftUI
 
-struct GeneralSettingsView: View {
-
-    @Environment(\.openURL) var openURL
-
+struct FileSettingsView: View {
     @EnvironmentObject var settings: SettingsContainer
     
     var body: some View {
@@ -20,14 +17,7 @@ struct GeneralSettingsView: View {
             Divider()
             
             extractionProfileSettings
-            
-            Divider()
-            
-            progressReportingSettings
         }
-        .overlayHelpButton(url: Links.generalSettingsURL)
-        .navigationTitle("General Settings")
-        
     }
     
     var exportDestinationSettings: some View {
@@ -94,48 +84,16 @@ struct GeneralSettingsView: View {
             }
         }
     }
-    
-    var progressReportingSettings: some View {
-        Group {
-            Text("Progress Reporting")
-                .font(.headline)
-            
-            HStack {
-                Text("Notification Frequency:")
-                
-                Picker("", selection: $settings.store.notificationFrequency) {
-                    ForEach(NotificationFrequency.allCases) { frequency in
-                        Text(frequency.displayName)
-                            .tag(frequency)
-                    }
-                }
-                .labelsHidden()
-                .frame(width: 250)
-                .formControlLeadingAlignmentGuide()
-            }
-            
-            HStack {
-                Text("Show Progress on Dock Icon: ")
-                
-                Toggle("", isOn: $settings.store.showDockProgress)
-                    .formControlLeadingAlignmentGuide()
-            }
-        }
-    }
 }
 
-struct GeneralSettingsView_Previews: PreviewProvider {
-    @StateObject static var settings = SettingsContainer()
-    @StateObject static var databaseManager = DatabaseManager()
-    @StateObject static var configurationsModel = ConfigurationsModel()
+#Preview {
+    @StateObject var settings = SettingsContainer()
+    @StateObject var databaseManager = DatabaseManager()
+    @StateObject var configurationsModel = ConfigurationsModel()
     
-    static var previews: some View {
-        GeneralSettingsView()
-            .preferredColorScheme(.dark)
-            .environmentObject(settings)
-            .environmentObject(databaseManager)
-            .environmentObject(configurationsModel)
-            .padding()
-    }
-    
+    return FileSettingsView()
+        .padding()
+        .environmentObject(settings)
+        .environmentObject(databaseManager)
+        .environmentObject(configurationsModel)
 }

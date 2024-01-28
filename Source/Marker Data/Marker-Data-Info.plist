@@ -109,6 +109,13 @@
 	</array>
 	<key>OSAScriptingDefinition</key>
 	<string>OSAScriptingDefinition.sdef</string>
+	<key>ProExtensionAttributes</key>
+	<dict>
+		<key>ContentViewMinimumHeight</key>
+		<integer>400</integer>
+		<key>ContentViewMinimumWidth</key>
+		<integer>600</integer>
+	</dict>
 	<key>com.apple.proapps.MediaAssetProtocol</key>
 	<dict/>
 </dict>

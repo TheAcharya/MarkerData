@@ -44,7 +44,7 @@ extension DatabaseUploadError: LocalizedError {
     public var errorDescription: String? {
         switch self {
         case .missingJsonFile:
-            "Couldn't locate json"
+            "No markers found. Check roles (General->Roles)."
         case .notionNoToken:
             "Missing notion API token"
         case .notionUploadError:

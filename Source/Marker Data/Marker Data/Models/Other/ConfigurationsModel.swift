@@ -81,9 +81,10 @@ class ConfigurationsModel: ObservableObject {
             throw ConfigurationSaveError.nameAlreadyExists
         }
         
-        let dictionary = try self.getUserDefaultsDictionary()
+        // Get user defaults dictionary
+        let dictionary = try self.getConfigurationsDictionary()
         
-        // Turn into json
+        // Encode to json
         guard let data = try? JSONSerialization.data(withJSONObject: dictionary, options: [.prettyPrinted]) else {
             throw ConfigurationSaveError.jsonSerializationError
         }
@@ -142,14 +143,20 @@ class ConfigurationsModel: ObservableObject {
             // Load UnifiedExportProfile
             let decoder = JSONDecoder()
             
-            let structData = try JSONSerialization.data(withJSONObject: dictionary["unifiedExportProfile"] as Any, options: [])
-            let unifiedExportProfile = try decoder.decode(UnifiedExportProfile.self, from: structData)
-            
-            Self.logger.info("UnifiedExportProfile loaded")
+            let unifiedExportProfileData = try JSONSerialization.data(withJSONObject: dictionary["unifiedExportProfile"] as Any, options: [])
+            let unifiedExportProfile = try decoder.decode(UnifiedExportProfile.self, from: unifiedExportProfileData)
             
             try unifiedExportProfile.save()
             
-            Self.logger.info("UnifiedExportProfile saved")
+            Self.logger.info("UnifiedExportProfile loaded")
+            
+            // Load roles
+            let rolesData = try JSONSerialization.data(withJSONObject: dictionary["roles"] as Any, options: [])
+            let roles = try decoder.decode([RoleModel].self, from: rolesData)
+            
+            try RolesManager.saveRolesToDisk(roles)
+            
+            Self.logger.info("Roles loaded")
         } catch {
             Self.logger.error("Failed to load configuration file. Message: \(error.localizedDescription)")
             throw ConfigurationLoadError.fileDoesntExists
@@ -170,21 +177,32 @@ class ConfigurationsModel: ObservableObject {
         self.checkForUnsavedChanges()
     }
     
-    private func getUserDefaultsDictionary() throws -> Dictionary<String, Any> {
+    private func getConfigurationsDictionary() throws -> Dictionary<String, Any> {
+        // Get user defaults as dict
         let defaults = UserDefaults.standard
         var dictionary = defaults.dictionaryRepresentation().filter {
             Self.keysToSave.contains($0.key)
         }
         
-        // Add active UnifiedExportProfile profile to dictionary
+        // Add active UnifiedExportProfile and roles to dictionary
         let unifiedProfile: UnifiedExportProfile = UnifiedExportProfile.load() ?? UnifiedExportProfile.defaultProfile()
+        let roles: [RoleModel] = RolesManager.loadRolesFromDisk()
         
+        // Encode
         let encoder = JSONEncoder()
         encoder.outputFormatting = .prettyPrinted
-        let data = try encoder.encode(unifiedProfile)
-        let unifiedProfileAsDict = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+        let unifiedExportProfileData = try encoder.encode(unifiedProfile)
+        let rolesData = try roles.map { try encoder.encode($0) }
         
+        // Turn into dict
+        let unifiedProfileAsDict = try JSONSerialization.jsonObject(with: unifiedExportProfileData, options: []) as? [String: Any]
+        let rolesAsDict = try rolesData.map {
+            try JSONSerialization.jsonObject(with: $0, options: []) as? [String: Any]
+        }
+        
+        // Add to dictionary
         dictionary["unifiedExportProfile"] = unifiedProfileAsDict
+        dictionary["roles"] = rolesAsDict
                 
         return dictionary
     }
@@ -279,15 +297,53 @@ class ConfigurationsModel: ObservableObject {
     }
     
     /// Returns true if there are unsaved changes to active configuration
+    // This function turns the current configuration into a JSON string
+    // and compares it with the configuration JSON file on disk.
+    // The comparison is done by removing whitespace and sorting the characters,
+    // which is obviously not the best idea, but I couldn't find an other way to diff JSON.
     func checkForUnsavedChanges() {
         do {
-            let onDisk = try loadConfigurationDictionary(configurationName: self.activeConfiguration)
-            let current = try getUserDefaultsDictionary()
+            // Get current configuration dict
+            let currentDict = try self.getConfigurationsDictionary()
             
-            self.unsavedChanges = !onDisk.isEqualTo(current)
+            // Encode to JSON
+            guard let currentData = try? JSONSerialization.data(withJSONObject: currentDict, options: [.prettyPrinted]) else {
+                Self.logger.error("Failed get current data during JSON comparison")
+                return
+            }
+            
+            // Convert to sorted characters
+            let currentChars = String(decoding: currentData, as: UTF8.self)
+                .removing(.whitespacesAndNewlines)
+                .sorted()
+            
+            // Load configuration from disk
+            let url = URL.configurationsFolder.appendingPathComponent(self.activeConfiguration, conformingTo: .json)
+            guard let onDiskData = try? Data(contentsOf: url) else {
+                Self.logger.error("Failed get on disk data during JSON comparison")
+                return
+            }
+            
+            // Convert to sorted characters
+            let onDiskChars = String(decoding: onDiskData, as: UTF8.self)
+                .removing(.whitespacesAndNewlines)
+                .sorted()
+            
+            // Compare
+            self.unsavedChanges = currentChars != onDiskChars
         } catch {
             Self.logger.error("Failed to compare configurations for unsaved changes")
         }
+        
+        // Old implementation
+//        do {
+//            let onDisk = try loadConfigurationDictionary(configurationName: self.activeConfiguration)
+//            let current = try getConfigurationsDictionary()
+//            
+//            self.unsavedChanges = !onDisk.isEqualTo(current)
+//        } catch {
+//            Self.logger.error("Failed to compare configurations for unsaved changes")
+//        }
     }
     
     /// Creates configurations directory if it doesn't exist already
