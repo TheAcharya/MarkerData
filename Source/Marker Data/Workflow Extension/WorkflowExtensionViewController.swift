@@ -6,6 +6,7 @@
 //
 
 import Cocoa
+import ProExtensionHost
 import SwiftUI
 
 @objc class WorkflowExtensionViewController: NSViewController {
@@ -18,5 +19,10 @@ import SwiftUI
         self.view.addSubview(swiftuiView)
         swiftuiView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
         swiftuiView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+    }
+	
+    @objc var hostInfoString: String {
+        let host = ProExtensionHostSingleton() as! FCPXHost
+        return String(format:"%@ %@", host.name, host.versionString)
     }
 }
