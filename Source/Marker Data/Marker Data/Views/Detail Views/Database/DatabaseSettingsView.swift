@@ -23,6 +23,8 @@ struct DatabaseSettingsView: View {
     @State var showProfileRemoveAlert = false
     @State var showDuplicationAlert = false
     
+    @State var showDeleteConfirm = false
+    
     var body: some View {
         VStack {
             tableView
@@ -52,6 +54,19 @@ struct DatabaseSettingsView: View {
         }
         .alert("Failed to remove profile", isPresented: $showProfileRemoveAlert) { }
         .alert("Failed to duplicate profile", isPresented: $showDuplicationAlert) { }
+        .confirmationDialog("Delete profile \(selection?.quoted ?? "")? This action cannot be undone.", isPresented: $showDeleteConfirm) {
+            Button("Delete", role: .destructive) {
+                do {
+                    try withAnimation {
+                        try databaseManager.removeProfile(profileName: selection ?? "")
+                    }
+                } catch {
+                    showProfileRemoveAlert = true
+                }
+            }
+            
+            Button("Cancel", role: .cancel) {}
+        }
     }
     
     var tableView: some View {
@@ -73,13 +88,7 @@ struct DatabaseSettingsView: View {
             
             // Remove profile button
             Button {
-                do {
-                    try withAnimation {
-                        try databaseManager.removeProfile(profileName: selection ?? "")
-                    }
-                } catch {
-                    showProfileRemoveAlert = true
-                }
+               showDeleteConfirm = true
             } label: {
                 Image(systemName: "minus")
             }
