@@ -29,6 +29,36 @@ jobs:
       run: |
         PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
         mkdir -p "$PARENT/dist/dmg-builds/app-build"
+        mkdir -p "$PARENT/dist/dmg-builds/sdk"
+        
+    - name: Copy Workflow Extensions SDK
+      run: |
+        mkdir -p dist/dmg-builds/sdk
+        cp -R ./SDK/Workflow_Extensions_1.0.2.dmg ./dist/dmg-builds/sdk
+        
+    - name: Mount Workflow Extensions DMG
+      run: |
+        hdiutil attach ./dist/dmg-builds/sdk/Workflow_Extensions_1.0.2.dmg
+    
+    - name: Install Workflow Extensions SDK
+      run: |
+        sudo installer -pkg /Volumes/WorkflowExtensionsSDK/WorkflowExtensionsSDK.pkg -target /
+    
+    - name: View Volume Directory
+      run: |
+        ls /Volumes
+
+    - name: View Workflow Extensions SDK DMG Directory
+      run: |
+        ls /Volumes/WorkflowExtensionsSDK
+
+    - name: Unmount Workflow Extensions SDK DMG
+      run: |
+        hdiutil detach /Volumes/WorkflowExtensionsSDK
+
+    - name: Check Installed Workflow Extensions SDK Directory
+      run: |
+        ls /Library/Developer/SDKs
 
     - name: Build Marker Data
       run: |
