@@ -25,13 +25,14 @@ struct ConfigurationSettingsView: View {
     @State var showAddUnsavedChangesDialog = false
     @State var showSwitchUnsavedChangesDialog = false
     
-    
     @State var showConfigurationAddAlert = false
     @State var configurationAddAlertMessage = ""
     @State var showConfigurationDelteAlert = false
     @State var showConfigurationLoadAlert = false
     @State var showConfigurationUpdateAlert = false
     @State var showConfigurationRenameAlert = false
+    
+    @State var showRemoveConfigurationConfirm = false
     
     /// Currently highlighted configuration (not the active configuration)
     @State var selectedConfiguration = ""
@@ -101,6 +102,13 @@ struct ConfigurationSettingsView: View {
             
             Button("Cancel", role: .cancel) { }
         }
+        // Remove configuration confirmation dialog
+        .confirmationDialog("Delete configuration \(selectedConfiguration.quoted)? This action cannot be undone.", isPresented: $showRemoveConfigurationConfirm) {
+            Button("Delete", role: .destructive) {
+                removeConfiguration(selectedConfiguration)
+            }
+            Button("Cancel", role: .cancel) {}
+        }
         .alert("Failed to remove configuration", isPresented: $showConfigurationDelteAlert) { }
         .alert("Failed to load configuration", isPresented: $showConfigurationLoadAlert) { }
         .alert("Failed to update active configuration", isPresented: $showConfigurationUpdateAlert) { }
@@ -169,7 +177,7 @@ struct ConfigurationSettingsView: View {
             
             // Remove configuration button
             Button {
-               removeConfiguration(selectedConfiguration)
+               showRemoveConfigurationConfirm = true
             } label: {
                 Image(systemName: "minus")
             }
