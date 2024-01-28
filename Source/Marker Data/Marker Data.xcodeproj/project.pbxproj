@@ -54,6 +54,7 @@
 		4155B7272B657710008D3505 /* RolesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B7252B6574A8008D3505 /* RolesManager.swift */; };
 		4155B7282B657741008D3505 /* URLExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414262BA2AD2E1AC00FC6CFC /* URLExtension.swift */; };
 		4155B7292B668179008D3505 /* HelpButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47411FD92A3EA121005890FE /* HelpButton.swift */; };
+		4155B72C2B668D29008D3505 /* LoggingOSLog in Frameworks */ = {isa = PBXBuildFile; productRef = 4155B72B2B668D29008D3505 /* LoggingOSLog */; };
 		415619672B3A18D60032E82C /* ExtractError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 415619662B3A18D60032E82C /* ExtractError.swift */; };
 		4156196B2B3AE41F0032E82C /* ProgressViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4156196A2B3AE41F0032E82C /* ProgressViewModel.swift */; };
 		417272982B444211005A04BE /* ExportExitStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417272972B444211005A04BE /* ExportExitStatus.swift */; };
@@ -289,6 +290,7 @@
 				4100D5E72AD19C980081F0EC /* FilePicker in Frameworks */,
 				41C8399B2B52D78900C6B133 /* AVFoundation.framework in Frameworks */,
 				4155B71E2B62E29A008D3505 /* MarkersExtractor in Frameworks */,
+				4155B72C2B668D29008D3505 /* LoggingOSLog in Frameworks */,
 				9B61B44229F03866003EC14A /* libswiftCoreGraphics.tbd in Frameworks */,
 				4155B6C52B5D3709008D3505 /* DockProgress in Frameworks */,
 				41C538A22AE420EA00E8A8A1 /* ColorWellKit in Frameworks */,
@@ -743,6 +745,7 @@
 				41BFEB6F2B1BA4CC00C8B551 /* PasswordField */,
 				4155B6C42B5D3709008D3505 /* DockProgress */,
 				4155B71D2B62E29A008D3505 /* MarkersExtractor */,
+				4155B72B2B668D29008D3505 /* LoggingOSLog */,
 			);
 			productName = "Marker Data";
 			productReference = D5F74A2D2972D31C00EEE2FE /* Marker Data.app */;
@@ -782,6 +785,7 @@
 				41BFEB6E2B1BA4CC00C8B551 /* XCRemoteSwiftPackageReference "PasswordField" */,
 				4155B6C32B5D3709008D3505 /* XCRemoteSwiftPackageReference "DockProgress" */,
 				4155B71C2B62E29A008D3505 /* XCRemoteSwiftPackageReference "MarkersExtractor" */,
+				4155B72A2B668C0D008D3505 /* XCRemoteSwiftPackageReference "swift-log-oslog" */,
 			);
 			productRefGroup = D5F74A2E2972D31C00EEE2FE /* Products */;
 			projectDirPath = "";
@@ -1320,6 +1324,14 @@
 				minimumVersion = 0.3.3;
 			};
 		};
+		4155B72A2B668C0D008D3505 /* XCRemoteSwiftPackageReference "swift-log-oslog" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/chrisaljoudi/swift-log-oslog.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.2.2;
+			};
+		};
 		41BFEB6E2B1BA4CC00C8B551 /* XCRemoteSwiftPackageReference "PasswordField" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/MrAsterisco/PasswordField";
@@ -1366,6 +1378,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4155B71C2B62E29A008D3505 /* XCRemoteSwiftPackageReference "MarkersExtractor" */;
 			productName = MarkersExtractor;
+		};
+		4155B72B2B668D29008D3505 /* LoggingOSLog */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4155B72A2B668C0D008D3505 /* XCRemoteSwiftPackageReference "swift-log-oslog" */;
+			productName = LoggingOSLog;
 		};
 		41BFEB6F2B1BA4CC00C8B551 /* PasswordField */ = {
 			isa = XCSwiftPackageProductDependency;

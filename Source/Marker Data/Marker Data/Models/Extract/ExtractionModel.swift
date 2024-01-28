@@ -4,7 +4,8 @@ import Combine
 import MarkersExtractor
 import AppKit
 import UniformTypeIdentifiers
-import os
+import Logging
+import LoggingOSLog
 
 class ExtractionModel: ObservableObject, DropDelegate {
     let databaseManager: DatabaseManager
@@ -33,11 +34,15 @@ class ExtractionModel: ObservableObject, DropDelegate {
 
     let settings: SettingsContainer
     
-    static let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "ExtractionModel")
+//    static let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "ExtractionModel")
+    static let logger = Logger(label: Bundle.main.bundleIdentifier!)
 
     init(settings: SettingsContainer, databaseManager: DatabaseManager) {
         self.settings = settings
         self.databaseManager = databaseManager
+        
+        // Configure swift-log logging system to use OSLog backend
+        LoggingSystem.bootstrap(LoggingOSLog.init)
         
         NotificationCenter.default.addObserver(
             self,
@@ -63,7 +68,7 @@ class ExtractionModel: ObservableObject, DropDelegate {
         
         // Check if URL conforms to supported file types
         if !url.conformsToType(Self.supportedContentTypes) {
-            Self.logger.error("handleOpenDocument: File type not supported (\(url.pathExtension, privacy: .public))")
+            Self.logger.error("handleOpenDocument: File type not supported (\(url.pathExtension))")
             return
         }
         
@@ -170,7 +175,7 @@ class ExtractionModel: ObservableObject, DropDelegate {
                             Self.logger.notice("Skipping file \(url?.path(percentEncoded: false) ?? ""). Not supported.")
                         }
                     } else if let error = error {
-                        Self.logger.error("File drop error: \(error.localizedDescription, privacy: .public)")
+                        Self.logger.error("File drop error: \(error.localizedDescription)")
                     }
                 }
             }
@@ -252,10 +257,9 @@ class ExtractionModel: ObservableObject, DropDelegate {
                 throw ExtractError.settingsReadError
             }
             
-//            let markersExtractorLogger = Logger(subsystem: "co.TheAcharya.MarkersExtractor", category: "extract")
-//            let markersExtractorLogger = Logger(label: "MarkersExtractor")
+            let markersExtractorLogger = Logger(label: Bundle.main.bundleIdentifier!, factory: LoggingOSLog.init)
             
-            let extractor = MarkersExtractor(settings)
+            let extractor = MarkersExtractor(settings, logger: markersExtractorLogger)
             
             // Observe progress changes
             let observation = extractor.observe(
@@ -481,7 +485,7 @@ class ExtractionModel: ObservableObject, DropDelegate {
             
             if result.didFail {
                 // Failure
-                Self.logger.error("Failed to upload to Notion.\nCommand: \(command, privacy: .private)\nOutput: \(result.output)")
+                Self.logger.error("Failed to upload to Notion.\nOutput: \(result.output)")
                 throw DatabaseUploadError.notionUploadError
             } else {
                 // Success
