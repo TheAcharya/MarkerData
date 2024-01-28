@@ -20,8 +20,6 @@ struct Marker_DataApp: App {
     
     /// Currently selected detail view in the sidebar
     @State var sidebarSelection: MainViews = .extract
-
-    let persistenceController = PersistenceController.shared
     
     @State var showLibraryFolderCreationAlert = false
     
@@ -56,7 +54,6 @@ struct Marker_DataApp: App {
             .environmentObject(settings)
             .environmentObject(configurationsModel)
             .environmentObject(databaseManager)
-            .environment(\.managedObjectContext, persistenceController.container.viewContext)
             // Force Dark Mode On Content View
             .preferredColorScheme(.dark)
             // Set fix window size
