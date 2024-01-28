@@ -185,6 +185,11 @@ class SettingsStore: ObservableObject {
         // Output dir
         let outputDirURL: URL = self.exportFolderURL ?? URL.moviesDirectory
         
+        // Exclude roles
+        let roles = RolesManager.loadRolesFromDisk()
+        let excludeRoles = roles.filter { !$0.enabled }
+        let excludeRoleNames: Set<String> = Set(excludeRoles.map { $0.role.role })
+        
         // Image size override
         var imageWidth: Int? = nil
         var imageHeight: Int? = nil
@@ -209,6 +214,7 @@ class SettingsStore: ObservableObject {
             exportFormat: exportFormat.extractProfile,
             enableSubframes: self.enabledSubframes,
             markersSource: self.markersSource,
+            excludeRoles: excludeRoleNames,
             imageFormat: self.selectedImageMode.markersExtractor,
             imageQuality: Int(self.selectedJPEGImageQuality),
             imageWidth: imageWidth,
@@ -228,6 +234,7 @@ class SettingsStore: ObservableObject {
             imageLabelAlignHorizontal: self.selectedHorizonalAlignment.markersExtractor,
             imageLabelAlignVertical: self.selectedVerticalAlignment.markersExtractor,
             imageLabelHideNames: self.hideLabelNames,
+            resultFilePath: URL.downloadsDirectory.appendingPathComponent("result", conformingTo: .json),
             exportFolderFormat: self.selectedFolderFormat.markersExtractor
         )
         

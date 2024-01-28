@@ -52,24 +52,6 @@ class DatabaseManager: ObservableObject {
     init() {
         self.createConfigurationsDirectory()
         self.loadProfilesFromDisk()
-        
-        // Create database directories if they don't exist already
-        let fileManager = FileManager.default
-        var isDir: ObjCBool = true
-        
-        do {
-            if !fileManager.fileExists(atPath: URL.databaseFolder.path(percentEncoded: false), isDirectory: &isDir) {
-                Self.logger.notice("Database folder missing: Attempting to create it")
-                try fileManager.createDirectory(at: URL.databaseFolder, withIntermediateDirectories: true)
-            }
-            
-            if !fileManager.fileExists(atPath: URL.databaseProfilesFolder.path(percentEncoded: false), isDirectory: &isDir) {
-                Self.logger.notice("Database Profiles folder missing: Attempting to create it")
-                try fileManager.createDirectory(at: URL.databaseProfilesFolder, withIntermediateDirectories: true)
-            }
-        } catch {
-            Self.logger.error("Failed to create Database folders")
-        }
     }
     
     func addProfile(_ profile: DatabaseProfileModel, saveToDisk: Bool = true) throws {

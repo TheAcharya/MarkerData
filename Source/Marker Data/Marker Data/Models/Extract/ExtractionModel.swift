@@ -273,6 +273,7 @@ class ExtractionModel: ObservableObject, DropDelegate {
                 // Do extraction
                 exportResult = try await extractor.extract()
             } catch {
+                Self.logger.error("Failed to extract: \(error.localizedDescription)")
                 await MainActor.run {
                     failedTasks.append(ExtractionFailure(url: url, exitStatus: .failedToExtract, errorMessage: error.localizedDescription))
                 }
@@ -298,7 +299,7 @@ class ExtractionModel: ObservableObject, DropDelegate {
             }
             
             guard let jsonURL = exportResult?.jsonManifestPath else {
-                Self.logger.error("Failed to upload \(url): missing json URL")
+                Self.logger.error("Failed to upload \(url): missing json URL. Most likely no markers were extracted.")
                 throw DatabaseUploadError.missingJsonFile
             }
             
@@ -431,7 +432,7 @@ class ExtractionModel: ObservableObject, DropDelegate {
                 throw DatabaseUploadError.notionNoToken
             }
             
-            let logPath = URL.databaseFolder.appendingPathComponent("csv2notion_log.txt", conformingTo: .plainText).path(percentEncoded: false)
+            let logPath = URL.logsFolder.appendingPathComponent("csv2notion_log.txt", conformingTo: .plainText).path(percentEncoded: false)
             
             var arguments: [String] = [
                 "--workspace", credentials.workspaceName.quoted,

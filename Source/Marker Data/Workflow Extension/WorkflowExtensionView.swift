@@ -22,7 +22,8 @@ struct WorkflowExtensionView: View {
                         Label("Extract", systemImage: "gearshape.2")
                     }
                 
-                rolesTabView
+                RolesSettingsView()
+                    .padding(8)
                     .tabItem {
                         Label("Roles", systemImage: "movieclapper")
                     }
@@ -63,21 +64,19 @@ struct WorkflowExtensionView: View {
             }
             
             Spacer()
-            
-            HStack {
-                Text("Profile selector")
-                
-                Spacer()
-            }
         }
-        .onDrop(of: ["com.apple.finalcutpro.xml.v1-10", "com.apple.finalcutpro.xml.v1-9", "com.apple.finalcutpro.xml"], isTargeted: nil) { providers -> Bool in
+        .onDrop(of: [.fcpxml], isTargeted: nil) { providers -> Bool in
             for provider in providers {
-                provider.loadDataRepresentation(forTypeIdentifier: "com.apple.finalcutpro.xml") { data, error in
+                _ = provider.loadDataRepresentation(for: .fcpxml) { data, error in
                     self.handleDrop(data: data)
                 }
             }
             return true
         }
+    }
+    
+    private var rolesTabView: some View {
+        Text("Roles")
     }
     
     private func handleDrop(data: Data?) {
@@ -105,10 +104,6 @@ struct WorkflowExtensionView: View {
     @discardableResult
     private func openApp(_ named: String) -> Bool {
         NSWorkspace.shared.launchApplication(named)
-    }
-    
-    private var rolesTabView: some View {
-        Text("Roles")
     }
 }
 

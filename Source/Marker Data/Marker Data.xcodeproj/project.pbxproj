@@ -10,7 +10,6 @@
 		4100D5DE2AD052010081F0EC /* OverlaySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4100D5DD2AD052010081F0EC /* OverlaySettingsView.swift */; };
 		4100D5E42AD1616D0081F0EC /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4100D5E32AD1616D0081F0EC /* ColorExtension.swift */; };
 		4100D5E72AD19C980081F0EC /* FilePicker in Frameworks */ = {isa = PBXBuildFile; productRef = 4100D5E62AD19C980081F0EC /* FilePicker */; };
-		4100D5EC2AD1A1F80081F0EC /* UTTypeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4100D5EB2AD1A1F80081F0EC /* UTTypeExtension.swift */; };
 		410E3B812B4B0FF8005280FD /* LogManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 410E3B802B4B0FF8005280FD /* LogManager.swift */; };
 		411F37392B53D84200CC05E6 /* MakeCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 411F37382B53D84200CC05E6 /* MakeCommand.m */; };
 		411F373B2B55B77100CC05E6 /* LibraryFolders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 411F373A2B55B77100CC05E6 /* LibraryFolders.swift */; };
@@ -39,7 +38,21 @@
 		4155B6E32B602694008D3505 /* Workflow Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 4155B6D62B602694008D3505 /* Workflow Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		4155B7022B612592008D3505 /* WorkflowExtensionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B7012B612592008D3505 /* WorkflowExtensionView.swift */; };
 		4155B7032B612592008D3505 /* WorkflowExtensionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B7012B612592008D3505 /* WorkflowExtensionView.swift */; };
-		4155B70A2B616723008D3505 /* UTTypeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B7092B616723008D3505 /* UTTypeExtension.swift */; };
+		4155B70D2B62CED6008D3505 /* RolesSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B70C2B62CED6008D3505 /* RolesSettingsView.swift */; };
+		4155B70F2B62D350008D3505 /* FileSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B70E2B62D350008D3505 /* FileSettingsView.swift */; };
+		4155B7112B62D47B008D3505 /* NotificationSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B7102B62D47B008D3505 /* NotificationSettingsView.swift */; };
+		4155B7132B62DEA2008D3505 /* RoleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B7122B62DEA2008D3505 /* RoleExtension.swift */; };
+		4155B7172B62E131008D3505 /* RolesSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B70C2B62CED6008D3505 /* RolesSettingsView.swift */; };
+		4155B7192B62E179008D3505 /* UTTypeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B7182B62E179008D3505 /* UTTypeExtension.swift */; };
+		4155B71A2B62E182008D3505 /* UTTypeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B7182B62E179008D3505 /* UTTypeExtension.swift */; };
+		4155B71B2B62E18B008D3505 /* RoleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B7122B62DEA2008D3505 /* RoleExtension.swift */; };
+		4155B71E2B62E29A008D3505 /* MarkersExtractor in Frameworks */ = {isa = PBXBuildFile; productRef = 4155B71D2B62E29A008D3505 /* MarkersExtractor */; };
+		4155B7202B62E2A3008D3505 /* MarkersExtractor in Frameworks */ = {isa = PBXBuildFile; productRef = 4155B71F2B62E2A3008D3505 /* MarkersExtractor */; };
+		4155B7222B653D2C008D3505 /* RoleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B7212B653D2C008D3505 /* RoleModel.swift */; };
+		4155B7232B653D35008D3505 /* RoleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B7212B653D2C008D3505 /* RoleModel.swift */; };
+		4155B7262B6574A8008D3505 /* RolesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B7252B6574A8008D3505 /* RolesManager.swift */; };
+		4155B7272B657710008D3505 /* RolesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B7252B6574A8008D3505 /* RolesManager.swift */; };
+		4155B7282B657741008D3505 /* URLExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414262BA2AD2E1AC00FC6CFC /* URLExtension.swift */; };
 		415619672B3A18D60032E82C /* ExtractError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 415619662B3A18D60032E82C /* ExtractError.swift */; };
 		4156196B2B3AE41F0032E82C /* ProgressViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4156196A2B3AE41F0032E82C /* ProgressViewModel.swift */; };
 		417272982B444211005A04BE /* ExportExitStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417272972B444211005A04BE /* ExportExitStatus.swift */; };
@@ -69,7 +82,6 @@
 		41C8399B2B52D78900C6B133 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C8399A2B52D78900C6B133 /* AVFoundation.framework */; };
 		41EBAD502AF7B6F200E6AF7C /* WindowSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EBAD4F2AF7B6F200E6AF7C /* WindowSize.swift */; };
 		41EBAD522AF8172F00E6AF7C /* MainViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EBAD512AF8172F00E6AF7C /* MainViews.swift */; };
-		41EC60CB2AFFBC0700F0A131 /* MarkersExtractor in Frameworks */ = {isa = PBXBuildFile; productRef = 41EC60CA2AFFBC0700F0A131 /* MarkersExtractor */; };
 		41F88ADC2B029D4A004A3B58 /* ColorPickerForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F88ADB2B029D4A004A3B58 /* ColorPickerForm.swift */; };
 		41F88AE32B0C839B004A3B58 /* Shell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F88AE22B0C839B004A3B58 /* Shell.swift */; };
 		41F88AE52B0C83DE004A3B58 /* ShellResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F88AE42B0C83DE004A3B58 /* ShellResult.swift */; };
@@ -146,7 +158,6 @@
 /* Begin PBXFileReference section */
 		4100D5DD2AD052010081F0EC /* OverlaySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlaySettingsView.swift; sourceTree = "<group>"; };
 		4100D5E32AD1616D0081F0EC /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
-		4100D5EB2AD1A1F80081F0EC /* UTTypeExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UTTypeExtension.swift; sourceTree = "<group>"; };
 		410E3B802B4B0FF8005280FD /* LogManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogManager.swift; sourceTree = "<group>"; };
 		411F37382B53D84200CC05E6 /* MakeCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MakeCommand.m; sourceTree = "<group>"; };
 		411F373A2B55B77100CC05E6 /* LibraryFolders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryFolders.swift; sourceTree = "<group>"; };
@@ -176,7 +187,13 @@
 		4155B6DF2B602694008D3505 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4155B6E02B602694008D3505 /* WorkflowExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WorkflowExtension.entitlements; sourceTree = "<group>"; };
 		4155B7012B612592008D3505 /* WorkflowExtensionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowExtensionView.swift; sourceTree = "<group>"; };
-		4155B7092B616723008D3505 /* UTTypeExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UTTypeExtension.swift; path = "Marker Data/Utilities/Extensions/UTTypeExtension.swift"; sourceTree = SOURCE_ROOT; };
+		4155B70C2B62CED6008D3505 /* RolesSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RolesSettingsView.swift; sourceTree = "<group>"; };
+		4155B70E2B62D350008D3505 /* FileSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSettingsView.swift; sourceTree = "<group>"; };
+		4155B7102B62D47B008D3505 /* NotificationSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsView.swift; sourceTree = "<group>"; };
+		4155B7122B62DEA2008D3505 /* RoleExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoleExtension.swift; sourceTree = "<group>"; };
+		4155B7182B62E179008D3505 /* UTTypeExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UTTypeExtension.swift; sourceTree = "<group>"; };
+		4155B7212B653D2C008D3505 /* RoleModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoleModel.swift; sourceTree = "<group>"; };
+		4155B7252B6574A8008D3505 /* RolesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RolesManager.swift; sourceTree = "<group>"; };
 		415619662B3A18D60032E82C /* ExtractError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractError.swift; sourceTree = "<group>"; };
 		4156196A2B3AE41F0032E82C /* ProgressViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressViewModel.swift; sourceTree = "<group>"; };
 		417272972B444211005A04BE /* ExportExitStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportExitStatus.swift; sourceTree = "<group>"; };
@@ -260,6 +277,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4155B7202B62E2A3008D3505 /* MarkersExtractor in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -268,8 +286,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				4100D5E72AD19C980081F0EC /* FilePicker in Frameworks */,
-				41EC60CB2AFFBC0700F0A131 /* MarkersExtractor in Frameworks */,
 				41C8399B2B52D78900C6B133 /* AVFoundation.framework in Frameworks */,
+				4155B71E2B62E29A008D3505 /* MarkersExtractor in Frameworks */,
 				9B61B44229F03866003EC14A /* libswiftCoreGraphics.tbd in Frameworks */,
 				4155B6C52B5D3709008D3505 /* DockProgress in Frameworks */,
 				41C538A22AE420EA00E8A8A1 /* ColorWellKit in Frameworks */,
@@ -299,12 +317,13 @@
 			children = (
 				47411FDB2A3EA140005890FE /* ViewExtensions.swift */,
 				4100D5E32AD1616D0081F0EC /* ColorExtension.swift */,
-				4100D5EB2AD1A1F80081F0EC /* UTTypeExtension.swift */,
 				414262BA2AD2E1AC00FC6CFC /* URLExtension.swift */,
 				414262BC2AD2E24A00FC6CFC /* BundleExtension.swift */,
 				41BFEB762B1E63EA00C8B551 /* ExportProfileFormatExtrension.swift */,
 				4155B6CC2B5D4652008D3505 /* DicitionaryExtension.swift */,
 				4155B6CE2B5D929A008D3505 /* NSImageExtension.swift */,
+				4155B7122B62DEA2008D3505 /* RoleExtension.swift */,
+				4155B7182B62E179008D3505 /* UTTypeExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -354,7 +373,6 @@
 			children = (
 				4155B6DD2B602694008D3505 /* WorkflowExtensionViewController.swift */,
 				4155B7012B612592008D3505 /* WorkflowExtensionView.swift */,
-				4155B7072B61668A008D3505 /* Extensions */,
 				4155B6DC2B602694008D3505 /* WorkflowExtension-Bridging-Header.h */,
 				4155B6DF2B602694008D3505 /* Info.plist */,
 				4155B6D82B602694008D3505 /* Assets.xcassets */,
@@ -363,12 +381,24 @@
 			path = "Workflow Extension";
 			sourceTree = "<group>";
 		};
-		4155B7072B61668A008D3505 /* Extensions */ = {
+		4155B70B2B62CE64008D3505 /* General Settings */ = {
 			isa = PBXGroup;
 			children = (
-				4155B7092B616723008D3505 /* UTTypeExtension.swift */,
+				9B25815D2A07A286002CED07 /* GeneralSettingsView.swift */,
+				4155B70E2B62D350008D3505 /* FileSettingsView.swift */,
+				4155B7102B62D47B008D3505 /* NotificationSettingsView.swift */,
+				4155B70C2B62CED6008D3505 /* RolesSettingsView.swift */,
 			);
-			path = Extensions;
+			path = "General Settings";
+			sourceTree = "<group>";
+		};
+		4155B7242B657485008D3505 /* Roles */ = {
+			isa = PBXGroup;
+			children = (
+				4155B7212B653D2C008D3505 /* RoleModel.swift */,
+				4155B7252B6574A8008D3505 /* RolesManager.swift */,
+			);
+			path = Roles;
 			sourceTree = "<group>";
 		};
 		41BFEB732B1BD15A00C8B551 /* Other */ = {
@@ -548,7 +578,7 @@
 		9B25815C2A079FBC002CED07 /* Detail Views */ = {
 			isa = PBXGroup;
 			children = (
-				9B25815D2A07A286002CED07 /* GeneralSettingsView.swift */,
+				4155B70B2B62CE64008D3505 /* General Settings */,
 				9B4D90D72A0BAE3900FE7603 /* ImageSettingsView.swift */,
 				4100D5DC2AD051DB0081F0EC /* Label */,
 				9B4D90DB2A0BB07500FE7603 /* ConfigurationSettingsView.swift */,
@@ -601,6 +631,7 @@
 			children = (
 				41F88AFF2B12644A004A3B58 /* Extract */,
 				41C538922AE1AFC600E8A8A1 /* Settings */,
+				4155B7242B657485008D3505 /* Roles */,
 				9B9CA1152A1A9B97004E337A /* Core Data */,
 				41F88AE62B0E9126004A3B58 /* Database */,
 				414262BE2AD5CE1900FC6CFC /* Errors */,
@@ -679,6 +710,9 @@
 			dependencies = (
 			);
 			name = "Workflow Extension";
+			packageProductDependencies = (
+				4155B71F2B62E2A3008D3505 /* MarkersExtractor */,
+			);
 			productName = WorkflowExtension;
 			productReference = 4155B6D62B602694008D3505 /* Workflow Extension.appex */;
 			productType = "com.apple.product-type.app-extension";
@@ -705,9 +739,9 @@
 				D5F74A502973019000EEE2FE /* OrderedCollections */,
 				4100D5E62AD19C980081F0EC /* FilePicker */,
 				41C538A12AE420EA00E8A8A1 /* ColorWellKit */,
-				41EC60CA2AFFBC0700F0A131 /* MarkersExtractor */,
 				41BFEB6F2B1BA4CC00C8B551 /* PasswordField */,
 				4155B6C42B5D3709008D3505 /* DockProgress */,
+				4155B71D2B62E29A008D3505 /* MarkersExtractor */,
 			);
 			productName = "Marker Data";
 			productReference = D5F74A2D2972D31C00EEE2FE /* Marker Data.app */;
@@ -744,9 +778,9 @@
 				D5F74A4B2973019000EEE2FE /* XCRemoteSwiftPackageReference "swift-collections" */,
 				4100D5E52AD19C980081F0EC /* XCRemoteSwiftPackageReference "FilePicker" */,
 				41C538A02AE420EA00E8A8A1 /* XCRemoteSwiftPackageReference "ColorWellKit" */,
-				41EC60C92AFFBC0700F0A131 /* XCRemoteSwiftPackageReference "MarkersExtractor" */,
 				41BFEB6E2B1BA4CC00C8B551 /* XCRemoteSwiftPackageReference "PasswordField" */,
 				4155B6C32B5D3709008D3505 /* XCRemoteSwiftPackageReference "DockProgress" */,
+				4155B71C2B62E29A008D3505 /* XCRemoteSwiftPackageReference "MarkersExtractor" */,
 			);
 			productRefGroup = D5F74A2E2972D31C00EEE2FE /* Products */;
 			projectDirPath = "";
@@ -788,9 +822,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4155B70A2B616723008D3505 /* UTTypeExtension.swift in Sources */,
+				4155B71B2B62E18B008D3505 /* RoleExtension.swift in Sources */,
+				4155B71A2B62E182008D3505 /* UTTypeExtension.swift in Sources */,
 				4155B6DE2B602694008D3505 /* WorkflowExtensionViewController.swift in Sources */,
 				4155B7032B612592008D3505 /* WorkflowExtensionView.swift in Sources */,
+				4155B7272B657710008D3505 /* RolesManager.swift in Sources */,
+				4155B7282B657741008D3505 /* URLExtension.swift in Sources */,
+				4155B7172B62E131008D3505 /* RolesSettingsView.swift in Sources */,
+				4155B7232B653D35008D3505 /* RoleModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -817,19 +856,22 @@
 				41F88AFE2B126439004A3B58 /* ExtractionResult.swift in Sources */,
 				9B51D21629E9B13400DF7836 /* SettingsModels.swift in Sources */,
 				414262BD2AD2E24A00FC6CFC /* BundleExtension.swift in Sources */,
-				4100D5EC2AD1A1F80081F0EC /* UTTypeExtension.swift in Sources */,
 				4100D5DE2AD052010081F0EC /* OverlaySettingsView.swift in Sources */,
 				41C839872B52C9E300C6B133 /* FCPXMetadataKeys.m in Sources */,
 				9B4D90D82A0BAE3900FE7603 /* ImageSettingsView.swift in Sources */,
 				41C5389B2AE3067900E8A8A1 /* ConfigurationCommands.swift in Sources */,
 				9B25815E2A07A286002CED07 /* GeneralSettingsView.swift in Sources */,
 				9BACA4D129FA9B5100EF6837 /* SettingsStore.swift in Sources */,
+				4155B7262B6574A8008D3505 /* RolesManager.swift in Sources */,
 				41F88AFA2B0FF62A004A3B58 /* DatabaseErrors.swift in Sources */,
 				415619672B3A18D60032E82C /* ExtractError.swift in Sources */,
+				4155B7222B653D2C008D3505 /* RoleModel.swift in Sources */,
 				417272982B444211005A04BE /* ExportExitStatus.swift in Sources */,
+				4155B70F2B62D350008D3505 /* FileSettingsView.swift in Sources */,
 				41F88AF12B0E9367004A3B58 /* DatabaseManager.swift in Sources */,
 				4100D5E42AD1616D0081F0EC /* ColorExtension.swift in Sources */,
 				9B4D90DE2A0BB11000FE7603 /* DatabaseSettingsView.swift in Sources */,
+				4155B7112B62D47B008D3505 /* NotificationSettingsView.swift in Sources */,
 				41F88AF62B0E9DBF004A3B58 /* CreateDBProfileSheet.swift in Sources */,
 				9B35FE6829F94C110035B760 /* PickerViews.swift in Sources */,
 				41C839842B52C9E300C6B133 /* Document.m in Sources */,
@@ -843,7 +885,9 @@
 				4779AF592A4FC06C00F1B48B /* LabelSettingsView.swift in Sources */,
 				9B4D90DA2A0BAF9E00FE7603 /* GeneralLabelSettingsView.swift in Sources */,
 				411F37392B53D84200CC05E6 /* MakeCommand.m in Sources */,
+				4155B7132B62DEA2008D3505 /* RoleExtension.swift in Sources */,
 				411F374A2B56F22300CC05E6 /* ShareDestinationInstaller.swift in Sources */,
+				4155B7192B62E179008D3505 /* UTTypeExtension.swift in Sources */,
 				47F5CDF82A60CA43005D9A98 /* ExtractionModel.swift in Sources */,
 				411F374E2B56FB5B00CC05E6 /* AppCommands.swift in Sources */,
 				4155B6CF2B5D929A008D3505 /* NSImageExtension.swift in Sources */,
@@ -856,6 +900,7 @@
 				4155B7022B612592008D3505 /* WorkflowExtensionView.swift in Sources */,
 				411F37532B57255A00CC05E6 /* OpenEventHandler.swift in Sources */,
 				D5F74A312972D31D00EEE2FE /* Marker_DataApp.swift in Sources */,
+				4155B70D2B62CED6008D3505 /* RolesSettingsView.swift in Sources */,
 				41F88AF82B0FDCF7004A3B58 /* ProfileCredentialModel.swift in Sources */,
 				41F88ADC2B029D4A004A3B58 /* ColorPickerForm.swift in Sources */,
 				41C839822B52C9E300C6B133 /* ScriptingSupportCategories.m in Sources */,
@@ -1265,6 +1310,14 @@
 				minimumVersion = 4.2.2;
 			};
 		};
+		4155B71C2B62E29A008D3505 /* XCRemoteSwiftPackageReference "MarkersExtractor" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/TheAcharya/MarkersExtractor";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.3.3;
+			};
+		};
 		41BFEB6E2B1BA4CC00C8B551 /* XCRemoteSwiftPackageReference "PasswordField" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/MrAsterisco/PasswordField";
@@ -1279,14 +1332,6 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 1.1.2;
-			};
-		};
-		41EC60C92AFFBC0700F0A131 /* XCRemoteSwiftPackageReference "MarkersExtractor" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/TheAcharya/MarkersExtractor";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.2.3;
 			};
 		};
 		D5F74A4B2973019000EEE2FE /* XCRemoteSwiftPackageReference "swift-collections" */ = {
@@ -1310,6 +1355,16 @@
 			package = 4155B6C32B5D3709008D3505 /* XCRemoteSwiftPackageReference "DockProgress" */;
 			productName = DockProgress;
 		};
+		4155B71D2B62E29A008D3505 /* MarkersExtractor */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4155B71C2B62E29A008D3505 /* XCRemoteSwiftPackageReference "MarkersExtractor" */;
+			productName = MarkersExtractor;
+		};
+		4155B71F2B62E2A3008D3505 /* MarkersExtractor */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4155B71C2B62E29A008D3505 /* XCRemoteSwiftPackageReference "MarkersExtractor" */;
+			productName = MarkersExtractor;
+		};
 		41BFEB6F2B1BA4CC00C8B551 /* PasswordField */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 41BFEB6E2B1BA4CC00C8B551 /* XCRemoteSwiftPackageReference "PasswordField" */;
@@ -1319,11 +1374,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 41C538A02AE420EA00E8A8A1 /* XCRemoteSwiftPackageReference "ColorWellKit" */;
 			productName = ColorWellKit;
-		};
-		41EC60CA2AFFBC0700F0A131 /* MarkersExtractor */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 41EC60C92AFFBC0700F0A131 /* XCRemoteSwiftPackageReference "MarkersExtractor" */;
-			productName = MarkersExtractor;
 		};
 		D5F74A4C2973019000EEE2FE /* Collections */ = {
 			isa = XCSwiftPackageProductDependency;

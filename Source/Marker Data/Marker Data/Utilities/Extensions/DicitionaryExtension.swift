@@ -7,6 +7,8 @@
 
 import Foundation
 
+// This is used to compare configurations
+
 protocol CustomEquatable {
     func isEqualTo(_ other: Any?) -> Bool
 }

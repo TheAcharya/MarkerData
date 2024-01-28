@@ -17,7 +17,7 @@ struct LibraryFolders {
         let foldersToCheck: [URL] = [
             URL.markerDataLibraryFolder,
             URL.configurationsFolder,
-            URL.databaseFolder,
+            URL.databaseProfilesFolder,
             URL.databaseProfilesFolder,
             URL.logsFolder,
             URL.FCPExportCacheFolder

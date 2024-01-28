@@ -122,9 +122,9 @@ struct DatabaseSettingsView: View {
     var linksView: some View {
         HStack {
             Button() {
-                NSWorkspace.shared.open(URL.databaseFolder)
+                NSWorkspace.shared.open(URL.databaseProfilesFolder)
             } label: {
-                Label("Open Database Folder in Finder", systemImage: "folder")
+                Label("Open Database Profiles in Finder", systemImage: "folder")
             }
             .buttonStyle(.link)
             

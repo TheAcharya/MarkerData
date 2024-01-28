@@ -10,6 +10,10 @@
 	<true/>
 	<key>com.apple.security.cs.disable-library-validation</key>
 	<true/>
+	<key>com.apple.security.temporary-exception.files.home-relative-path.read-write</key>
+	<array>
+		<string>/Library/Application Support/Marker Data/roles.json</string>
+	</array>
 	<key>com.apple.security.scripting-targets</key>
 	<dict>
 		<key>com.apple.FinalCut</key>

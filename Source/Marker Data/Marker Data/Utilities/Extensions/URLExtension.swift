@@ -12,7 +12,7 @@ extension URL {
     /// Path to ~/Library/Application Support/Marker Data
     public static var markerDataLibraryFolder: URL {
         Self.applicationSupportDirectory
-            .appendingPathComponent(Bundle.main.appName, conformingTo: .directory)
+            .appendingPathComponent("Marker Data", conformingTo: .directory)
     }
     
     /// Path to ~/Library/Application Support/Marker Data/Configurations
@@ -21,16 +21,10 @@ extension URL {
             .appendingPathComponent("Configurations", conformingTo: .directory)
     }
     
-    /// Path to ~/Library/Application Support/Marker Data/Database
-    public static var databaseFolder: URL {
-        Self.markerDataLibraryFolder
-            .appendingPathComponent("Database", conformingTo: .directory)
-    }
-    
     /// Path to ~/Library/Application Support/Marker Data/Database/Profiles
     public static var databaseProfilesFolder: URL {
-        Self.databaseFolder
-            .appendingPathComponent("Profiles", conformingTo: .directory)
+        Self.markerDataLibraryFolder
+            .appendingPathComponent("Database Profiles", conformingTo: .directory)
     }
     
     /// Path to ~/Library/Preferences/Marker Data/UnifiedExportProfile.json
@@ -39,19 +33,15 @@ extension URL {
             .appendingPathComponent("UnifiedExportProfile.json", conformingTo: .json)
     }
     
+    /// Path to ~/Library/Preferences/Marker Data/roles.json
+    public static var rolesJSONStaticPath: URL {
+        URL(filePath: "/Users/\(NSUserName())/Library/Application Support/Marker Data/roles.json")
+    }
+    
     /// Path to ~/Library/Preferences/Marker Data/Logs
     public static var logsFolder: URL {
         Self.markerDataLibraryFolder
             .appendingPathComponent("Logs", conformingTo: .folder)
-    }
-    
-    /// Path to ~/Library/Preferences/com.TheAcharya.Marker-Data.plist
-    public static var preferencesPlistFile: URL {
-        Self.libraryDirectory
-            .appendingPathComponent("Preferences", conformingTo: .directory)
-            .appendingPathComponent(
-                Bundle.main.bundleIdentifier ?? "com.TheAcharya.Marker-Data.plist",
-                conformingTo: .propertyList)
     }
     
     /// Path to ~/Movies/Marker Data Cache
