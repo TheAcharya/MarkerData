@@ -48,7 +48,7 @@ public struct ExtractView: View {
             .padding(.vertical)
             // Handle file drop and perform extraction
             .onDrop(
-                of: ExtractionModel.supportedContentTypes,
+                of: [.fileURL],
                 delegate: extractionModel
             )
             

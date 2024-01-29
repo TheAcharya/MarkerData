@@ -9,6 +9,6 @@ import Foundation
 import UniformTypeIdentifiers
 
 extension UTType {
-    public static let fcpxml = UTType(tag: "fcpxml", tagClass: .filenameExtension, conformingTo: nil)!
+    public static let fcpxml = UTType("com.apple.finalcutpro.xml")!
     public static let fcpxmld = UTType(tag: "fcpxmld", tagClass: .filenameExtension, conformingTo: nil)!
 }
