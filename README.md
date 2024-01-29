@@ -70,6 +70,10 @@
 
 <p align="center"> <img src="https://github.com/TheAcharya/MarkerData-Website/blob/main/docs/assets/md-database-settings.png?raw=true"> </p>
 
+<p align="center"> <img src="https://github.com/TheAcharya/MarkerData-Website/blob/main/docs/assets/md-workflow-extension-extract.png?raw=true"> </p>
+
+<p align="center"> <img src="https://github.com/TheAcharya/MarkerData-Website/blob/main/docs/assets/md-workflow-extension-roles.png?raw=true"> </p>
+
 ## System Requirements
 
 macOS Ventura 13.6.2 or later <br> Final Cut Pro 10.6.9 <br> Runs natively on both Apple silicon and Intel-based Mac computers
