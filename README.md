@@ -25,12 +25,12 @@
 ## Core Features
 
 - Written in Apple Swift language and SwiftUI framework.
-- Seamlessly integrates with Final Cut Pro, boasting a native Share Destination.
-- Precision in extracting Markers from Final Cut Pro, ensuring an accurate representation of metadata.
+- Integrates with Final Cut Pro, boasting a native Share Destination & Workflow Extension.
+- Precise extraction of Markers, ensuring an accurate representation of metadata.
 - Native integration with renowned databases such as [Airtable](https://www.airtable.com) and [Notion](https://www.notion.so).
 - Effortlessly synchronise Final Cut Pro's Marker metadata to cloud databases with a single click.
 - Functionality allowing batch extraction and rendering of stills or animated GIFs based on each Marker's timecode.
-- Offers a versatile feature set for batch burning-in labels, embedding the comprehensive metadata of each Marker onto stills or animated GIFs.
+- Versatile features for batch burning-in labels, embedding comprehensive metadata of each Marker onto stills or animated GIFs.
 - Allows the creation of multiple configurations tailored to diverse project requirements.
 - Harnesses the potential to utilise Captions as Markers, adding a layer of flexibility.
 
