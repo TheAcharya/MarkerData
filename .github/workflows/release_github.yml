@@ -36,10 +36,12 @@ jobs:
         PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
         mkdir -p "$PARENT/dist/dmg-builds/latest-build"
         mkdir -p "$PARENT/dist/dmg-builds/app-build"
+        mkdir -p "$PARENT/dist/dmg-builds/sdk"
 
     - name: Copy Local Distribution 
       run: |
         mkdir -p dist/dmg-builds
+        mkdir -p dist/dmg-builds/latest-build
         cp -R ./Distribution/dmg-builds/. ./dist/dmg-builds
 
     - name: Verify Copied Files
@@ -56,6 +58,35 @@ jobs:
       run: |
         echo "Checking copied files..."
         ls -l ./dist/dmg-builds/dmg-output
+        
+    - name: Copy Workflow Extensions SDK
+      run: |
+        mkdir -p dist/dmg-builds/sdk
+        cp -R ./SDK/Workflow_Extensions_1.0.2.dmg ./dist/dmg-builds/sdk
+        
+    - name: Mount Workflow Extensions DMG
+      run: |
+        hdiutil attach ./dist/dmg-builds/sdk/Workflow_Extensions_1.0.2.dmg
+    
+    - name: Install Workflow Extensions SDK
+      run: |
+        sudo installer -pkg /Volumes/WorkflowExtensionsSDK/WorkflowExtensionsSDK.pkg -target /
+    
+    - name: View Volume Directory
+      run: |
+        ls /Volumes
+
+    - name: View Workflow Extensions SDK DMG Directory
+      run: |
+        ls /Volumes/WorkflowExtensionsSDK
+
+    - name: Unmount Workflow Extensions SDK DMG
+      run: |
+        hdiutil detach /Volumes/WorkflowExtensionsSDK
+
+    - name: Check Installed Workflow Extensions SDK Directory
+      run: |
+        ls /Library/Developer/SDKs
 
     - name: Build Marker Data
       run: |
@@ -78,6 +109,7 @@ jobs:
         mkdir -p "$PARENT/dist/dmg-builds/dmg-output"
         mkdir -p "$PARENT/dist/dmg-builds/uninstaller/include"
         
+        cp -R ./Distribution/dmg-builds/entitlements.plist "$PARENT/dist/dmg-builds/"
         cp -R ./Distribution/dmg-builds/uninstaller/include/applet.icns "$PARENT/dist/dmg-builds/uninstaller/include/"
         cp -R ./Distribution/dmg-builds/uninstaller/include/entitlements.plist "$PARENT/dist/dmg-builds/uninstaller/include/"
         cp -R ./Distribution/dmg-builds/uninstaller/include/Uninstall\ Marker\ Data.scpt "$PARENT/dist/dmg-builds/uninstaller/include/"
@@ -85,6 +117,25 @@ jobs:
         cp -R $PARENT/dist/dmg-builds/app-build/Build/Products/${{ env.CONFIG }}/Marker\ Data.app "$PARENT/dist/dmg-builds/latest-build/"
         cp -R ./Distribution/dmg-builds/dmg-background.png "$PARENT/dist/dmg-builds/"
         cp -R ./Distribution/dmg-builds/marker-data-dmg-icon.icns "$PARENT/dist/dmg-builds/"
+        
+    - name: Codesign Marker Data Workflow Extension
+      env: 
+        APPLE_CERT_DATA: ${{ secrets.APPLE_CERT_DATA }}
+        APPLE_CERT_PASSWORD: ${{ secrets.APPLE_CERT_PASSWORD }}
+        KEYCHAIN_PASSWORD_MX: ${{ secrets.KEYCHAIN_PASSWORD_MX }}
+        APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+      run: |
+        PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+        ENTITLE="$PARENT/dist/dmg-builds/entitlements.plist"
+        APPX="$PARENT/dist/dmg-builds/latest-build/Marker Data.app/Contents/PlugIns/Workflow Extension.appex"
+        
+        echo $APPLE_CERT_DATA | base64 --decode > certificate.p12
+        security create-keychain -p $KEYCHAIN_PASSWORD_MX build-mx.keychain
+        security default-keychain -s build-mx.keychain
+        security unlock-keychain -p $KEYCHAIN_PASSWORD_MX build-mx.keychain
+        security import certificate.p12 -k build-mx.keychain -P $APPLE_CERT_PASSWORD -T /usr/bin/codesign
+        security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k $KEYCHAIN_PASSWORD_MX build-mx.keychain
+        /usr/bin/codesign --force -s $APPLE_TEAM_ID --options runtime --entitlements "$ENTITLE" "$APPX" -v
         
     - name: Codesign Marker Data
       env: 
