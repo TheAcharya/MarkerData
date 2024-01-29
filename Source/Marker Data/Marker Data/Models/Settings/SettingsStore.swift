@@ -188,7 +188,7 @@ class SettingsStore: ObservableObject {
         // Exclude roles
         let roles = RolesManager.loadRolesFromDisk()
         let excludeRoles = roles.filter { !$0.enabled }
-        let excludeRoleNames: Set<String> = Set(excludeRoles.map { $0.role.role })
+        let excludeRoleNames: Set<String> = Set(excludeRoles.map { $0.role.rawValue })
         
         // Image size override
         var imageWidth: Int? = nil

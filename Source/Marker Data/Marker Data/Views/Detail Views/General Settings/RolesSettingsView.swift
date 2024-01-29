@@ -17,10 +17,10 @@ struct RolesSettingsView: View {
         VStack {
             ZStack {
                 Table(self.rolesManager.roles) {
-                    TableColumn("Roles", value: \.role.role)
+                    TableColumn("Roles", value: \.role.rawValue)
                     
                     TableColumn("Kind") { role in
-                        Text(role.role.collapsingSubRole().role)
+                        Text(role.role.roleType.rawValue.titleCased)
                     }
                     
                     TableColumn("Enabled") { role in
