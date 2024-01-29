@@ -28,7 +28,7 @@ struct HelpCommands: Commands {
             Divider()
             
             // Open Console
-            Button("Debug") {
+            Button("Debug Console") {
                 // Open Console.app
                 guard let url = NSWorkspace.shared.urlForApplication(withBundleIdentifier: "com.apple.Console") else { return }
 

@@ -436,7 +436,8 @@ class ExtractionModel: ObservableObject, DropDelegate {
                 throw DatabaseUploadError.notionNoToken
             }
             
-            let logPath = URL.logsFolder.appendingPathComponent("csv2notion_log.txt", conformingTo: .plainText).path(percentEncoded: false)
+            let logPath = URL.logsFolder
+                .appendingPathComponent("csv2notion-neo_log.txt", conformingTo: .plainText).path(percentEncoded: false)
             
             var arguments: [String] = [
                 "--workspace", credentials.workspaceName.quoted,

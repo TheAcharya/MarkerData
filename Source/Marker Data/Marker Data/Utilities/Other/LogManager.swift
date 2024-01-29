@@ -28,7 +28,7 @@ struct LogManager {
             }
             
             let url = URL.logsFolder
-                .appendingPathComponent("MarkerDataLog.txt", conformingTo: .plainText)
+                .appendingPathComponent("markerdata_log.txt", conformingTo: .plainText)
             
             try entries.joined(separator: "\n").write(to: url, atomically: true, encoding: String.Encoding.utf8)
         } catch {
