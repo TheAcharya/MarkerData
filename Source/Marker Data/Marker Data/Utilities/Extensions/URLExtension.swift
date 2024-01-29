@@ -56,9 +56,15 @@ extension URL {
             .appendingPathComponent("WorkflowExtensionExport.fcpxml", conformingTo: .fcpxml)
     }
     
-    // Path to DefaultConfiguration.json
+    /// Path to DefaultConfiguration.json
     public static var defaultConfigurationJSON: URL? {
         return Bundle.main.url(forResource: "DefaultConfiguration", withExtension: "json")
+    }
+    
+    /// Path to /Applications/Marker Data.app
+    public static var markerDataApp: URL {
+        return Self.applicationDirectory
+            .appendingPathComponent("Marker Data.app", conformingTo: .application)
     }
     
     func conformsToType(_ types: [UTType]) -> Bool {

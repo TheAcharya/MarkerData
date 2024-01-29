@@ -100,19 +100,20 @@ struct WorkflowExtensionView: View {
             
             try data?.write(to: url)
             
-            openApp("Marker Data")
+            // Open Marker Data
+            let path = "/bin"
+            let configuration = NSWorkspace.OpenConfiguration()
+            configuration.arguments = [path]
             
-            // Notify Marker Data that the file is available
-            DistributedNotificationCenter.default().post(name: Notification.Name("WorkflowExtensionFileReceived"), object: nil)
+            NSWorkspace.shared.openApplication(at: URL.markerDataApp,
+                                               configuration: configuration) { app, error in
+                // Notify Marker Data that the file is available
+                DistributedNotificationCenter.default().post(name: Notification.Name("WorkflowExtensionFileReceived"), object: nil)
+            }
         } catch {
             // Show error message
             self.errorMessage = error.localizedDescription
         }
-    }
-    
-    @discardableResult
-    private func openApp(_ named: String) -> Bool {
-        NSWorkspace.shared.launchApplication(named)
     }
 }
 
