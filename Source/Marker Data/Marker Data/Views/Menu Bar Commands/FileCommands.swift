@@ -20,6 +20,16 @@ struct FileCommands: Commands {
                     }
                 }
             }
+            
+            Divider()
+            
+            Button("Show Cache") {
+                NSWorkspace.shared.open(URL.FCPExportCacheFolder)
+            }
+            
+            Button("Clean Cache") {
+                LibraryFolders.deleteCache()
+            }
         }
     }
 }

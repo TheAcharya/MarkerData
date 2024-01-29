@@ -37,6 +37,22 @@ struct LibraryFolders {
         Self.logger.info("All Library folders OK")
     }
     
+    public static func deleteCache() {
+        let fileManager = FileManager.default
+        
+        Self.logger.info("Deleting cache")
+        
+        do {
+            let contents = try fileManager.contentsOfDirectory(at: URL.FCPExportCacheFolder, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles])
+            
+            for url in contents {
+                try fileManager.removeItem(at: url)
+            }
+        } catch {
+            Self.logger.error("Failed to delete cache: \(error.localizedDescription, privacy: .public)")
+        }
+    }
+    
     /// Deletes cache older then a month
     public static func deleteOldCache() {
         let directory = URL.FCPExportCacheFolder
@@ -44,21 +60,20 @@ struct LibraryFolders {
         let oneMonthAgo = Calendar.current.date(byAdding: .month, value: -1, to: Date())!
         
         do {
-            let resourceKeys: Set<URLResourceKey> = [.isDirectoryKey, .contentModificationDateKey]
+            let resourceKeys: Set<URLResourceKey> = [.contentModificationDateKey]
             let directoryContents = try fileManager.contentsOfDirectory(at: directory, includingPropertiesForKeys: Array(resourceKeys), options: .skipsHiddenFiles)
             
             for url in directoryContents {
                 let resourceValues = try url.resourceValues(forKeys: resourceKeys)
                 
-                if let isDirectory = resourceValues.isDirectory, isDirectory,
-                   let modificationDate = resourceValues.contentModificationDate,
+                if let modificationDate = resourceValues.contentModificationDate,
                    modificationDate < oneMonthAgo {
                     Self.logger.notice("Cached file \(url.path(percentEncoded: false)) is older than a month. Deleting it.")
                     try fileManager.removeItem(at: url)
                 }
             }
         } catch {
-            Self.logger.error("Error while enumerating files \(directory.path): \(error.localizedDescription)")
+            Self.logger.error("Failed to delete old cache: \(error.localizedDescription, privacy: .public)")
         }
     }
 }
