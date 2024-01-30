@@ -65,7 +65,7 @@ struct WorkflowExtensionView: View {
         VStack {
             Spacer()
             
-            Text("Drag & Drop FCP Project Here")
+            Text("Drag & Drop Final Cut Pro Project to Open Marker Data")
             
             if !self.errorMessage.isEmpty {
                 Text("Failed to receive file: \(self.errorMessage)")
