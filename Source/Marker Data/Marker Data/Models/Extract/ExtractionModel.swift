@@ -154,7 +154,7 @@ class ExtractionModel: ObservableObject, DropDelegate {
         self.dropPoint = nil
     }
 
-
+    @MainActor
     func performDrop(info: DropInfo) -> Bool {
         let providers = info.itemProviders(
             for: [.fileURL]
@@ -198,6 +198,8 @@ class ExtractionModel: ObservableObject, DropDelegate {
                 }
             }
         }
+        
+        group.wait()
 
         return true
     }
