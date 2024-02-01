@@ -13,6 +13,7 @@ struct HelpCommands: Commands {
         //Add Help And Debug Menu Buttons
         CommandGroup(replacing: .help) {
             Link("Website", destination: URL(string: "https://markerdata.theacharya.co")!)
+            Link("Keyboard Shortcuts", destination: URL(string: "https://markerdata.theacharya.co/user-guide/keyboard-shortcuts/")!)
             Link("Source Code", destination: URL(string: "https://github.com/TheAcharya/MarkerData")!)
             
             Divider()
@@ -40,7 +41,7 @@ struct HelpCommands: Commands {
                                                    completionHandler: nil)
             }
             
-            Button("Export Logs") {
+            Button("Open Logs") {
                 Task {
                     await LogManager.export()
                     
