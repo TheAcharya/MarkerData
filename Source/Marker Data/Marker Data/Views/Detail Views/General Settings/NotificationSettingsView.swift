@@ -35,6 +35,12 @@ struct NotificationSettingsView: View {
                 Toggle("", isOn: $settings.store.showDockProgress)
                     .formControlLeadingAlignmentGuide()
             }
+            .padding(.bottom)
+            
+            Button("Open macOS Notification Settings") {
+                NSWorkspace.shared.open(URL(string: "x-apple.systempreferences:com.apple.Notifications-Settings.extension")!)
+            }
+            .buttonStyle(.link)
         }
     }
 }
