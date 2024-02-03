@@ -12,6 +12,8 @@ struct NotificationSettingsView: View {
     
     var body: some View {
         VStack(alignment: .formControlAlignment) {
+            Spacer()
+            
             Text("Progress Reporting")
                 .font(.headline)
             
@@ -35,12 +37,21 @@ struct NotificationSettingsView: View {
                 Toggle("", isOn: $settings.store.showDockProgress)
                     .formControlLeadingAlignmentGuide()
             }
-            .padding(.bottom)
             
-            Button("Open macOS Notification Settings") {
-                NSWorkspace.shared.open(URL(string: "x-apple.systempreferences:com.apple.Notifications-Settings.extension")!)
+            Spacer()
+            
+            HStack {
+                // Open preferences button
+                Button {
+                    NSWorkspace.shared.open(URL(string: "x-apple.systempreferences:com.apple.Notifications-Settings.extension")!)
+                } label: {
+                    Label("Open macOS Notification Settings", systemImage: "bell.badge")
+                }
+                .buttonStyle(.link)
+                
+                Spacer()
             }
-            .buttonStyle(.link)
+            .padding()
         }
     }
 }

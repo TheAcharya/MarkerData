@@ -49,9 +49,6 @@ struct ConfigurationSettingsView: View {
             mainButtons
             
             showConfigurationsFolder
-            
-            Spacer()
-                .frame(height: 40)
         }
         .padding()
         .overlayHelpButton(url: Links.configurationSettingsURL)
@@ -202,7 +199,7 @@ struct ConfigurationSettingsView: View {
             }
             .disabled(!configurationsModel.unsavedChanges || isDefaultConfigurationActive)
         }
-        .padding(.vertical)
+        .padding(.bottom)
         .sheet(isPresented: $showAddConfigurationSheet) {
             addOrRenameConfigurationModal()
                 .frame(width: 500)
@@ -217,8 +214,10 @@ struct ConfigurationSettingsView: View {
     
     /// Opens the configurations directory in Finder
     private var showConfigurationsFolder: some View {
-        Button("Open Configuration Folder in Finder") {
+        Button {
             NSWorkspace.shared.open(URL.configurationsFolder)
+        } label: {
+            Label("Open Configuration Folder in Finder", systemImage: "folder")
         }
         .buttonStyle(.link)
     }
