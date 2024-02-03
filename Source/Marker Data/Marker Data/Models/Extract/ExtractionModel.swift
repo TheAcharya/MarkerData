@@ -237,10 +237,6 @@ class ExtractionModel: ObservableObject, DropDelegate {
     }
     
     public func performExtraction(_ urls: [URL]) async {
-        func resetVariables() {
-            self.clearProgress()
-        }
-        
         func validateExportDestination() throws {
             var isDir : ObjCBool = false
             
@@ -341,7 +337,7 @@ class ExtractionModel: ObservableObject, DropDelegate {
         
         Self.logger.notice("Extraction started")
         
-        resetVariables()
+        self.clearProgress()
         
         // Validate export destination
         do {
@@ -367,6 +363,13 @@ class ExtractionModel: ObservableObject, DropDelegate {
                     // Extract
                     do {
                         exportResult = try await extractAndUpdateProgress(for: url)
+                        
+                        // If we are only processing one file set completedOutputFolder the the export folder
+                        if urls.count == 1 {
+                            await MainActor.run { [exportResult] in
+                                self.completedOutputFolder = exportResult?.exportFolder
+                            }
+                        }
                     } catch {
                         await MainActor.run {
                             self.failedTasks.append(
@@ -432,8 +435,9 @@ class ExtractionModel: ObservableObject, DropDelegate {
                     )
                 }
             }
-
-            self.completedOutputFolder = settings.store.exportFolderURL
+            if self.completedOutputFolder == nil {
+                self.completedOutputFolder = settings.store.exportFolderURL
+            }
         }
     }
     
