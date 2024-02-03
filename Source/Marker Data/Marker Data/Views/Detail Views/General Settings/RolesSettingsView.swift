@@ -68,12 +68,40 @@ struct RolesSettingsView: View {
                 Spacer()
             }
         }
-        .onDrop(of: [.fcpxml, .fcpxmld], isTargeted: nil) { providers -> Bool in
+        .onDrop(of: [.fcpxml, .fileURL], isTargeted: nil) { providers -> Bool in
             for provider in providers {
-                _ = provider.loadDataRepresentation(for: .fcpxml) { data, error in
-                    Task {
-                        if let extractedRoles = await handleData(data) {
-                            await self.rolesManager.setRoles(extractedRoles)
+                // Load FCPXML
+                if provider.hasRepresentationConforming(toTypeIdentifier: "com.apple.finalcutpro.xml") {
+                    _ = provider.loadDataRepresentation(for: .fcpxml) { data, error in
+                        Task {
+                            guard let dataUnwrapped = data else {
+                                return
+                            }
+                            
+                            if let extractedRoles = await getRoles(fcpxml: FCPXMLFile(fileContents: dataUnwrapped)) {
+                                await self.rolesManager.setRoles(extractedRoles)
+                            }
+                        }
+                    }
+                }
+                
+                // Load FCPXMLD
+                if provider.canLoadObject(ofClass: URL.self) {
+                    // Load the file URL from the provider
+                    let _ = provider.loadObject(ofClass: URL.self) { url, error in
+                        Task {
+                            guard let urlUnwrapped = url else {
+                                return
+                            }
+                            
+                            if !urlUnwrapped.conformsToType([.fcpxmld]) {
+                                print("File doesn't conform to FCPXMLD")
+                                return
+                            }
+                               
+                            if let extractedRoles = await getRoles(fcpxml: try FCPXMLFile(at: urlUnwrapped)) {
+                                 self.rolesManager.setRoles(extractedRoles)
+                            }
                         }
                     }
                 }
@@ -83,13 +111,9 @@ struct RolesSettingsView: View {
         }
     }
     
-    func handleData(_ data: Data?) async -> [RoleModel]? {
-        guard let data = data else {
-            return nil
-        }
-        
+    func getRoles(fcpxml: FCPXMLFile) async -> [RoleModel]? {
         do {
-            let rolesExtractor = RolesExtractor(fcpxml: FCPXMLFile(fileContents: data))
+            let rolesExtractor = RolesExtractor(fcpxml: fcpxml)
             
             let roles = try await rolesExtractor.extract()
             
