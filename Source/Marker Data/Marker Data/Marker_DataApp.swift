@@ -11,19 +11,17 @@ import SwiftUI
 struct Marker_DataApp: App {
     // Environment objects
     @StateObject private var settings: SettingsContainer
-    
     @StateObject private var extractionModel: ExtractionModel
-    
     @StateObject var configurationsModel: ConfigurationsModel
-    
     @StateObject var databaseManager: DatabaseManager
     
     /// Currently selected detail view in the sidebar
     @State var sidebarSelection: MainViews = .extract
     
-    @State var showLibraryFolderCreationAlert = false
-    
     let openEventHandler = OpenEventHandler()
+    @State var sidebarSelectionSwitcher: SidebarSelectionSwitcher? = nil
+    
+    @State var showLibraryFolderCreationAlert = false
 
     init() {
         let settings = SettingsContainer()
@@ -60,6 +58,7 @@ struct Marker_DataApp: App {
             .frame(width: WindowSize.fullWidth, height: WindowSize.fullHeight)
             .task {
                 DispatchQueue.main.async {
+                    self.sidebarSelectionSwitcher = SidebarSelectionSwitcher(sidebarSelection: $sidebarSelection)
                     self.openEventHandler.setupHandler()
                 }
                 

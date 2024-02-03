@@ -55,6 +55,7 @@
 		4155B7282B657741008D3505 /* URLExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414262BA2AD2E1AC00FC6CFC /* URLExtension.swift */; };
 		4155B72C2B668D29008D3505 /* LoggingOSLog in Frameworks */ = {isa = PBXBuildFile; productRef = 4155B72B2B668D29008D3505 /* LoggingOSLog */; };
 		4155B72E2B66BF9C008D3505 /* HelpButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47411FD92A3EA121005890FE /* HelpButton.swift */; };
+		4155B7312B6E96BE008D3505 /* SidebarSelectionSwitcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B7302B6E96BE008D3505 /* SidebarSelectionSwitcher.swift */; };
 		415619672B3A18D60032E82C /* ExtractError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 415619662B3A18D60032E82C /* ExtractError.swift */; };
 		4156196B2B3AE41F0032E82C /* ProgressViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4156196A2B3AE41F0032E82C /* ProgressViewModel.swift */; };
 		417272982B444211005A04BE /* ExportExitStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417272972B444211005A04BE /* ExportExitStatus.swift */; };
@@ -194,6 +195,7 @@
 		4155B7182B62E179008D3505 /* UTTypeExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UTTypeExtension.swift; sourceTree = "<group>"; };
 		4155B7212B653D2C008D3505 /* RoleModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoleModel.swift; sourceTree = "<group>"; };
 		4155B7252B6574A8008D3505 /* RolesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RolesManager.swift; sourceTree = "<group>"; };
+		4155B7302B6E96BE008D3505 /* SidebarSelectionSwitcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarSelectionSwitcher.swift; sourceTree = "<group>"; };
 		415619662B3A18D60032E82C /* ExtractError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractError.swift; sourceTree = "<group>"; };
 		4156196A2B3AE41F0032E82C /* ProgressViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressViewModel.swift; sourceTree = "<group>"; };
 		417272972B444211005A04BE /* ExportExitStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportExitStatus.swift; sourceTree = "<group>"; };
@@ -414,6 +416,7 @@
 				41BFEB6C2B1B9B6400C8B551 /* Links.swift */,
 				410E3B802B4B0FF8005280FD /* LogManager.swift */,
 				411F373A2B55B77100CC05E6 /* LibraryFolders.swift */,
+				4155B7302B6E96BE008D3505 /* SidebarSelectionSwitcher.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -859,6 +862,7 @@
 				41C5389B2AE3067900E8A8A1 /* ConfigurationCommands.swift in Sources */,
 				9B25815E2A07A286002CED07 /* GeneralSettingsView.swift in Sources */,
 				9BACA4D129FA9B5100EF6837 /* SettingsStore.swift in Sources */,
+				4155B7312B6E96BE008D3505 /* SidebarSelectionSwitcher.swift in Sources */,
 				4155B7262B6574A8008D3505 /* RolesManager.swift in Sources */,
 				41F88AFA2B0FF62A004A3B58 /* DatabaseErrors.swift in Sources */,
 				415619672B3A18D60032E82C /* ExtractError.swift in Sources */,

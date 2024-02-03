@@ -8,6 +8,7 @@ import Logging
 import LoggingOSLog
 
 class ExtractionModel: ObservableObject, DropDelegate {
+    let settings: SettingsContainer
     let databaseManager: DatabaseManager
     
     static let supportedContentTypes: [UTType] = [.fcpxml, .fcpxmld]
@@ -31,8 +32,6 @@ class ExtractionModel: ObservableObject, DropDelegate {
     @Published var uploadProgress = ProgressViewModel(taskDescription: "Upload")
     
     public var failedTasks: [ExtractionFailure] = []
-
-    let settings: SettingsContainer
     
 //    static let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "ExtractionModel")
     static let logger = Logger(label: Bundle.main.bundleIdentifier!)
