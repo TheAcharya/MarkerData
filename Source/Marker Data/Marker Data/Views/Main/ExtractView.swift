@@ -241,7 +241,9 @@ public struct ExtractView: View {
                         extractionModel.showProgressUI = false
                     }
                     
-                    extractionModel.clearProgress()
+                    Task {
+                        await extractionModel.clearProgress()
+                    }
                 } label: {
                     Label("Close", systemImage: "xmark")
                 }

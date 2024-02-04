@@ -83,6 +83,8 @@
 		41C8398B2B52C9E300C6B133 /* MediaAssetHelperKeys.m in Sources */ = {isa = PBXBuildFile; fileRef = 41C839762B52C9E300C6B133 /* MediaAssetHelperKeys.m */; };
 		41C839992B52D77200C6B133 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C839982B52D77200C6B133 /* Cocoa.framework */; };
 		41C8399B2B52D78900C6B133 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C8399A2B52D78900C6B133 /* AVFoundation.framework */; };
+		41D1E4C32B6FCB4700AE2E55 /* ExtractionModel_DropDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41D1E4C22B6FCB4700AE2E55 /* ExtractionModel_DropDelegate.swift */; };
+		41D1E4C52B6FCBBA00AE2E55 /* ExtractionModel_EventHandlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41D1E4C42B6FCBBA00AE2E55 /* ExtractionModel_EventHandlers.swift */; };
 		41EBAD502AF7B6F200E6AF7C /* WindowSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EBAD4F2AF7B6F200E6AF7C /* WindowSize.swift */; };
 		41EBAD522AF8172F00E6AF7C /* MainViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EBAD512AF8172F00E6AF7C /* MainViews.swift */; };
 		41F88ADC2B029D4A004A3B58 /* ColorPickerForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F88ADB2B029D4A004A3B58 /* ColorPickerForm.swift */; };
@@ -229,6 +231,8 @@
 		41C8397F2B52C9E300C6B133 /* MediaAssetHelperKeys.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaAssetHelperKeys.h; sourceTree = "<group>"; };
 		41C839982B52D77200C6B133 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		41C8399A2B52D78900C6B133 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		41D1E4C22B6FCB4700AE2E55 /* ExtractionModel_DropDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractionModel_DropDelegate.swift; sourceTree = "<group>"; };
+		41D1E4C42B6FCBBA00AE2E55 /* ExtractionModel_EventHandlers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractionModel_EventHandlers.swift; sourceTree = "<group>"; };
 		41EBAD4F2AF7B6F200E6AF7C /* WindowSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowSize.swift; sourceTree = "<group>"; };
 		41EBAD512AF8172F00E6AF7C /* MainViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViews.swift; sourceTree = "<group>"; };
 		41F88ADB2B029D4A004A3B58 /* ColorPickerForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickerForm.swift; sourceTree = "<group>"; };
@@ -502,6 +506,16 @@
 			path = "Document Controller";
 			sourceTree = "<group>";
 		};
+		41D1E4C12B6FCB3000AE2E55 /* Extraction Model */ = {
+			isa = PBXGroup;
+			children = (
+				47F5CDF72A60CA43005D9A98 /* ExtractionModel.swift */,
+				41D1E4C22B6FCB4700AE2E55 /* ExtractionModel_DropDelegate.swift */,
+				41D1E4C42B6FCBBA00AE2E55 /* ExtractionModel_EventHandlers.swift */,
+			);
+			path = "Extraction Model";
+			sourceTree = "<group>";
+		};
 		41F88AE12B0C8360004A3B58 /* Shell */ = {
 			isa = PBXGroup;
 			children = (
@@ -544,7 +558,7 @@
 		41F88AFF2B12644A004A3B58 /* Extract */ = {
 			isa = PBXGroup;
 			children = (
-				47F5CDF72A60CA43005D9A98 /* ExtractionModel.swift */,
+				41D1E4C12B6FCB3000AE2E55 /* Extraction Model */,
 				41F88AFD2B126439004A3B58 /* ExtractionResult.swift */,
 				41BFEB782B1F925800C8B551 /* ExportProcess.swift */,
 				4156196A2B3AE41F0032E82C /* ProgressViewModel.swift */,
@@ -909,6 +923,7 @@
 				410E3B812B4B0FF8005280FD /* LogManager.swift in Sources */,
 				4155B6CB2B5D3B3B008D3505 /* NotificationFrequency.swift in Sources */,
 				41F88AE82B0E9176004A3B58 /* DatabaseProfileModel.swift in Sources */,
+				41D1E4C52B6FCBBA00AE2E55 /* ExtractionModel_EventHandlers.swift in Sources */,
 				41C839342B52C94000C6B133 /* ApplicationDelegate.swift in Sources */,
 				47411FDA2A3EA121005890FE /* HelpButton.swift in Sources */,
 				9B4D90DC2A0BB07500FE7603 /* ConfigurationSettingsView.swift in Sources */,
@@ -920,6 +935,7 @@
 				4172729A2B44533D005A04BE /* FailedExtractionsView.swift in Sources */,
 				41F88AE52B0C83DE004A3B58 /* ShellResult.swift in Sources */,
 				4155B6C22B5D309C008D3505 /* NotificationManager.swift in Sources */,
+				41D1E4C32B6FCB4700AE2E55 /* ExtractionModel_DropDelegate.swift in Sources */,
 				474595372A40113000EF100D /* LabeledTextboxStepperForm.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

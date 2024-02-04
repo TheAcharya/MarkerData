@@ -7,19 +7,16 @@ import UniformTypeIdentifiers
 import Logging
 import LoggingOSLog
 
-class ExtractionModel: ObservableObject, DropDelegate {
+final class ExtractionModel: ObservableObject {
     let settings: SettingsContainer
     let databaseManager: DatabaseManager
     
     static let supportedContentTypes: [UTType] = [.fcpxml, .fcpxmld]
-
-    // Drop
-    @Published var dropPoint: CGPoint? = nil
-    @Published var isDropping = false
     
     /// Controls whether progress UI is shown in the ExtractView
     @Published var showProgressUI = false
     /// Extraction currently is in progress
+    @MainActor
     @Published var extractionInProgress = false
     /// External file recieved
     @Published var externalFileRecieved = false
@@ -43,197 +40,7 @@ class ExtractionModel: ObservableObject, DropDelegate {
         // Configure swift-log logging system to use OSLog backend
         LoggingSystem.bootstrap(LoggingOSLog.init)
         
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(handleOpenDocument(notification:)),
-            name: Notification.Name("OpenFile"),
-            object: nil)
-        
-        DistributedNotificationCenter.default.addObserver(
-            self,
-            selector: #selector(handleWorkflowExtensionEvent),
-            name: Notification.Name("WorkflowExtensionFileReceived"),
-            object: nil)
-    }
-    
-    /// Handles the Open Document event, called when file is dragged to dock icon or FCP Share Destination exports
-    @objc func handleOpenDocument(notification: Notification) {
-        guard let url = notification.userInfo?["url"] as? URL else {
-            Self.logger.error("handleOpenDocument: Couldn't find URL info")
-            return
-        }
-        
-        Self.logger.notice("handleOpenDocument: Received url: \(url)")
-        
-        // Check if URL conforms to supported file types
-        if !url.conformsToType(Self.supportedContentTypes) {
-            Self.logger.error("handleOpenDocument: File type not supported (\(url.pathExtension))")
-            return
-        }
-        
-        // Show UI
-        self.showProgressUI = true
-            
-        // Check if destination folder exists
-        if let exportFolder = self.settings.store.exportFolderURL,
-           exportFolder.fileExists {
-            // Extract
-            Task {
-                await self.performExtraction([url])
-            }
-        } else {
-            // Default to opening external file recieved popup
-            self.externalFileRecieved = true
-            self.externalFileURL = url
-        }
-        
-        // Send notification
-        NotificationManager.sendNotification(
-            taskFinished: false,
-            title: "Recieved External File",
-            body: "\(url.path(percentEncoded: false))"
-        )
-    }
-    
-    /// Handles Workflow Extension notification, and starts the extraction
-    @objc func handleWorkflowExtensionEvent() {
-        Self.logger.notice("handleWorkflowExtensionEvent: Recieved notification")
-        
-        let url = URL.workflowExtensionExportFCPXML
-        
-        // Check if URL conforms to supported file types
-        if !url.fileExists {
-            Self.logger.error("handleWorkflowExtensionEvent: \(url.path(percentEncoded: false)) doesn't exist")
-            return
-        }
-        
-        // Show UI
-        self.showProgressUI = true
-        
-        // Check if destination folder exists
-        if let exportFolder = self.settings.store.exportFolderURL,
-           exportFolder.fileExists {
-            // Extract
-            Task {
-                await self.performExtraction([url])
-            }
-        } else {
-            // Default to opening external file recieved popup
-            self.externalFileRecieved = true
-            self.externalFileURL = url
-        }
-        
-        // Send notification
-        NotificationManager.sendNotification(
-            taskFinished: false,
-            title: "Recieved External File",
-            body: "\(url.path(percentEncoded: false))"
-        )
-    }
-
-    func dropEntered(info: DropInfo) {
-        self.isDropping = true
-        self.dropPoint = info.location
-    }
-
-    func dropUpdated(info: DropInfo) -> DropProposal? {
-        self.dropPoint = info.location
-        
-        let isFileSupported = info.hasItemsConforming(to: Self.supportedContentTypes)
-        
-        return if isFileSupported && !self.extractionInProgress {
-            DropProposal(operation: .copy) }
-        else {
-            DropProposal(operation: .forbidden)
-        }
-    }
-
-    func dropExited(info: DropInfo) {
-        self.isDropping = false
-        self.dropPoint = nil
-    }
-
-    @MainActor
-    func performDrop(info: DropInfo) -> Bool {
-        let providers = info.itemProviders(
-            for: [.fileURL]
-        )
-        
-        var filesToProcess: [URL] = []
-        
-        /// A dispatch group so we can wait for the `provider.loadObject()`
-        ///  functions completion handlers to finish before extracting
-        let group = DispatchGroup()
-        
-        // This block will be called when all file URLs have been received
-        group.notify(queue: .main) {
-            if filesToProcess.isEmpty {
-                Self.logger.notice("Drop received no files")
-            } else {
-                Task {
-                    await self.performExtraction(filesToProcess)
-                }
-            }
-        }
-
-        for provider in providers {
-            // Check if the provider can load a file URL
-            if provider.canLoadObject(ofClass: URL.self) {
-                group.enter()
-                // Load the file URL from the provider
-                let _ = provider.loadObject(ofClass: URL.self) { url, error in
-                    if let fileURL = url {
-                        // Check file type
-                        if fileURL.conformsToType(Self.supportedContentTypes) {
-                            filesToProcess.append(fileURL)
-                        } else {
-                            Self.logger.notice("Skipping file \(fileURL.path(percentEncoded: false)). Not supported.")
-                        }
-                    } else if let error = error {
-                        Self.logger.error("File drop error: \(error.localizedDescription)")
-                    }
-                    
-                    group.leave()
-                }
-            }
-        }
-        
-        group.wait()
-
-        return true
-    }
-
-    func validateDrop(info: DropInfo) -> Bool {
-        return info.hasItemsConforming(to: Self.supportedContentTypes)
-    }
-    
-    public func processExternalFile() {
-        defer {
-            self.externalFileRecieved = false
-            self.externalFileURL = nil
-        }
-        
-        guard let url = self.externalFileURL else {
-            return
-        }
-        
-        Task {
-            await self.performExtraction([url])
-        }
-    }
-    
-    public func cancelExternalFile() {
-        self.showProgressUI = false
-        self.externalFileRecieved = false
-        self.externalFileURL = nil
-    }
-    
-    public func clearProgress() {
-        self.exportResult = .none
-        self.completedOutputFolder = nil
-        self.failedTasks.removeAll()
-        self.extractionProgress.reset()
-        self.uploadProgress.reset()
+        self.setupEventHandlers()
     }
     
     public func performExtraction(_ urls: [URL]) async {
@@ -250,7 +57,6 @@ class ExtractionModel: ObservableObject, DropDelegate {
         }
         
         func prepareExtraction(for urls: [URL]) async {
-            self.extractionInProgress = true
             Self.logger.notice("Processing files: \(urls.map { $0.path(percentEncoded: false) })")
             
             self.extractionProgress.setProcesses(urls: urls)
@@ -258,6 +64,7 @@ class ExtractionModel: ObservableObject, DropDelegate {
             // Show extraction progress
             await MainActor.run {
                 self.showProgressUI = true
+                self.extractionInProgress = true
             }
         }
         
@@ -332,12 +139,14 @@ class ExtractionModel: ObservableObject, DropDelegate {
         // MARK: Prepare for extraction
         
         defer {
-            self.extractionInProgress = false
+            DispatchQueue.main.async {
+                self.extractionInProgress = false
+            }
         }
         
         Self.logger.notice("Extraction started")
         
-        self.clearProgress()
+        await self.clearProgress()
         
         // Validate export destination
         do {
@@ -519,5 +328,14 @@ class ExtractionModel: ObservableObject, DropDelegate {
         case .airtable:
             break
         }
+    }
+    
+    @MainActor
+    public func clearProgress() async {
+        self.exportResult = .none
+        self.completedOutputFolder = nil
+        self.failedTasks.removeAll()
+        self.extractionProgress.reset()
+        self.uploadProgress.reset()
     }
 }
