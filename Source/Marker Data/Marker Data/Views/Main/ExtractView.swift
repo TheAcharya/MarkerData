@@ -122,7 +122,7 @@ public struct ExtractView: View {
         @Environment(\.openWindow) var openWindow
         
         @ObservedObject var extractionModel: ExtractionModel
-        @State var showAllCompleteFooter = false
+        @State var exportComplete = false
     
         var body: some View {
             VStack(alignment: .leading) {
@@ -141,24 +141,22 @@ public struct ExtractView: View {
                 }
                 
                 // All complete footer
-                if showAllCompleteFooter {
-                    Divider()
-                    
-                    allCompleteFooter
+                Divider()
+                
+                footerView
                     .padding(.top, 5)
-                }
             }
             .padding()
             .background(Color.black)
             .clipShape(RoundedRectangle(cornerRadius: 8))
             .onAppear {
                 if extractionModel.exportResult != .none {
-                    showAllCompleteFooter = true
+                    exportComplete = true
                 }
             }
             .onChange(of: extractionModel.exportResult) { result in
                 withAnimation(.easeOut(duration: 1)) {
-                    showAllCompleteFooter = result != .none
+                    exportComplete = result != .none
                 }
             }
         }
@@ -200,52 +198,64 @@ public struct ExtractView: View {
         }
         
         /// Footer shown when all extractions are complete
-        var allCompleteFooter: some View {
+        var footerView: some View {
             HStack {
-                // Show exit status
-                Group {
-                    if extractionModel.exportResult == .success {
-                        Label("All Complete", systemImage: "checkmark.circle")
-                            .foregroundStyle(.green)
-                    } else {
-                        Label("Error", systemImage: "exclamationmark.circle")
-                            .foregroundStyle(.yellow)
+                if exportComplete {
+                    // Show exit status
+                    Group {
+                        if extractionModel.exportResult == .success {
+                            Label("All Complete", systemImage: "checkmark.circle")
+                                .foregroundStyle(.green)
+                        } else {
+                            Label("Error", systemImage: "exclamationmark.circle")
+                                .foregroundStyle(.yellow)
+                        }
                     }
-                }
-                .font(.title3)
-                
-                // Show failed tasks button
-                if extractionModel.exportResult == .failed {
-                    Button {
-                        openWindow(value: extractionModel.failedTasks)
-                    } label: {
-                        Label("Show Error Details", systemImage: "info.circle")
-                    }
-                }
-                
-                Spacer()
-                
-                // Open in Finder button
-                Button {
-                    if let url = extractionModel.completedOutputFolder {
-                        NSWorkspace.shared.open(url)
-                    }
-                } label: {
-                    Label("Show in Finder", systemImage: "folder")
-                }
-                
-                // Close button
-                Button {
-                    withAnimation {
-                        self.showAllCompleteFooter = false
-                        extractionModel.showProgressUI = false
+                    .font(.title3)
+                    
+                    // Show failed tasks button
+                    if extractionModel.exportResult == .failed {
+                        Button {
+                            openWindow(value: extractionModel.failedTasks)
+                        } label: {
+                            Label("Show Error Details", systemImage: "info.circle")
+                        }
                     }
                     
-                    Task {
-                        await extractionModel.clearProgress()
+                    Spacer()
+                    
+                    // Open in Finder button
+                    Button {
+                        if let url = extractionModel.completedOutputFolder {
+                            NSWorkspace.shared.open(url)
+                        }
+                    } label: {
+                        Label("Show in Finder", systemImage: "folder")
                     }
-                } label: {
-                    Label("Close", systemImage: "xmark")
+                    
+                    // Close button
+                    Button {
+                        withAnimation {
+                            self.exportComplete = false
+                            extractionModel.showProgressUI = false
+                        }
+                        
+                        Task {
+                            await extractionModel.clearProgress()
+                        }
+                    } label: {
+                        Label("Close", systemImage: "xmark")
+                    }
+                } else {
+                    Spacer()
+                    
+                    // Stop export
+                    Button(role: .destructive) {
+                        self.extractionModel.cancelAll()
+                    } label: {
+                        Label("Stop", systemImage: "stop.circle")
+                            .foregroundColor(Color.red)
+                    }
                 }
             }
         }

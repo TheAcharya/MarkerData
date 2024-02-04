@@ -11,9 +11,9 @@ import Combine
 /// Streams the output of a shell command in real time
 class ShellOutputStream {
     public let outputPublisher = PassthroughSubject<String, Never>()
+    public var task: Process? = Process()
     
     private var output: String = ""
-    private var task: Process?
     private var fileHandle: FileHandle?
     
     /// Runs shell command
@@ -24,7 +24,9 @@ class ShellOutputStream {
     ///
     /// - Returns: A ``ShellResult`` containing the output and exit status of command
     func run(_ command: String) async -> ShellResult {
-        self.task = Process()
+        if self.task == nil {
+            self.task = Process()
+        }
         
         self.task?.launchPath = "/bin/zsh"
         self.task?.arguments = ["-l", "-c", "script -q /dev/null \(command)"]

@@ -11,6 +11,7 @@ enum ExtractError: Error {
     case invalidExportDestination
     case settingsReadError
     case unifiedExportProfileReadError
+    case userCancel
 }
 
 extension ExtractError: LocalizedError {
@@ -22,6 +23,8 @@ extension ExtractError: LocalizedError {
             "Failed to read export settings"
         case .unifiedExportProfileReadError:
             "Couldn't read export profile"
+        case .userCancel:
+            "User initiated cancel"
         }
     }
 }

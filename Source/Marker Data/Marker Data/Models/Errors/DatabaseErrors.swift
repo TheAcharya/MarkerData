@@ -38,6 +38,7 @@ enum DatabaseUploadError: Error {
     case notionNoToken
     case notionUploadError
     case csv2notionExecutableNotFound
+    case userCancel
 }
 
 extension DatabaseUploadError: LocalizedError {
@@ -51,6 +52,8 @@ extension DatabaseUploadError: LocalizedError {
             "Failed to upload to Notion"
         case .csv2notionExecutableNotFound:
             "CSV2Notion executable not found"
+        case .userCancel:
+            "User initiated cancel"
         }
     }
 }

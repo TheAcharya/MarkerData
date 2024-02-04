@@ -30,6 +30,10 @@ final class ExtractionModel: ObservableObject {
     
     public var failedTasks: [ExtractionFailure] = []
     
+    // Cancellation
+    private var taskGroup: TaskGroup<Void>? = nil
+    private var uploadProcesses: [Process?] = []
+    
 //    static let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "ExtractionModel")
     static let logger = Logger(label: Bundle.main.bundleIdentifier!)
 
@@ -128,7 +132,7 @@ final class ExtractionModel: ObservableObject {
             Self.logger.notice("Upload started")
             
             // Add process to upload progress
-            await self.uploadProgress.addProcess(url: jsonURL)
+            self.uploadProgress.addProcess(url: jsonURL)
             
             // Upload
             try await self.uploadToDatabase(url: jsonURL, databaseProfile: databaseProfile)
@@ -139,6 +143,9 @@ final class ExtractionModel: ObservableObject {
         // MARK: Prepare for extraction
         
         defer {
+            self.taskGroup = nil
+            self.uploadProcesses.removeAll()
+            
             DispatchQueue.main.async {
                 self.extractionInProgress = false
             }
@@ -165,12 +172,19 @@ final class ExtractionModel: ObservableObject {
         // MARK: Perform extraction and upload in parallel (in case of multiple files
         
         await withTaskGroup(of: Void.self) { group in
+            self.taskGroup = group
+            
             for url in urls {
                 group.addTask {
                     var exportResult: ExportResult? = nil
                     
                     // Extract
                     do {
+                        // Check for cancellation
+                        if Task.isCancelled {
+                            throw ExtractError.userCancel
+                        }
+                        
                         exportResult = try await extractAndUpdateProgress(for: url)
                         
                         // If we are only processing one file set completedOutputFolder the the export folder
@@ -189,6 +203,11 @@ final class ExtractionModel: ObservableObject {
                     
                     // Upload to database (if a database profile is selected)
                     do {
+                        // Check for cancellation
+                        if Task.isCancelled {
+                            throw DatabaseUploadError.userCancel
+                        }
+                        
                         try await uploadToDatabaseAndTrackProgress(url: url, exportResult: exportResult)
                     } catch {
                         await MainActor.run {
@@ -296,6 +315,8 @@ final class ExtractionModel: ObservableObject {
             
             let shellOutputStream = ShellOutputStream()
             
+            self.uploadProcesses.append(shellOutputStream.task)
+            
             let percentRegex = /([0-9]+)%/
             
             // Update progress
@@ -314,8 +335,13 @@ final class ExtractionModel: ObservableObject {
             
             if result.didFail {
                 // Failure
-                Self.logger.error("Failed to upload to Notion.\nOutput: \(result.output)")
-                throw DatabaseUploadError.notionUploadError
+                if Task.isCancelled {
+                    Self.logger.error("Upload to Notion cancelled by user.")
+                    throw DatabaseUploadError.userCancel
+                } else {
+                    Self.logger.error("Failed to upload to Notion.\nOutput: \(result.output)")
+                    throw DatabaseUploadError.notionUploadError
+                }
             } else {
                 // Success
                 await self.uploadProgress.markProcessAsFinished(url: url)
@@ -337,5 +363,19 @@ final class ExtractionModel: ObservableObject {
         self.failedTasks.removeAll()
         self.extractionProgress.reset()
         self.uploadProgress.reset()
+    }
+    
+    @MainActor
+    public func cancelAll() {
+        Self.logger.notice("User initiated cancel.")
+        Self.logger.notice("Cancelling task group.")
+        
+        self.taskGroup?.cancelAll()
+        
+        Self.logger.notice("Cancelling upload processes: \(self.uploadProcesses)")
+        
+        for process in self.uploadProcesses {
+            process?.terminate()
+        }
     }
 }
