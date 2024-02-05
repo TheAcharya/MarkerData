@@ -12,7 +12,7 @@
 </a>
 <!-- build -->
 <a href="https://github.com/TheAcharya/MarkerData/actions/workflows/build.yml">
-<img src="https://github.com/TheAcharya/MarkersExtractor/actions/workflows/build.yml/badge.svg" alt="build"/>
+<img src="https://github.com/TheAcharya/MarkerData/actions/workflows/build.yml/badge.svg" alt="build"/>
 </a>
 <p>
 <p>Marker Data allows users to extract, convert & create databases from <a href="https://www.apple.com/final-cut-pro/“ target=”_blank">Final Cut Pro</a>’s Maker metadata effortlessly. Marker Data uses <a href="https://github.com/TheAcharya/MarkersExtractor" target="_blank">MarkersExtractor</a> Library.</p>
