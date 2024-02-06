@@ -2,7 +2,7 @@
 //  DatabasePlatform.swift
 //  Marker Data
 //
-//  Created by Milán Várady on 22/11/2023.
+//  Created by Milán Várady on 05/02/2024.
 //
 
 import Foundation

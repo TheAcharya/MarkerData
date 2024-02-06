@@ -18,7 +18,8 @@ struct LibraryFolders {
             URL.markerDataLibraryFolder,
             URL.configurationsFolder,
             URL.databaseProfilesFolder,
-            URL.databaseProfilesFolder,
+            URL.notionProfilesFolder,
+            URL.airtableProfilesFolder,
             URL.logsFolder,
             URL.FCPExportCacheFolder
         ]

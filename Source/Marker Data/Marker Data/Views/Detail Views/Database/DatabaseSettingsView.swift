@@ -104,6 +104,8 @@ struct DatabaseSettingsView: View {
                     if let profileToEdit = databaseManager.profiles.first(where: { $0.name == selection }) {
                         editProfile = profileToEdit
                         showCreateProfileSheet = true
+                    } else {
+                        print("Failed to find profile to edit")
                     }
                 } label: {
                     Label("Edit", systemImage: "square.and.pencil")

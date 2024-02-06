@@ -85,17 +85,21 @@
 		41C8399B2B52D78900C6B133 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C8399A2B52D78900C6B133 /* AVFoundation.framework */; };
 		41D1E4C32B6FCB4700AE2E55 /* ExtractionModel_DropDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41D1E4C22B6FCB4700AE2E55 /* ExtractionModel_DropDelegate.swift */; };
 		41D1E4C52B6FCBBA00AE2E55 /* ExtractionModel_EventHandlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41D1E4C42B6FCBBA00AE2E55 /* ExtractionModel_EventHandlers.swift */; };
+		41D1E4DC2B71763D00AE2E55 /* NotionDBModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41D1E4DB2B71763D00AE2E55 /* NotionDBModel.swift */; };
+		41D1E4DE2B71769700AE2E55 /* AirtableDBModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41D1E4DD2B71769700AE2E55 /* AirtableDBModel.swift */; };
+		41D1E4E02B717A5F00AE2E55 /* DatabasePlatform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41D1E4DF2B717A5F00AE2E55 /* DatabasePlatform.swift */; };
+		41D1E4E22B729ED500AE2E55 /* PlatformInfoTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41D1E4E12B729ED500AE2E55 /* PlatformInfoTextField.swift */; };
+		41D1E4E42B72AA1600AE2E55 /* ValidatableProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41D1E4E32B72AA1600AE2E55 /* ValidatableProtocol.swift */; };
+		41D1E4E62B72C12300AE2E55 /* ExtractionModel_DatabaseUpload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41D1E4E52B72C12300AE2E55 /* ExtractionModel_DatabaseUpload.swift */; };
+		41D1E4E82B72C21E00AE2E55 /* DeepCopy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41D1E4E72B72C21E00AE2E55 /* DeepCopy.swift */; };
 		41EBAD502AF7B6F200E6AF7C /* WindowSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EBAD4F2AF7B6F200E6AF7C /* WindowSize.swift */; };
 		41EBAD522AF8172F00E6AF7C /* MainViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EBAD512AF8172F00E6AF7C /* MainViews.swift */; };
 		41F88ADC2B029D4A004A3B58 /* ColorPickerForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F88ADB2B029D4A004A3B58 /* ColorPickerForm.swift */; };
 		41F88AE32B0C839B004A3B58 /* Shell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F88AE22B0C839B004A3B58 /* Shell.swift */; };
 		41F88AE52B0C83DE004A3B58 /* ShellResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F88AE42B0C83DE004A3B58 /* ShellResult.swift */; };
 		41F88AE82B0E9176004A3B58 /* DatabaseProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F88AE72B0E9176004A3B58 /* DatabaseProfileModel.swift */; };
-		41F88AEC2B0E9224004A3B58 /* DatabasePlatform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F88AEB2B0E9224004A3B58 /* DatabasePlatform.swift */; };
-		41F88AEF2B0E92E9004A3B58 /* NotionDBModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F88AEE2B0E92E9004A3B58 /* NotionDBModel.swift */; };
 		41F88AF12B0E9367004A3B58 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F88AF02B0E9367004A3B58 /* DatabaseManager.swift */; };
 		41F88AF62B0E9DBF004A3B58 /* CreateDBProfileSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F88AF52B0E9DBF004A3B58 /* CreateDBProfileSheet.swift */; };
-		41F88AF82B0FDCF7004A3B58 /* ProfileCredentialModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F88AF72B0FDCF7004A3B58 /* ProfileCredentialModel.swift */; };
 		41F88AFA2B0FF62A004A3B58 /* DatabaseErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F88AF92B0FF62A004A3B58 /* DatabaseErrors.swift */; };
 		41F88AFE2B126439004A3B58 /* ExtractionResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F88AFD2B126439004A3B58 /* ExtractionResult.swift */; };
 		41F88B032B1A4D40004A3B58 /* ShellOutputStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F88B022B1A4D40004A3B58 /* ShellOutputStream.swift */; };
@@ -233,17 +237,21 @@
 		41C8399A2B52D78900C6B133 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		41D1E4C22B6FCB4700AE2E55 /* ExtractionModel_DropDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractionModel_DropDelegate.swift; sourceTree = "<group>"; };
 		41D1E4C42B6FCBBA00AE2E55 /* ExtractionModel_EventHandlers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractionModel_EventHandlers.swift; sourceTree = "<group>"; };
+		41D1E4DB2B71763D00AE2E55 /* NotionDBModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotionDBModel.swift; sourceTree = "<group>"; };
+		41D1E4DD2B71769700AE2E55 /* AirtableDBModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirtableDBModel.swift; sourceTree = "<group>"; };
+		41D1E4DF2B717A5F00AE2E55 /* DatabasePlatform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabasePlatform.swift; sourceTree = "<group>"; };
+		41D1E4E12B729ED500AE2E55 /* PlatformInfoTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformInfoTextField.swift; sourceTree = "<group>"; };
+		41D1E4E32B72AA1600AE2E55 /* ValidatableProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidatableProtocol.swift; sourceTree = "<group>"; };
+		41D1E4E52B72C12300AE2E55 /* ExtractionModel_DatabaseUpload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractionModel_DatabaseUpload.swift; sourceTree = "<group>"; };
+		41D1E4E72B72C21E00AE2E55 /* DeepCopy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepCopy.swift; sourceTree = "<group>"; };
 		41EBAD4F2AF7B6F200E6AF7C /* WindowSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowSize.swift; sourceTree = "<group>"; };
 		41EBAD512AF8172F00E6AF7C /* MainViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViews.swift; sourceTree = "<group>"; };
 		41F88ADB2B029D4A004A3B58 /* ColorPickerForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickerForm.swift; sourceTree = "<group>"; };
 		41F88AE22B0C839B004A3B58 /* Shell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shell.swift; sourceTree = "<group>"; };
 		41F88AE42B0C83DE004A3B58 /* ShellResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShellResult.swift; sourceTree = "<group>"; };
 		41F88AE72B0E9176004A3B58 /* DatabaseProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseProfileModel.swift; sourceTree = "<group>"; };
-		41F88AEB2B0E9224004A3B58 /* DatabasePlatform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabasePlatform.swift; sourceTree = "<group>"; };
-		41F88AEE2B0E92E9004A3B58 /* NotionDBModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotionDBModel.swift; sourceTree = "<group>"; };
 		41F88AF02B0E9367004A3B58 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		41F88AF52B0E9DBF004A3B58 /* CreateDBProfileSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateDBProfileSheet.swift; sourceTree = "<group>"; };
-		41F88AF72B0FDCF7004A3B58 /* ProfileCredentialModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCredentialModel.swift; sourceTree = "<group>"; };
 		41F88AF92B0FF62A004A3B58 /* DatabaseErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseErrors.swift; sourceTree = "<group>"; };
 		41F88AFD2B126439004A3B58 /* ExtractionResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractionResult.swift; sourceTree = "<group>"; };
 		41F88B022B1A4D40004A3B58 /* ShellOutputStream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShellOutputStream.swift; sourceTree = "<group>"; };
@@ -421,6 +429,7 @@
 				410E3B802B4B0FF8005280FD /* LogManager.swift */,
 				411F373A2B55B77100CC05E6 /* LibraryFolders.swift */,
 				4155B7302B6E96BE008D3505 /* SidebarSelectionSwitcher.swift */,
+				41D1E4E72B72C21E00AE2E55 /* DeepCopy.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -512,8 +521,21 @@
 				47F5CDF72A60CA43005D9A98 /* ExtractionModel.swift */,
 				41D1E4C22B6FCB4700AE2E55 /* ExtractionModel_DropDelegate.swift */,
 				41D1E4C42B6FCBBA00AE2E55 /* ExtractionModel_EventHandlers.swift */,
+				41D1E4E52B72C12300AE2E55 /* ExtractionModel_DatabaseUpload.swift */,
 			);
 			path = "Extraction Model";
+			sourceTree = "<group>";
+		};
+		41D1E4DA2B71762000AE2E55 /* Profile Models */ = {
+			isa = PBXGroup;
+			children = (
+				41F88AE72B0E9176004A3B58 /* DatabaseProfileModel.swift */,
+				41D1E4DB2B71763D00AE2E55 /* NotionDBModel.swift */,
+				41D1E4DD2B71769700AE2E55 /* AirtableDBModel.swift */,
+				41D1E4DF2B717A5F00AE2E55 /* DatabasePlatform.swift */,
+				41D1E4E32B72AA1600AE2E55 /* ValidatableProtocol.swift */,
+			);
+			path = "Profile Models";
 			sourceTree = "<group>";
 		};
 		41F88AE12B0C8360004A3B58 /* Shell */ = {
@@ -530,19 +552,9 @@
 			isa = PBXGroup;
 			children = (
 				41F88AF02B0E9367004A3B58 /* DatabaseManager.swift */,
-				41F88AE72B0E9176004A3B58 /* DatabaseProfileModel.swift */,
-				41F88AED2B0E92A2004A3B58 /* Platoform models */,
+				41D1E4DA2B71762000AE2E55 /* Profile Models */,
 			);
 			path = Database;
-			sourceTree = "<group>";
-		};
-		41F88AED2B0E92A2004A3B58 /* Platoform models */ = {
-			isa = PBXGroup;
-			children = (
-				41F88AEB2B0E9224004A3B58 /* DatabasePlatform.swift */,
-				41F88AEE2B0E92E9004A3B58 /* NotionDBModel.swift */,
-			);
-			path = "Platoform models";
 			sourceTree = "<group>";
 		};
 		41F88AF32B0E9D8E004A3B58 /* Database */ = {
@@ -550,7 +562,7 @@
 			children = (
 				9B4D90DD2A0BB11000FE7603 /* DatabaseSettingsView.swift */,
 				41F88AF52B0E9DBF004A3B58 /* CreateDBProfileSheet.swift */,
-				41F88AF72B0FDCF7004A3B58 /* ProfileCredentialModel.swift */,
+				41D1E4E12B729ED500AE2E55 /* PlatformInfoTextField.swift */,
 			);
 			path = Database;
 			sourceTree = "<group>";
@@ -854,15 +866,15 @@
 			files = (
 				41C839832B52C9E300C6B133 /* Object.m in Sources */,
 				411F37452B56DE7400CC05E6 /* PulsingIcon.swift in Sources */,
+				41D1E4E02B717A5F00AE2E55 /* DatabasePlatform.swift in Sources */,
 				4156196B2B3AE41F0032E82C /* ProgressViewModel.swift in Sources */,
 				4741202E2A3EFC42005890FE /* EmptyOrIntFormatStyle.swift in Sources */,
 				417272A22B484B82005A04BE /* ExportDestinationPicker.swift in Sources */,
 				47411FDC2A3EA140005890FE /* ViewExtensions.swift in Sources */,
-				41F88AEC2B0E9224004A3B58 /* DatabasePlatform.swift in Sources */,
-				41F88AEF2B0E92E9004A3B58 /* NotionDBModel.swift in Sources */,
 				41BFEB772B1E63EB00C8B551 /* ExportProfileFormatExtrension.swift in Sources */,
 				417389632AC86BE600984FD8 /* ExtractView.swift in Sources */,
 				41C538992AE3062000E8A8A1 /* HelpCommands.swift in Sources */,
+				41D1E4E82B72C21E00AE2E55 /* DeepCopy.swift in Sources */,
 				47411FDE2A3EA1BA005890FE /* AboutView.swift in Sources */,
 				414262BB2AD2E1AC00FC6CFC /* URLExtension.swift in Sources */,
 				41F88B032B1A4D40004A3B58 /* ShellOutputStream.swift in Sources */,
@@ -887,11 +899,14 @@
 				4100D5E42AD1616D0081F0EC /* ColorExtension.swift in Sources */,
 				9B4D90DE2A0BB11000FE7603 /* DatabaseSettingsView.swift in Sources */,
 				4155B7112B62D47B008D3505 /* NotificationSettingsView.swift in Sources */,
+				41D1E4E62B72C12300AE2E55 /* ExtractionModel_DatabaseUpload.swift in Sources */,
 				41F88AF62B0E9DBF004A3B58 /* CreateDBProfileSheet.swift in Sources */,
 				9B35FE6829F94C110035B760 /* PickerViews.swift in Sources */,
 				41C839842B52C9E300C6B133 /* Document.m in Sources */,
 				41EBAD522AF8172F00E6AF7C /* MainViews.swift in Sources */,
 				411F373B2B55B77100CC05E6 /* LibraryFolders.swift in Sources */,
+				41D1E4DE2B71769700AE2E55 /* AirtableDBModel.swift in Sources */,
+				41D1E4E22B729ED500AE2E55 /* PlatformInfoTextField.swift in Sources */,
 				411F37472B56F11400CC05E6 /* InstallShareDestinationView.swift in Sources */,
 				41C839862B52C9E300C6B133 /* Asset.m in Sources */,
 				41C8398B2B52C9E300C6B133 /* MediaAssetHelperKeys.m in Sources */,
@@ -916,7 +931,6 @@
 				411F37532B57255A00CC05E6 /* OpenEventHandler.swift in Sources */,
 				D5F74A312972D31D00EEE2FE /* Marker_DataApp.swift in Sources */,
 				4155B70D2B62CED6008D3505 /* RolesSettingsView.swift in Sources */,
-				41F88AF82B0FDCF7004A3B58 /* ProfileCredentialModel.swift in Sources */,
 				41F88ADC2B029D4A004A3B58 /* ColorPickerForm.swift in Sources */,
 				41C839822B52C9E300C6B133 /* ScriptingSupportCategories.m in Sources */,
 				474595582A40254E00EF100D /* ColorPickerOpacitySliderForm.swift in Sources */,
@@ -933,9 +947,11 @@
 				414262C22AD5D34D00FC6CFC /* ConfigurationsModel.swift in Sources */,
 				41BFEB6D2B1B9B6400C8B551 /* Links.swift in Sources */,
 				4172729A2B44533D005A04BE /* FailedExtractionsView.swift in Sources */,
+				41D1E4E42B72AA1600AE2E55 /* ValidatableProtocol.swift in Sources */,
 				41F88AE52B0C83DE004A3B58 /* ShellResult.swift in Sources */,
 				4155B6C22B5D309C008D3505 /* NotificationManager.swift in Sources */,
 				41D1E4C32B6FCB4700AE2E55 /* ExtractionModel_DropDelegate.swift in Sources */,
+				41D1E4DC2B71763D00AE2E55 /* NotionDBModel.swift in Sources */,
 				474595372A40113000EF100D /* LabeledTextboxStepperForm.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import PasswordField
 
 struct CreateDBProfileSheet: View {
     @EnvironmentObject var databaseManager: DatabaseManager
@@ -16,31 +15,25 @@ struct CreateDBProfileSheet: View {
     @Binding var showAlert: Bool
     @Binding var alertMessage: String
     
-    @State var nameText: String = ""
-    @State var selectedPlatform: DatabasePlatform = .notion
-    
-    @State var notionWorkspace = ""
-    @State var notionToken = ""
-    @State var notionDatabaseURL = ""
-    
-    @State var airtableAPIKey = ""
-    @State var airtableBaseID = ""
-    
-    @State var renameKeyColumn = ""
-    
     @Environment(\.openURL) var openURL
     
-    var inputValid: Bool {
-        if !nameText.isEmpty {
-            switch self.selectedPlatform {
-            case .notion:
-                return !notionToken.isEmpty && !notionWorkspace.isEmpty
-            case .airtable:
-                return !airtableAPIKey.isEmpty && !airtableBaseID.isEmpty
-            }
+    @State var selectedProfileName: String = ""
+    @State var selectedPlatform: DatabasePlatform = .notion
+    
+    @StateObject var notionProfile = NotionDBModel()
+    @StateObject var airtableProfile = AirtableDBModel()
+    
+    var selectedProfile: DatabaseProfileModel {
+        if let editProfileUnwrapped = editProfile {
+            return editProfileUnwrapped
         }
         
-        return false
+        switch selectedPlatform {
+        case .notion:
+            return self.notionProfile
+        case .airtable:
+            return self.airtableProfile
+        }
     }
     
     var body: some View {
@@ -51,7 +44,7 @@ struct CreateDBProfileSheet: View {
             HStack {
                 Text("Name:")
                 
-                TextField("Profile Name", text: $nameText)
+                TextField("Profile Name", text: $selectedProfileName)
                     .textFieldStyle(.roundedBorder)
             }
             
@@ -62,6 +55,12 @@ struct CreateDBProfileSheet: View {
             }
             .pickerStyle(.segmented)
             .disabled(editProfile != nil)
+            .onAppear {
+                if let editProfileUnwrapped = editProfile {
+                    self.selectedProfileName = editProfileUnwrapped.name
+                    self.selectedPlatform = editProfileUnwrapped.plaform
+                }
+            }
             
             Divider()
                 .padding(.vertical, 10)
@@ -69,9 +68,9 @@ struct CreateDBProfileSheet: View {
             Group {
                 switch selectedPlatform {
                 case .notion:
-                    notionFromView
+                    NotionFormView(profileModel: (editProfile as? NotionDBModel) ?? notionProfile)
                 case .airtable:
-                    airtableFormView
+                    AirtableFormView(profileModel: (editProfile as? AirtableDBModel) ?? airtableProfile)
                 }
             }
             .padding(.bottom)
@@ -90,165 +89,134 @@ struct CreateDBProfileSheet: View {
                 Button("Save") {
                     self.saveProfile()
                 }
-                .disabled(!inputValid)
+                .disabled(selectedProfileName.isEmpty)
             }
         }
-        // Set for editing
-        .onAppear {
-            if let profile = editProfile {
-                self.nameText = profile.name
+    }
+    
+    struct NotionFormView: View {
+        @StateObject var profileModel: NotionDBModel
+        
+        var body: some View {
+            VStack {
+                PlatformInfoTextField(
+                    title: "Notion Workspace",
+                    prompt: "Workspace Name",
+                    text: $profileModel.workspaceName,
+                    isRequired: true,
+                    secureField: false
+                )
                 
-                if let notionCredentials = profile.notionCredentials {
-                    self.selectedPlatform = .notion
-                    self.notionWorkspace = notionCredentials.workspaceName
-                    self.notionToken = notionCredentials.token
-                    self.notionDatabaseURL = notionCredentials.databaseURL ?? ""
-                    self.renameKeyColumn = notionCredentials.renameKeyColumn ?? ""
-                }
+                PlatformInfoTextField(
+                    title: "Notion V2 Token",
+                    prompt: "Token",
+                    text: $profileModel.token,
+                    isRequired: true,
+                    secureField: true
+                )
                 
-                if let airtableCredentials = profile.airtableCredentials {
-                    self.selectedPlatform = .airtable
-                    self.airtableAPIKey = airtableCredentials.apiKey
-                    self.airtableBaseID = airtableCredentials.baseID
-                    self.renameKeyColumn = airtableCredentials.renameKeyColumn ?? ""
-                }
+                PlatformInfoTextField(
+                    title: "Notion Database URL",
+                    prompt: "Database URL",
+                    text: $profileModel.databaseURL,
+                    isRequired: false,
+                    secureField: true
+                )
+                
+                PlatformInfoTextField(
+                    title: "Rename Key Column",
+                    prompt: "Different key column name in Notion (Default is \"Marker ID\")",
+                    text: $profileModel.renameKeyColumn,
+                    isRequired: false,
+                    secureField: false
+                )
             }
         }
     }
     
-    var notionFromView: some View {
-        VStack {
-            platformInfoTextField("Notion Workspace", prompt: "Workspace Name", text: $notionWorkspace, isRequired: true, secureField: false)
-            
-            platformInfoTextField("Notion V2 Token", prompt: "Token", text: $notionToken, isRequired: true, secureField: true)
-            
-            platformInfoTextField("Notion Database URL", prompt: "Database URL", text: $notionDatabaseURL, isRequired: false, secureField: true)
-            
-            platformInfoTextField("Rename Key Column", prompt: "Different key column name in Notion (Default is \"Marker ID\")", text: $renameKeyColumn, isRequired: false)
-        }
-    }
-    
-    var airtableFormView: some View {
-        VStack {
-            platformInfoTextField("Airtable API Key", prompt: "API Key", text: $airtableAPIKey, isRequired: true, secureField: true)
-            
-            platformInfoTextField("Airtable Base ID", prompt: "Database URL", text: $airtableBaseID, isRequired: true, secureField: true)
-            
-            platformInfoTextField("Rename Key Column", prompt: "Different key column name in Notion (Default is \"Marker ID\")", text: $renameKeyColumn, isRequired: false)
-        }
-    }
-    
-    func platformInfoTextField(_ title: String, prompt: LocalizedStringKey, text: Binding<String>, isRequired: Bool = false, secureField: Bool = false) -> some View {
-        HStack {
-            Group {
-                Text(title) +
-                Text(" (\(isRequired ? "Required" : "Optional"))").fontWeight(.thin) +
-                Text(":")
+    struct AirtableFormView: View {
+        @StateObject var profileModel: AirtableDBModel
+        
+        var body: some View {
+            VStack {
+                PlatformInfoTextField(
+                    title: "Airtable API Key",
+                    prompt: "API Key",
+                    text: $profileModel.apiKey,
+                    isRequired: true,
+                    secureField: true
+                )
+                
+                PlatformInfoTextField(
+                    title: "Airtable Base ID",
+                    prompt: "Database URL",
+                    text: $profileModel.baseID,
+                    isRequired: true,
+                    secureField: true
+                )
+                
+                PlatformInfoTextField(
+                    title: "Rename Key Column",
+                    prompt: "Different key column name in Notion (Default is \"Marker ID\")",
+                    text: $profileModel.renameKeyColumn,
+                    isRequired: false,
+                    secureField: false
+                )
             }
-            .padding(.trailing, -12)
-            
-            if secureField {
-                PasswordField("", text: text) { isInputVisible in
-                    // Visibility toggle button
-                    Button {
-                        isInputVisible.wrappedValue = isInputVisible.wrappedValue.toggled()
-                    } label: {
-                        Image(systemName: isInputVisible.wrappedValue ? "eye.slash" : "eye")
-                    }
-                    .buttonStyle(.plain)
-                }
-                .visibilityControlPosition(.inlineOutside)
-                .textFieldStyle(.roundedBorder)
-            } else {
-                TextField(prompt, text: text)
-                    .padding(.leading, 8)
-                    .textFieldStyle(.roundedBorder)
-            }
-            
-            Button {
-                text.wrappedValue = ""
-            } label: {
-                Image(systemName: "trash")
-            }
-            .buttonStyle(.plain)
         }
     }
     
     func saveProfile() {
         Task {
             await MainActor.run {
-                let newProfile = self.makeProfile()
-                var makeActive = false
+//                databaseManager.objectWillChange.send()
                 
                 // If editing the profile
-                if let oldProfile = editProfile {
+                if let editProfileUnwrapped = editProfile,
+                   let profile = editProfileUnwrapped.copy() {
+                    
                     // Validate new profile
                     do {
-                        try self.databaseManager.validateProfile(newProfile, ignoreName: oldProfile.name)
+                        try self.databaseManager.validateProfile(profile, ignoreName: profile.name)
                     } catch {
                         showAlert(error.localizedDescription)
                         reset()
                         return
                     }
                     
-                    // Try to remove the old version of the profile
+                    // Remember if the profile was active or not
+                    let makeActive = databaseManager.selectedDatabaseProfile?.name == profile.name
+                    
+                    // Remove old profile from disk and save new one
                     do {
-                        // Remember if the profile was active or not
-                        makeActive = databaseManager.selectedDatabaseProfile == oldProfile
+                        try databaseManager.removeProfile(profile)
                         
-                        try databaseManager.removeProfile(profileName: oldProfile.name)
+                        // Set new name
+                        profile.name = selectedProfileName
+                        
+                        try databaseManager.addProfile(profile)
                     } catch {
                         showAlert("Failed to save changes")
                         reset()
                         return
                     }
-                }
-                
-                do {
-                    try self.databaseManager.addProfile(newProfile)
-                    
+            
                     if makeActive {
-                        self.databaseManager.setActiveProfile(profileName: newProfile.name)
+                        self.databaseManager.setActiveProfile(profileName: selectedProfile.name)
                     }
-                } catch {
-                    showAlert(error.localizedDescription)
+                } else {
+                    // Set profile name
+                    selectedProfile.name = selectedProfileName
+                    
+                    do {
+                        try self.databaseManager.addProfile(selectedProfile)
+                    } catch {
+                        showAlert(error.localizedDescription)
+                    }
                 }
                 
                 reset()
             }
-        }
-    }
-    
-    func makeProfile() -> DatabaseProfileModel {
-        switch self.selectedPlatform {
-        case .notion:
-            let credentials = NotionCredentials(
-                workspaceName: self.notionWorkspace,
-                token: self.notionToken,
-                databaseURL: self.notionDatabaseURL, 
-                renameKeyColumn: self.renameKeyColumn
-            )
-            
-            return DatabaseProfileModel(
-                name: nameText,
-                plaform: selectedPlatform,
-                notionCredentials: credentials,
-                airtableCredentials: nil
-            )
-            
-        case .airtable:
-            let credentials = AirtableCredentials(
-                apiKey: airtableAPIKey,
-                baseID: airtableBaseID,
-                renameKeyColumn: renameKeyColumn
-            )
-            
-            return DatabaseProfileModel(
-                name: nameText,
-                plaform: selectedPlatform,
-                notionCredentials: nil,
-                airtableCredentials: credentials
-            )
         }
     }
     
