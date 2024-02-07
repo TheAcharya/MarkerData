@@ -12,14 +12,14 @@ final class NotionDBModel: DatabaseProfileModel {
     @Published var token: String
     @Published var databaseURL: String
     @Published var renameKeyColumn: String
-    @Published var mergeOnly: [NotionMergeOnlyOption]
+    @Published var mergeOnlyColumns: [NotionMergeOnlyColumn]
     
     init() {
         self.workspaceName = ""
         self.token = ""
         self.databaseURL = ""
         self.renameKeyColumn = ""
-        self.mergeOnly = []
+        self.mergeOnlyColumns = []
         
         super.init(name: "", plaform: .notion)
     }
@@ -41,7 +41,7 @@ final class NotionDBModel: DatabaseProfileModel {
         self.token = try container.decode(String.self, forKey: .token)
         self.databaseURL = try container.decode(String.self, forKey: .databaseURL)
         self.renameKeyColumn = try container.decode(String.self, forKey: .renameKeyColumn)
-        self.mergeOnly = try container.decode([NotionMergeOnlyOption].self, forKey: .mergeOnly)
+        self.mergeOnlyColumns = try container.decode([NotionMergeOnlyColumn].self, forKey: .mergeOnly)
         
         // Parent's properties
         let name = try container.decode(String.self, forKey: .name)
@@ -71,7 +71,7 @@ final class NotionDBModel: DatabaseProfileModel {
         try container.encode(self.token, forKey: .token)
         try container.encode(self.databaseURL, forKey: .databaseURL)
         try container.encode(self.renameKeyColumn, forKey: .renameKeyColumn)
-        try container.encode(self.mergeOnly, forKey: .mergeOnly)
+        try container.encode(self.mergeOnlyColumns, forKey: .mergeOnly)
     }
     
     override func copy() -> NotionDBModel? {
@@ -79,7 +79,7 @@ final class NotionDBModel: DatabaseProfileModel {
     }
 }
 
-enum NotionMergeOnlyOption: String, Codable, CaseIterable {
+enum NotionMergeOnlyColumn: String, Codable, CaseIterable, Identifiable, Equatable {
     case markerID = "Marker ID"
     case markerName = "Marker Name"
     case markerType = "Marker Type"
@@ -97,4 +97,8 @@ enum NotionMergeOnlyOption: String, Codable, CaseIterable {
     case libraryName = "Library Name"
     case iconImage = "Icon Image"
     case imageFilename = "Image Filename"
+    
+    var id: String {
+        self.rawValue
+    }
 }

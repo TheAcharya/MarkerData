@@ -20,7 +20,6 @@
 		411F37532B57255A00CC05E6 /* OpenEventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 411F37522B57255A00CC05E6 /* OpenEventHandler.swift */; };
 		411F37552B59010B00CC05E6 /* Marker Data Source.fcpxdest in Resources */ = {isa = PBXBuildFile; fileRef = 411F37542B59010B00CC05E6 /* Marker Data Source.fcpxdest */; };
 		411F37572B59011300CC05E6 /* Marker Data H.264.fcpxdest in Resources */ = {isa = PBXBuildFile; fileRef = 411F37562B59011300CC05E6 /* Marker Data H.264.fcpxdest */; };
-		411F37612B5C5D4D00CC05E6 /* csv2notion_neo in Resources */ = {isa = PBXBuildFile; fileRef = 411F37602B5C5D4D00CC05E6 /* csv2notion_neo */; };
 		411F37632B5C5F5D00CC05E6 /* FileCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 411F37622B5C5F5D00CC05E6 /* FileCommands.swift */; };
 		414262BB2AD2E1AC00FC6CFC /* URLExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414262BA2AD2E1AC00FC6CFC /* URLExtension.swift */; };
 		414262BD2AD2E24A00FC6CFC /* BundleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414262BC2AD2E24A00FC6CFC /* BundleExtension.swift */; };
@@ -92,6 +91,9 @@
 		41D1E4E42B72AA1600AE2E55 /* ValidatableProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41D1E4E32B72AA1600AE2E55 /* ValidatableProtocol.swift */; };
 		41D1E4E62B72C12300AE2E55 /* ExtractionModel_DatabaseUpload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41D1E4E52B72C12300AE2E55 /* ExtractionModel_DatabaseUpload.swift */; };
 		41D1E4E82B72C21E00AE2E55 /* DeepCopy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41D1E4E72B72C21E00AE2E55 /* DeepCopy.swift */; };
+		41D1E4EB2B742BA000AE2E55 /* NotionFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41D1E4EA2B742BA000AE2E55 /* NotionFormView.swift */; };
+		41D1E4ED2B742BC600AE2E55 /* AirtableFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41D1E4EC2B742BC600AE2E55 /* AirtableFormView.swift */; };
+		41D1E4EF2B742CEC00AE2E55 /* csv2notion_neo in Resources */ = {isa = PBXBuildFile; fileRef = 41D1E4EE2B742CEC00AE2E55 /* csv2notion_neo */; };
 		41EBAD502AF7B6F200E6AF7C /* WindowSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EBAD4F2AF7B6F200E6AF7C /* WindowSize.swift */; };
 		41EBAD522AF8172F00E6AF7C /* MainViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EBAD512AF8172F00E6AF7C /* MainViews.swift */; };
 		41F88ADC2B029D4A004A3B58 /* ColorPickerForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F88ADB2B029D4A004A3B58 /* ColorPickerForm.swift */; };
@@ -175,7 +177,6 @@
 		411F37522B57255A00CC05E6 /* OpenEventHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenEventHandler.swift; sourceTree = "<group>"; };
 		411F37542B59010B00CC05E6 /* Marker Data Source.fcpxdest */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = "Marker Data Source.fcpxdest"; sourceTree = "<group>"; };
 		411F37562B59011300CC05E6 /* Marker Data H.264.fcpxdest */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = "Marker Data H.264.fcpxdest"; sourceTree = "<group>"; };
-		411F37602B5C5D4D00CC05E6 /* csv2notion_neo */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = csv2notion_neo; sourceTree = "<group>"; };
 		411F37622B5C5F5D00CC05E6 /* FileCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileCommands.swift; sourceTree = "<group>"; };
 		414262BA2AD2E1AC00FC6CFC /* URLExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLExtension.swift; sourceTree = "<group>"; };
 		414262BC2AD2E24A00FC6CFC /* BundleExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleExtension.swift; sourceTree = "<group>"; };
@@ -244,6 +245,9 @@
 		41D1E4E32B72AA1600AE2E55 /* ValidatableProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidatableProtocol.swift; sourceTree = "<group>"; };
 		41D1E4E52B72C12300AE2E55 /* ExtractionModel_DatabaseUpload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractionModel_DatabaseUpload.swift; sourceTree = "<group>"; };
 		41D1E4E72B72C21E00AE2E55 /* DeepCopy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepCopy.swift; sourceTree = "<group>"; };
+		41D1E4EA2B742BA000AE2E55 /* NotionFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotionFormView.swift; sourceTree = "<group>"; };
+		41D1E4EC2B742BC600AE2E55 /* AirtableFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirtableFormView.swift; sourceTree = "<group>"; };
+		41D1E4EE2B742CEC00AE2E55 /* csv2notion_neo */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = csv2notion_neo; sourceTree = "<group>"; };
 		41EBAD4F2AF7B6F200E6AF7C /* WindowSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowSize.swift; sourceTree = "<group>"; };
 		41EBAD512AF8172F00E6AF7C /* MainViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViews.swift; sourceTree = "<group>"; };
 		41F88ADB2B029D4A004A3B58 /* ColorPickerForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickerForm.swift; sourceTree = "<group>"; };
@@ -367,7 +371,7 @@
 				414262C42ADAC6EC00FC6CFC /* DefaultConfiguration.json */,
 				411F37542B59010B00CC05E6 /* Marker Data Source.fcpxdest */,
 				411F37562B59011300CC05E6 /* Marker Data H.264.fcpxdest */,
-				411F37602B5C5D4D00CC05E6 /* csv2notion_neo */,
+				41D1E4EE2B742CEC00AE2E55 /* csv2notion_neo */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -538,6 +542,17 @@
 			path = "Profile Models";
 			sourceTree = "<group>";
 		};
+		41D1E4E92B742B8200AE2E55 /* Create Sheet */ = {
+			isa = PBXGroup;
+			children = (
+				41F88AF52B0E9DBF004A3B58 /* CreateDBProfileSheet.swift */,
+				41D1E4EA2B742BA000AE2E55 /* NotionFormView.swift */,
+				41D1E4EC2B742BC600AE2E55 /* AirtableFormView.swift */,
+				41D1E4E12B729ED500AE2E55 /* PlatformInfoTextField.swift */,
+			);
+			path = "Create Sheet";
+			sourceTree = "<group>";
+		};
 		41F88AE12B0C8360004A3B58 /* Shell */ = {
 			isa = PBXGroup;
 			children = (
@@ -561,8 +576,7 @@
 			isa = PBXGroup;
 			children = (
 				9B4D90DD2A0BB11000FE7603 /* DatabaseSettingsView.swift */,
-				41F88AF52B0E9DBF004A3B58 /* CreateDBProfileSheet.swift */,
-				41D1E4E12B729ED500AE2E55 /* PlatformInfoTextField.swift */,
+				41D1E4E92B742B8200AE2E55 /* Create Sheet */,
 			);
 			path = Database;
 			sourceTree = "<group>";
@@ -837,7 +851,7 @@
 				414262C52ADAC6EC00FC6CFC /* DefaultConfiguration.json in Resources */,
 				41C839312B52C82A00C6B133 /* OSAScriptingDefinition.sdef in Resources */,
 				411F37552B59010B00CC05E6 /* Marker Data Source.fcpxdest in Resources */,
-				411F37612B5C5D4D00CC05E6 /* csv2notion_neo in Resources */,
+				41D1E4EF2B742CEC00AE2E55 /* csv2notion_neo in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -916,11 +930,13 @@
 				9B4D90DA2A0BAF9E00FE7603 /* GeneralLabelSettingsView.swift in Sources */,
 				411F37392B53D84200CC05E6 /* MakeCommand.m in Sources */,
 				4155B7132B62DEA2008D3505 /* RoleExtension.swift in Sources */,
+				41D1E4ED2B742BC600AE2E55 /* AirtableFormView.swift in Sources */,
 				411F374A2B56F22300CC05E6 /* ShareDestinationInstaller.swift in Sources */,
 				4155B7192B62E179008D3505 /* UTTypeExtension.swift in Sources */,
 				47F5CDF82A60CA43005D9A98 /* ExtractionModel.swift in Sources */,
 				411F374E2B56FB5B00CC05E6 /* AppCommands.swift in Sources */,
 				4155B6CF2B5D929A008D3505 /* NSImageExtension.swift in Sources */,
+				41D1E4EB2B742BA000AE2E55 /* NotionFormView.swift in Sources */,
 				41C839852B52C9E300C6B133 /* DocumentController.m in Sources */,
 				41EBAD502AF7B6F200E6AF7C /* WindowSize.swift in Sources */,
 				41BFEB792B1F925800C8B551 /* ExportProcess.swift in Sources */,

@@ -47,7 +47,7 @@ struct DatabaseSettingsView: View {
                 alertMessage: $profileCreateMessage
             )
             .padding()
-            .frame(minWidth: 600)
+            .frame(minWidth: 600, maxWidth: 800)
         }
         .alert("Failed to save profile", isPresented: $showProfileCreateAlert) { } message: {
             Text(profileCreateMessage)

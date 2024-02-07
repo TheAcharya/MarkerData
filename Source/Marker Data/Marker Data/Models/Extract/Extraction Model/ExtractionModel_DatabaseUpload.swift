@@ -43,6 +43,11 @@ extension ExtractionModel {
                 arguments.append(contentsOf: ["--rename-notion-key-column", "Marker ID".quoted, notionProfile.renameKeyColumn.quoted])
             }
             
+            // Add merge only columns
+            for column in notionProfile.mergeOnlyColumns {
+                arguments.append(contentsOf: ["--merge-only-column", column.rawValue.quoted])
+            }
+            
             let command = "\(executablePath) \(arguments.joined(separator: " "))"
             
             let shellOutputStream = ShellOutputStream()
