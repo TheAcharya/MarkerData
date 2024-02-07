@@ -47,7 +47,7 @@ struct DatabaseSettingsView: View {
                 alertMessage: $profileCreateMessage
             )
             .padding()
-            .frame(minWidth: 600)
+            .frame(minWidth: 600, maxWidth: 800)
         }
         .alert("Failed to save profile", isPresented: $showProfileCreateAlert) { } message: {
             Text(profileCreateMessage)
@@ -104,6 +104,8 @@ struct DatabaseSettingsView: View {
                     if let profileToEdit = databaseManager.profiles.first(where: { $0.name == selection }) {
                         editProfile = profileToEdit
                         showCreateProfileSheet = true
+                    } else {
+                        print("Failed to find profile to edit")
                     }
                 } label: {
                     Label("Edit", systemImage: "square.and.pencil")

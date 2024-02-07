@@ -12,19 +12,31 @@ extension URL {
     /// Path to ~/Library/Application Support/Marker Data
     public static var markerDataLibraryFolder: URL {
         Self.applicationSupportDirectory
-            .appendingPathComponent("Marker Data", conformingTo: .directory)
+            .appendingPathComponent("Marker Data", conformingTo: .folder)
     }
     
     /// Path to ~/Library/Application Support/Marker Data/Configurations
     public static var configurationsFolder: URL {
         Self.markerDataLibraryFolder
-            .appendingPathComponent("Configurations", conformingTo: .directory)
+            .appendingPathComponent("Configurations", conformingTo: .folder)
     }
     
     /// Path to ~/Library/Application Support/Marker Data/Database/Profiles
     public static var databaseProfilesFolder: URL {
         Self.markerDataLibraryFolder
-            .appendingPathComponent("Database Profiles", conformingTo: .directory)
+            .appendingPathComponent("Database Profiles", conformingTo: .folder)
+    }
+    
+    /// Path to ~/Library/Application Support/Marker Data/Database/Profiles/Notion
+    public static var notionProfilesFolder: URL {
+        Self.databaseProfilesFolder
+            .appendingPathComponent("Notion", conformingTo: .folder)
+    }
+    
+    /// Path to ~/Library/Application Support/Marker Data/Database/Profiles/Airtable
+    public static var airtableProfilesFolder: URL {
+        Self.databaseProfilesFolder
+            .appendingPathComponent("Airtable", conformingTo: .folder)
     }
     
     /// Path to ~/Library/Preferences/Marker Data/UnifiedExportProfile.json

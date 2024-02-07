@@ -8,7 +8,6 @@
 import Foundation
 
 enum DatabaseValidationError: Error {
-    case emptyName
     case emptyCredentials
     case nameAlreadyExists
     case illegalName
@@ -17,8 +16,6 @@ enum DatabaseValidationError: Error {
 extension DatabaseValidationError: LocalizedError {
     public var errorDescription: String? {
         switch self {
-        case .emptyName:
-            "Empty profile name"
         case .emptyCredentials:
             "Empty profile credentials"
         case .nameAlreadyExists:
@@ -34,6 +31,7 @@ enum DatabaseRemoveError: Error {
 }
 
 enum DatabaseUploadError: Error {
+    case failedToUnwrapAsNotionProfile
     case missingJsonFile
     case notionNoToken
     case notionUploadError
@@ -44,6 +42,8 @@ enum DatabaseUploadError: Error {
 extension DatabaseUploadError: LocalizedError {
     public var errorDescription: String? {
         switch self {
+        case .failedToUnwrapAsNotionProfile:
+            "Failed to get notion credentials"
         case .missingJsonFile:
             "No markers found. Check roles (General->Roles)."
         case .notionNoToken:
@@ -60,4 +60,5 @@ extension DatabaseUploadError: LocalizedError {
 
 enum DatabaseProfileDuplicationError: Error {
     case noProfileFound
+    case failedToDeepCopy
 }
