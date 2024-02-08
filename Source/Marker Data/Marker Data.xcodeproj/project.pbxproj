@@ -63,6 +63,9 @@
 		417272A22B484B82005A04BE /* ExportDestinationPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417272A12B484B82005A04BE /* ExportDestinationPicker.swift */; };
 		417389632AC86BE600984FD8 /* ExtractView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417389622AC86BE600984FD8 /* ExtractView.swift */; };
 		417914FF2B7547CE00215688 /* DropboxSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417914FE2B7547CE00215688 /* DropboxSetupView.swift */; };
+		417915022B754E1500215688 /* DropboxInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417915012B754E1500215688 /* DropboxInfo.swift */; };
+		417915062B75547C00215688 /* DropboxSetupModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417915052B75547C00215688 /* DropboxSetupModel.swift */; };
+		417915082B7556CC00215688 /* airlift in Resources */ = {isa = PBXBuildFile; fileRef = 417915072B7556CC00215688 /* airlift */; };
 		41BFEB6D2B1B9B6400C8B551 /* Links.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BFEB6C2B1B9B6400C8B551 /* Links.swift */; };
 		41BFEB702B1BA4CC00C8B551 /* PasswordField in Frameworks */ = {isa = PBXBuildFile; productRef = 41BFEB6F2B1BA4CC00C8B551 /* PasswordField */; };
 		41BFEB722B1BCE4600C8B551 /* ExportProfilePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BFEB712B1BCE4600C8B551 /* ExportProfilePicker.swift */; };
@@ -211,6 +214,9 @@
 		417272A12B484B82005A04BE /* ExportDestinationPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportDestinationPicker.swift; sourceTree = "<group>"; };
 		417389622AC86BE600984FD8 /* ExtractView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractView.swift; sourceTree = "<group>"; };
 		417914FE2B7547CE00215688 /* DropboxSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxSetupView.swift; sourceTree = "<group>"; };
+		417915012B754E1500215688 /* DropboxInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxInfo.swift; sourceTree = "<group>"; };
+		417915052B75547C00215688 /* DropboxSetupModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxSetupModel.swift; sourceTree = "<group>"; };
+		417915072B7556CC00215688 /* airlift */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = airlift; sourceTree = "<group>"; };
 		41BFEB6C2B1B9B6400C8B551 /* Links.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Links.swift; sourceTree = "<group>"; };
 		41BFEB712B1BCE4600C8B551 /* ExportProfilePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportProfilePicker.swift; sourceTree = "<group>"; };
 		41BFEB762B1E63EA00C8B551 /* ExportProfileFormatExtrension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportProfileFormatExtrension.swift; sourceTree = "<group>"; };
@@ -372,6 +378,7 @@
 				411F37542B59010B00CC05E6 /* Marker Data Source.fcpxdest */,
 				411F37562B59011300CC05E6 /* Marker Data H.264.fcpxdest */,
 				41D1E4EE2B742CEC00AE2E55 /* csv2notion_neo */,
+				417915072B7556CC00215688 /* airlift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -450,9 +457,17 @@
 			isa = PBXGroup;
 			children = (
 				41D1E4DD2B71769700AE2E55 /* AirtableDBModel.swift */,
-				417914FE2B7547CE00215688 /* DropboxSetupView.swift */,
 			);
 			path = Airtable;
+			sourceTree = "<group>";
+		};
+		417915042B754EB800215688 /* Dropbox */ = {
+			isa = PBXGroup;
+			children = (
+				417915012B754E1500215688 /* DropboxInfo.swift */,
+				417915052B75547C00215688 /* DropboxSetupModel.swift */,
+			);
+			path = Dropbox;
 			sourceTree = "<group>";
 		};
 		41BFEB732B1BD15A00C8B551 /* Other */ = {
@@ -554,6 +569,7 @@
 				41D1E4DF2B717A5F00AE2E55 /* DatabasePlatform.swift */,
 				417914FC2B75479D00215688 /* Notion */,
 				417914FD2B7547A800215688 /* Airtable */,
+				417915042B754EB800215688 /* Dropbox */,
 			);
 			path = "Profile Models";
 			sourceTree = "<group>";
@@ -564,6 +580,7 @@
 				41F88AF52B0E9DBF004A3B58 /* CreateDBProfileSheet.swift */,
 				41D1E4EA2B742BA000AE2E55 /* NotionFormView.swift */,
 				41D1E4EC2B742BC600AE2E55 /* AirtableFormView.swift */,
+				417914FE2B7547CE00215688 /* DropboxSetupView.swift */,
 				41D1E4E12B729ED500AE2E55 /* PlatformInfoTextField.swift */,
 			);
 			path = "Create Sheet";
@@ -863,6 +880,7 @@
 			files = (
 				D5F74A382972D32100EEE2FE /* Preview Assets.xcassets in Resources */,
 				D5F74A352972D32100EEE2FE /* Assets.xcassets in Resources */,
+				417915082B7556CC00215688 /* airlift in Resources */,
 				411F37572B59011300CC05E6 /* Marker Data H.264.fcpxdest in Resources */,
 				414262C52ADAC6EC00FC6CFC /* DefaultConfiguration.json in Resources */,
 				41C839312B52C82A00C6B133 /* OSAScriptingDefinition.sdef in Resources */,
@@ -955,6 +973,7 @@
 				4155B6CF2B5D929A008D3505 /* NSImageExtension.swift in Sources */,
 				41D1E4EB2B742BA000AE2E55 /* NotionFormView.swift in Sources */,
 				41C839852B52C9E300C6B133 /* DocumentController.m in Sources */,
+				417915062B75547C00215688 /* DropboxSetupModel.swift in Sources */,
 				41EBAD502AF7B6F200E6AF7C /* WindowSize.swift in Sources */,
 				41BFEB792B1F925800C8B551 /* ExportProcess.swift in Sources */,
 				41C538942AE1AFF200E8A8A1 /* SettingsContainer.swift in Sources */,
@@ -968,6 +987,7 @@
 				41C839822B52C9E300C6B133 /* ScriptingSupportCategories.m in Sources */,
 				474595582A40254E00EF100D /* ColorPickerOpacitySliderForm.swift in Sources */,
 				410E3B812B4B0FF8005280FD /* LogManager.swift in Sources */,
+				417915022B754E1500215688 /* DropboxInfo.swift in Sources */,
 				4155B6CB2B5D3B3B008D3505 /* NotificationFrequency.swift in Sources */,
 				41F88AE82B0E9176004A3B58 /* DatabaseProfileModel.swift in Sources */,
 				41D1E4C52B6FCBBA00AE2E55 /* ExtractionModel_EventHandlers.swift in Sources */,

@@ -39,6 +39,18 @@ extension URL {
             .appendingPathComponent("Airtable", conformingTo: .folder)
     }
     
+    /// Path to ~/Library/Application Support/Marker Data/Database/Profiles/Dropbox
+    public static var dropboxFolder: URL {
+        Self.databaseProfilesFolder
+            .appendingPathComponent("Dropbox", conformingTo: .folder)
+    }
+    
+    /// Path to ~/Library/Application Support/Marker Data/Database/Profiles/Dropbox/dopbox_token.json
+    public static var dropboxTokenJSON: URL {
+        Self.dropboxFolder
+            .appendingPathComponent("dropbox_token", conformingTo: .json)
+    }
+    
     /// Path to ~/Library/Preferences/Marker Data/UnifiedExportProfile.json
     public static var unifiedExportProfile: URL {
         Self.markerDataLibraryFolder
