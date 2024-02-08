@@ -52,7 +52,7 @@ struct NotionFormView: View {
                 Text(":")
             }
             
-            ZStack(alignment: .bottomTrailing) {
+            ZStack {
                 List(NotionMergeOnlyColumn.allCases) { mergeColumn in
                     HStack {
                         Toggle("", isOn: Binding<Bool>(
@@ -75,13 +75,11 @@ struct NotionFormView: View {
                 }
                 .clipShape(RoundedRectangle(cornerRadius: 8))
                 
-                Button {
+                Button("Clear") {
                     profileModel.mergeOnlyColumns.removeAll()
-                } label: {
-                    Label("Clear", systemImage: "trash")
                 }
-                .padding(.trailing, 30)
-                .padding(.bottom, 10)
+                .keyboardShortcut("d", modifiers: [.shift, .command])
+                .opacity(0)
             }
             .frame(height: 140)
         }
