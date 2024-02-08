@@ -8,13 +8,15 @@
 import Foundation
 
 final class AirtableDBModel: DatabaseProfileModel {
-    @Published var apiKey: String
+    @Published var token: String
     @Published var baseID: String
+    @Published var tableID: String
     @Published var renameKeyColumn: String
     
     init() {
-        self.apiKey = ""
+        self.token = ""
         self.baseID = ""
+        self.tableID = ""
         self.renameKeyColumn = ""
         
         super.init(name: "", plaform: .airtable)
@@ -33,8 +35,9 @@ final class AirtableDBModel: DatabaseProfileModel {
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        self.apiKey = try container.decode(String.self, forKey: .apiKey)
+        self.token = try container.decode(String.self, forKey: .token)
         self.baseID = try container.decode(String.self, forKey: .baseID)
+        self.tableID = try container.decode(String.self, forKey: .tableID)
         self.renameKeyColumn = try container.decode(String.self, forKey: .renameKeyColumn)
         
         // Parent's properties
@@ -47,8 +50,9 @@ final class AirtableDBModel: DatabaseProfileModel {
     enum CodingKeys: CodingKey {
         case name
         case platform
-        case apiKey
+        case token
         case baseID
+        case tableID
         case renameKeyColumn
     }
     
@@ -59,8 +63,9 @@ final class AirtableDBModel: DatabaseProfileModel {
         try container.encode(self.name, forKey: .name)
         try container.encode(self.plaform, forKey: .platform)
         
-        try container.encode(self.apiKey, forKey: .apiKey)
+        try container.encode(self.token, forKey: .token)
         try container.encode(self.baseID, forKey: .baseID)
+        try container.encode(self.tableID, forKey: .tableID)
         try container.encode(self.renameKeyColumn, forKey: .renameKeyColumn)
     }
     

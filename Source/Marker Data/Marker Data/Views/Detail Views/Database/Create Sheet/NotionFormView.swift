@@ -45,6 +45,7 @@ struct NotionFormView: View {
             )
             
             Divider()
+                .padding(.vertical, 8)
             
             Group {
                 Text("Merge Only") +

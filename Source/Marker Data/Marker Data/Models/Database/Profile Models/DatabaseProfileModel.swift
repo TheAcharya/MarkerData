@@ -8,7 +8,7 @@
 import Foundation
 
 /// A parent class for Notion and Airtable datbase models
-class DatabaseProfileModel: ObservableObject, Equatable, Identifiable, Codable, Validatable {
+class DatabaseProfileModel: ObservableObject, Equatable, Identifiable, Codable {
     var name: String
     let plaform: DatabasePlatform
     
