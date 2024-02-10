@@ -7,6 +7,7 @@
 
 import Foundation
 import OSLog
+import EonilFSEvents
 
 class DropboxSetupModel: ObservableObject {
     @Published var setupComplete: Bool = false
@@ -15,19 +16,35 @@ class DropboxSetupModel: ObservableObject {
     
     static let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "DropboxSetupModel")
     
+    init() {
+        self.setupComplete = self.isRefreshTokenDefined()
+    }
+    
     /// Save and register Dropbox app key
     /// - returns: authentication URL
-    func saveAndRegisterAppKey(_ appKey: String) async throws {
+    func saveAppKeyAndLaunchTerminal(_ appKey: String) async throws {
         await MainActor.run {
             self.authRequestStatus = .inProgress
         }
         
         try await self.saveAppKeyToDisk(appKey)
         
-        self.authURL = try await self.getAuthURL()
+        try launchTerminal()
         
-        await MainActor.run {
-            self.authRequestStatus = .success
+        try await MainActor.run {
+            try EonilFSEvents.startWatching(
+                paths: [URL.dropboxTokenJSON.path(percentEncoded: false)],
+                for: ObjectIdentifier(self),
+                with: { event in
+                    guard let flags = event.flag else {
+                        return
+                    }
+                    
+                    if flags.contains(.itemModified) {
+                        self.authRequestStatus = .success
+                        self.setupComplete = true
+                    }
+                })
         }
     }
     
@@ -42,39 +59,45 @@ class DropboxSetupModel: ObservableObject {
         try data.write(to: URL.dropboxTokenJSON)
     }
     
-    private func getAuthURL() async throws -> URL {
-        guard let airliftURL = Bundle.main.url(forResource: "csv2notion_neo", withExtension: nil) else {
+    private func launchTerminal() throws {
+        guard let airliftURL = Bundle.main.url(forResource: "airlift", withExtension: nil) else {
             Self.logger.error("Failed to upload to Notion: csv2notion executable not found")
             throw DatabaseUploadError.csv2notionExecutableNotFound
         }
         
-        let executablePath = airliftURL.path(percentEncoded: false).quoted
-        
+        let executablePath = airliftURL.path(percentEncoded: false)
+        let dropboxJSONPath = URL.dropboxTokenJSON.path(percentEncoded: false)
         let logPath = URL.logsFolder
             .appendingPathComponent("airlift_log.txt", conformingTo: .plainText).path(percentEncoded: false)
         
-        let arguments: [String] = [
-            "--dropbox-token", URL.dropboxTokenJSON.path(percentEncoded: false).quoted,
-            "--dropbox-refresh-token",
-            "--log", logPath,
-            "--verbose"
-        ]
+        let scriptSource = """
+tell application "Terminal"
+    activate
+    do script "\\"\(executablePath)\\" --dropbox-token \\"\(dropboxJSONPath)\\" --dropbox-refresh-token --log \\"\(logPath)\\" --verbose"
+end tell
+"""
+        let script = NSAppleScript(source: scriptSource)
+        var errorInfo: NSDictionary? = nil
+        let result = script?.executeAndReturnError(&errorInfo)
         
-        let result = await shell("\(executablePath) \(arguments.joined(separator: " "))")
-        
-        if result.didFail {
-            Self.logger.error("Failed to get URL from airlift: \(result.output, privacy: .public)")
-            throw DropboxError.airliftGetURLError
+        if result == nil {
+            Self.logger.error("Failed to launch Terminal. \(errorInfo.debugDescription)")
+            throw DropboxError.terminalLaunchError
         }
+    }
+    
+    func isRefreshTokenDefined() -> Bool {
+        let decoder = JSONDecoder()
         
-        let urlRegex = /(Go to: ).*/
-        
-        guard let match = result.output.firstMatch(of: urlRegex),
-              let url = URL(string: match.1.string) else {
-            throw DropboxError.failedToFindURL
+        do {
+            let data = try Data(contentsOf: URL.dropboxTokenJSON)
+            let dropboxInfo = try decoder.decode(DropboxInfo.self, from: data)
+            
+            return !dropboxInfo.refreshToken.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        } catch {
+            Self.logger.error("Failed to decode check JSON: \(error.localizedDescription, privacy: .public)")
+            return false
         }
-        
-        return url
     }
 }
 
@@ -87,4 +110,5 @@ enum AirtableAuthRequestStatus {
 enum DropboxError: Error {
     case airliftGetURLError
     case failedToFindURL
+    case terminalLaunchError
 }

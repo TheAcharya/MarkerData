@@ -11,6 +11,8 @@
 		4100D5E42AD1616D0081F0EC /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4100D5E32AD1616D0081F0EC /* ColorExtension.swift */; };
 		4100D5E72AD19C980081F0EC /* FilePicker in Frameworks */ = {isa = PBXBuildFile; productRef = 4100D5E62AD19C980081F0EC /* FilePicker */; };
 		410E3B812B4B0FF8005280FD /* LogManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 410E3B802B4B0FF8005280FD /* LogManager.swift */; };
+		41176ACD2B7807640093F4C8 /* airlift in Resources */ = {isa = PBXBuildFile; fileRef = 41176ACC2B7807640093F4C8 /* airlift */; };
+		41176AD02B780C090093F4C8 /* EonilFSEvents in Frameworks */ = {isa = PBXBuildFile; productRef = 41176ACF2B780C090093F4C8 /* EonilFSEvents */; };
 		411F37392B53D84200CC05E6 /* MakeCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 411F37382B53D84200CC05E6 /* MakeCommand.m */; };
 		411F373B2B55B77100CC05E6 /* LibraryFolders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 411F373A2B55B77100CC05E6 /* LibraryFolders.swift */; };
 		411F37452B56DE7400CC05E6 /* PulsingIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 411F37442B56DE7400CC05E6 /* PulsingIcon.swift */; };
@@ -65,7 +67,6 @@
 		417914FF2B7547CE00215688 /* DropboxSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417914FE2B7547CE00215688 /* DropboxSetupView.swift */; };
 		417915022B754E1500215688 /* DropboxInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417915012B754E1500215688 /* DropboxInfo.swift */; };
 		417915062B75547C00215688 /* DropboxSetupModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417915052B75547C00215688 /* DropboxSetupModel.swift */; };
-		417915082B7556CC00215688 /* airlift in Resources */ = {isa = PBXBuildFile; fileRef = 417915072B7556CC00215688 /* airlift */; };
 		41BFEB6D2B1B9B6400C8B551 /* Links.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BFEB6C2B1B9B6400C8B551 /* Links.swift */; };
 		41BFEB702B1BA4CC00C8B551 /* PasswordField in Frameworks */ = {isa = PBXBuildFile; productRef = 41BFEB6F2B1BA4CC00C8B551 /* PasswordField */; };
 		41BFEB722B1BCE4600C8B551 /* ExportProfilePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BFEB712B1BCE4600C8B551 /* ExportProfilePicker.swift */; };
@@ -171,6 +172,7 @@
 		4100D5DD2AD052010081F0EC /* OverlaySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlaySettingsView.swift; sourceTree = "<group>"; };
 		4100D5E32AD1616D0081F0EC /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
 		410E3B802B4B0FF8005280FD /* LogManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogManager.swift; sourceTree = "<group>"; };
+		41176ACC2B7807640093F4C8 /* airlift */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = airlift; sourceTree = "<group>"; };
 		411F37382B53D84200CC05E6 /* MakeCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MakeCommand.m; sourceTree = "<group>"; };
 		411F373A2B55B77100CC05E6 /* LibraryFolders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryFolders.swift; sourceTree = "<group>"; };
 		411F37442B56DE7400CC05E6 /* PulsingIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PulsingIcon.swift; sourceTree = "<group>"; };
@@ -216,7 +218,6 @@
 		417914FE2B7547CE00215688 /* DropboxSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxSetupView.swift; sourceTree = "<group>"; };
 		417915012B754E1500215688 /* DropboxInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxInfo.swift; sourceTree = "<group>"; };
 		417915052B75547C00215688 /* DropboxSetupModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxSetupModel.swift; sourceTree = "<group>"; };
-		417915072B7556CC00215688 /* airlift */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = airlift; sourceTree = "<group>"; };
 		41BFEB6C2B1B9B6400C8B551 /* Links.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Links.swift; sourceTree = "<group>"; };
 		41BFEB712B1BCE4600C8B551 /* ExportProfilePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportProfilePicker.swift; sourceTree = "<group>"; };
 		41BFEB762B1E63EA00C8B551 /* ExportProfileFormatExtrension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportProfileFormatExtrension.swift; sourceTree = "<group>"; };
@@ -314,6 +315,7 @@
 				4155B6C52B5D3709008D3505 /* DockProgress in Frameworks */,
 				41C538A22AE420EA00E8A8A1 /* ColorWellKit in Frameworks */,
 				D5F74A512973019000EEE2FE /* OrderedCollections in Frameworks */,
+				41176AD02B780C090093F4C8 /* EonilFSEvents in Frameworks */,
 				D5F74A4F2973019000EEE2FE /* DequeModule in Frameworks */,
 				41C839992B52D77200C6B133 /* Cocoa.framework in Frameworks */,
 				41BFEB702B1BA4CC00C8B551 /* PasswordField in Frameworks */,
@@ -378,7 +380,7 @@
 				411F37542B59010B00CC05E6 /* Marker Data Source.fcpxdest */,
 				411F37562B59011300CC05E6 /* Marker Data H.264.fcpxdest */,
 				41D1E4EE2B742CEC00AE2E55 /* csv2notion_neo */,
-				417915072B7556CC00215688 /* airlift */,
+				41176ACC2B7807640093F4C8 /* airlift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -814,6 +816,7 @@
 				4155B6C42B5D3709008D3505 /* DockProgress */,
 				4155B71D2B62E29A008D3505 /* MarkersExtractor */,
 				4155B72B2B668D29008D3505 /* LoggingOSLog */,
+				41176ACF2B780C090093F4C8 /* EonilFSEvents */,
 			);
 			productName = "Marker Data";
 			productReference = D5F74A2D2972D31C00EEE2FE /* Marker Data.app */;
@@ -854,6 +857,7 @@
 				4155B6C32B5D3709008D3505 /* XCRemoteSwiftPackageReference "DockProgress" */,
 				4155B71C2B62E29A008D3505 /* XCRemoteSwiftPackageReference "MarkersExtractor" */,
 				4155B72A2B668C0D008D3505 /* XCRemoteSwiftPackageReference "swift-log-oslog" */,
+				41176ACE2B780C090093F4C8 /* XCRemoteSwiftPackageReference "FSEvents" */,
 			);
 			productRefGroup = D5F74A2E2972D31C00EEE2FE /* Products */;
 			projectDirPath = "";
@@ -880,7 +884,7 @@
 			files = (
 				D5F74A382972D32100EEE2FE /* Preview Assets.xcassets in Resources */,
 				D5F74A352972D32100EEE2FE /* Assets.xcassets in Resources */,
-				417915082B7556CC00215688 /* airlift in Resources */,
+				41176ACD2B7807640093F4C8 /* airlift in Resources */,
 				411F37572B59011300CC05E6 /* Marker Data H.264.fcpxdest in Resources */,
 				414262C52ADAC6EC00FC6CFC /* DefaultConfiguration.json in Resources */,
 				41C839312B52C82A00C6B133 /* OSAScriptingDefinition.sdef in Resources */,
@@ -1386,6 +1390,14 @@
 				minimumVersion = 1.0.1;
 			};
 		};
+		41176ACE2B780C090093F4C8 /* XCRemoteSwiftPackageReference "FSEvents" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/eonil/FSEvents";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.7;
+			};
+		};
 		4155B6C32B5D3709008D3505 /* XCRemoteSwiftPackageReference "DockProgress" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/sindresorhus/DockProgress";
@@ -1441,6 +1453,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4100D5E52AD19C980081F0EC /* XCRemoteSwiftPackageReference "FilePicker" */;
 			productName = FilePicker;
+		};
+		41176ACF2B780C090093F4C8 /* EonilFSEvents */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 41176ACE2B780C090093F4C8 /* XCRemoteSwiftPackageReference "FSEvents" */;
+			productName = EonilFSEvents;
 		};
 		4155B6C42B5D3709008D3505 /* DockProgress */ = {
 			isa = XCSwiftPackageProductDependency;

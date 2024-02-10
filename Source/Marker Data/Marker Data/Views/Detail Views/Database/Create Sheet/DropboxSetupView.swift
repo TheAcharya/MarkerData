@@ -9,7 +9,6 @@ import SwiftUI
 
 struct DropboxSetupView: View {
     @State var appKey = ""
-    @State var authCode = ""
     
     @StateObject var dropboxSetupModel = DropboxSetupModel()
     
@@ -32,10 +31,10 @@ struct DropboxSetupView: View {
                 
                 switch dropboxSetupModel.authRequestStatus {
                 case .notInitiated:
-                    Button("Register") {
+                    Button("Continue") {
                         Task {
                             do {
-                                try await  dropboxSetupModel.saveAndRegisterAppKey(appKey)
+                                try await dropboxSetupModel.saveAppKeyAndLaunchTerminal(appKey)
                             } catch {
                                 showAppKeyError = true
                                 dropboxSetupModel.authRequestStatus = .notInitiated
@@ -47,39 +46,24 @@ struct DropboxSetupView: View {
                     ProgressView()
                         .controlSize(.small)
                         .padding(.horizontal, 5)
+                    
+                    Button {
+                        dropboxSetupModel.authRequestStatus = .notInitiated
+                    } label: {
+                        Label("Start Over", systemImage: "arrow.clockwise")
+                    }
                 case .success:
                     Label("Success", systemImage: "checkmark.circle")
                         .foregroundColor(.green)
                 }
             }
-            .alert("Failed to register app key", isPresented: $showAppKeyError) {}
+            .alert("Failed to save app key", isPresented: $showAppKeyError) {}
             
-            HStack {
-                Text("Dropbox Authorization URL:")
-                
-                Text("Please open the link and click \"Allow\" to obtain auth code.")
-                    .fontWeight(.light)
-                
-                Link("Auth link", destination: dropboxSetupModel.authURL ?? URL(string: "https://example.com/")!)
-                    .disabled(dropboxSetupModel.authURL == nil)
-            }
+            Text("Clicking **Continue** will launch the Terminal. Follow the on-screen instructions for the rest of the setup process.")
+                .fontWeight(.thin)
+                .padding(.bottom)
             
-            HStack {
-                PlatformInfoTextField(
-                    title: "Dropbox Authorization Code",
-                    prompt: "Paste auth code",
-                    text: $authCode,
-                    isRequired: true,
-                    secureField: false
-                )
-                
-                Button("Save") {
-                    
-                }
-                .disabled(authCode.isEmpty)
-            }
-            
-            Text(dropboxSetupModel.setupComplete ? "Dropbox is ready" : "Dropbox setup incomplete")
+            Text(dropboxSetupModel.setupComplete ? "Dropbox configured" : "Dropbox setup incomplete")
                 .foregroundColor(dropboxSetupModel.setupComplete ? .green : .red)
         }
     }
