@@ -56,7 +56,7 @@
 
 ## Screenshot
 
-<p align="center"> <img src="https://github.com/TheAcharya/MarkerData-Website/blob/main/docs/assets/md-main.png?raw=true"> </p>
+<p align="center"> <img src="https://github.com/TheAcharya/MarkerData-Website/blob/main/docs/assets/md-main-share.png?raw=true"> </p>
 
 <p align="center"> <img src="https://github.com/TheAcharya/MarkerData-Website/blob/main/docs/assets/md-general-settings.png?raw=true"> </p>
 
