@@ -15,40 +15,37 @@ extension ExtractionModel {
                 throw DatabaseUploadError.csv2notionExecutableNotFound
             }
             
-            let executablePath = csv2notionURL.path(percentEncoded: false).quoted
-            
             let logPath = URL.logsFolder
-                .appendingPathComponent("csv2notion-neo_log.txt", conformingTo: .plainText).path(percentEncoded: false)
+                .appendingPathComponent("csv2notion-neo_log.txt", conformingTo: .plainText)
             
-            var arguments: [String] = [
-                "--workspace", notionProfile.workspaceName.quoted,
-                "--token", notionProfile.token.quoted,
-                "--image-column", "Image Filename".quoted,
-                "--image-column-keep",
-                "--mandatory-column", "Marker ID".quoted,
-                "--payload-key-column", "Marker ID".quoted,
-                "--icon-column", "Icon Image".quoted,
-                "--max-threads", "5",
-                "--log", logPath.quoted,
-                (url.path(percentEncoded: false)).quoted
-            ]
+            var argumentList = ShellArgumentList(executablePath: csv2notionURL, parameters: [
+                ShellParameter(for: "--workspace", value: notionProfile.workspaceName),
+                ShellParameter(for: "--token", value: notionProfile.token),
+                ShellParameter(for: "--image-column", value: "Image Filename"),
+                ShellFlag("--image-column-keep"),
+                ShellParameter(for: "--mandatory-column", value: "Marker ID"),
+                ShellParameter(for: "--payload-key-column", value: "Marker ID"),
+                ShellParameter(for: "--icon-column", value: "Icon Image"),
+                ShellParameter(for: "--max-threads", value: "5"),
+                ShellParameter(for: "--log", url: logPath),
+                ShellArgument(url: url)
+            ])
             
             // Add database url if defined
             if !notionProfile.databaseURL.isEmpty {
-                arguments.insert(contentsOf: ["--url", notionProfile.databaseURL.quoted, "--merge"], at: 2)
+                argumentList.append(ShellParameter(for: "--url", value: notionProfile.databaseURL))
+                argumentList.append(ShellFlag("--merge"))
             }
             
             // Add rename key column if defined
             if !notionProfile.renameKeyColumn.isEmpty {
-                arguments.append(contentsOf: ["--rename-notion-key-column", "Marker ID".quoted, notionProfile.renameKeyColumn.quoted])
+                argumentList.append(ShellRawArgument("--rename-notion-key-column \"Marker ID\" \(notionProfile.renameKeyColumn.quoted)"))
             }
             
             // Add merge only columns
             for column in notionProfile.mergeOnlyColumns {
-                arguments.append(contentsOf: ["--merge-only-column", column.rawValue.quoted])
+                argumentList.append(ShellParameter(for: "--merge-only-column", value: column.rawValue))
             }
-            
-            let command = "\(executablePath) \(arguments.joined(separator: " "))"
             
             let shellOutputStream = ShellOutputStream()
             
@@ -66,7 +63,7 @@ extension ExtractionModel {
                 }
             })
             
-            let result = await shellOutputStream.run(command)
+            let result = await shellOutputStream.run(argumentList.getCommand())
             
             cancellable.cancel()
             
@@ -85,15 +82,84 @@ extension ExtractionModel {
             }
         }
         
+        func uploadToAirtable(airtableProfile: AirtableDBModel) async throws {
+            guard let airliftURL = Bundle.main.url(forResource: "airlift", withExtension: nil) else {
+                Self.logger.error("Failed to upload to Airtable: airlift executable not found")
+                throw DatabaseUploadError.csv2notionExecutableNotFound
+            }
+            
+            let logPath = URL.logsFolder
+                .appendingPathComponent("airlift.txt", conformingTo: .plainText)
+            
+            var argumentList = ShellArgumentList(executablePath: airliftURL, parameters: [
+                ShellParameter(for: "--token", value: airtableProfile.token),
+                ShellParameter(for: "--base", value: airtableProfile.baseID),
+                ShellParameter(for: "--table", value: airtableProfile.tableID),
+                ShellParameter(for: "--dropbox-token", url: URL.dropboxTokenJSON),
+                ShellRawArgument(#"--attachment-columns-map "Image Filename" "Attachments""#),
+                ShellFlag("--md"),
+                ShellParameter(for: "--log", url: logPath),
+                ShellFlag("--verbose"),
+                ShellArgument(url: url)
+            ])
+            
+            // Add rename key column if defined
+            if !airtableProfile.renameKeyColumn.isEmpty {
+                argumentList.append(ShellRawArgument("--rename-notion-key-column \"Marker ID\" \(airtableProfile.renameKeyColumn.quoted)"))
+            }
+            
+            let shellOutputStream = ShellOutputStream()
+            
+            self.uploadProcesses.append(shellOutputStream.task)
+            
+            let percentRegex = /([0-9]+)%/
+            
+            // Update progress
+            let cancellable = shellOutputStream.outputPublisher.sink(receiveValue: { output in
+                if let match = output.firstMatch(of: percentRegex),
+                   let percent = match.1.int {
+                    Task {
+                        await self.uploadProgress.updateProgress(of: url, to: Int64(percent))
+                    }
+                }
+            })
+            
+            print(argumentList.getCommand())
+            
+            throw DatabaseUploadError.airtableUploadError
+            
+            let result = await shellOutputStream.run(argumentList.getCommand())
+            
+            cancellable.cancel()
+            
+            if result.didFail {
+                // Failure
+                if Task.isCancelled {
+                    Self.logger.error("Upload to Airtable cancelled by user.")
+                    throw DatabaseUploadError.userCancel
+                } else {
+                    Self.logger.error("Failed to upload to Airtable.\nOutput: \(result.output)")
+                    throw DatabaseUploadError.airtableUploadError
+                }
+            } else {
+                // Success
+                await self.uploadProgress.markProcessAsFinished(url: url)
+            }
+        }
+        
         switch databaseProfile.plaform {
         case .notion:
             guard let notionProfile = databaseProfile as? NotionDBModel else {
-                throw DatabaseUploadError.failedToUnwrapAsNotionProfile
+                throw DatabaseUploadError.failedToUnwrapDBProfile
             }
             
             try await uploadToNotion(notionProfile: notionProfile)
         case .airtable:
-            break
+            guard let airtableProfile = databaseProfile as? AirtableDBModel else {
+                throw DatabaseUploadError.failedToUnwrapDBProfile
+            }
+            
+            try await uploadToAirtable(airtableProfile: airtableProfile)
         }
     }
 }

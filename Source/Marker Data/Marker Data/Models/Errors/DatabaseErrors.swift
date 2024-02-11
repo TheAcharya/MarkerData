@@ -31,10 +31,11 @@ enum DatabaseRemoveError: Error {
 }
 
 enum DatabaseUploadError: Error {
-    case failedToUnwrapAsNotionProfile
+    case failedToUnwrapDBProfile
     case missingJsonFile
     case notionNoToken
     case notionUploadError
+    case airtableUploadError
     case csv2notionExecutableNotFound
     case userCancel
 }
@@ -42,7 +43,7 @@ enum DatabaseUploadError: Error {
 extension DatabaseUploadError: LocalizedError {
     public var errorDescription: String? {
         switch self {
-        case .failedToUnwrapAsNotionProfile:
+        case .failedToUnwrapDBProfile:
             "Failed to get notion credentials"
         case .missingJsonFile:
             "No markers found. Check roles (General->Roles)."
@@ -50,6 +51,8 @@ extension DatabaseUploadError: LocalizedError {
             "Missing notion API token"
         case .notionUploadError:
             "Failed to upload to Notion"
+        case .airtableUploadError:
+            "Failed to upload to Airtable"
         case .csv2notionExecutableNotFound:
             "CSV2Notion executable not found"
         case .userCancel:

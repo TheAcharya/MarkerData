@@ -6,6 +6,7 @@ import AppKit
 import UniformTypeIdentifiers
 import Logging
 import LoggingOSLog
+import DockProgress
 
 final class ExtractionModel: ObservableObject {
     let settings: SettingsContainer
@@ -129,7 +130,7 @@ final class ExtractionModel: ObservableObject {
                 throw DatabaseUploadError.missingJsonFile
             }
             
-            Self.logger.notice("Upload started")
+            Self.logger.notice("Upload started. Platform: \(databaseProfile.plaform.rawValue)")
             
             // Add process to upload progress
             self.uploadProgress.addProcess(url: jsonURL)
@@ -148,6 +149,7 @@ final class ExtractionModel: ObservableObject {
             
             DispatchQueue.main.async {
                 self.extractionInProgress = false
+                DockProgress.resetProgress()
             }
         }
         

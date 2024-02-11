@@ -13,6 +13,7 @@
 		410E3B812B4B0FF8005280FD /* LogManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 410E3B802B4B0FF8005280FD /* LogManager.swift */; };
 		41176ACD2B7807640093F4C8 /* airlift in Resources */ = {isa = PBXBuildFile; fileRef = 41176ACC2B7807640093F4C8 /* airlift */; };
 		41176AD02B780C090093F4C8 /* EonilFSEvents in Frameworks */ = {isa = PBXBuildFile; productRef = 41176ACF2B780C090093F4C8 /* EonilFSEvents */; };
+		41176AD22B78C6AA0093F4C8 /* ShellArgumentList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41176AD12B78C6A90093F4C8 /* ShellArgumentList.swift */; };
 		411F37392B53D84200CC05E6 /* MakeCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 411F37382B53D84200CC05E6 /* MakeCommand.m */; };
 		411F373B2B55B77100CC05E6 /* LibraryFolders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 411F373A2B55B77100CC05E6 /* LibraryFolders.swift */; };
 		411F37452B56DE7400CC05E6 /* PulsingIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 411F37442B56DE7400CC05E6 /* PulsingIcon.swift */; };
@@ -173,6 +174,7 @@
 		4100D5E32AD1616D0081F0EC /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
 		410E3B802B4B0FF8005280FD /* LogManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogManager.swift; sourceTree = "<group>"; };
 		41176ACC2B7807640093F4C8 /* airlift */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = airlift; sourceTree = "<group>"; };
+		41176AD12B78C6A90093F4C8 /* ShellArgumentList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShellArgumentList.swift; sourceTree = "<group>"; };
 		411F37382B53D84200CC05E6 /* MakeCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MakeCommand.m; sourceTree = "<group>"; };
 		411F373A2B55B77100CC05E6 /* LibraryFolders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryFolders.swift; sourceTree = "<group>"; };
 		411F37442B56DE7400CC05E6 /* PulsingIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PulsingIcon.swift; sourceTree = "<group>"; };
@@ -594,6 +596,7 @@
 				41F88AE22B0C839B004A3B58 /* Shell.swift */,
 				41F88B022B1A4D40004A3B58 /* ShellOutputStream.swift */,
 				41F88AE42B0C83DE004A3B58 /* ShellResult.swift */,
+				41176AD12B78C6A90093F4C8 /* ShellArgumentList.swift */,
 			);
 			path = Shell;
 			sourceTree = "<group>";
@@ -981,6 +984,7 @@
 				41EBAD502AF7B6F200E6AF7C /* WindowSize.swift in Sources */,
 				41BFEB792B1F925800C8B551 /* ExportProcess.swift in Sources */,
 				41C538942AE1AFF200E8A8A1 /* SettingsContainer.swift in Sources */,
+				41176AD22B78C6AA0093F4C8 /* ShellArgumentList.swift in Sources */,
 				411F37632B5C5F5D00CC05E6 /* FileCommands.swift in Sources */,
 				414262C02AD5CE3200FC6CFC /* ConfigurationErrors.swift in Sources */,
 				4155B7022B612592008D3505 /* WorkflowExtensionView.swift in Sources */,
