@@ -89,7 +89,7 @@ extension ExtractionModel {
             }
             
             let logPath = URL.logsFolder
-                .appendingPathComponent("airlift.txt", conformingTo: .plainText)
+                .appendingPathComponent("airlift_log.txt", conformingTo: .plainText)
             
             var argumentList = ShellArgumentList(executablePath: airliftURL, parameters: [
                 ShellParameter(for: "--token", value: airtableProfile.token),
@@ -123,10 +123,6 @@ extension ExtractionModel {
                     }
                 }
             })
-            
-            print(argumentList.getCommand())
-            
-            throw DatabaseUploadError.airtableUploadError
             
             let result = await shellOutputStream.run(argumentList.getCommand())
             
