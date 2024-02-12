@@ -31,6 +31,5 @@ final class SidebarSelectionSwitcher {
     
     @objc func switchToExtactView() {
         self.sidebarSelection = .extract
-        print("Well, this happened. Yay!")
     }
 }

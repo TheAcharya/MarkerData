@@ -20,6 +20,7 @@ struct LibraryFolders {
             URL.databaseProfilesFolder,
             URL.notionProfilesFolder,
             URL.airtableProfilesFolder,
+            URL.dropboxFolder,
             URL.logsFolder,
             URL.FCPExportCacheFolder
         ]

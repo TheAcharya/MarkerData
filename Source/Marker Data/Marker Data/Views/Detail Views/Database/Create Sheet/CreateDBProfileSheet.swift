@@ -63,7 +63,7 @@ struct CreateDBProfileSheet: View {
             }
             
             Divider()
-                .padding(.vertical, 10)
+                .padding(.vertical, 8)
             
             Group {
                 switch selectedPlatform {

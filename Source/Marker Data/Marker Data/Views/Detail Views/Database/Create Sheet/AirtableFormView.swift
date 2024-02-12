@@ -12,18 +12,37 @@ struct AirtableFormView: View {
     
     var body: some View {
         VStack {
+            airtableFields
+            
+            Divider()
+                .padding(.vertical, 8)
+            
+            DropboxSetupView()
+        }
+    }
+        
+    var airtableFields: some View {
+        VStack {
             PlatformInfoTextField(
-                title: "Airtable API Key",
-                prompt: "API Key",
-                text: $profileModel.apiKey,
+                title: "Airtable Token",
+                prompt: "Personal access token",
+                text: $profileModel.token,
                 isRequired: true,
                 secureField: true
             )
             
             PlatformInfoTextField(
                 title: "Airtable Base ID",
-                prompt: "Database URL",
+                prompt: "Base IDs begin with \"app\"",
                 text: $profileModel.baseID,
+                isRequired: true,
+                secureField: true
+            )
+            
+            PlatformInfoTextField(
+                title: "Airtable Table ID",
+                prompt: "Table IDs begin with \"tbl\"",
+                text: $profileModel.tableID,
                 isRequired: true,
                 secureField: true
             )
