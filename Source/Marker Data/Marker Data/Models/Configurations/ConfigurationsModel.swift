@@ -23,6 +23,7 @@ class ConfigurationsModel: ObservableObject {
     /// Currently loaded configuration
     @AppStorage("selectedConfiguration") var activeConfiguration = "Default"
     
+    @MainActor
     @Published var unsavedChanges = false
     
     private static let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "ConfigurationsModel")
@@ -58,7 +59,9 @@ class ConfigurationsModel: ObservableObject {
             //            throw ConfigurationInitializationError.failedToReadDirectory
         }
         
-        self.checkForUnsavedChanges()
+        Task {
+            await self.checkForUnsavedChanges()
+        }
     }
     
     /// Saves a new configuration under the given name
@@ -109,7 +112,9 @@ class ConfigurationsModel: ObservableObject {
         // Set active configuration to new configuration
         self.activeConfiguration = configurationName
         
-        self.checkForUnsavedChanges()
+        Task {
+            await self.checkForUnsavedChanges()
+        }
     }
     
     /// Loads a configuration from the configurations folder
@@ -174,7 +179,9 @@ class ConfigurationsModel: ObservableObject {
         // Set active configuration
         self.activeConfiguration = configurationName
         
-        self.checkForUnsavedChanges()
+        Task {
+            await self.checkForUnsavedChanges()
+        }
     }
     
     private func getConfigurationsDictionary() throws -> Dictionary<String, Any> {
@@ -253,7 +260,9 @@ class ConfigurationsModel: ObservableObject {
             self.activeConfiguration = self.configurations.first!.name
         }
         
-        self.checkForUnsavedChanges()
+        Task {
+            await self.checkForUnsavedChanges()
+        }
     }
     
     /// Loads a configuration from the configurations folder into a ``Dictionary`` object
@@ -301,7 +310,7 @@ class ConfigurationsModel: ObservableObject {
     // and compares it with the configuration JSON file on disk.
     // The comparison is done by removing whitespace and sorting the characters,
     // which is obviously not the best idea, but I couldn't find an other way to diff JSON.
-    func checkForUnsavedChanges() {
+    func checkForUnsavedChanges() async {
         do {
             // Get current configuration dict
             let currentDict = try self.getConfigurationsDictionary()
@@ -334,13 +343,29 @@ class ConfigurationsModel: ObservableObject {
                 return
             }
             
+            guard let onDiskDict = try? JSONSerialization.jsonObject(with: onDiskData, options: .mutableContainers) as? [String:AnyObject] else {
+                Self.logger.error("Failed to serialize on disk JSON")
+                return
+            }
+            
+            let currentKeys = currentDict.keys
+            
+            let onDiskDictFiltered = onDiskDict.filter { currentKeys.contains($0.key) }
+            
+            guard let onDiskFilteredData = try? JSONSerialization.data(withJSONObject: onDiskDictFiltered, options: [.prettyPrinted]) else {
+                Self.logger.error("Failed get on disk data during JSON comparison")
+                return
+            }
+            
             // Convert to sorted characters
-            let onDiskChars = String(decoding: onDiskData, as: UTF8.self)
+            let onDiskChars = String(decoding: onDiskFilteredData, as: UTF8.self)
                 .removing(.whitespacesAndNewlines)
                 .sorted()
             
             // Compare
-            self.unsavedChanges = currentChars != onDiskChars
+            await MainActor.run {
+                self.unsavedChanges = currentChars != onDiskChars
+            }
         } catch {
             Self.logger.error("Failed to compare configurations for unsaved changes")
         }

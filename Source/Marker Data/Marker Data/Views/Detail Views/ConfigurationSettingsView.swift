@@ -54,7 +54,9 @@ struct ConfigurationSettingsView: View {
         .overlayHelpButton(url: Links.configurationSettingsURL)
         .navigationTitle("Configuration Settings")
         .onAppear {
-            configurationsModel.checkForUnsavedChanges()
+            Task(priority: .low) {
+                await configurationsModel.checkForUnsavedChanges()
+            }
         }
         .alert("Couldn't create configuration", isPresented: $showConfigurationAddAlert) {
             Button("OK") { }

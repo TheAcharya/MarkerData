@@ -77,7 +77,9 @@ struct ContentView: View {
         }
         // Check for unsaved configuration changes every time a new view is selected
         .onChange(of: sidebarSelection) { _ in
-            self.configurationsModel.checkForUnsavedChanges()
+            Task(priority: .background) {
+                await self.configurationsModel.checkForUnsavedChanges()
+            }
         }
     }
 }
