@@ -32,6 +32,7 @@ class DropboxSetupModel: ObservableObject {
         try launchTerminal()
         
         try await MainActor.run {
+            // Monitor file for changes
             try EonilFSEvents.startWatching(
                 paths: [URL.dropboxTokenJSON.path(percentEncoded: false)],
                 for: ObjectIdentifier(self),
@@ -41,8 +42,10 @@ class DropboxSetupModel: ObservableObject {
                     }
                     
                     if flags.contains(.itemModified) {
-                        self.authRequestStatus = .success
-                        self.setupComplete = true
+                        if self.isRefreshTokenDefined() {
+                            self.authRequestStatus = .success
+                            self.setupComplete = true
+                        }
                     }
                 })
         }
