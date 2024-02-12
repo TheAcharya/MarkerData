@@ -24,6 +24,16 @@ struct ConfigurationCommands: Commands {
             .disabled(configurationsModel.activeConfiguration == ConfigurationsModel.defaultConfigurationName)
             .keyboardShortcut("s", modifiers: .command)
             
+            Button("Discard Changes") {
+                do {
+                    try configurationsModel.loadConfiguration(configurationName: configurationsModel.activeConfiguration, settings: settings)
+                } catch {
+                    print("Failed to discard changes from Menu Bar Command")
+                }
+            }
+            .disabled(!configurationsModel.unsavedChanges)
+            .keyboardShortcut("z", modifiers: .command)
+            
             Button("Open Configurations Panel") {
                 sidebarSelection = .configurations
             }
