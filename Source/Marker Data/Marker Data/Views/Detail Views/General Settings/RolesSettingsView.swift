@@ -16,33 +16,7 @@ struct RolesSettingsView: View {
     var body: some View {
         VStack {
             ZStack {
-                Table(self.rolesManager.roles) {
-                    TableColumn("Roles", value: \.role.rawValue)
-                    
-                    TableColumn("Kind") { role in
-                        Text(role.role.roleType.rawValue.titleCased)
-                    }
-                    
-                    TableColumn("Enabled") { role in
-                        Toggle("", isOn: Binding<Bool>(
-                            get: {
-                                return role.enabled
-                            },
-                            set: {
-                                if let index = self.rolesManager.roles.firstIndex(where: { $0.id == role.id }) {
-                                    self.rolesManager.roles[index].enabled = $0
-                                    
-                                    do {
-                                        try self.rolesManager.save()
-                                    } catch {
-                                        print("Failed to save roles to disk")
-                                    }
-                                }
-                            }
-                        ))
-                    }
-                }
-                .clipShape(RoundedRectangle(cornerRadius: 8))
+                tableView
                 
                 // If nil or empty
                 if self.rolesManager.roles.isEmpty {
@@ -50,23 +24,7 @@ struct RolesSettingsView: View {
                 }
             }
             
-            HStack {
-                // Clear button
-                Button {
-                    self.rolesManager.setRoles([])
-                } label: {
-                    Label("Clear", systemImage: "trash")
-                }
-                
-                // Refresh Button
-                Button {
-                    self.rolesManager.refresh()
-                } label: {
-                    Label("Refresh", systemImage: "arrow.clockwise")
-                }
-                
-                Spacer()
-            }
+            buttonsView
         }
         .onDrop(of: [.fcpxml, .fileURL], isTargeted: nil) { providers -> Bool in
             for provider in providers {
@@ -108,6 +66,74 @@ struct RolesSettingsView: View {
             }
             
             return true
+        }
+    }
+    
+    var tableView: some View {
+        Table(self.rolesManager.roles) {
+            TableColumn("Roles", value: \.role.rawValue)
+            
+            TableColumn("Kind") { role in
+                Text(role.role.roleType.rawValue.titleCased)
+            }
+            
+            TableColumn("Enabled") { role in
+                Toggle("", isOn: Binding<Bool>(
+                    get: {
+                        return role.enabled
+                    },
+                    set: {
+                        if let index = self.rolesManager.roles.firstIndex(where: { $0.id == role.id }) {
+                            self.rolesManager.roles[index].enabled = $0
+                            
+                            do {
+                                try self.rolesManager.save()
+                            } catch {
+                                print("Failed to save roles to disk")
+                            }
+                        }
+                    }
+                ))
+            }
+        }
+        .clipShape(RoundedRectangle(cornerRadius: 8))
+    }
+    
+    var buttonsView: some View {
+        HStack {
+            // Clear button
+            Button {
+                self.rolesManager.setRoles([])
+            } label: {
+                Label("Clear", systemImage: "trash")
+            }
+            
+            // Refresh Button
+            Button {
+                self.rolesManager.refresh()
+            } label: {
+                Label("Refresh", systemImage: "arrow.clockwise")
+            }
+            
+            Divider()
+                .frame(height: 20)
+                .padding(.horizontal, 8)
+            
+            // Enable all button
+            Button {
+                self.rolesManager.enableAll()
+            } label: {
+                Label("Enable All", systemImage: "checklist.checked")
+            }
+            
+            // Disable all button
+            Button {
+                self.rolesManager.disableAll()
+            } label: {
+                Label("Disable All", systemImage: "checklist.unchecked")
+            }
+            
+            Spacer()
         }
     }
     

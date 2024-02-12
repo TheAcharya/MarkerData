@@ -43,6 +43,16 @@ class RolesManager: ObservableObject {
         self.roles = Self.loadRolesFromDisk()
     }
     
+    @MainActor
+    func enableAll() {
+        self.setRoles(self.roles.map { RoleModel(role: $0.role, enabled: true) })
+    }
+    
+    @MainActor
+    func disableAll() {
+        self.setRoles(self.roles.map { RoleModel(role: $0.role, enabled: false) })
+    }
+    
     // MARK: Static methods
     @MainActor
     static func saveRolesToDisk(_ roles: [RoleModel]) throws {
