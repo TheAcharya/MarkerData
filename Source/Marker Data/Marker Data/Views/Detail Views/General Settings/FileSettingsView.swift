@@ -12,11 +12,17 @@ struct FileSettingsView: View {
     
     var body: some View {
         VStack(alignment: .formControlAlignment) {
+            Spacer()
+            
             exportDestinationSettings
             
             Divider()
             
             extractionProfileSettings
+            
+            Spacer()
+            
+            settingsLinksView
         }
     }
     
@@ -83,6 +89,32 @@ struct FileSettingsView: View {
                 
             }
         }
+    }
+    
+    var settingsLinksView: some View {
+        HStack {
+            // Open Files and Folders Access in System Settings
+            Button {
+                NSWorkspace.shared.open(URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_FilesAndFolders")!)
+            } label: {
+                Label("Open Files and Folders Access", systemImage: "folder")
+            }
+            .buttonStyle(.link)
+            
+            Divider()
+                .frame(height: 16)
+                .padding(.horizontal, 4)
+            
+            Button {
+                NSWorkspace.shared.open(URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_AllFiles")!)
+            } label: {
+                Label("Open Full Disk Access", systemImage: "internaldrive")
+            }
+            .buttonStyle(.link)
+            
+            Spacer()
+        }
+        .padding()
     }
 }
 
