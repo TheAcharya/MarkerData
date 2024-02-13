@@ -95,7 +95,7 @@
 		41D1E4DE2B71769700AE2E55 /* AirtableDBModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41D1E4DD2B71769700AE2E55 /* AirtableDBModel.swift */; };
 		41D1E4E02B717A5F00AE2E55 /* DatabasePlatform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41D1E4DF2B717A5F00AE2E55 /* DatabasePlatform.swift */; };
 		41D1E4E22B729ED500AE2E55 /* PlatformInfoTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41D1E4E12B729ED500AE2E55 /* PlatformInfoTextField.swift */; };
-		41D1E4E62B72C12300AE2E55 /* ExtractionModel_DatabaseUpload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41D1E4E52B72C12300AE2E55 /* ExtractionModel_DatabaseUpload.swift */; };
+		41D1E4E62B72C12300AE2E55 /* DatabaseUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41D1E4E52B72C12300AE2E55 /* DatabaseUploader.swift */; };
 		41D1E4E82B72C21E00AE2E55 /* DeepCopy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41D1E4E72B72C21E00AE2E55 /* DeepCopy.swift */; };
 		41D1E4EB2B742BA000AE2E55 /* NotionFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41D1E4EA2B742BA000AE2E55 /* NotionFormView.swift */; };
 		41D1E4ED2B742BC600AE2E55 /* AirtableFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41D1E4EC2B742BC600AE2E55 /* AirtableFormView.swift */; };
@@ -254,7 +254,7 @@
 		41D1E4DD2B71769700AE2E55 /* AirtableDBModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirtableDBModel.swift; sourceTree = "<group>"; };
 		41D1E4DF2B717A5F00AE2E55 /* DatabasePlatform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabasePlatform.swift; sourceTree = "<group>"; };
 		41D1E4E12B729ED500AE2E55 /* PlatformInfoTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformInfoTextField.swift; sourceTree = "<group>"; };
-		41D1E4E52B72C12300AE2E55 /* ExtractionModel_DatabaseUpload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractionModel_DatabaseUpload.swift; sourceTree = "<group>"; };
+		41D1E4E52B72C12300AE2E55 /* DatabaseUploader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseUploader.swift; sourceTree = "<group>"; };
 		41D1E4E72B72C21E00AE2E55 /* DeepCopy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepCopy.swift; sourceTree = "<group>"; };
 		41D1E4EA2B742BA000AE2E55 /* NotionFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotionFormView.swift; sourceTree = "<group>"; };
 		41D1E4EC2B742BC600AE2E55 /* AirtableFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirtableFormView.swift; sourceTree = "<group>"; };
@@ -564,7 +564,6 @@
 				47F5CDF72A60CA43005D9A98 /* ExtractionModel.swift */,
 				41D1E4C22B6FCB4700AE2E55 /* ExtractionModel_DropDelegate.swift */,
 				41D1E4C42B6FCBBA00AE2E55 /* ExtractionModel_EventHandlers.swift */,
-				41D1E4E52B72C12300AE2E55 /* ExtractionModel_DatabaseUpload.swift */,
 			);
 			path = "Extraction Model";
 			sourceTree = "<group>";
@@ -626,6 +625,7 @@
 			isa = PBXGroup;
 			children = (
 				41D1E4C12B6FCB3000AE2E55 /* Extraction Model */,
+				41D1E4E52B72C12300AE2E55 /* DatabaseUploader.swift */,
 				41F88AFD2B126439004A3B58 /* ExtractionResult.swift */,
 				41BFEB782B1F925800C8B551 /* ExportProcess.swift */,
 				4156196A2B3AE41F0032E82C /* ProgressViewModel.swift */,
@@ -959,7 +959,7 @@
 				9B4D90DE2A0BB11000FE7603 /* DatabaseSettingsView.swift in Sources */,
 				417914FF2B7547CE00215688 /* DropboxSetupView.swift in Sources */,
 				4155B7112B62D47B008D3505 /* NotificationSettingsView.swift in Sources */,
-				41D1E4E62B72C12300AE2E55 /* ExtractionModel_DatabaseUpload.swift in Sources */,
+				41D1E4E62B72C12300AE2E55 /* DatabaseUploader.swift in Sources */,
 				41F88AF62B0E9DBF004A3B58 /* CreateDBProfileSheet.swift in Sources */,
 				9B35FE6829F94C110035B760 /* PickerViews.swift in Sources */,
 				41C839842B52C9E300C6B133 /* Document.m in Sources */,
