@@ -12,6 +12,7 @@ struct DatabaseSettingsView: View {
     @EnvironmentObject var databaseManager: DatabaseManager
     
     @State var selection: String? = nil
+    @State var sortOrder = [KeyPathComparator(\DatabaseProfileModel.name)]
     
     @State var showCreateProfileSheet = false
     /// If set to a ``DatabaseProfileModel`` the modal will let the user edit the profile instead of creating a new one
@@ -70,11 +71,14 @@ struct DatabaseSettingsView: View {
     }
     
     var tableView: some View {
-        Table(databaseManager.profiles, selection: $selection) {
+        Table(databaseManager.profiles, selection: $selection, sortOrder: $sortOrder) {
             TableColumn("Profile Name", value: \.name)
             TableColumn("Platform", value: \.plaform.rawValue)
         }
         .clipShape(RoundedRectangle(cornerRadius: 10))
+        .onChange(of: sortOrder) { newOrder in
+            databaseManager.profiles.sort(using: newOrder)
+        }
     }
     
     var profileManagementButtons: some View {
