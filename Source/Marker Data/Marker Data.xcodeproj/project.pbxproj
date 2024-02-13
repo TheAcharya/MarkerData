@@ -14,6 +14,7 @@
 		41176ACD2B7807640093F4C8 /* airlift in Resources */ = {isa = PBXBuildFile; fileRef = 41176ACC2B7807640093F4C8 /* airlift */; };
 		41176AD02B780C090093F4C8 /* EonilFSEvents in Frameworks */ = {isa = PBXBuildFile; productRef = 41176ACF2B780C090093F4C8 /* EonilFSEvents */; };
 		41176AD22B78C6AA0093F4C8 /* ShellArgumentList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41176AD12B78C6A90093F4C8 /* ShellArgumentList.swift */; };
+		41176AD72B7BCF140093F4C8 /* EditCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41176AD62B7BCF140093F4C8 /* EditCommands.swift */; };
 		411F37392B53D84200CC05E6 /* MakeCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 411F37382B53D84200CC05E6 /* MakeCommand.m */; };
 		411F373B2B55B77100CC05E6 /* LibraryFolders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 411F373A2B55B77100CC05E6 /* LibraryFolders.swift */; };
 		411F37452B56DE7400CC05E6 /* PulsingIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 411F37442B56DE7400CC05E6 /* PulsingIcon.swift */; };
@@ -175,6 +176,7 @@
 		410E3B802B4B0FF8005280FD /* LogManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogManager.swift; sourceTree = "<group>"; };
 		41176ACC2B7807640093F4C8 /* airlift */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = airlift; sourceTree = "<group>"; };
 		41176AD12B78C6A90093F4C8 /* ShellArgumentList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShellArgumentList.swift; sourceTree = "<group>"; };
+		41176AD62B7BCF140093F4C8 /* EditCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCommands.swift; sourceTree = "<group>"; };
 		411F37382B53D84200CC05E6 /* MakeCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MakeCommand.m; sourceTree = "<group>"; };
 		411F373A2B55B77100CC05E6 /* LibraryFolders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryFolders.swift; sourceTree = "<group>"; };
 		411F37442B56DE7400CC05E6 /* PulsingIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PulsingIcon.swift; sourceTree = "<group>"; };
@@ -499,6 +501,7 @@
 			children = (
 				411F374D2B56FB5B00CC05E6 /* AppCommands.swift */,
 				411F37622B5C5F5D00CC05E6 /* FileCommands.swift */,
+				41176AD62B7BCF140093F4C8 /* EditCommands.swift */,
 				41C5389A2AE3067900E8A8A1 /* ConfigurationCommands.swift */,
 				41C538982AE3062000E8A8A1 /* HelpCommands.swift */,
 			);
@@ -945,6 +948,7 @@
 				9BACA4D129FA9B5100EF6837 /* SettingsStore.swift in Sources */,
 				4155B7312B6E96BE008D3505 /* SidebarSelectionSwitcher.swift in Sources */,
 				4155B7262B6574A8008D3505 /* RolesManager.swift in Sources */,
+				41176AD72B7BCF140093F4C8 /* EditCommands.swift in Sources */,
 				41F88AFA2B0FF62A004A3B58 /* DatabaseErrors.swift in Sources */,
 				415619672B3A18D60032E82C /* ExtractError.swift in Sources */,
 				4155B7222B653D2C008D3505 /* RoleModel.swift in Sources */,

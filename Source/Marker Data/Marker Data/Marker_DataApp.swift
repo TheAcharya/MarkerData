@@ -85,6 +85,8 @@ struct Marker_DataApp: App {
             
             FileCommands()
             
+            EditCommands()
+            
             SidebarCommands()
             
             ConfigurationCommands(
