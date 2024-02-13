@@ -144,7 +144,7 @@ struct DatabaseSettingsView: View {
                 .padding(.horizontal, 4)
             
             Link(destination: Links.airtableTemplateURL) {
-                Label("Airtable Template", systemImage: "rectangle.portrait.and.arrow.forward")
+                Label("Notion Template", systemImage: "rectangle.portrait.and.arrow.forward")
             }
             
             Divider()
@@ -152,7 +152,7 @@ struct DatabaseSettingsView: View {
                 .padding(.horizontal, 4)
             
             Link(destination: Links.notionTemplateURL) {
-                Label("Notion Template", systemImage: "rectangle.portrait.and.arrow.forward")
+                Label("Airtable Template", systemImage: "rectangle.portrait.and.arrow.forward")
             }
             
             Spacer()
