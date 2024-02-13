@@ -33,6 +33,8 @@ struct ConfigurationCommands: Commands {
             }
             .disabled(!configurationsModel.unsavedChanges)
             .keyboardShortcut("z", modifiers: .command)
+
+            Divider()
             
             Button("Open Configurations Panel") {
                 sidebarSelection = .configurations

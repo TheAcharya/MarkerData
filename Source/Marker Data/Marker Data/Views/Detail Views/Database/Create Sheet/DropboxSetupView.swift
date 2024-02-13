@@ -16,7 +16,7 @@ struct DropboxSetupView: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            Text("Dropbox setup")
+            Text("Dropbox")
                 .font(.title2)
             
             HStack {

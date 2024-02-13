@@ -26,7 +26,7 @@ struct InstallShareDestinationView: View {
                 Text("Install Final Cut Pro Share Extension")
                     .bold()
                 
-                Text("Simplify your workflow by adding Marker Data to FCP share menu")
+                Text("Enhance your workflow by adding Marker Data to Final Cut Pro's Share menu")
                     .fontWeight(.light)
             }
             
