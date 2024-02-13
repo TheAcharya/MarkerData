@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AirtableFormView: View {
-    @StateObject var profileModel: AirtableDBModel
+    @ObservedObject var profileModel: AirtableDBModel
     
     var body: some View {
         VStack {

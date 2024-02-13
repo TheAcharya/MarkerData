@@ -15,6 +15,10 @@
 		41176AD02B780C090093F4C8 /* EonilFSEvents in Frameworks */ = {isa = PBXBuildFile; productRef = 41176ACF2B780C090093F4C8 /* EonilFSEvents */; };
 		41176AD22B78C6AA0093F4C8 /* ShellArgumentList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41176AD12B78C6A90093F4C8 /* ShellArgumentList.swift */; };
 		41176AD72B7BCF140093F4C8 /* EditCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41176AD62B7BCF140093F4C8 /* EditCommands.swift */; };
+		41176ADA2B7BDA9D0093F4C8 /* QueueModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41176AD92B7BDA9D0093F4C8 /* QueueModel.swift */; };
+		41176ADC2B7BE3EF0093F4C8 /* QueueError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41176ADB2B7BE3EF0093F4C8 /* QueueError.swift */; };
+		41176ADE2B7BE5550093F4C8 /* ExtractInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41176ADD2B7BE5550093F4C8 /* ExtractInfo.swift */; };
+		41176AE02B7BF0420093F4C8 /* QueueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41176ADF2B7BF0420093F4C8 /* QueueView.swift */; };
 		411F37392B53D84200CC05E6 /* MakeCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 411F37382B53D84200CC05E6 /* MakeCommand.m */; };
 		411F373B2B55B77100CC05E6 /* LibraryFolders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 411F373A2B55B77100CC05E6 /* LibraryFolders.swift */; };
 		411F37452B56DE7400CC05E6 /* PulsingIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 411F37442B56DE7400CC05E6 /* PulsingIcon.swift */; };
@@ -177,6 +181,10 @@
 		41176ACC2B7807640093F4C8 /* airlift */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = airlift; sourceTree = "<group>"; };
 		41176AD12B78C6A90093F4C8 /* ShellArgumentList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShellArgumentList.swift; sourceTree = "<group>"; };
 		41176AD62B7BCF140093F4C8 /* EditCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCommands.swift; sourceTree = "<group>"; };
+		41176AD92B7BDA9D0093F4C8 /* QueueModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueModel.swift; sourceTree = "<group>"; };
+		41176ADB2B7BE3EF0093F4C8 /* QueueError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueError.swift; sourceTree = "<group>"; };
+		41176ADD2B7BE5550093F4C8 /* ExtractInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractInfo.swift; sourceTree = "<group>"; };
+		41176ADF2B7BF0420093F4C8 /* QueueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueView.swift; sourceTree = "<group>"; };
 		411F37382B53D84200CC05E6 /* MakeCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MakeCommand.m; sourceTree = "<group>"; };
 		411F373A2B55B77100CC05E6 /* LibraryFolders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryFolders.swift; sourceTree = "<group>"; };
 		411F37442B56DE7400CC05E6 /* PulsingIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PulsingIcon.swift; sourceTree = "<group>"; };
@@ -355,6 +363,16 @@
 				4741202D2A3EFC42005890FE /* EmptyOrIntFormatStyle.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		41176AD82B7BDA7B0093F4C8 /* Queue */ = {
+			isa = PBXGroup;
+			children = (
+				41176AD92B7BDA9D0093F4C8 /* QueueModel.swift */,
+				41176ADB2B7BE3EF0093F4C8 /* QueueError.swift */,
+				41176ADD2B7BE5550093F4C8 /* ExtractInfo.swift */,
+			);
+			path = Queue;
 			sourceTree = "<group>";
 		};
 		411F37482B56F1C600CC05E6 /* Install View */ = {
@@ -671,6 +689,7 @@
 			isa = PBXGroup;
 			children = (
 				4155B70B2B62CE64008D3505 /* General Settings */,
+				41176ADF2B7BF0420093F4C8 /* QueueView.swift */,
 				9B4D90D72A0BAE3900FE7603 /* ImageSettingsView.swift */,
 				4100D5DC2AD051DB0081F0EC /* Label */,
 				9B4D90DB2A0BB07500FE7603 /* ConfigurationSettingsView.swift */,
@@ -719,6 +738,7 @@
 			isa = PBXGroup;
 			children = (
 				41F88AFF2B12644A004A3B58 /* Extract */,
+				41176AD82B7BDA7B0093F4C8 /* Queue */,
 				41C538922AE1AFC600E8A8A1 /* Settings */,
 				4155B72D2B66BF1A008D3505 /* Configurations */,
 				41F88AE62B0E9126004A3B58 /* Database */,
@@ -987,9 +1007,12 @@
 				417915062B75547C00215688 /* DropboxSetupModel.swift in Sources */,
 				41EBAD502AF7B6F200E6AF7C /* WindowSize.swift in Sources */,
 				41BFEB792B1F925800C8B551 /* ExportProcess.swift in Sources */,
+				41176ADA2B7BDA9D0093F4C8 /* QueueModel.swift in Sources */,
 				41C538942AE1AFF200E8A8A1 /* SettingsContainer.swift in Sources */,
+				41176AE02B7BF0420093F4C8 /* QueueView.swift in Sources */,
 				41176AD22B78C6AA0093F4C8 /* ShellArgumentList.swift in Sources */,
 				411F37632B5C5F5D00CC05E6 /* FileCommands.swift in Sources */,
+				41176ADC2B7BE3EF0093F4C8 /* QueueError.swift in Sources */,
 				414262C02AD5CE3200FC6CFC /* ConfigurationErrors.swift in Sources */,
 				4155B7022B612592008D3505 /* WorkflowExtensionView.swift in Sources */,
 				411F37532B57255A00CC05E6 /* OpenEventHandler.swift in Sources */,
@@ -997,6 +1020,7 @@
 				4155B70D2B62CED6008D3505 /* RolesSettingsView.swift in Sources */,
 				41F88ADC2B029D4A004A3B58 /* ColorPickerForm.swift in Sources */,
 				41C839822B52C9E300C6B133 /* ScriptingSupportCategories.m in Sources */,
+				41176ADE2B7BE5550093F4C8 /* ExtractInfo.swift in Sources */,
 				474595582A40254E00EF100D /* ColorPickerOpacitySliderForm.swift in Sources */,
 				410E3B812B4B0FF8005280FD /* LogManager.swift in Sources */,
 				417915022B754E1500215688 /* DropboxInfo.swift in Sources */,

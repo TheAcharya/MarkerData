@@ -183,7 +183,7 @@ class SettingsStore: ObservableObject {
         }
         
         // Output dir
-        let outputDirURL: URL = self.exportFolderURL ?? URL.moviesDirectory
+        let outputDirURL: URL = self.exportFolderURL ?? URL.FCPExportCacheFolder
         
         // Exclude roles
         let roles = RolesManager.loadRolesFromDisk()
@@ -234,7 +234,6 @@ class SettingsStore: ObservableObject {
             imageLabelAlignHorizontal: self.selectedHorizonalAlignment.markersExtractor,
             imageLabelAlignVertical: self.selectedVerticalAlignment.markersExtractor,
             imageLabelHideNames: self.hideLabelNames,
-            resultFilePath: URL.downloadsDirectory.appendingPathComponent("result", conformingTo: .json),
             exportFolderFormat: self.selectedFolderFormat.markersExtractor
         )
         
