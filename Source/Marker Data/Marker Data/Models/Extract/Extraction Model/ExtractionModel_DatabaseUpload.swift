@@ -105,7 +105,7 @@ extension ExtractionModel {
             
             // Add rename key column if defined
             if !airtableProfile.renameKeyColumn.isEmpty {
-                argumentList.append(ShellRawArgument("--rename-notion-key-column \"Marker ID\" \(airtableProfile.renameKeyColumn.quoted)"))
+                argumentList.append(ShellRawArgument("--rename-key-column \"Marker ID\" \(airtableProfile.renameKeyColumn.quoted)"))
             }
             
             let shellOutputStream = ShellOutputStream()

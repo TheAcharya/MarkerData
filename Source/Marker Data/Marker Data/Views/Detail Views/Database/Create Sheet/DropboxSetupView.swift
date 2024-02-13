@@ -61,7 +61,11 @@ struct DropboxSetupView: View {
             
             Text("Clicking **Continue** will launch the Terminal. Follow the on-screen instructions for the rest of the setup process.")
                 .fontWeight(.thin)
-                .padding(.bottom)
+            
+            Link(destination: Links.dropboxAppConsole) {
+                Label("Open Dropbox App Console", systemImage: "rectangle.portrait.and.arrow.right")
+            }
+            .padding(.bottom)
             
             Text(dropboxSetupModel.setupComplete ? "Dropbox configured" : "Dropbox setup incomplete")
                 .foregroundColor(dropboxSetupModel.setupComplete ? .green : .red)
