@@ -14,7 +14,7 @@ struct QueueView: View {
     
     var body: some View {
         VStack {
-            Text(String(describing: queueModel.records))
+            tableView
         }
         .alert("Failed to scan export folder", isPresented: $showScanAlert) {}
         .task {
@@ -23,6 +23,34 @@ struct QueueView: View {
             } catch {
                 showScanAlert = true
             }
+        }
+    }
+    
+    var tableView: some View {
+        Table(queueModel.records) {
+            TableColumn("Name", value: \.name)
+            TableColumn("Date", value: \.creationDateFormatted)
+            TableColumn("Profile", value: \.extractInfo.profile.rawValue)
+            TableColumn("Upload Destination") { record in
+                UploadDestinationPickerView(queueInstance: record)
+            }
+        }
+    }
+    
+    struct UploadDestinationPickerView: View {
+        @ObservedObject var queueInstance: QueueInstance
+        
+        var body: some View {
+            Picker("", selection: $queueInstance.uploadDestination) {
+                Text("No Upload")
+                    .tag(nil as DatabaseProfileModel?)
+                
+                ForEach(queueInstance.availableDatabaseProfiles) { profile in
+                    Text(profile.name)
+                        .tag(profile as DatabaseProfileModel?)
+                }
+            }
+            .labelsHidden()
         }
     }
 }

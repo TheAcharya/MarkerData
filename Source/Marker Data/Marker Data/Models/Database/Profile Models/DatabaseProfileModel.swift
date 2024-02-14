@@ -8,7 +8,7 @@
 import Foundation
 
 /// A parent class for Notion and Airtable datbase models
-class DatabaseProfileModel: ObservableObject, Equatable, Identifiable, Codable {
+class DatabaseProfileModel: ObservableObject, Equatable, Identifiable, Codable, Hashable {
     var name: String
     let plaform: DatabasePlatform
     
@@ -42,5 +42,10 @@ class DatabaseProfileModel: ObservableObject, Equatable, Identifiable, Codable {
     
     func copy() -> DatabaseProfileModel? {
         return deepCopy(of: self)
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(name)
+        hasher.combine(plaform)
     }
 }

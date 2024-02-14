@@ -12,7 +12,7 @@ class QueueModel: ObservableObject {
     let settings: SettingsContainer
     let databaseManager: DatabaseManager
     
-    @Published var records: [ExtractInfo] = []
+    @Published var records: [QueueInstance] = []
     
     static let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "QueueModel")
     
@@ -30,7 +30,7 @@ class QueueModel: ObservableObject {
         
         let directoryContents = try fileManager.contentsOfDirectory(at: directory, includingPropertiesForKeys: [], options: .skipsHiddenFiles)
         
-        var records: [ExtractInfo] = []
+        var records: [QueueInstance] = []
         
         // Loop through directories in export folder
         for url in directoryContents {
@@ -41,10 +41,15 @@ class QueueModel: ObservableObject {
                 
                 do {
                     let data = try Data(contentsOf: infoFile)
-                    let decoded = try decoder.decode(ExtractInfo.self, from: data)
+                    let extractInfo = try decoder.decode(ExtractInfo.self, from: data)
                     
                     // Add record
-                    records.append(decoded)
+                    await records.append(
+                        QueueInstance(
+                            extractInfo: extractInfo,
+                            databaseProfiles: databaseManager.profiles
+                        )
+                    )
                 } catch {
                     Self.logger.error("Failed to decode \(infoFile.path(percentEncoded: false)): \(error.localizedDescription, privacy: .public)")
                     continue
