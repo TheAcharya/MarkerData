@@ -12,7 +12,7 @@ class QueueModel: ObservableObject {
     let settings: SettingsContainer
     let databaseManager: DatabaseManager
     
-    @Published var records: [QueueInstance] = []
+    @Published var queueInstances: [QueueInstance] = []
     
     static let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "QueueModel")
     
@@ -30,7 +30,7 @@ class QueueModel: ObservableObject {
         
         let directoryContents = try fileManager.contentsOfDirectory(at: directory, includingPropertiesForKeys: [], options: .skipsHiddenFiles)
         
-        var records: [QueueInstance] = []
+        var queueInstances: [QueueInstance] = []
         
         // Loop through directories in export folder
         for url in directoryContents {
@@ -44,9 +44,10 @@ class QueueModel: ObservableObject {
                     let extractInfo = try decoder.decode(ExtractInfo.self, from: data)
                     
                     // Add record
-                    await records.append(
+                    await queueInstances.append(
                         QueueInstance(
                             extractInfo: extractInfo,
+                            folderURL: url,
                             databaseProfiles: databaseManager.profiles
                         )
                     )
@@ -57,8 +58,30 @@ class QueueModel: ObservableObject {
             }
         }
         
-        await MainActor.run { [records] in
-            self.records = records
+        await MainActor.run { [queueInstances] in
+            self.queueInstances = queueInstances
+        }
+    }
+    
+    public func upload(deleteFolder: Bool = false) async throws {
+        await withTaskGroup(of: Void.self) { group in
+            for queueInstance in self.queueInstances {
+                group.addTask {
+                    do {
+                        try await queueInstance.upload()
+                        
+                        if deleteFolder {
+                            queueInstance.deleteFolder()
+                        }
+                    } catch {
+                        await MainActor.run {
+                            queueInstance.status = .failed
+                        }
+                        
+                        Self.logger.error("Failed to upload \(queueInstance.name)")
+                    }
+                }
+            }
         }
     }
 }
