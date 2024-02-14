@@ -49,7 +49,7 @@ struct InstallShareDestinationView: View {
                 .help("Don't show again")
         }
         .padding()
-        .background(.linearGradient(colors: [.black, Color.darkPurple], startPoint: .leading, endPoint: .trailing))
+        .background(.linearGradient(colors: [.black, Color(#colorLiteral(red: 0.2784313725, green: 0.03137254902, blue: 0.5843137255, alpha: 1))], startPoint: .leading, endPoint: .trailing))
         .clipShape(RoundedRectangle(cornerRadius: 8))
         .alert("Failed to install Share Destination", isPresented: $showFailAlert) {}
     }

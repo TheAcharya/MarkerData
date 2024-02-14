@@ -83,9 +83,9 @@ public struct ExtractView: View {
                 Spacer()
                 
                 //Text Prompt To Drop Final Cut Pro XML File
-                Label("Drag and Drop FCP XML", systemImage: "cursorarrow.rays")
+                Label("Drag and Drop FCP XML", systemImage: "cursorarrow.motionlines")
                     .font(.system(size: 32, weight: .bold))
-                    .foregroundStyle(.linearGradient(Gradient(colors: [.blue, .purple]), startPoint: .leading, endPoint: .trailing))
+                    .foregroundStyle(.linearGradient(Gradient(colors: [Color(#colorLiteral(red: 0.3294117748737335, green: 0.9843137264251709, blue: 0.9764705896377563, alpha: 1)), Color(#colorLiteral(red: 0.41960784792900085, green: 0.21176470816135406, blue: 0.9921568632125854, alpha: 1))]), startPoint: .leading, endPoint: .trailing))
                 
                 Text("OR")
                     .font(.system(size: 16, weight: .bold))
