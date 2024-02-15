@@ -72,6 +72,7 @@ class DatabaseUploader: ObservableObject {
             ShellParameter(for: "--icon-column", value: "Icon Image"),
             ShellParameter(for: "--max-threads", value: "5"),
             ShellParameter(for: "--log", url: logPath),
+            ShellFlag("--verbose"),
             ShellArgument(url: url)
         ])
         
