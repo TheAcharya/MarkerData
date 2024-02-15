@@ -10,6 +10,7 @@ import Foundation
 /// Views selectable in the sidebar
 enum MainViews: String, CaseIterable, Identifiable {
     case extract
+    case queue
     case general
     case image
     case label

@@ -12,6 +12,8 @@ final class ExtractionModel: ObservableObject {
     let settings: SettingsContainer
     let databaseManager: DatabaseManager
     
+    var databaseUploader = DatabaseUploader()
+    
     static let supportedContentTypes: [UTType] = [.fcpxml, .fcpxmld]
     
     /// Controls whether progress UI is shown in the ExtractView
@@ -27,13 +29,11 @@ final class ExtractionModel: ObservableObject {
     @Published var completedOutputFolder: URL? = nil
     
     @Published var extractionProgress = ProgressViewModel(taskDescription: "Extract")
-    @Published var uploadProgress = ProgressViewModel(taskDescription: "Upload")
     
     public var failedTasks: [ExtractionFailure] = []
     
     // Cancellation
     private var taskGroup: TaskGroup<Void>? = nil
-    var uploadProcesses: [Process?] = []
     
 //    static let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "ExtractionModel")
     static let logger = Logger(label: Bundle.main.bundleIdentifier!)
@@ -108,6 +108,16 @@ final class ExtractionModel: ObservableObject {
             
             observation.invalidate()
             
+            // Save extraction info JSON
+            if let exportResultUnwrapped = exportResult,
+               let exportFolderURL = exportResult?.exportFolder {
+                let extractInfo = try ExtractInfo(exportResult: exportResultUnwrapped)
+                
+                let jsonURL = exportFolderURL.appendingPathComponent("extract_info", conformingTo: .json)
+                
+                try extractInfo.save(to: jsonURL)
+            }
+            
             // Set progress as finished
             await self.extractionProgress.markProcessAsFinished(url: url)
             
@@ -132,11 +142,8 @@ final class ExtractionModel: ObservableObject {
             
             Self.logger.notice("Upload started. Platform: \(databaseProfile.plaform.rawValue)")
             
-            // Add process to upload progress
-            self.uploadProgress.addProcess(url: jsonURL)
-            
             // Upload
-            try await self.uploadToDatabase(url: jsonURL, databaseProfile: databaseProfile)
+            try await self.databaseUploader.uploadToDatabase(url: jsonURL, databaseProfile: databaseProfile)
             
             Self.logger.notice("Successfully uploaded: \(url.path(percentEncoded: false))")
         }
@@ -145,7 +152,7 @@ final class ExtractionModel: ObservableObject {
         
         defer {
             self.taskGroup = nil
-            self.uploadProcesses.removeAll()
+            self.databaseUploader.resetProgress()
             
             DispatchQueue.main.async {
                 self.extractionInProgress = false
@@ -259,7 +266,7 @@ final class ExtractionModel: ObservableObject {
                 }
                 
                 if failedTasks.contains(where: { $0.exitStatus == .failedToUpload }) {
-                    self.uploadProgress.markasFailed(
+                    self.databaseUploader.uploadProgress.markasFailed(
                         progressMessage: "Failed to complete upload",
                         alertMessage: alertMessage
                     )
@@ -277,7 +284,7 @@ final class ExtractionModel: ObservableObject {
         self.completedOutputFolder = nil
         self.failedTasks.removeAll()
         self.extractionProgress.reset()
-        self.uploadProgress.reset()
+        self.databaseUploader.uploadProgress.reset()
     }
     
     @MainActor
@@ -286,11 +293,6 @@ final class ExtractionModel: ObservableObject {
         Self.logger.notice("Cancelling task group.")
         
         self.taskGroup?.cancelAll()
-        
-        Self.logger.notice("Cancelling upload processes: \(self.uploadProcesses)")
-        
-        for process in self.uploadProcesses {
-            process?.terminate()
-        }
+        self.databaseUploader.cancelAll()
     }
 }

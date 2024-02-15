@@ -14,6 +14,7 @@ struct Marker_DataApp: App {
     @StateObject private var extractionModel: ExtractionModel
     @StateObject var configurationsModel: ConfigurationsModel
     @StateObject var databaseManager: DatabaseManager
+    @StateObject var queueModel: QueueModel
     
     /// Currently selected detail view in the sidebar
     @State var sidebarSelection: MainViews = .extract
@@ -32,12 +33,18 @@ struct Marker_DataApp: App {
             databaseManager: databaseManager
         )
         
+        let queueModel = QueueModel(
+            settings: settings,
+            databaseManager: databaseManager
+        )
+        
         let configurationsModel = ConfigurationsModel()
         
         self._settings = StateObject(wrappedValue: settings)
         self._extractionModel = StateObject(wrappedValue: extractionModel)
         self._configurationsModel = StateObject(wrappedValue: configurationsModel)
         self._databaseManager = StateObject(wrappedValue: databaseManager)
+        self._queueModel = StateObject(wrappedValue: queueModel)
     }
     
 //    @NSApplicationDelegateAdaptor(ApplicationDelegate.self) var appDelegate
@@ -47,6 +54,7 @@ struct Marker_DataApp: App {
             // MARK: ContentView
             ContentView(
                 extractionModel: self.extractionModel,
+                queueModel: self.queueModel,
                 sidebarSelection: $sidebarSelection
             )
             .environmentObject(settings)

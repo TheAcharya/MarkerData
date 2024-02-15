@@ -64,14 +64,14 @@ public struct ExtractView: View {
         } message: {
             Text(extractionModel.extractionProgress.alertMessage)
         }
-        .alert("Failed to upload completely", isPresented: $extractionModel.uploadProgress.showAlert) {
+        .alert("Failed to upload completely", isPresented: $extractionModel.databaseUploader.uploadProgress.showAlert) {
             Button("Show Error Details") {
                 openWindow(value: extractionModel.failedTasks)
             }
             
             Button("Close", role: .cancel) {}
         } message: {
-            Text(extractionModel.uploadProgress.alertMessage)
+            Text(extractionModel.databaseUploader.uploadProgress.alertMessage)
         }
     }
     
@@ -136,7 +136,7 @@ public struct ExtractView: View {
                     
                     // Upload progress
                     if UnifiedExportProfile.load()?.exportProfileType == .extractAndUpload {
-                        ExportProgressView(progressModel: extractionModel.uploadProgress)
+                        ExportProgressView(progressModel: extractionModel.databaseUploader.uploadProgress)
                     }
                 }
                 
@@ -336,7 +336,7 @@ public struct ExtractView: View {
                             }
                             .scaleEffect(0.8)
                             .popover(isPresented: $showHelp) {
-                                Text("Select an export profile from the **No Upload** section to save the file locally only. Later, upload extracted files to a database according to the export profile from the **Recent Extractions** panel. Or select a database profile to upload immediately.")
+                                Text("Select an export profile from the **No Upload** section to save the file locally only. Later, upload extracted files to a database according to the export profile from the **Queue** panel. Or select a database profile to upload immediately.")
                                     .frame(maxWidth: 300, minHeight: 100)
                                     .padding(10)
                             }

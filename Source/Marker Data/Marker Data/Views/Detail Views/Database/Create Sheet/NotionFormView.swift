@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct NotionFormView: View {
-    @StateObject var profileModel: NotionDBModel
+    @ObservedObject var profileModel: NotionDBModel
     
     var body: some View {
         VStack(alignment: .leading) {

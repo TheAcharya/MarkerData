@@ -12,6 +12,7 @@ import MarkersExtractor
 
 struct ContentView: View {
     @ObservedObject var extractionModel: ExtractionModel
+    @ObservedObject var queueModel: QueueModel
     @Binding var sidebarSelection: MainViews
     
     @EnvironmentObject var configurationsModel: ConfigurationsModel
@@ -22,6 +23,9 @@ struct ContentView: View {
             List(selection: $sidebarSelection) {
                 Label("Extract", systemImage: "house")
                     .tag(MainViews.extract)
+                
+                Label("Queue", systemImage: "tray.and.arrow.up")
+                    .tag(MainViews.queue)
                 
                 Section("Export Settings") {
                     Label("General", systemImage: "gearshape")
@@ -59,6 +63,8 @@ struct ContentView: View {
                 switch sidebarSelection {
                 case .extract:
                     ExtractView(extractionModel: extractionModel)
+                case .queue:
+                    QueueView(queueModel: queueModel)
                 case .general:
                     GeneralSettingsView()
                 case .image:
@@ -92,9 +98,15 @@ struct ContentView: View {
         settings: settings,
         databaseManager: databaseManager
     )
+    
+    @StateObject var queueModel = QueueModel(
+        settings: settings,
+        databaseManager: databaseManager
+    )
 
     return ContentView(
         extractionModel: extractionModel,
+        queueModel: queueModel,
         sidebarSelection: .constant(.extract)
     )
     .environmentObject(settings)
