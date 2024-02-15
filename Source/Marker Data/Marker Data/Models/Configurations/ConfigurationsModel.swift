@@ -308,23 +308,13 @@ class ConfigurationsModel: ObservableObject {
     /// Returns true if there are unsaved changes to active configuration
     // This function turns the current configuration into a JSON string
     // and compares it with the configuration JSON file on disk.
+    // It only compares the intersection of the two dictionaries keys.
     // The comparison is done by removing whitespace and sorting the characters,
     // which is obviously not the best idea, but I couldn't find an other way to diff JSON.
     func checkForUnsavedChanges() async {
         do {
             // Get current configuration dict
             let currentDict = try self.getConfigurationsDictionary()
-            
-            // Encode to JSON
-            guard let currentData = try? JSONSerialization.data(withJSONObject: currentDict, options: [.prettyPrinted]) else {
-                Self.logger.error("Failed get current data during JSON comparison")
-                return
-            }
-            
-            // Convert to sorted characters
-            let currentChars = String(decoding: currentData, as: UTF8.self)
-                .removing(.whitespacesAndNewlines)
-                .sorted()
             
             // Load configuration from disk
             guard let url = if self.activeConfiguration == Self.defaultConfigurationName {
@@ -338,6 +328,7 @@ class ConfigurationsModel: ObservableObject {
                 return
             }
             
+            // Convert on disk data to dict
             guard let onDiskData = try? Data(contentsOf: url) else {
                 Self.logger.error("Failed get on disk data during JSON comparison")
                 return
@@ -347,22 +338,40 @@ class ConfigurationsModel: ObservableObject {
                 Self.logger.error("Failed to serialize on disk JSON")
                 return
             }
+
+            // Find the intersection of the two dicts keys
+            let currentKeys: Set<String> = Set(currentDict.keys.map { $0 })
+            let onDiskKeys: Set<String> = Set(onDiskDict.keys.map { $0 })
+            let keysIntersection = currentKeys.intersection(onDiskKeys)
             
-            let currentKeys = currentDict.keys
+            // Filter the dicts with the intersection of their keys
+            let currentDictFiltered = currentDict.filter { keysIntersection.contains($0.key) }
+            let onDiskDictFiltered = onDiskDict.filter { keysIntersection.contains($0.key) }
             
-            let onDiskDictFiltered = onDiskDict.filter { currentKeys.contains($0.key) }
+            // Encode current dict to JSON data
+            guard let currentData = try? JSONSerialization.data(withJSONObject: currentDictFiltered, options: [.prettyPrinted]) else {
+                Self.logger.error("Failed get current data during JSON comparison")
+                return
+            }
             
+            // Convert current data to sorted characters
+            let currentChars = String(decoding: currentData, as: UTF8.self)
+                .removing(.whitespacesAndNewlines)
+                .sorted()
+           
+            
+            // Convert on disk dict to JSON data
             guard let onDiskFilteredData = try? JSONSerialization.data(withJSONObject: onDiskDictFiltered, options: [.prettyPrinted]) else {
                 Self.logger.error("Failed get on disk data during JSON comparison")
                 return
             }
             
-            // Convert to sorted characters
+            // Convert on disk data to sorted characters
             let onDiskChars = String(decoding: onDiskFilteredData, as: UTF8.self)
                 .removing(.whitespacesAndNewlines)
                 .sorted()
             
-            // Compare
+            // Compare the list of sorted characters
             await MainActor.run {
                 self.unsavedChanges = currentChars != onDiskChars
             }
