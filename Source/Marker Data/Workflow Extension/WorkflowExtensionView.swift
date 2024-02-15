@@ -15,6 +15,7 @@ struct WorkflowExtensionView: View {
     var body: some View {
         VStack {
             titleHeaderView
+                .padding(.bottom, 5)
             
             Divider()
             
@@ -46,6 +47,11 @@ struct WorkflowExtensionView: View {
     
     private var titleHeaderView: some View {
         HStack {
+            Image("AppIconSingle")
+                .resizable()
+                .frame(width: 100, height: 100)
+                .padding(.trailing, 8)
+            
             VStack(alignment: .leading) {
                 Text("Marker Data")
                     .font(.title)
@@ -54,10 +60,6 @@ struct WorkflowExtensionView: View {
             }
             
             Spacer()
-            
-            Image("AppIconSingle")
-                .resizable()
-                .frame(width: 100, height: 100)
         }
     }
     

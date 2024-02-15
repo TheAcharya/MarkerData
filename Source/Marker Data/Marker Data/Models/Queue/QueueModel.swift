@@ -98,7 +98,7 @@ class QueueModel: ObservableObject {
                         try await queueInstance.upload()
                         
                         if self.deleteFolderAfterUpload && !Task.isCancelled {
-                            queueInstance.deleteFolder()
+                            await queueInstance.deleteFolder()
                         }
                     } catch {
                         await MainActor.run {

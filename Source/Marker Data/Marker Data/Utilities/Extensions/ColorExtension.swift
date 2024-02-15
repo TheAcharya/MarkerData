@@ -39,7 +39,7 @@ extension Color {
         return (red, green, blue)
     }
     
-    static let darkPurple = Color(red: 0.5098, green: 0.2352, blue: 0.6274)
+    static let darkPurple = Color(#colorLiteral(red: 0.2784313725, green: 0.03137254902, blue: 0.5843137255, alpha: 1))
 }
 
 

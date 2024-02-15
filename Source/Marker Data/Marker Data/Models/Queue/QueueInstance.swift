@@ -52,8 +52,15 @@ class QueueInstance: ObservableObject, Identifiable {
         }
     }
     
-    public func deleteFolder() {
+    @MainActor 
+    public func deleteFolder() async {
+        // Return if no upload destination was selected
+        if self.uploadDestination == nil {
+            return
+        }
+        
         do {
+            Self.logger.notice("Upload done. Deleting folder: \(self.folderURL)")
             try self.folderURL.trashOrDelete()
         } catch {
             Self.logger.error("Failed to delete folder after queue upload: \(self.folderURL.path(percentEncoded: false))")
