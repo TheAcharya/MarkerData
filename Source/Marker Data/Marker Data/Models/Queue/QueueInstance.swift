@@ -30,6 +30,7 @@ class QueueInstance: ObservableObject, Identifiable {
         self.extractInfo = extractInfo
         self.availableDatabaseProfiles = databaseProfiles.filter { $0.plaform == extractInfo.profile }
         self.folderURL = folderURL
+        self.uploader.uploadProgress.showDockProgress = false
     }
     
     public func upload() async throws {

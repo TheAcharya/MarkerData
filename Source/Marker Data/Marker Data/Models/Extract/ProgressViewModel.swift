@@ -22,6 +22,8 @@ class ProgressViewModel: ObservableObject {
     /// Task descripting showed on the progress bar
     let taskDescription: String
     
+    var showDockProgress: Bool
+    
     /// List of processes
     var processes: [ExportProcess] = []
     
@@ -31,15 +33,20 @@ class ProgressViewModel: ObservableObject {
     
     static let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "ProgressViewModel")
     
-    init(taskDescription: String) {
+    init(taskDescription: String, showDockProgress: Bool = true) {
         self.message = "\(taskDescription) - waiting..."
         self.icon = "clock"
         self.taskDescription = taskDescription
+        self.showDockProgress = showDockProgress
     }
     
     // Default: true
-    private var showDockProgress: Bool {
-        return UserDefaults.standard.boolOptional(forKey: "showDockProgress") ?? true
+    private var shouldShowDockProgress: Bool {
+        if !showDockProgress {
+            return false
+        } else {
+            return UserDefaults.standard.boolOptional(forKey: "showDockProgress") ?? true
+        }
     }
     
     /// Initializes new export processes
@@ -48,7 +55,7 @@ class ProgressViewModel: ObservableObject {
         
         Task {
             await MainActor.run {
-                DockProgress.progressInstance = self.showDockProgress ? self.progress : nil
+                DockProgress.progressInstance = self.shouldShowDockProgress ? self.progress : nil
             }
         }
     }
@@ -61,7 +68,7 @@ class ProgressViewModel: ObservableObject {
         if self.processes.count == 1 {
             Task {
                 await MainActor.run {
-                    DockProgress.progressInstance = self.showDockProgress ? self.progress : nil
+                    DockProgress.progressInstance = self.shouldShowDockProgress ? self.progress : nil
                 }
             }
         }

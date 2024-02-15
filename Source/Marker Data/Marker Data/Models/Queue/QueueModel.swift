@@ -6,13 +6,19 @@
 //
 
 import Foundation
+import SwiftUI
 import OSLog
 
 class QueueModel: ObservableObject {
     let settings: SettingsContainer
     let databaseManager: DatabaseManager
-    
     @Published var queueInstances: [QueueInstance] = []
+    @MainActor
+    @Published var uploadInProgress = false
+    @AppStorage("deleteFolderAfterUpload") var deleteFolderAfterUpload = false
+    
+    // Cancellation
+    private var taskGroup: TaskGroup<Void>? = nil
     
     static let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "QueueModel")
     
@@ -22,6 +28,11 @@ class QueueModel: ObservableObject {
     }
     
     public func scanExportFolder() async throws {
+        // Skip if upload is in progress
+        if await self.uploadInProgress {
+            return
+        }
+        
         guard let directory = self.settings.store.exportFolderURL else {
             Self.logger.error("Missing output directory")
             throw QueueError.missingOutputDirectory
@@ -60,17 +71,33 @@ class QueueModel: ObservableObject {
         
         await MainActor.run { [queueInstances] in
             self.queueInstances = queueInstances
+                .sorted(by: { $0.extractInfo.creationDate > $1.extractInfo.creationDate })
         }
     }
     
-    public func upload(deleteFolder: Bool = false) async throws {
+    public func upload() async throws {
+        defer {
+            Task {
+                await MainActor.run {
+                    self.uploadInProgress = false
+                    self.taskGroup = nil
+                }
+            }
+        }
+        
+        await MainActor.run {
+            self.uploadInProgress = true
+        }
+        
         await withTaskGroup(of: Void.self) { group in
+            self.taskGroup = group
+            
             for queueInstance in self.queueInstances {
                 group.addTask {
                     do {
                         try await queueInstance.upload()
                         
-                        if deleteFolder {
+                        if self.deleteFolderAfterUpload && !Task.isCancelled {
                             queueInstance.deleteFolder()
                         }
                     } catch {
@@ -83,5 +110,16 @@ class QueueModel: ObservableObject {
                 }
             }
         }
+    }
+    
+    @MainActor
+    public func cancelUpload() {
+        self.taskGroup?.cancelAll()
+        
+        for queueInstance in queueInstances {
+            queueInstance.uploader.cancelAll()
+        }
+        
+        self.uploadInProgress = false
     }
 }

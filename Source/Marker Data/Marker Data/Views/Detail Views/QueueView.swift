@@ -10,9 +10,7 @@ import SwiftUI
 struct QueueView: View {
     @ObservedObject var queueModel: QueueModel
     
-    @State var showScanAlert = false
-    
-    @AppStorage("deleteFolderAfterUpload") var deleteAfterUpload = false
+    @State var showScanAlert = false 
     
     var body: some View {
         VStack {
@@ -40,6 +38,7 @@ struct QueueView: View {
             TableColumn("Profile", value: \.extractInfo.profile.rawValue)
             TableColumn("Upload Destination") { record in
                 UploadDestinationPickerView(queueInstance: record)
+                    .disabled(queueModel.uploadInProgress)
             }
             TableColumn("Status") { queueInstance in
                 QueueStatusView(queueInstance: queueInstance)
@@ -51,21 +50,29 @@ struct QueueView: View {
         HStack {
             Button {
                 Task {
-                    try await queueModel.upload(deleteFolder: deleteAfterUpload)
+                    try await queueModel.upload()
                 }
             } label: {
                 Label("Start Upload", systemImage: "square.and.arrow.up")
             }
             .buttonStyle(.borderedProminent)
-//            .disabled(queueModel.queueInstances.allSatisfy { $0.uploadDestination.isNone } )
+            .disabled(queueModel.uploadInProgress)
             
             Divider()
                 .frame(maxHeight: 20)
                 .padding(.horizontal, 5)
             
-            Toggle("Delete Folders After Upload", isOn: $deleteAfterUpload)
+            Toggle("Delete Folders After Upload", isOn: $queueModel.deleteFolderAfterUpload)
             
             Spacer()
+            
+            Button {
+                queueModel.cancelUpload()
+            } label: {
+                Label("Stop", systemImage: "stop.circle")
+                    .foregroundColor(Color.red)
+            }
+            .opacity(queueModel.uploadInProgress ? 1 : 0)
         }
     }
     
