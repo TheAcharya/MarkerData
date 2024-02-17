@@ -23,18 +23,22 @@ struct ExtractInfo: Codable, Identifiable {
         self.profile = profile
     }
     
-    init(exportResult: ExportResult) throws {
-        self.profile = switch exportResult.profile {
+    init?(exportResult: ExportResult) {
+        guard let profile: DatabasePlatform = switch exportResult.profile {
         case .notion:
             DatabasePlatform.notion
         case .airtable:
             DatabasePlatform.airtable
         default:
-            throw ExtractInfoError.invalidProfile
+            nil
+        } else {
+            return nil
         }
-        
+
+        self.profile = profile
+
         guard let jsonURL = exportResult.jsonManifestPath else {
-            throw ExtractInfoError.invalidJSONPath
+            return nil
         }
         
         self.jsonURL = jsonURL

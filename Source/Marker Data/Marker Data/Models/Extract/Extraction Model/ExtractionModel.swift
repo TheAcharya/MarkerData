@@ -111,11 +111,11 @@ final class ExtractionModel: ObservableObject {
             // Save extraction info JSON
             if let exportResultUnwrapped = exportResult,
                let exportFolderURL = exportResult?.exportFolder {
-                let extractInfo = try ExtractInfo(exportResult: exportResultUnwrapped)
+                let extractInfo = ExtractInfo(exportResult: exportResultUnwrapped)
                 
                 let jsonURL = exportFolderURL.appendingPathComponent("extract_info", conformingTo: .json)
                 
-                try extractInfo.save(to: jsonURL)
+                try extractInfo?.save(to: jsonURL)
             }
             
             // Set progress as finished

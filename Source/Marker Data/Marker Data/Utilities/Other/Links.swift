@@ -8,6 +8,7 @@
 import Foundation
 
 struct Links {
+    static let queueHelpURL = URL(string: "https://markerdata.theacharya.co/user-guide/queue/")!
     static let generalSettingsURL = URL(string: "https://markerdata.theacharya.co/user-guide/general/")!
     static let imageSettingsURL = URL(string: "https://markerdata.theacharya.co/user-guide/image/")!
     static let labelSettingsURL = URL(string: "https://markerdata.theacharya.co/user-guide/label/")!

@@ -10,8 +10,9 @@ import SwiftUI
 struct QueueView: View {
     @ObservedObject var queueModel: QueueModel
     
-    @State var showScanAlert = false 
-    
+    @State var showScanAlert = false
+    @State var sortOrder = [KeyPathComparator(\QueueInstance.extractInfo.creationDate)]
+
     var body: some View {
         VStack {
             tableView
@@ -21,6 +22,7 @@ struct QueueView: View {
             actionsAndSettingsView
         }
         .padding()
+        .overlayHelpButton(url: Links.queueHelpURL)
         .alert("Failed to scan export folder", isPresented: $showScanAlert) {}
         .task {
             do {
@@ -32,17 +34,22 @@ struct QueueView: View {
     }
     
     var tableView: some View {
-        Table(queueModel.queueInstances) {
+        Table(queueModel.queueInstances, sortOrder: $sortOrder) {
             TableColumn("Name", value: \.name)
-            TableColumn("Date", value: \.creationDateFormatted)
+            TableColumn("Date", value: \.extractInfo.creationDate) { queueInstance in
+                Text(queueInstance.creationDateFormatted)
+            }
             TableColumn("Profile", value: \.extractInfo.profile.rawValue)
-            TableColumn("Upload Destination") { record in
-                UploadDestinationPickerView(queueInstance: record)
+            TableColumn("Upload Destination") { queueInstance in
+                UploadDestinationPickerView(queueInstance: queueInstance)
                     .disabled(queueModel.uploadInProgress)
             }
             TableColumn("Status") { queueInstance in
                 QueueStatusView(queueInstance: queueInstance)
             }
+        }
+        .onChange(of: sortOrder) { newOrder in
+            queueModel.queueInstances.sort(using: newOrder)
         }
     }
     
