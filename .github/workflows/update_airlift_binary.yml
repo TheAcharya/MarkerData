@@ -1,4 +1,4 @@
-name: Update Airlift Binary
+name: update_airlift_binary
 
 on:
   workflow_dispatch:

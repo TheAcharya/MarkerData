@@ -1,0 +1,39 @@
+name: update_csv2notion-neo_binary
+
+on:
+  workflow_dispatch:
+
+jobs:
+  update_formula:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Get latest release info
+        id: get_release
+        run: |
+            latest_release_tag=$(curl -sSL https://api.github.com/repos/TheAcharya/csv2notion-neo/releases/latest | jq -r '.tag_name | ltrimstr("v")')
+            latest_release_url=$(curl -sSL https://api.github.com/repos/TheAcharya/csv2notion-neo/releases/latest | jq -r '.assets[] | select(.name | endswith("macos_x64.zip")) | .browser_download_url')
+
+            echo "Latest release tag: $latest_release_tag"
+            echo "Latest release URL: $latest_release_url"
+
+            curl -L -o csv2notion-neo.zip $latest_release_url
+
+            unzip csv2notion-neo.zip -d extracted_files
+
+            rm -rf "./Source/Marker Data/Marker Data/Resources/csv2notion_neo"
+            cp -R ./extracted_files/dist/csv2notion_neo "./Source/Marker Data/Marker Data/Resources"
+
+            git status
+            if git rev-parse --verify HEAD >/dev/null 2>&1; then
+                echo "No changes to commit, skipping push."
+            else
+                git config user.name "GitHub Actions"
+                git config user.email "actions@github.com"
+                git add Source
+                git commit -m "Updated CSV2Notion Neo Binary Version $latest_release_tag"
+                git push
+            fi
