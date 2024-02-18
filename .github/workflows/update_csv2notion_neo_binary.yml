@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  update_formula:
+  update_binary:
     runs-on: macos-latest
 
     steps:
