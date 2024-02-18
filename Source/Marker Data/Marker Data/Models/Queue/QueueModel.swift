@@ -27,54 +27,78 @@ class QueueModel: ObservableObject {
         self.databaseManager = databaseManager
     }
     
-    public func scanExportFolder() async throws {
+    public func scanFolder(at url: URL, append: Bool = false) async throws {
+        @Sendable
+        func walkDirectory(at url: URL, options: FileManager.DirectoryEnumerationOptions) -> AsyncStream<URL> {
+            AsyncStream { continuation in
+                Task {
+                    let enumerator = FileManager.default.enumerator(at: url, includingPropertiesForKeys: nil, options: options)
+
+                    while let fileURL = enumerator?.nextObject() as? URL {
+                        continuation.yield(fileURL)
+                    }
+
+                    continuation.finish()
+                }
+            }
+        }
+
         // Skip if upload is in progress
         if await self.uploadInProgress {
             return
         }
+
+        let fileManager = FileManager.default
+
+        var queueInstances: [QueueInstance] = []
         
-        guard let directory = self.settings.store.exportFolderURL else {
+        // Recursive iteration
+        let extractInfoURLs = walkDirectory(at: url, options: [.skipsHiddenFiles, .skipsPackageDescendants]).filter {
+            $0.lastPathComponent == "extract_info.json"
+        }
+
+        let decoder = JSONDecoder()
+
+        for await extractInfoURL in extractInfoURLs {
+            do {
+                let data = try Data(contentsOf: extractInfoURL)
+                let extractInfo = try decoder.decode(ExtractInfo.self, from: data)
+
+                // Add queue instance
+                await queueInstances.append(
+                    QueueInstance(
+                        extractInfo: extractInfo,
+                        folderURL: extractInfoURL.deletingLastPathComponent(),
+                        databaseProfiles: databaseManager.profiles
+                    )
+                )
+            } catch {
+                Self.logger.error("Failed to decode \(extractInfoURL.path(percentEncoded: false)): \(error.localizedDescription, privacy: .public)")
+                continue
+            }
+        }
+
+        await MainActor.run { [queueInstances] in
+            let queueInstancesSorted = queueInstances
+                .sorted(by: { $0.extractInfo.creationDate > $1.extractInfo.creationDate })
+
+            if append {
+                self.queueInstances.append(contentsOf: queueInstancesSorted)
+            } else {
+                self.queueInstances = queueInstancesSorted
+            }
+        }
+    }
+
+    public func scanExportFolder() async throws {
+        guard let exportFolder = self.settings.store.exportFolderURL else {
             Self.logger.error("Missing output directory")
             throw QueueError.missingOutputDirectory
         }
-        let fileManager = FileManager.default
-        
-        let directoryContents = try fileManager.contentsOfDirectory(at: directory, includingPropertiesForKeys: [], options: .skipsHiddenFiles)
-        
-        var queueInstances: [QueueInstance] = []
-        
-        // Loop through directories in export folder
-        for url in directoryContents {
-            let infoFile = url.appendingPathComponent("extract_info", conformingTo: .json)
-            
-            if infoFile.fileExists {
-                let decoder = JSONDecoder()
-                
-                do {
-                    let data = try Data(contentsOf: infoFile)
-                    let extractInfo = try decoder.decode(ExtractInfo.self, from: data)
-                    
-                    // Add record
-                    await queueInstances.append(
-                        QueueInstance(
-                            extractInfo: extractInfo,
-                            folderURL: url,
-                            databaseProfiles: databaseManager.profiles
-                        )
-                    )
-                } catch {
-                    Self.logger.error("Failed to decode \(infoFile.path(percentEncoded: false)): \(error.localizedDescription, privacy: .public)")
-                    continue
-                }
-            }
-        }
-        
-        await MainActor.run { [queueInstances] in
-            self.queueInstances = queueInstances
-                .sorted(by: { $0.extractInfo.creationDate > $1.extractInfo.creationDate })
-        }
+
+        try await self.scanFolder(at: exportFolder)
     }
-    
+
     public func upload() async throws {
         defer {
             Task {

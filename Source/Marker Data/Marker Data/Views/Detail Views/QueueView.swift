@@ -25,10 +25,12 @@ struct QueueView: View {
         .overlayHelpButton(url: Links.queueHelpURL)
         .alert("Failed to scan export folder", isPresented: $showScanAlert) {}
         .task {
-            do {
-                try await queueModel.scanExportFolder()
-            } catch {
-                showScanAlert = true
+            if queueModel.queueInstances.isEmpty {
+                do {
+                    try await queueModel.scanExportFolder()
+                } catch {
+                    showScanAlert = true
+                }
             }
         }
     }
@@ -51,6 +53,14 @@ struct QueueView: View {
         .onChange(of: sortOrder) { newOrder in
             queueModel.queueInstances.sort(using: newOrder)
         }
+        .onDrop(of: [.fileURL], delegate: queueModel)
+        .contextMenu {
+            Button {
+                queueModel.queueInstances.removeAll()
+            } label: {
+                Label("Clear", systemImage: "trash")
+            }
+        }
     }
     
     var actionsAndSettingsView: some View {
@@ -64,7 +74,29 @@ struct QueueView: View {
             }
             .buttonStyle(.borderedProminent)
             .disabled(queueModel.uploadInProgress)
-            
+
+
+            Button {
+                queueModel.cancelUpload()
+            } label: {
+                Label("Stop", systemImage: "stop.circle")
+                    .foregroundColor(queueModel.uploadInProgress ? Color.red : .secondary)
+            }
+            .disabled(!queueModel.uploadInProgress)
+
+            Button {
+                Task {
+                    do {
+                        try await queueModel.scanExportFolder()
+                    } catch {
+                        showScanAlert = true
+                    }
+                }
+            } label: {
+                Label("Load from Export Destination", systemImage: "arrow.clockwise")
+            }
+            .disabled(queueModel.uploadInProgress)
+
             Divider()
                 .frame(maxHeight: 20)
                 .padding(.horizontal, 5)
@@ -73,13 +105,7 @@ struct QueueView: View {
             
             Spacer()
             
-            Button {
-                queueModel.cancelUpload()
-            } label: {
-                Label("Stop", systemImage: "stop.circle")
-                    .foregroundColor(Color.red)
-            }
-            .opacity(queueModel.uploadInProgress ? 1 : 0)
+
         }
     }
     

@@ -21,6 +21,7 @@
 		41176AE02B7BF0420093F4C8 /* QueueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41176ADF2B7BF0420093F4C8 /* QueueView.swift */; };
 		41176AE32B7D3FA00093F4C8 /* QueueInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41176AE22B7D3FA00093F4C8 /* QueueInstance.swift */; };
 		41176AE52B7D5C520093F4C8 /* QueueStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41176AE42B7D5C520093F4C8 /* QueueStatus.swift */; };
+		41176AE72B8167930093F4C8 /* QueueModel_DropDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41176AE62B8167930093F4C8 /* QueueModel_DropDelegate.swift */; };
 		411F37392B53D84200CC05E6 /* MakeCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 411F37382B53D84200CC05E6 /* MakeCommand.m */; };
 		411F373B2B55B77100CC05E6 /* LibraryFolders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 411F373A2B55B77100CC05E6 /* LibraryFolders.swift */; };
 		411F37452B56DE7400CC05E6 /* PulsingIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 411F37442B56DE7400CC05E6 /* PulsingIcon.swift */; };
@@ -189,6 +190,7 @@
 		41176ADF2B7BF0420093F4C8 /* QueueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueView.swift; sourceTree = "<group>"; };
 		41176AE22B7D3FA00093F4C8 /* QueueInstance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueInstance.swift; sourceTree = "<group>"; };
 		41176AE42B7D5C520093F4C8 /* QueueStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueStatus.swift; sourceTree = "<group>"; };
+		41176AE62B8167930093F4C8 /* QueueModel_DropDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueModel_DropDelegate.swift; sourceTree = "<group>"; };
 		411F37382B53D84200CC05E6 /* MakeCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MakeCommand.m; sourceTree = "<group>"; };
 		411F373A2B55B77100CC05E6 /* LibraryFolders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryFolders.swift; sourceTree = "<group>"; };
 		411F37442B56DE7400CC05E6 /* PulsingIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PulsingIcon.swift; sourceTree = "<group>"; };
@@ -373,6 +375,7 @@
 			isa = PBXGroup;
 			children = (
 				41176AD92B7BDA9D0093F4C8 /* QueueModel.swift */,
+				41176AE62B8167930093F4C8 /* QueueModel_DropDelegate.swift */,
 				41176ADB2B7BE3EF0093F4C8 /* QueueError.swift */,
 				41176ADD2B7BE5550093F4C8 /* ExtractInfo.swift */,
 				41176AE22B7D3FA00093F4C8 /* QueueInstance.swift */,
@@ -997,6 +1000,7 @@
 				41C839862B52C9E300C6B133 /* Asset.m in Sources */,
 				41C8398B2B52C9E300C6B133 /* MediaAssetHelperKeys.m in Sources */,
 				D5F74A332972D31D00EEE2FE /* ContentView.swift in Sources */,
+				41176AE72B8167930093F4C8 /* QueueModel_DropDelegate.swift in Sources */,
 				41F88AE32B0C839B004A3B58 /* Shell.swift in Sources */,
 				4779AF592A4FC06C00F1B48B /* LabelSettingsView.swift in Sources */,
 				9B4D90DA2A0BAF9E00FE7603 /* GeneralLabelSettingsView.swift in Sources */,
