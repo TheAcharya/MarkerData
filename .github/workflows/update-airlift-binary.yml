@@ -1,0 +1,39 @@
+name: Update Airlift Binary
+
+on:
+  workflow_dispatch:
+
+jobs:
+  update_formula:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Get latest release info
+        id: get_release
+        run: |
+            latest_release_tag=$(curl -sSL https://api.github.com/repos/TheAcharya/Airlift/releases/latest | jq -r '.tag_name | ltrimstr("v")')
+            latest_release_url=$(curl -sSL https://api.github.com/repos/TheAcharya/Airlift/releases/latest | jq -r '.assets[] | select(.name | endswith("macos_x64.zip")) | .browser_download_url')
+
+            echo "Latest release tag: $latest_release_tag"
+            echo "Latest release URL: $latest_release_url"
+
+            curl -L -o airlift.zip $latest_release_url
+
+            unzip airlift.zip -d extracted_files
+
+            rm -rf "./Source/Marker Data/Marker Data/Resources/airlift"
+            cp -R ./extracted_files/dist/airlift "./Source/Marker Data/Marker Data/Resources"
+
+            git status
+            if git rev-parse --verify HEAD >/dev/null 2>&1; then
+                echo "No changes to commit, skipping push."
+            else
+                git config user.name "GitHub Actions"
+                git config user.email "actions@github.com"
+                git add Source
+                git commit -m "Updated Airlift Binary Version $latest_release_tag"
+                git push
+            fi
