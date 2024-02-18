@@ -32,6 +32,8 @@ struct QueueView: View {
                     showScanAlert = true
                 }
             }
+
+            await queueModel.filterMissing()
         }
     }
     
