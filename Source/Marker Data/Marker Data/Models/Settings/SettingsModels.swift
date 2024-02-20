@@ -8,7 +8,7 @@
 import Foundation
 import MarkersExtractor
 
-enum OverrideImageSizeOption: Int, CaseIterable, Identifiable {
+enum OverrideImageSizeOption: Int, CaseIterable, Identifiable, Codable {
     case noOverride = 0
     case overrideImageSizePercent
     case overrideImageWidthAndHeight
@@ -18,42 +18,8 @@ enum OverrideImageSizeOption: Int, CaseIterable, Identifiable {
     }
 }
 
-enum IdNamingMode: Int, CaseIterable, Identifiable {
-
-    case Timecode = 0
-    case Name
-    case Notes
-
-    var id: Int {
-        self.rawValue
-    }
-
-    var displayName : String {
-        switch self {
-            case .Timecode:
-                return "Timecode"
-            case .Name:
-                return "Name"
-            case .Notes:
-                return "Notes"
-        }
-    }
-    
-    var markersExtractor: MarkerIDMode {
-        switch self {
-            case .Timecode:
-                return MarkerIDMode.projectTimecode
-            case .Name:
-                return MarkerIDMode.name
-            case .Notes:
-                return MarkerIDMode.notes
-        }
-    }
-}
-
-enum ImageMode: Int, CaseIterable, Identifiable {
-
-    case PNG = 0
+enum ImageMode: Int, CaseIterable, Identifiable, Codable {
+    case PNG
     case JPG
     case GIF
 
@@ -84,44 +50,12 @@ enum ImageMode: Int, CaseIterable, Identifiable {
     }
 }
 
-enum LabelHorizontalAlignment: Int, CaseIterable, Identifiable {
-
-    case Left = 0
-    case Center
-    case Right
-
-    var id: Int {
-        self.rawValue
-    }
-
-    var displayName : String {
-        switch self {
-            case .Left:
-                return "Left"
-            case .Center:
-                return "Center"
-            case .Right:
-                return "Right"
-        }
-    }
-    
-    var markersExtractor: MarkerLabelProperties.AlignHorizontal {
-        switch self {
-            case .Left:
-                return .left
-            case .Center:
-                return .center
-            case .Right:
-                return .right
-        }
-    }
-}
-
-enum LabelVerticalAlignment: Int, CaseIterable, Identifiable {
-
-    case Top = 0
-    case Center
-    case Bottom
+enum FontNameType: Int, CaseIterable, Identifiable, Codable {
+    case arial
+    case courierNew
+    case helvetica
+    case menlo
+    case sourceCodePro
 
     var id: Int {
         self.rawValue
@@ -129,76 +63,40 @@ enum LabelVerticalAlignment: Int, CaseIterable, Identifiable {
 
     var displayName : String {
         switch self {
-            case .Top:
-                return "Top"
-            case .Center:
-                return "Center"
-            case .Bottom:
-                return "Bottom"
-        }
-    }
-    var markersExtractor: MarkerLabelProperties.AlignVertical {
-        switch self {
-
-            case .Top:
-                return .top
-            case .Center:
-                return .center
-            case .Bottom:
-                return .bottom
-        }
-    }
-}
-
-enum FontNameType: Int, CaseIterable, Identifiable {
-    
-    case Arial = 0
-    case CourierNew
-    case Helvetica
-    case Menlo
-    case SourceCodePro
-
-    var id: Int {
-        self.rawValue
-    }
-
-    var displayName : String {
-        switch self {
-            case .Menlo:
+            case .menlo:
                 return "Menlo"
-            case .Arial:
+            case .arial:
                 return "Arial"
-            case .Helvetica:
+            case .helvetica:
                 return "Helvetica"
-            case .SourceCodePro:
+            case .sourceCodePro:
                 return "Source Code Pro"
-            case .CourierNew:
+            case .courierNew:
                 return "Courier New"
         }
     }
 
     var markersExtractor: String {
         switch self {
-            case .Menlo:
+            case .menlo:
                 return "Menlo-Regular"
-            case .Arial:
+            case .arial:
                 return "Arial"
-            case .Helvetica:
+            case .helvetica:
                 return "Helvetica"
-            case .SourceCodePro:
+            case .sourceCodePro:
                 return "Source Code Pro"
-            case .CourierNew:
+            case .courierNew:
                 return "Courier New"
         }
     }
 
 }
 
-enum FontStyleType: Int, CaseIterable, Identifiable {
-
-    case Regular = 0
-    case Italic
-    case Bold
+enum FontStyleType: Int, CaseIterable, Identifiable, Codable {
+    case regular
+    case italic
+    case bold
 
     var id: Int {
         self.rawValue
@@ -206,63 +104,29 @@ enum FontStyleType: Int, CaseIterable, Identifiable {
 
     var displayName : String {
         switch self {
-            case .Regular:
+            case .regular:
                 return "Regular"
-            case .Italic:
+            case .italic:
                 return "Italic"
-            case .Bold:
-                return  "Bold"
+            case .bold:
+                return "Bold"
         }
     }
     
     var markersExtractor: String {
         switch (self) {
                 
-            case .Regular:
+            case .regular:
                 return "Regular"
-            case .Italic:
+            case .italic:
                 return "Italic"
-            case .Bold:
+            case .bold:
                 return "Bold"
         }
     }
 }
 
-
-enum UserFolderFormat: Int, CaseIterable, Identifiable {
-
-    case Short
-    case Medium
-    case Long
-
-    var id: Int {
-        self.rawValue
-    }
-
-    var displayName : String  {
-        switch (self) {
-            case .Short:
-                return "Short"
-            case .Medium:
-                return "Medium"
-            case .Long:
-                return "Long"
-        }
-    }
-
-    var markersExtractor: ExportFolderFormat {
-        switch (self) {
-            case .Short:
-                return .short
-            case .Medium:
-                return .medium
-            case .Long:
-                return .long
-        }
-    }
-}
-
-struct OverlayItem: Identifiable, Equatable {
+struct OverlayItem: Identifiable, Equatable, Codable {
     let overlay: ExportField
     
     var name: String {

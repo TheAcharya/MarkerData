@@ -11,7 +11,6 @@ import FilePicker
 
 struct ExportDestinationPicker: View {
     @EnvironmentObject var settings: SettingsContainer
-    @EnvironmentObject var configurationsModel: ConfigurationsModel
     
     @State var exportDestinationText = ""
     @State var showWarning = false
@@ -64,17 +63,18 @@ struct ExportDestinationPicker: View {
         .background(.black)
         .clipShape(RoundedRectangle(cornerRadius: 6))
         .shadow(color: .white, radius: 1)
-        .onAppear {
-            self.configurationUpdaterCancellable = configurationsModel.changePublisher
-                .sink {
-                    updateExportDestinationText()
-                }
-            
-            self.settingsUpdateCancallable = self.settings.store.objectWillChange
-                .sink {
-                    updateExportDestinationText()
-                }
-        }
+        // TODO: check this
+//        .onAppear {
+//            self.configurationUpdaterCancellable = configurationsModel.changePublisher
+//                .sink {
+//                    updateExportDestinationText()
+//                }
+//            
+//            self.settingsUpdateCancallable = self.settings.store.objectWillChange
+//                .sink {
+//                    updateExportDestinationText()
+//                }
+//        }
         .onDisappear {
             self.settingsUpdateCancallable?.cancel()
             self.configurationUpdaterCancellable?.cancel()

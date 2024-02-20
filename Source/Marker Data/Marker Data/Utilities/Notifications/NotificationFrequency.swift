@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum NotificationFrequency: Int, CaseIterable, Identifiable {
+enum NotificationFrequency: Int, CaseIterable, Identifiable, Codable {
     case never = 0
     case onlyOnCompletion = 1
     case allSteps = 2

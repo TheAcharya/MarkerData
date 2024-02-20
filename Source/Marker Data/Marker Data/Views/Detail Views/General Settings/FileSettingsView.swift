@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import MarkersExtractor
 
 struct FileSettingsView: View {
     @EnvironmentObject var settings: SettingsContainer
@@ -45,9 +46,10 @@ struct FileSettingsView: View {
                 Text("Folder Format:")
                 // .border(.green)
                 
-                Picker("", selection: $settings.store.selectedFolderFormat) {
-                    ForEach(UserFolderFormat.allCases) { item in
-                        Text(item.displayName).tag(item)
+                Picker("", selection: $settings.store.folderFormat) {
+                    ForEach(ExportFolderFormat.allCases) { item in
+                        Text(item.displayName)
+                            .tag(item)
                     }
                 }
                 .labelsHidden()
@@ -121,11 +123,9 @@ struct FileSettingsView: View {
 #Preview {
     @StateObject var settings = SettingsContainer()
     @StateObject var databaseManager = DatabaseManager()
-    @StateObject var configurationsModel = ConfigurationsModel()
     
     return FileSettingsView()
         .padding()
         .environmentObject(settings)
         .environmentObject(databaseManager)
-        .environmentObject(configurationsModel)
 }

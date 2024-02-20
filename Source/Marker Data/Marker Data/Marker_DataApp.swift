@@ -12,7 +12,6 @@ struct Marker_DataApp: App {
     // Environment objects
     @StateObject private var settings: SettingsContainer
     @StateObject private var extractionModel: ExtractionModel
-    @StateObject var configurationsModel: ConfigurationsModel
     @StateObject var databaseManager: DatabaseManager
     @StateObject var queueModel: QueueModel
     
@@ -38,11 +37,8 @@ struct Marker_DataApp: App {
             databaseManager: databaseManager
         )
         
-        let configurationsModel = ConfigurationsModel()
-        
         self._settings = StateObject(wrappedValue: settings)
         self._extractionModel = StateObject(wrappedValue: extractionModel)
-        self._configurationsModel = StateObject(wrappedValue: configurationsModel)
         self._databaseManager = StateObject(wrappedValue: databaseManager)
         self._queueModel = StateObject(wrappedValue: queueModel)
     }
@@ -58,7 +54,6 @@ struct Marker_DataApp: App {
                 sidebarSelection: $sidebarSelection
             )
             .environmentObject(settings)
-            .environmentObject(configurationsModel)
             .environmentObject(databaseManager)
             // Force Dark Mode On Content View
             .preferredColorScheme(.dark)
@@ -98,7 +93,6 @@ struct Marker_DataApp: App {
             SidebarCommands()
             
             ConfigurationCommands(
-                configurationsModel: configurationsModel,
                 settings: settings,
                 sidebarSelection: $sidebarSelection
             )

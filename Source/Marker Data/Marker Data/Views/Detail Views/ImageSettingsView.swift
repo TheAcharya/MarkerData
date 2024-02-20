@@ -24,8 +24,8 @@ struct ImageSettingsView: View {
                     Text("Naming Mode:")
 
                     //Picker To Change Selected ID Naming Mode
-                    Picker("", selection: $settings.store.selectedIDNamingMode) {
-                        ForEach(IdNamingMode.allCases) { item in
+                    Picker("", selection: $settings.store.IDNamingMode) {
+                        ForEach(MarkerIDMode.allCases) { item in
                             Text(item.displayName)
                                 .tag(item)
                         }
@@ -77,7 +77,7 @@ struct ImageSettingsView: View {
                         
                         TextField(
                             "",
-                            value: $settings.store.selectedImageSizePercent,
+                            value: $settings.store.imageSizePercent,
                             format: .percent
                         )
                         .labelsHidden()
@@ -86,7 +86,7 @@ struct ImageSettingsView: View {
                         
                         Stepper(
                             "",
-                            value: $settings.store.selectedImageSizePercent,
+                            value: $settings.store.imageSizePercent,
                             in: 0...100
                         )
                         .labelsHidden()
@@ -144,7 +144,7 @@ struct ImageSettingsView: View {
 
                     TextField(
                         "",
-                        value: $settings.store.selectedJPEGImageQuality,
+                        value: $settings.store.JPEGImageQuality,
                         format: .percent
                     )
                     .labelsHidden()
@@ -153,7 +153,7 @@ struct ImageSettingsView: View {
 
                     Stepper(
                         "",
-                        value: $settings.store.selectedJPEGImageQuality,
+                        value: $settings.store.JPEGImageQuality,
                         in: 0...100
                     )
                     .labelsHidden()
@@ -162,7 +162,7 @@ struct ImageSettingsView: View {
                 }
 
             }
-            .disabled(settings.store.selectedImageMode != .JPG)
+            .disabled(settings.store.imageMode != .JPG)
 
             Group {
 
@@ -177,7 +177,7 @@ struct ImageSettingsView: View {
 
                     TextField(
                         "",
-                        value: $settings.store.selectedGIFFPS,
+                        value: $settings.store.GIFFPS,
                         format: .number.precision(.fractionLength(0))
                     )
                     .labelsHidden()
@@ -186,7 +186,7 @@ struct ImageSettingsView: View {
 
                     Stepper(
                         "",
-                        value: $settings.store.selectedGIFFPS,
+                        value: $settings.store.GIFFPS,
                         in: 0...100
                     )
                     .labelsHidden()
@@ -200,7 +200,7 @@ struct ImageSettingsView: View {
 
                     TextField(
                         "",
-                        value: $settings.store.selectedGIFLength,
+                        value: $settings.store.GIFLength,
                         format: .number.precision(.fractionLength(0))
                     )
                     .labelsHidden()
@@ -209,7 +209,7 @@ struct ImageSettingsView: View {
 
                     Stepper(
                         "",
-                        value: $settings.store.selectedGIFLength,
+                        value: $settings.store.GIFLength,
                         in: 0...100
                     )
                     .labelsHidden()
@@ -217,7 +217,7 @@ struct ImageSettingsView: View {
 
                 }
             }
-            .disabled(settings.store.selectedImageMode != .GIF)
+            .disabled(settings.store.imageMode != .GIF)
 
         }
         .overlayHelpButton(url: Links.imageSettingsURL)

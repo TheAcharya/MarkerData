@@ -8,7 +8,7 @@
 import SwiftUI
 import AppKit
 
-extension Color {
+extension Color: Codable {
     /// Init from a hex string. I.e #FFFFFF for white
     init(hex: String) {
         let hex = hex.trimmingCharacters(in: CharacterSet(charactersIn: "#"))
@@ -40,6 +40,18 @@ extension Color {
     }
     
     static let darkPurple = Color(#colorLiteral(red: 0.2784313725, green: 0.03137254902, blue: 0.5843137255, alpha: 1))
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(self.hex)
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        let hex = try container.decode(String.self)
+
+        self.init(hex: hex)
+    }
 }
 
 

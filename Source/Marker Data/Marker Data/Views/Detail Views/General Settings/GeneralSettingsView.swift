@@ -35,14 +35,12 @@ struct GeneralSettingsView: View {
 struct GeneralSettingsView_Previews: PreviewProvider {
     @StateObject static var settings = SettingsContainer()
     @StateObject static var databaseManager = DatabaseManager()
-    @StateObject static var configurationsModel = ConfigurationsModel()
     
     static var previews: some View {
         GeneralSettingsView()
             .preferredColorScheme(.dark)
             .environmentObject(settings)
             .environmentObject(databaseManager)
-            .environmentObject(configurationsModel)
             .padding()
     }
     

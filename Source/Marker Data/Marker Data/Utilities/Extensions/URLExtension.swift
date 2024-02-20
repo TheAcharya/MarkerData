@@ -20,7 +20,13 @@ extension URL {
         Self.markerDataLibraryFolder
             .appendingPathComponent("Configurations", conformingTo: .folder)
     }
-    
+
+    /// ~/Library/Application Support/Marker Data/preferences.json
+    public static var preferencesJSON: URL {
+        Self.markerDataLibraryFolder
+            .appendingPathComponent("preferences", conformingTo: .json)
+    }
+
     /// Path to ~/Library/Application Support/Marker Data/Database/Profiles
     public static var databaseProfilesFolder: URL {
         Self.markerDataLibraryFolder

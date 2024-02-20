@@ -12,7 +12,6 @@ import MarkersExtractor
 struct ExportProfilePicker: View {
     @EnvironmentObject var settings: SettingsContainer
     @EnvironmentObject var databaseManager: DatabaseManager
-    @EnvironmentObject var configurationsModel: ConfigurationsModel
     
     /// Set in onAppear
     @State var selection: UnifiedExportProfile? = UnifiedExportProfile.defaultProfile()
@@ -56,12 +55,13 @@ struct ExportProfilePicker: View {
             }
         }
         .onAppear {
-            self.configurationUpdaterCancellable = configurationsModel.changePublisher
-                .sink {
-                    if let unifiedProfile = UnifiedExportProfile.load() {
-                        self.selection = unifiedProfile
-                    }
-                }
+            // TODO: check this
+//            self.configurationUpdaterCancellable = configurationsModel.changePublisher
+//                .sink {
+//                    if let unifiedProfile = UnifiedExportProfile.load() {
+//                        self.selection = unifiedProfile
+//                    }
+//                }
             
             // To avoid getting errors like Picker: the selection ... is invalid
             // Uncomment the code below to set the selection with a delay

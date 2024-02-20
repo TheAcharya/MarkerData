@@ -7,181 +7,131 @@
 
 import Foundation
 import SwiftUI
-import Combine
 import MarkersExtractor
-import AppKit
 
-class SettingsStore: ObservableObject {
-    @AppStorage("exportFolderURL") var exportFolderURL: URL?
+struct SettingsStore: Codable, Hashable, Equatable, Identifiable {
+    var name: String
 
-    @AppStorage("selectedFolderFormat") private var selectedFolderFormatRawValue: Int = UserFolderFormat.Medium.rawValue
-    var selectedFolderFormat: UserFolderFormat{
-        get { UserFolderFormat(rawValue: selectedFolderFormatRawValue) ?? .Medium }
-        set { selectedFolderFormatRawValue = newValue.rawValue }
+    var id: String {
+        self.name
     }
 
-    @AppStorage("selectedImageMode") private var selectedImageModeRawValue: Int = ImageMode.PNG.rawValue
-    var selectedImageMode: ImageMode {
-        get { ImageMode(rawValue: selectedImageModeRawValue) ?? .PNG }
-        set { selectedImageModeRawValue = newValue.rawValue }
+    var jsonURL: URL {
+        return URL.configurationsFolder
+            .appendingPathComponent(self.name, conformingTo: .json)
     }
-    @AppStorage("isUploadEnabled") var isUploadEnabled = false
-    
-    //Are Subframes Enabled
-    @AppStorage("enabledSubframes") var enabledSubframes = false
-    
-    @AppStorage("enabledNoMedia") var enabledNoMedia = false
-    
-    @AppStorage("selectedIDNamingMode") private var selectedIDNamingModeRawValue: Int = IdNamingMode.Timecode.rawValue
-    var selectedIDNamingMode: IdNamingMode {
-        get { IdNamingMode(rawValue: selectedIDNamingModeRawValue) ?? .Name }
-        set { selectedIDNamingModeRawValue = newValue.rawValue }
-    }
-    
-    @AppStorage("selectedMarkersSource") var markersSource: MarkersSource = .markers
+
+    static let defaultName = "Default"
+
+    var exportFolderURL: URL?
+    var folderFormat: ExportFolderFormat
+
+    var imageMode: ImageMode
+    var enabledSubframes: Bool
+    var enabledNoMedia: Bool
+
+    var IDNamingMode: MarkerIDMode
+    var markersSource: MarkersSource
 
     // MARK: Overall image size settings
-    
+
     // If .noOverride image size, image width andd image hight will be ignored
-    @AppStorage("overrideImageSize") var overrideImageSize: OverrideImageSizeOption = .noOverride
+    var overrideImageSize: OverrideImageSizeOption
     
     // Will be ignored if override image size is off
-    @AppStorage("selectedImageSizePercent") var selectedImageSizePercent: Int = 100
-    
-    // Will be ignored if override image size is off
-    @AppStorage("imageWidth") var imageWidth: Int = 1920
+    var imageSizePercent: Int
 
     // Will be ignored if override image size is off
-    @AppStorage("imageHeight") var imageHeight: Int = 1080
+    var imageWidth: Int
+
+    // Will be ignored if override image size is off
+    var imageHeight: Int
     
     // MARK: Image file type specific settings
-    
-    //Default Selected JPG Image Quality
-    @AppStorage("selectedJPEGImageQuality") var selectedJPEGImageQuality: Int = 100
+    var JPEGImageQuality: Int
+    var GIFFPS: Int
+    var GIFLength: Int
 
-    //Default Set GIF FPS
-    @AppStorage("selectedGIFFPS") var selectedGIFFPS: Int = 10
+    var fontNameType: FontNameType
+    var fontStyleType: FontStyleType
+    
+    var fontSize: Int
 
-    //Default Set GIF Length Span
-    @AppStorage("selectedGIFLength") var selectedGIFLength: Int = 2
-
-    //Default Selected Font
-    @AppStorage("selectedFontNameType") private var selectedFontNameTypeRawValue: Int = FontNameType.Menlo.rawValue
-    var selectedFontNameType: FontNameType {
-        get { FontNameType(rawValue: selectedFontNameTypeRawValue) ?? .Menlo }
-        set { selectedFontNameTypeRawValue = newValue.rawValue }
-    }
-    
-    @AppStorage("selectedFontStyleType") private var selectedFontStyleTypeRawValue: Int = FontStyleType.Regular.rawValue
-    var selectedFontStyleType: FontStyleType {
-        get { FontStyleType(rawValue: selectedFontStyleTypeRawValue) ?? .Regular }
-        set { selectedFontStyleTypeRawValue = newValue.rawValue }
-    }
-    
-    var selectFontNameStyle: String {
-        let name = self.selectedFontNameType.markersExtractor + "-" + selectedFontStyleType.markersExtractor
-        return name
-    }
-    
-    @AppStorage("selectedFontSize") var selectedFontSize: Int = 30
-    
-    @AppStorage("selectedStrokeSize") var selectedStrokeSize: Int = 0
-    @AppStorage("isStrokeSizeAuto") var isStrokeSizeAuto: Bool = true
+    var strokeSize: Int
+    var isStrokeSizeAuto: Bool
     
     // Font color and opacity
-    var selectedFontColor: Color {
-        get {
-            guard let hexString: String = UserDefaults.standard.string(forKey: "selectedFontColor") else {
-                return .white
-            }
-            
-            return Color(hex: hexString)
-        }
-        
-        set(newColor) {
-            UserDefaults.standard.set(newColor.hex, forKey: "selectedFontColor")
-        }
-    }
-    
-    @AppStorage("selectedFontColorOpacity") var selectedFontColorOpacity: Double = 100
-    
-    // Stroke color
-    var selectedStrokeColor: Color {
-        get {
-            guard let hexString: String = UserDefaults.standard.string(forKey: "selectedStrokeColor") else {
-                // Default
-                return .black
-            }
-            
-            return Color(hex: hexString)
-        }
-        
-        set(newColor) {
-            UserDefaults.standard.set(newColor.hex, forKey: "selectedStrokeColor")
-        }
-    }
-    
+    var fontColor: Color
+    var fontColorOpacity: Double
 
-    @AppStorage("selectedHorizontalAlignment") private var selectedHorizonalAlignmentRawValue: Int = LabelHorizontalAlignment.Left.rawValue
-    var selectedHorizonalAlignment: LabelHorizontalAlignment {
-        get { LabelHorizontalAlignment(rawValue: selectedHorizonalAlignmentRawValue) ?? .Left }
-        set { selectedHorizonalAlignmentRawValue = newValue.rawValue }
-    }
+    // Stroke color
+    var strokeColor: Color
     
-    @AppStorage("selectedVerticalAlignment") private var selectedVerticalAlignmentRawValue: Int = LabelVerticalAlignment.Top.rawValue
-     var selectedVerticalAlignment: LabelVerticalAlignment {
-        get { LabelVerticalAlignment(rawValue: selectedVerticalAlignmentRawValue) ?? .Top }
-        set { selectedVerticalAlignmentRawValue = newValue.rawValue }
-    }
-    
-    var overlays: [ExportField] {
-        get {
-            // Safely get name array of overlay options
-            guard let nameArray: [String] = UserDefaults.standard.stringArray(forKey: "selectedOverlays") else {
-                return []
-            }
-            
-            // Convert to array with optional types
-            let optionalOverlayArray: [ExportField?] = nameArray.map { ExportField(rawValue: $0) }
-            
-            // Remove nil elements
-            let overlayArray = optionalOverlayArray.compactMap { $0 }
-            
-            return overlayArray
-        }
-        
-        set(newOverlays) {
-            let nameArray = newOverlays.map { $0.rawValue }
-            
-            UserDefaults.standard.set(nameArray, forKey: "selectedOverlays")
-        }
-    }
-    
-    func flipOverlayState(overlay: ExportField) {
+    var overlays: [ExportField]
+
+    mutating func flipOverlayState(overlay: ExportField) {
         if self.overlays.contains(overlay) {
             self.overlays = self.overlays.filter { $0 != overlay }
         } else {
             self.overlays = self.overlays + [overlay]
         }
     }
-    
-    @AppStorage("copyrightText") var copyrightText: String = ""
-    
-    @AppStorage("hideLabelNames") var hideLabelNames: Bool = false
+
+    var horizonalAlignment: MarkerLabelProperties.AlignHorizontal
+    var verticalAlignment: MarkerLabelProperties.AlignVertical
+
+    var copyrightText: String
+    var hideLabelNames: Bool
     
     // MARK: Progress reporting settings
-    
-    @AppStorage("notificationFrequency") var notificationFrequency: NotificationFrequency = .onlyOnCompletion
-    @AppStorage("showDockProgress") var showDockProgress: Bool = true
-    
+
+    var notificationFrequency: NotificationFrequency
+    var showDockProgress: Bool
+
+    /// Default settings
+    public static func defaults() -> Self {
+        Self.init(
+            name: Self.defaultName,
+            folderFormat: .medium,
+            imageMode: .PNG,
+            enabledSubframes: false,
+            enabledNoMedia: false,
+            IDNamingMode: .projectTimecode,
+            markersSource: .markers,
+            overrideImageSize: .noOverride,
+            imageSizePercent: 100,
+            imageWidth: 1920,
+            imageHeight: 1080,
+            JPEGImageQuality: 100,
+            GIFFPS: 10,
+            GIFLength: 2,
+            fontNameType: .menlo,
+            fontStyleType: .regular,
+            fontSize: 30,
+            strokeSize: 0,
+            isStrokeSizeAuto: true,
+            fontColor: .white,
+            fontColorOpacity: 100,
+            strokeColor: .black,
+            overlays: [],
+            horizonalAlignment: .left,
+            verticalAlignment: .top,
+            copyrightText: "",
+            hideLabelNames: false,
+            notificationFrequency: .onlyOnCompletion,
+            showDockProgress: true
+        )
+    }
+
     // MARK: CLI settings
-    
-    func markersExtractorSettings(fcpxmlFileUrl: URL) throws -> MarkersExtractor.Settings {
+
+    /// Returns the settings needed for a ``MarkersExtractor`` object
+    public func markersExtractorSettings(fcpxmlFileUrl: URL) throws -> MarkersExtractor.Settings {
         // Export format
         guard let exportFormat = UnifiedExportProfile.load() else {
             throw ExtractError.unifiedExportProfileReadError
         }
-        
+
         // Output dir
         let outputDirURL: URL = self.exportFolderURL ?? URL.FCPExportCacheFolder
         
@@ -199,15 +149,15 @@ class SettingsStore: ObservableObject {
         case .noOverride:
             break
         case .overrideImageSizePercent:
-            imageSizePercent = self.selectedImageSizePercent
+            imageSizePercent = self.imageSizePercent
         case .overrideImageWidthAndHeight:
             imageWidth = self.imageWidth
             imageHeight = self.imageHeight
         }
         
         // Stroke size
-        let strokeSize: Int? = self.isStrokeSizeAuto ? nil : self.selectedStrokeSize
-        
+        let strokeSize: Int? = self.isStrokeSizeAuto ? nil : self.strokeSize
+
         let settings = try MarkersExtractor.Settings(
             fcpxml: .init(at: fcpxmlFileUrl),
             outputDir: outputDirURL,
@@ -215,28 +165,53 @@ class SettingsStore: ObservableObject {
             enableSubframes: self.enabledSubframes,
             markersSource: self.markersSource,
             excludeRoles: excludeRoleNames,
-            imageFormat: self.selectedImageMode.markersExtractor,
-            imageQuality: Int(self.selectedJPEGImageQuality),
+            imageFormat: self.imageMode.markersExtractor,
+            imageQuality: Int(self.JPEGImageQuality),
             imageWidth: imageWidth,
             imageHeight: imageHeight,
             imageSizePercent: imageSizePercent,
-            gifFPS: Double(self.selectedGIFFPS),
-            gifSpan: TimeInterval(self.selectedGIFLength),
-            idNamingMode: self.selectedIDNamingMode.markersExtractor,
+            gifFPS: Double(self.GIFFPS),
+            gifSpan: TimeInterval(self.GIFLength),
+            idNamingMode: self.IDNamingMode,
             imageLabels: self.overlays,
             imageLabelCopyright: self.copyrightText,
-            imageLabelFont: self.selectedFontNameType.markersExtractor,
-            imageLabelFontMaxSize: self.selectedFontSize,
-            imageLabelFontOpacity: Int(self.selectedFontColorOpacity).clamped(to: 0...100),
-            imageLabelFontColor: self.selectedFontColor.hex,
-            imageLabelFontStrokeColor: self.selectedStrokeColor.hex,
+            imageLabelFont: self.fontNameType.markersExtractor,
+            imageLabelFontMaxSize: self.fontSize,
+            imageLabelFontOpacity: Int(self.fontColorOpacity).clamped(to: 0...100),
+            imageLabelFontColor: self.fontColor.hex,
+            imageLabelFontStrokeColor: self.strokeColor.hex,
             imageLabelFontStrokeWidth: strokeSize,
-            imageLabelAlignHorizontal: self.selectedHorizonalAlignment.markersExtractor,
-            imageLabelAlignVertical: self.selectedVerticalAlignment.markersExtractor,
+            imageLabelAlignHorizontal: self.horizonalAlignment,
+            imageLabelAlignVertical: self.verticalAlignment,
             imageLabelHideNames: self.hideLabelNames,
-            exportFolderFormat: self.selectedFolderFormat.markersExtractor
+            exportFolderFormat: self.folderFormat
         )
         
         return settings
+    }
+
+    public func saveAsConfiguration() async throws {
+        try await self.save(at: jsonURL)
+    }
+
+    public func saveAsCurrent() async throws {
+        try await self.save(at: URL.preferencesJSON)
+    }
+
+    private func save(at url: URL) async throws {
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = .prettyPrinted
+
+        let data = try encoder.encode(self)
+
+        try data.write(to: url)
+    }
+
+    public func delete() throws {
+        try jsonURL.trashOrDelete()
+    }
+
+    public func isDefault() -> Bool {
+        return self.name == Self.defaultName
     }
 }
