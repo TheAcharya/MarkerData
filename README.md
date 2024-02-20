@@ -54,6 +54,9 @@
 
 ## Demo
 
+### Queue in Action
+<p align="center"> <img src="https://github.com/TheAcharya/MarkerData-Website/blob/main/docs/assets/md-queue-01.gif?raw=true"> </p>
+
 ## Screenshot
 
 <p align="center"> <img src="https://github.com/TheAcharya/MarkerData-Website/blob/main/docs/assets/md-main-share.png?raw=true"> </p>
