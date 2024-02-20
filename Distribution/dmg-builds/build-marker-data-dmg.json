@@ -2,7 +2,7 @@
   "title": "Marker Data",
   "icon": "marker-data-dmg-icon.icns",
   "icon-size": 125,
-  "background": "dmg-background.png",
+  "background": "dmg-background@2x.png",
    "window": {
     "position": { "x": 200, "y": 200 },
     "size": { "width": 750, "height": 450 }
