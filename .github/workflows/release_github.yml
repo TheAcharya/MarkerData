@@ -116,6 +116,7 @@ jobs:
         cp -R ./Distribution/dmg-builds/build-marker-data-dmg.json "$PARENT/dist/dmg-builds/"
         cp -R $PARENT/dist/dmg-builds/app-build/Build/Products/${{ env.CONFIG }}/Marker\ Data.app "$PARENT/dist/dmg-builds/latest-build/"
         cp -R ./Distribution/dmg-builds/dmg-background.png "$PARENT/dist/dmg-builds/"
+        cp -R ./Distribution/dmg-builds/dmg-background@2x.png "$PARENT/dist/dmg-builds/"
         cp -R ./Distribution/dmg-builds/marker-data-dmg-icon.icns "$PARENT/dist/dmg-builds/"
         
     - name: Codesign Marker Data Workflow Extension
