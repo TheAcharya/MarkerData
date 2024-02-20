@@ -54,8 +54,11 @@
 
 ## Demo
 
-### Queue in Action
+<details><summary>Queue in Action</summary>
+<p>
 <p align="center"> <img src="https://github.com/TheAcharya/MarkerData-Website/blob/main/docs/assets/md-queue-01.gif?raw=true"> </p>
+</p>
+</details>
 
 ## Screenshot
 
