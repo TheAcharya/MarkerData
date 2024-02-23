@@ -20,7 +20,7 @@ struct Links {
     
     static let dropboxAppConsole = URL(string: "https://www.dropbox.com/developers/apps")!
     
-    // TODO: Add airtable notion template
-    static let airtableTemplateURL = URL(string: "https://markerdata.theacharya.co/")!
-    static let notionTemplateURL = URL(string: "https://markerdata.theacharya.co/")!
+    // Notion & Airtable Template Links
+    static let notionTemplateURL = URL(string: "https://markerdata.theacharya.co/user-guide/databases/#notion-template")!
+    static let airtableTemplateURL = URL(string: "https://markerdata.theacharya.co/user-guide/databases/#airtable-template")!
 }
