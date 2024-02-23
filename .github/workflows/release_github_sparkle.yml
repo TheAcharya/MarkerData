@@ -1,0 +1,334 @@
+name: release_github_sparkle
+
+on:
+  workflow_dispatch:
+    inputs:
+      release:
+        description: 'Release after build'
+        required: true
+        default: 'no'
+      
+jobs:
+  build:
+    runs-on: macos-14
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: List Xcode installations
+      run: sudo ls -1 /Applications | grep "Xcode"
+      
+    - name: Select Xcode 15.2
+      run: sudo xcode-select -s /Applications/Xcode_15.2.app/Contents/Developer
+    
+    - name: Change to Xcode Project Directory
+      run: cd Source/Marker\ Data
+
+    - name: Install node-appdmg
+      run: npm install -g appdmg
+      
+    - name: Create Distribution Directory
+      run: mkdir -p dist/dmg-builds
+    
+    - name: Prepare Directories
+      run: |
+        PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+        mkdir -p "$PARENT/dist/dmg-builds/sparkle"
+        mkdir -p "$PARENT/dist/dmg-builds/latest-build"
+        mkdir -p "$PARENT/dist/dmg-builds/app-build"
+        mkdir -p "$PARENT/dist/dmg-builds/sdk"
+
+    - name: Copy Local Distribution 
+      run: |
+        mkdir -p dist/dmg-builds
+        mkdir -p dist/dmg-builds/latest-build
+        cp -R ./Distribution/dmg-builds/. ./dist/dmg-builds
+
+    - name: Verify Copied Files
+      run: |
+        echo "Checking copied files..."
+        ls -l ./dist/dmg-builds
+        ls -l ./dist/dmg-builds/latest-build
+        ls -l ./dist/dmg-builds/uninstaller/include
+        
+    - name: Create Distribution Directory
+      run: mkdir -p dist/dmg-builds/dmg-output
+      
+    - name: Verify Copied Files
+      run: |
+        echo "Checking copied files..."
+        ls -l ./dist/dmg-builds/dmg-output
+        
+    - name: Copy Workflow Extensions SDK
+      run: |
+        mkdir -p dist/dmg-builds/sdk
+        cp -R ./SDK/Workflow_Extensions_1.0.2.dmg ./dist/dmg-builds/sdk
+        
+    - name: Mount Workflow Extensions DMG
+      run: |
+        hdiutil attach ./dist/dmg-builds/sdk/Workflow_Extensions_1.0.2.dmg
+    
+    - name: Install Workflow Extensions SDK
+      run: |
+        sudo installer -pkg /Volumes/WorkflowExtensionsSDK/WorkflowExtensionsSDK.pkg -target /
+    
+    - name: View Volume Directory
+      run: |
+        ls /Volumes
+
+    - name: View Workflow Extensions SDK DMG Directory
+      run: |
+        ls /Volumes/WorkflowExtensionsSDK
+
+    - name: Unmount Workflow Extensions SDK DMG
+      run: |
+        hdiutil detach /Volumes/WorkflowExtensionsSDK
+
+    - name: Check Installed Workflow Extensions SDK Directory
+      run: |
+        ls /Library/Developer/SDKs
+
+    - name: Build Marker Data
+      run: |
+        PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+        PROJECT_PATH="Source/Marker Data/Marker Data.xcodeproj"
+        SCHEME="Marker Data"
+        CONFIGURATION="Release"
+        DESTINATION="platform=macOS"
+        BUILD_FOLDER="$PARENT/dist/dmg-builds/app-build"
+        echo "PARENT=$PARENT" >> $GITHUB_ENV
+        echo "CONFIG=$CONFIGURATION" >> $GITHUB_ENV
+
+        xcodebuild -project "$PROJECT_PATH" -scheme "$SCHEME" -configuration "$CONFIGURATION" -destination "$DESTINATION" -derivedDataPath "$BUILD_FOLDER" clean build CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO -allowProvisioningUpdates | xcpretty
+        
+    - name: Prepare VM Directories
+      run: |
+        PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+        mkdir -p "$PARENT/dist/dmg-builds"
+        mkdir -p "$PARENT/dist/dmg-builds/sparkle"
+        mkdir -p "$PARENT/dist/dmg-builds/latest-build"
+        mkdir -p "$PARENT/dist/dmg-builds/dmg-output"
+        mkdir -p "$PARENT/dist/dmg-builds/uninstaller/include"
+        
+        cp -R ./Distribution/dmg-builds/entitlements.plist "$PARENT/dist/dmg-builds/"
+        cp -R ./Distribution/dmg-builds/uninstaller/include/applet.icns "$PARENT/dist/dmg-builds/uninstaller/include/"
+        cp -R ./Distribution/dmg-builds/uninstaller/include/entitlements.plist "$PARENT/dist/dmg-builds/uninstaller/include/"
+        cp -R ./Distribution/dmg-builds/uninstaller/include/Uninstall\ Marker\ Data.scpt "$PARENT/dist/dmg-builds/uninstaller/include/"
+        cp -R ./Distribution/dmg-builds/build-marker-data-dmg.json "$PARENT/dist/dmg-builds/"
+        cp -R $PARENT/dist/dmg-builds/app-build/Build/Products/${{ env.CONFIG }}/Marker\ Data.app "$PARENT/dist/dmg-builds/latest-build/"
+        cp -R ./Distribution/dmg-builds/dmg-background.png "$PARENT/dist/dmg-builds/"
+        cp -R ./Distribution/dmg-builds/dmg-background@2x.png "$PARENT/dist/dmg-builds/"
+        cp -R ./Distribution/dmg-builds/marker-data-dmg-icon.icns "$PARENT/dist/dmg-builds/"
+        cp -R ./Distribution/dmg-builds/sparkle/sign_update "$PARENT/dist/dmg-builds/sparkle/"
+        
+    - name: Codesign Marker Data Workflow Extension
+      env: 
+        APPLE_CERT_DATA: ${{ secrets.APPLE_CERT_DATA }}
+        APPLE_CERT_PASSWORD: ${{ secrets.APPLE_CERT_PASSWORD }}
+        KEYCHAIN_PASSWORD_MX: ${{ secrets.KEYCHAIN_PASSWORD_MX }}
+        APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+      run: |
+        PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+        ENTITLE="$PARENT/dist/dmg-builds/entitlements.plist"
+        APPX="$PARENT/dist/dmg-builds/latest-build/Marker Data.app/Contents/PlugIns/Workflow Extension.appex"
+        
+        echo $APPLE_CERT_DATA | base64 --decode > certificate.p12
+        security create-keychain -p $KEYCHAIN_PASSWORD_MX build-mx.keychain
+        security default-keychain -s build-mx.keychain
+        security unlock-keychain -p $KEYCHAIN_PASSWORD_MX build-mx.keychain
+        security import certificate.p12 -k build-mx.keychain -P $APPLE_CERT_PASSWORD -T /usr/bin/codesign
+        security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k $KEYCHAIN_PASSWORD_MX build-mx.keychain
+        /usr/bin/codesign --force -s $APPLE_TEAM_ID --options runtime --entitlements "$ENTITLE" "$APPX" -v
+        
+    - name: Codesign Marker Data
+      env: 
+        APPLE_CERT_DATA: ${{ secrets.APPLE_CERT_DATA }}
+        APPLE_CERT_PASSWORD: ${{ secrets.APPLE_CERT_PASSWORD }}
+        KEYCHAIN_PASSWORD_M: ${{ secrets.KEYCHAIN_PASSWORD_M }}
+        APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+      run: |
+        PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+        APP="$PARENT/dist/dmg-builds/latest-build/Marker Data.app"
+        
+        echo $APPLE_CERT_DATA | base64 --decode > certificate.p12
+        security create-keychain -p $KEYCHAIN_PASSWORD_M build-m.keychain
+        security default-keychain -s build-m.keychain
+        security unlock-keychain -p $KEYCHAIN_PASSWORD_M build-m.keychain
+        security import certificate.p12 -k build-m.keychain -P $APPLE_CERT_PASSWORD -T /usr/bin/codesign
+        security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k $KEYCHAIN_PASSWORD_M build-m.keychain
+        /usr/bin/codesign --force -s $APPLE_TEAM_ID --options runtime "$APP" -v
+        
+    - name: Notarize Marker Data
+      env:
+        APPLE_DEV_ID: ${{ secrets.APPLE_DEV_ID }}
+        APPLE_DEV_ID_PASSWORD: ${{ secrets.APPLE_DEV_ID_PASSWORD }}
+        APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+      run: |
+        PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+        APP="$PARENT/dist/dmg-builds/latest-build/Marker Data.app"
+    
+        echo "Create keychain profile"
+        xcrun notarytool store-credentials "notarytool-profile" --apple-id $APPLE_DEV_ID --password $APPLE_DEV_ID_PASSWORD --team-id $APPLE_TEAM_ID
+        
+        echo "Creating temp notarization archive"
+        ditto -c -k --keepParent "$APP" "notarization-m.zip"
+        
+        echo "Notarize app"
+        xcrun notarytool submit "notarization-m.zip" --keychain-profile "notarytool-profile" --progress --wait
+        
+        echo "Attach staple"
+        xcrun stapler staple "$APP"
+        
+    - name: Build Uninstaller
+      run: |
+        PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+        UAPP="$PARENT/dist/dmg-builds/latest-build/Uninstall Marker Data.app"
+        SCRIPT="$PARENT/dist/dmg-builds/uninstaller/include/Uninstall Marker Data.scpt"
+        ENTITLE="$PARENT/dist/dmg-builds/uninstaller/include/entitlements.plist"
+        ICON="$PARENT/dist/dmg-builds/uninstaller/include/applet.icns"
+
+        rm -rf "$UAPP"
+        osacompile -x -o "$UAPP" "$SCRIPT"
+        cp "$ICON" "$UAPP"/Contents/Resources/applet.icns
+        xattr -cr "$UAPP"
+        
+    - name: Verify Uninstaller
+      run: |
+        echo "Checking copied files..."
+        ls -l ./dist/dmg-builds/latest-build
+
+    - name: Codesign Uninstaller
+      env: 
+        APPLE_CERT_DATA: ${{ secrets.APPLE_CERT_DATA }}
+        APPLE_CERT_PASSWORD: ${{ secrets.APPLE_CERT_PASSWORD }}
+        KEYCHAIN_PASSWORD_U: ${{ secrets.KEYCHAIN_PASSWORD_U }}
+        APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+      run: |
+        PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+        ENTITLE="$PARENT/dist/dmg-builds/uninstaller/include/entitlements.plist"
+        UAPP="$PARENT/dist/dmg-builds/latest-build/Uninstall Marker Data.app"
+        
+        echo $APPLE_CERT_DATA | base64 --decode > certificate.p12
+        security create-keychain -p $KEYCHAIN_PASSWORD_U build-u.keychain
+        security default-keychain -s build-u.keychain
+        security unlock-keychain -p $KEYCHAIN_PASSWORD_U build-u.keychain
+        security import certificate.p12 -k build-u.keychain -P $APPLE_CERT_PASSWORD -T /usr/bin/codesign
+        security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k $KEYCHAIN_PASSWORD_U build-u.keychain
+        /usr/bin/codesign --force -s $APPLE_TEAM_ID --identifier "co.theacharya.MarkerData.Uninstaller" --options runtime --entitlements "$ENTITLE" "$UAPP" -v
+        
+    - name: Notarize Uninstaller
+      env:
+        APPLE_DEV_ID: ${{ secrets.APPLE_DEV_ID }}
+        APPLE_DEV_ID_PASSWORD: ${{ secrets.APPLE_DEV_ID_PASSWORD }}
+        APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+      run: |
+        PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+        UAPP="$PARENT/dist/dmg-builds/latest-build/Uninstall Marker Data.app"
+    
+        echo "Create keychain profile"
+        xcrun notarytool store-credentials "notarytool-profile" --apple-id $APPLE_DEV_ID --password $APPLE_DEV_ID_PASSWORD --team-id $APPLE_TEAM_ID
+        
+        echo "Creating temp notarization archive"
+        ditto -c -k --keepParent "$UAPP" "notarization-u.zip"
+        
+        echo "Notarize app"
+        xcrun notarytool submit "notarization-u.zip" --keychain-profile "notarytool-profile" --progress --wait
+        
+        echo "Attach staple"
+        xcrun stapler staple "$UAPP"
+        
+    - name: Build DMG
+      run: |
+        PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+        VER=$(cat ./Distribution/version.txt)
+        JSON="$PARENT/dist/dmg-builds/build-marker-data-dmg.json"
+        OUTPUT="$PARENT/dist/dmg-builds/dmg-output/Marker-Data_"
+        
+        appdmg "$JSON" "$OUTPUT""$VER.dmg"
+        
+    - name: Verify DMG
+      run: |
+        echo "Checking copied files..."
+        ls -l ./dist/dmg-builds/dmg-output
+        
+    - name: Codesign DMG
+      env: 
+        APPLE_CERT_DATA: ${{ secrets.APPLE_CERT_DATA }}
+        APPLE_CERT_PASSWORD: ${{ secrets.APPLE_CERT_PASSWORD }}
+        KEYCHAIN_PASSWORD_D: ${{ secrets.KEYCHAIN_PASSWORD_D }}
+        APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+      run: |
+        PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+        VER=$(cat ./Distribution/version.txt)
+        DMG="$PARENT/dist/dmg-builds/dmg-output/Marker-Data_"
+        
+        echo $APPLE_CERT_DATA | base64 --decode > certificate.p12
+        security create-keychain -p $KEYCHAIN_PASSWORD_D build-d.keychain
+        security default-keychain -s build-d.keychain
+        security unlock-keychain -p $KEYCHAIN_PASSWORD_D build-d.keychain
+        security import certificate.p12 -k build-d.keychain -P $APPLE_CERT_PASSWORD -T /usr/bin/codesign
+        security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k $KEYCHAIN_PASSWORD_D build-d.keychain
+        /usr/bin/codesign --force -s $APPLE_TEAM_ID --identifier "Marker Data Installer" --options runtime "$DMG""$VER.dmg" -v
+        
+    - name: Notarize DMG
+      env:
+        APPLE_DEV_ID: ${{ secrets.APPLE_DEV_ID }}
+        APPLE_DEV_ID_PASSWORD: ${{ secrets.APPLE_DEV_ID_PASSWORD }}
+        APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+      run: |
+        PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+        VER=$(cat ./Distribution/version.txt)
+        DMG="$PARENT/dist/dmg-builds/dmg-output/Marker-Data_"
+    
+        echo "Create keychain profile"
+        xcrun notarytool store-credentials "notarytool-profile" --apple-id $APPLE_DEV_ID --password $APPLE_DEV_ID_PASSWORD --team-id $APPLE_TEAM_ID
+        
+        echo "Notarize DMG"
+        xcrun notarytool submit "$DMG""$VER.dmg" --keychain-profile "notarytool-profile" --progress --wait
+        
+        echo "Attach staple"
+        xcrun stapler staple "$DMG""$VER.dmg"
+        
+    - name: Prepare Sparkle Key
+        env:
+          PRIVATE_SPARKLE_KEY: ${{ secrets.PRIVATE_SPARKLE_KEY }}
+        run: |
+          PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+          echo -n "$PRIVATE_SPARKLE_KEY" > "$PARENT/dist/dmg-builds/sparkle/sparkle_private_key"
+        
+    - name: Sparkle Sign
+      env:
+        PRIVATE_SPARKLE_KEY: ${{ secrets.PRIVATE_SPARKLE_KEY }}
+      run: |
+        PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+        TOOL_PATH="$PARENT/dist/dmg-builds/sparkle/sign_update"
+        ED_KEY="$PARENT/dist/dmg-builds/sparkle/sparkle_private_key"
+        VER=$(cat ./Distribution/version.txt)
+        DMG="$PARENT/dist/dmg-builds/dmg-output/Marker-Data_"
+        
+        echo "Create Sparkle EdDSA Signature"
+        "$TOOL_PATH" "$DMG""$VER.dmg" --ed-key-file "$ED_KEY"
+    
+    - name: Create Environment Files
+      run: |
+        PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+        VER=$(cat ./Distribution/version.txt)
+        echo "PARENT=$PARENT" >> $GITHUB_ENV
+        echo "VER=$VER" >> $GITHUB_ENV
+
+    - name: Save DMG as Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: marker-data-dmg
+        path: ${{ env.PARENT }}/dist/dmg-builds/dmg-output/Marker-Data_${{ env.VER }}.dmg
+    
+    - name: Release Github
+      if: ${{ github.event.inputs.release == 'yes' }}
+      uses: ncipollo/release-action@v1
+      with:
+        artifacts: "${{ env.PARENT }}/dist/dmg-builds/dmg-output/Marker-Data_${{ env.VER }}.dmg"
+        token: ${{ secrets.GITHUB_TOKEN }}
+        name: Marker Data ${{ env.VER }}
+        tag: ${{ env.VER }}
+        draft: true
