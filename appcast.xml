@@ -9,7 +9,7 @@
             <sparkle:shortVersionString>1.2.2</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>13.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>
-                https://markerdata.theacharya.co/release-notes/#100-build-number
+                https://markerdata.theacharya.co/release-notes-appcast.html
             </sparkle:releaseNotesLink>
             <enclosure url="https://github.com/milanvarady/Applite/releases/download/v1.2.2/Applite.dmg" length="2641546" type="application/octet-stream" sparkle:edSignature="5y9iUkyc6/ZJ9s1M5dXPCN24+urgan6Ohg14IJ1FBIajyBr0HL7w6c5a0BXH1zxl+7ECQeAvAPSzNooMq/shDQ=="/>
         </item>
