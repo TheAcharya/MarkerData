@@ -147,7 +147,7 @@ struct DatabaseSettingsView: View {
                 .frame(height: 16)
                 .padding(.horizontal, 4)
             
-            Link(destination: Links.airtableTemplateURL) {
+            Link(destination: Links.notionTemplateURL) {
                 Label("Notion Template", systemImage: "rectangle.portrait.and.arrow.forward")
             }
             
@@ -155,7 +155,7 @@ struct DatabaseSettingsView: View {
                 .frame(height: 16)
                 .padding(.horizontal, 4)
             
-            Link(destination: Links.notionTemplateURL) {
+            Link(destination: Links.airtableTemplateURL) {
                 Label("Airtable Template", systemImage: "rectangle.portrait.and.arrow.forward")
             }
             
