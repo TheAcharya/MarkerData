@@ -291,11 +291,11 @@ jobs:
         xcrun stapler staple "$DMG""$VER.dmg"
         
     - name: Prepare Sparkle Key
-        env:
-          PRIVATE_SPARKLE_KEY: ${{ secrets.PRIVATE_SPARKLE_KEY }}
-        run: |
-          PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
-          echo -n "$PRIVATE_SPARKLE_KEY" > "$PARENT/dist/dmg-builds/sparkle/sparkle_private_key"
+      env:
+        PRIVATE_SPARKLE_KEY: ${{ secrets.PRIVATE_SPARKLE_KEY }}
+      run: |
+        PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+        echo -n "$PRIVATE_SPARKLE_KEY" > "$PARENT/dist/dmg-builds/sparkle/sparkle_private_key"
         
     - name: Sparkle Sign
       env:
