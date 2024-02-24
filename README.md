@@ -54,6 +54,12 @@
 
 ## Demo
 
+<details><summary>Send to Notion</summary>
+<p>
+<p align="center"> <img src="https://github.com/TheAcharya/MarkerData-Website/blob/main/docs/assets/md-send-to-notion-03.gif?raw=true"> </p>
+</p>
+</details>
+
 <details><summary>Queue in Action</summary>
 <p>
 <p align="center"> <img src="https://github.com/TheAcharya/MarkerData-Website/blob/main/docs/assets/md-queue-01.gif?raw=true"> </p>
