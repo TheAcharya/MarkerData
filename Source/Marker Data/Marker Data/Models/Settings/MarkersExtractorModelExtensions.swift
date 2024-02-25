@@ -76,5 +76,10 @@ extension MarkerLabelProperties.AlignVertical: Codable, Identifiable {
     }
 }
 
-extension ExportField: Codable {}
+extension ExportField: Codable, Identifiable {
+    public var id: String {
+        self.rawValue
+    }
+}
+
 extension MarkersSource: Codable {}

@@ -166,7 +166,7 @@ struct DatabaseSettingsView: View {
 
 struct DatabaseSettingsView_Previews: PreviewProvider {
     static let settings = SettingsContainer()
-    static let databaseManager = DatabaseManager()
+    static let databaseManager = DatabaseManager(settings: settings)
     
     static var previews: some View {
         DatabaseSettingsView()

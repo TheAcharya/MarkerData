@@ -34,7 +34,7 @@ struct GeneralSettingsView: View {
 
 struct GeneralSettingsView_Previews: PreviewProvider {
     @StateObject static var settings = SettingsContainer()
-    @StateObject static var databaseManager = DatabaseManager()
+    @StateObject static var databaseManager = DatabaseManager(settings: settings)
     
     static var previews: some View {
         GeneralSettingsView()

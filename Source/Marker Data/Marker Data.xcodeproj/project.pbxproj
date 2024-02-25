@@ -61,7 +61,6 @@
 		4155B7222B653D2C008D3505 /* RoleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B7212B653D2C008D3505 /* RoleModel.swift */; };
 		4155B7232B653D35008D3505 /* RoleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B7212B653D2C008D3505 /* RoleModel.swift */; };
 		4155B7262B6574A8008D3505 /* RolesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B7252B6574A8008D3505 /* RolesManager.swift */; };
-		4155B7272B657710008D3505 /* RolesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B7252B6574A8008D3505 /* RolesManager.swift */; };
 		4155B7282B657741008D3505 /* URLExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414262BA2AD2E1AC00FC6CFC /* URLExtension.swift */; };
 		4155B72C2B668D29008D3505 /* LoggingOSLog in Frameworks */ = {isa = PBXBuildFile; productRef = 4155B72B2B668D29008D3505 /* LoggingOSLog */; };
 		4155B72E2B66BF9C008D3505 /* HelpButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47411FD92A3EA121005890FE /* HelpButton.swift */; };
@@ -76,6 +75,14 @@
 		417914FF2B7547CE00215688 /* DropboxSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417914FE2B7547CE00215688 /* DropboxSetupView.swift */; };
 		417915022B754E1500215688 /* DropboxInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417915012B754E1500215688 /* DropboxInfo.swift */; };
 		417915062B75547C00215688 /* DropboxSetupModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417915052B75547C00215688 /* DropboxSetupModel.swift */; };
+		41A0556E2B8B766C006AC0E4 /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BACA4D029FA9B5100EF6837 /* SettingsStore.swift */; };
+		41A0556F2B8B767B006AC0E4 /* SettingsModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B51D21529E9B13400DF7836 /* SettingsModels.swift */; };
+		41A055702B8B7685006AC0E4 /* NotificationFrequency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B6CA2B5D3B3B008D3505 /* NotificationFrequency.swift */; };
+		41A055712B8B7691006AC0E4 /* UnifiedExportProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4172729F2B46F65A005A04BE /* UnifiedExportProfile.swift */; };
+		41A055722B8B76BC006AC0E4 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4100D5E32AD1616D0081F0EC /* ColorExtension.swift */; };
+		41A055732B8B770B006AC0E4 /* MarkersExtractorModelExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41176AE82B8216520093F4C8 /* MarkersExtractorModelExtensions.swift */; };
+		41A055742B8B772C006AC0E4 /* ExportProfileFormatExtrension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BFEB762B1E63EA00C8B551 /* ExportProfileFormatExtrension.swift */; };
+		41A055752B8B776F006AC0E4 /* RolesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B7252B6574A8008D3505 /* RolesManager.swift */; };
 		41BFEB6D2B1B9B6400C8B551 /* Links.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BFEB6C2B1B9B6400C8B551 /* Links.swift */; };
 		41BFEB702B1BA4CC00C8B551 /* PasswordField in Frameworks */ = {isa = PBXBuildFile; productRef = 41BFEB6F2B1BA4CC00C8B551 /* PasswordField */; };
 		41BFEB722B1BCE4600C8B551 /* ExportProfilePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BFEB712B1BCE4600C8B551 /* ExportProfilePicker.swift */; };
@@ -957,13 +964,20 @@
 			files = (
 				4155B71B2B62E18B008D3505 /* RoleExtension.swift in Sources */,
 				4155B71A2B62E182008D3505 /* UTTypeExtension.swift in Sources */,
+				41A055732B8B770B006AC0E4 /* MarkersExtractorModelExtensions.swift in Sources */,
 				4155B6DE2B602694008D3505 /* WorkflowExtensionViewController.swift in Sources */,
 				4155B7032B612592008D3505 /* WorkflowExtensionView.swift in Sources */,
+				41A055712B8B7691006AC0E4 /* UnifiedExportProfile.swift in Sources */,
+				41A0556F2B8B767B006AC0E4 /* SettingsModels.swift in Sources */,
+				41A0556E2B8B766C006AC0E4 /* SettingsStore.swift in Sources */,
+				41A055742B8B772C006AC0E4 /* ExportProfileFormatExtrension.swift in Sources */,
 				4155B72E2B66BF9C008D3505 /* HelpButton.swift in Sources */,
-				4155B7272B657710008D3505 /* RolesManager.swift in Sources */,
 				4155B7282B657741008D3505 /* URLExtension.swift in Sources */,
+				41A055702B8B7685006AC0E4 /* NotificationFrequency.swift in Sources */,
 				4155B7172B62E131008D3505 /* RolesSettingsView.swift in Sources */,
+				41A055752B8B776F006AC0E4 /* RolesManager.swift in Sources */,
 				4155B7232B653D35008D3505 /* RoleModel.swift in Sources */,
+				41A055722B8B76BC006AC0E4 /* ColorExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -85,7 +85,7 @@ struct ContentView: View {
 
 #Preview {
     @StateObject var settings = SettingsContainer()
-    @StateObject var databaseManager = DatabaseManager()
+    @StateObject var databaseManager = DatabaseManager(settings: settings)
 
     @StateObject var extractionModel = ExtractionModel(
         settings: settings,

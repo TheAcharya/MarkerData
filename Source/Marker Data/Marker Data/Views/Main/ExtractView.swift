@@ -134,7 +134,7 @@ public struct ExtractView: View {
                         .padding(.bottom, 5)
                     
                     // Upload progress
-                    if UnifiedExportProfile.load()?.exportProfileType == .extractAndUpload {
+                    if settings.store.unifiedExportProfile.exportProfileType == .extractAndUpload {
                         ExportProgressView(progressModel: extractionModel.databaseUploader.uploadProgress)
                     }
                 }
@@ -353,7 +353,7 @@ public struct ExtractView: View {
 
 #Preview {
     @StateObject var settings = SettingsContainer()
-    @StateObject var databaseManager = DatabaseManager()
+    @StateObject var databaseManager = DatabaseManager(settings: settings)
 
     @StateObject var extractionModel = ExtractionModel(
         settings: settings,

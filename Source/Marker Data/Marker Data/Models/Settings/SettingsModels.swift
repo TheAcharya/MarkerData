@@ -126,25 +126,21 @@ enum FontStyleType: Int, CaseIterable, Identifiable, Codable {
     }
 }
 
-struct OverlayItem: Identifiable, Equatable, Codable {
-    let overlay: ExportField
-    
-    var name: String {
-        overlay.name
-    }
-    
-    var isSelected: Bool
-    
-    mutating func flipSelection(settings: SettingsContainer) {
-        settings.store.flipOverlayState(overlay: self.overlay)
-        self.isSelected = !self.isSelected
-    }
-    
-    mutating func removeSelection() {
-        self.isSelected = false
-    }
-    
-    var id: ExportField {
-        self.overlay
-    }
-}
+// TODO: delete
+//struct OverlayItem: Identifiable, Equatable, Codable {
+//    let overlay: ExportField
+//    
+//    var name: String {
+//        overlay.name
+//    }
+//    
+//    var isSelected: Bool
+//    
+//    mutating func removeSelection() {
+//        self.isSelected = false
+//    }
+//    
+//    var id: ExportField {
+//        self.overlay
+//    }
+//}

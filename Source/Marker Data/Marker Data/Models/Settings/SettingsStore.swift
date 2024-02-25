@@ -23,6 +23,8 @@ struct SettingsStore: Codable, Hashable, Equatable, Identifiable {
 
     static let defaultName = "Default"
 
+    var unifiedExportProfile: UnifiedExportProfile
+
     var exportFolderURL: URL?
     var folderFormat: ExportFolderFormat
 
@@ -82,7 +84,9 @@ struct SettingsStore: Codable, Hashable, Equatable, Identifiable {
 
     var copyrightText: String
     var hideLabelNames: Bool
-    
+
+    var roles: [RoleModel]
+
     // MARK: Progress reporting settings
 
     var notificationFrequency: NotificationFrequency
@@ -90,8 +94,16 @@ struct SettingsStore: Codable, Hashable, Equatable, Identifiable {
 
     /// Default settings
     public static func defaults() -> Self {
-        Self.init(
+        let exportProfile = UnifiedExportProfile(
+            displayName: "CSV",
+            extractProfile: .csv,
+            databaseProfileName: "",
+            exportProfileType: .extractOnly
+        )
+
+        return Self.init(
             name: Self.defaultName,
+            unifiedExportProfile: exportProfile,
             folderFormat: .medium,
             imageMode: .PNG,
             enabledSubframes: false,
@@ -118,6 +130,7 @@ struct SettingsStore: Codable, Hashable, Equatable, Identifiable {
             verticalAlignment: .top,
             copyrightText: "",
             hideLabelNames: false,
+            roles: [],
             notificationFrequency: .onlyOnCompletion,
             showDockProgress: true
         )
@@ -127,17 +140,11 @@ struct SettingsStore: Codable, Hashable, Equatable, Identifiable {
 
     /// Returns the settings needed for a ``MarkersExtractor`` object
     public func markersExtractorSettings(fcpxmlFileUrl: URL) throws -> MarkersExtractor.Settings {
-        // Export format
-        guard let exportFormat = UnifiedExportProfile.load() else {
-            throw ExtractError.unifiedExportProfileReadError
-        }
-
         // Output dir
         let outputDirURL: URL = self.exportFolderURL ?? URL.FCPExportCacheFolder
         
         // Exclude roles
-        let roles = RolesManager.loadRolesFromDisk()
-        let excludeRoles = roles.filter { !$0.enabled }
+        let excludeRoles = self.roles.filter { !$0.enabled }
         let excludeRoleNames: Set<String> = Set(excludeRoles.map { $0.role.rawValue })
         
         // Image size override
@@ -161,7 +168,7 @@ struct SettingsStore: Codable, Hashable, Equatable, Identifiable {
         let settings = try MarkersExtractor.Settings(
             fcpxml: .init(at: fcpxmlFileUrl),
             outputDir: outputDirURL,
-            exportFormat: exportFormat.extractProfile,
+            exportFormat: self.unifiedExportProfile.extractProfile,
             enableSubframes: self.enabledSubframes,
             markersSource: self.markersSource,
             excludeRoles: excludeRoleNames,

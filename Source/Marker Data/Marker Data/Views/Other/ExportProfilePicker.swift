@@ -13,15 +13,8 @@ struct ExportProfilePicker: View {
     @EnvironmentObject var settings: SettingsContainer
     @EnvironmentObject var databaseManager: DatabaseManager
     
-    /// Set in onAppear
-    @State var selection: UnifiedExportProfile? = UnifiedExportProfile.defaultProfile()
-    
-    @State var showFailedToSaveAlert = false
-    
-    @State var configurationUpdaterCancellable: AnyCancellable? = nil
-    
     var body: some View {
-        Picker("Export Profile", selection: $selection) {
+        Picker("Export Profile", selection: $settings.store.unifiedExportProfile) {
             Section("Extract Only (No Upload)") {
                 ForEach(UnifiedExportProfile.noUploadProfiles) { profile in
                     Label {
@@ -47,13 +40,6 @@ struct ExportProfilePicker: View {
             }
         }
         .labelStyle(.titleAndIcon)
-        .onChange(of: selection) { newProfile in
-            do {
-                try newProfile?.save()
-            } catch {
-                showFailedToSaveAlert = true
-            }
-        }
         .onAppear {
             // TODO: check this
 //            self.configurationUpdaterCancellable = configurationsModel.changePublisher
@@ -70,14 +56,7 @@ struct ExportProfilePicker: View {
 //            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
 //                self.selection = UnifiedExportProfile.load()
 //            }
-            self.selection = UnifiedExportProfile.load()
         }
-        .onDisappear {
-            if let cancellable = self.configurationUpdaterCancellable {
-                cancellable.cancel()
-            }
-        }
-        .alert("Failed to save export profile", isPresented: $showFailedToSaveAlert) {}
     }
 }
 
