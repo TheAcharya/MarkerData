@@ -52,6 +52,14 @@ extension Color: Codable {
 
         self.init(hex: hex)
     }
+
+    static func == (lhs: Color, rhs: Color) -> Bool {
+        return lhs.hex == rhs.hex
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(self.hex)
+    }
 }
 
 

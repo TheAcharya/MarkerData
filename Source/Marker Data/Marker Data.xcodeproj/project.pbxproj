@@ -40,7 +40,6 @@
 		4155B6C22B5D309C008D3505 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B6C12B5D309C008D3505 /* NotificationManager.swift */; };
 		4155B6C52B5D3709008D3505 /* DockProgress in Frameworks */ = {isa = PBXBuildFile; productRef = 4155B6C42B5D3709008D3505 /* DockProgress */; };
 		4155B6CB2B5D3B3B008D3505 /* NotificationFrequency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B6CA2B5D3B3B008D3505 /* NotificationFrequency.swift */; };
-		4155B6CD2B5D4652008D3505 /* DicitionaryExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B6CC2B5D4652008D3505 /* DicitionaryExtension.swift */; };
 		4155B6CF2B5D929A008D3505 /* NSImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B6CE2B5D929A008D3505 /* NSImageExtension.swift */; };
 		4155B6D12B5D93BA008D3505 /* ResizedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B6D02B5D93BA008D3505 /* ResizedImage.swift */; };
 		4155B6D92B602694008D3505 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4155B6D82B602694008D3505 /* Assets.xcassets */; };
@@ -90,7 +89,6 @@
 		41BFEB772B1E63EB00C8B551 /* ExportProfileFormatExtrension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BFEB762B1E63EA00C8B551 /* ExportProfileFormatExtrension.swift */; };
 		41BFEB792B1F925800C8B551 /* ExportProcess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BFEB782B1F925800C8B551 /* ExportProcess.swift */; };
 		41C298F12B82B0E000AA7517 /* Configurations_AddSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C298F02B82B0E000AA7517 /* Configurations_AddSheet.swift */; };
-		41C298F32B82B11500AA7517 /* Configurations_Methods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C298F22B82B11500AA7517 /* Configurations_Methods.swift */; };
 		41C298F52B82B16900AA7517 /* Configurations_ContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C298F42B82B16900AA7517 /* Configurations_ContextMenu.swift */; };
 		41C298F72B84A0EF00AA7517 /* ConfigurationsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C298F62B84A0EF00AA7517 /* ConfigurationsViewModel.swift */; };
 		41C538942AE1AFF200E8A8A1 /* SettingsContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C538932AE1AFF200E8A8A1 /* SettingsContainer.swift */; };
@@ -220,7 +218,6 @@
 		414262C42ADAC6EC00FC6CFC /* DefaultConfiguration.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DefaultConfiguration.json; sourceTree = "<group>"; };
 		4155B6C12B5D309C008D3505 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		4155B6CA2B5D3B3B008D3505 /* NotificationFrequency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationFrequency.swift; sourceTree = "<group>"; };
-		4155B6CC2B5D4652008D3505 /* DicitionaryExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DicitionaryExtension.swift; sourceTree = "<group>"; };
 		4155B6CE2B5D929A008D3505 /* NSImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSImageExtension.swift; sourceTree = "<group>"; };
 		4155B6D02B5D93BA008D3505 /* ResizedImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResizedImage.swift; sourceTree = "<group>"; };
 		4155B6D62B602694008D3505 /* Workflow Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Workflow Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -253,7 +250,6 @@
 		41BFEB762B1E63EA00C8B551 /* ExportProfileFormatExtrension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportProfileFormatExtrension.swift; sourceTree = "<group>"; };
 		41BFEB782B1F925800C8B551 /* ExportProcess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportProcess.swift; sourceTree = "<group>"; };
 		41C298F02B82B0E000AA7517 /* Configurations_AddSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configurations_AddSheet.swift; sourceTree = "<group>"; };
-		41C298F22B82B11500AA7517 /* Configurations_Methods.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configurations_Methods.swift; sourceTree = "<group>"; };
 		41C298F42B82B16900AA7517 /* Configurations_ContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configurations_ContextMenu.swift; sourceTree = "<group>"; };
 		41C298F62B84A0EF00AA7517 /* ConfigurationsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationsViewModel.swift; sourceTree = "<group>"; };
 		41C538932AE1AFF200E8A8A1 /* SettingsContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsContainer.swift; sourceTree = "<group>"; };
@@ -379,7 +375,6 @@
 				414262BA2AD2E1AC00FC6CFC /* URLExtension.swift */,
 				414262BC2AD2E24A00FC6CFC /* BundleExtension.swift */,
 				41BFEB762B1E63EA00C8B551 /* ExportProfileFormatExtrension.swift */,
-				4155B6CC2B5D4652008D3505 /* DicitionaryExtension.swift */,
 				4155B6CE2B5D929A008D3505 /* NSImageExtension.swift */,
 				4155B7122B62DEA2008D3505 /* RoleExtension.swift */,
 				4155B7182B62E179008D3505 /* UTTypeExtension.swift */,
@@ -535,7 +530,6 @@
 			children = (
 				9B4D90DB2A0BB07500FE7603 /* ConfigurationSettingsView.swift */,
 				41C298F02B82B0E000AA7517 /* Configurations_AddSheet.swift */,
-				41C298F22B82B11500AA7517 /* Configurations_Methods.swift */,
 				41C298F42B82B16900AA7517 /* Configurations_ContextMenu.swift */,
 			);
 			path = Configurations;
@@ -1004,7 +998,6 @@
 				47411FDE2A3EA1BA005890FE /* AboutView.swift in Sources */,
 				414262BB2AD2E1AC00FC6CFC /* URLExtension.swift in Sources */,
 				41F88B032B1A4D40004A3B58 /* ShellOutputStream.swift in Sources */,
-				4155B6CD2B5D4652008D3505 /* DicitionaryExtension.swift in Sources */,
 				41F88AFE2B126439004A3B58 /* ExtractionResult.swift in Sources */,
 				9B51D21629E9B13400DF7836 /* SettingsModels.swift in Sources */,
 				414262BD2AD2E24A00FC6CFC /* BundleExtension.swift in Sources */,
@@ -1019,7 +1012,6 @@
 				4155B7262B6574A8008D3505 /* RolesManager.swift in Sources */,
 				41176AD72B7BCF140093F4C8 /* EditCommands.swift in Sources */,
 				41F88AFA2B0FF62A004A3B58 /* DatabaseErrors.swift in Sources */,
-				41C298F32B82B11500AA7517 /* Configurations_Methods.swift in Sources */,
 				415619672B3A18D60032E82C /* ExtractError.swift in Sources */,
 				4155B7222B653D2C008D3505 /* RoleModel.swift in Sources */,
 				417272982B444211005A04BE /* ExportExitStatus.swift in Sources */,

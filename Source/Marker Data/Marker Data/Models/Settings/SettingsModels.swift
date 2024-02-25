@@ -125,22 +125,3 @@ enum FontStyleType: Int, CaseIterable, Identifiable, Codable {
         }
     }
 }
-
-// TODO: delete
-//struct OverlayItem: Identifiable, Equatable, Codable {
-//    let overlay: ExportField
-//    
-//    var name: String {
-//        overlay.name
-//    }
-//    
-//    var isSelected: Bool
-//    
-//    mutating func removeSelection() {
-//        self.isSelected = false
-//    }
-//    
-//    var id: ExportField {
-//        self.overlay
-//    }
-//}

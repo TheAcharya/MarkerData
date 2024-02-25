@@ -13,57 +13,59 @@ struct ConfigurationCommands: Commands {
     
     var body: some Commands {
         CommandMenu("Configurations") {
-            // TODO: reimplement with new stuff
-//            Button("Update Active Configuration") {
-//                do {
-//                    try configurationsModel.saveConfiguration(configurationName: configurationsModel.activeConfiguration, replace: true)
-//                } catch {
-//                    print("Failed to update configuration from Menu Bar Command")
-//                }
-//            }
-//            .disabled(configurationsModel.activeConfiguration == ConfigurationsModel.defaultConfigurationName)
-//            .keyboardShortcut("s", modifiers: .command)
-//            
-//            Button("Discard Changes") {
-//                do {
-//                    try configurationsModel.loadConfiguration(configurationName: configurationsModel.activeConfiguration, settings: settings)
-//                } catch {
-//                    print("Failed to discard changes from Menu Bar Command")
-//                }
-//            }
-//            .disabled(!configurationsModel.unsavedChanges)
-//            .keyboardShortcut("z", modifiers: .command)
-//
-//            Divider()
-//            
-//            Button("Open Configurations Panel") {
-//                sidebarSelection = .configurations
-//            }
-//            
-//            Button("Open Configuration Folder in Finder") {
-//                NSWorkspace.shared.open(URL.configurationsFolder)
-//            }
-//            
-//            Divider()
-//            
-//            Text("Select Configuration")
-//            
-//            ForEach(configurationsModel.configurations) { config in
-//                Button {
-//                    do {
-//                        try configurationsModel.loadConfiguration(configurationName: config.name, settings: settings)
-//                    } catch {
-//                        print("Failed to load config from menu bar")
-//                    }
-//                } label: {
-//                    if config.name == configurationsModel.activeConfiguration {
-//                        Label(config.name, systemImage: "checkmark")
-//                    } else {
-//                        Text(config.name)
-//                    }
-//                }
-//                .labelStyle(.titleAndIcon)
-//            }
+            Button("Update Active Configuration") {
+                Task {
+                    do {
+                        try await settings.store.saveAsConfiguration()
+                        await settings.checkForUnsavedChanges()
+                    } catch {
+                        print("Failed to update configuration from Menu Bar Command")
+                    }
+                }
+            }
+            .disabled(settings.isDefaultActive || !settings.unsavedChanges)
+            .keyboardShortcut("s", modifiers: .command)
+            
+            Button("Discard Changes") {
+                do {
+                    try settings.discardChanges()
+                } catch {
+                    print("Failed to discard changes from Menu Bar Command")
+                }
+            }
+            .disabled(!settings.unsavedChanges)
+            .keyboardShortcut("z", modifiers: .command)
+
+            Divider()
+            
+            Button("Open Configurations Panel") {
+                sidebarSelection = .configurations
+            }
+            
+            Button("Open Configuration Folder in Finder") {
+                NSWorkspace.shared.open(URL.configurationsFolder)
+            }
+            
+            Divider()
+            
+            Text("Select Configuration")
+            
+            ForEach(settings.configurations) { store in
+                Button {
+                    do {
+                        try settings.load(store)
+                    } catch {
+                        print("Failed to load config from menu bar")
+                    }
+                } label: {
+                    if settings.isStoreActive(store) {
+                        Label(store.name, systemImage: "checkmark")
+                    } else {
+                        Text(store.name)
+                    }
+                }
+                .labelStyle(.titleAndIcon)
+            }
         }
     }
 }

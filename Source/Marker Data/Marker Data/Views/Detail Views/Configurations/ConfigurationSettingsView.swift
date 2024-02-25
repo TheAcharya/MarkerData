@@ -62,12 +62,6 @@ struct ConfigurationSettingsView: View {
                 }
             }
             
-            // Bring changes to new
-            // TODO: check
-//            Button("Bring changes to \(selectedStoreName)") {
-//                configurationsModel.activeConfiguration = selectedConfiguration
-//            }
-            
             // Discard and switch
             Button("Discard changes and switch") {
                 confModel.makeActive(selectedStore)

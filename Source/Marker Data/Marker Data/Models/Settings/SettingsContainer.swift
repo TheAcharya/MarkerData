@@ -93,18 +93,6 @@ class SettingsContainer: ObservableObject {
         }
     }
 
-    /// Sets the current store by name
-    // TODO: remove
-//    @MainActor
-//    public func setCurrent(name: String) throws {
-//        guard let newStore = self.configurations.first(where: { $0.name == name }) else {
-//            Self.logger.error("Failed to find conf: \(name) while setting current.")
-//            throw StoreLocateError.storeNotFound
-//        }
-//        
-//        self.setCurrent(newStore)
-//    }
-
     @MainActor
     public func load(_ store: SettingsStore) throws {
         // Default
@@ -190,8 +178,6 @@ class SettingsContainer: ObservableObject {
     /// Sets the current store
     @MainActor
     private func setCurrent(_ store: SettingsStore) {
-        // TODO: remove print
-        print("setting as current: \(store.name)")
         self.store = store
         self.objectWillChange.send()
     }

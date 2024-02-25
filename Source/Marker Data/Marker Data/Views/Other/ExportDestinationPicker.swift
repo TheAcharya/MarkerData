@@ -63,18 +63,6 @@ struct ExportDestinationPicker: View {
         .background(.black)
         .clipShape(RoundedRectangle(cornerRadius: 6))
         .shadow(color: .white, radius: 1)
-        // TODO: check this
-//        .onAppear {
-//            self.configurationUpdaterCancellable = configurationsModel.changePublisher
-//                .sink {
-//                    updateExportDestinationText()
-//                }
-//            
-//            self.settingsUpdateCancallable = self.settings.store.objectWillChange
-//                .sink {
-//                    updateExportDestinationText()
-//                }
-//        }
         .onDisappear {
             self.settingsUpdateCancallable?.cancel()
             self.configurationUpdaterCancellable?.cancel()
