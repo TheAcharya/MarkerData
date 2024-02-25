@@ -107,7 +107,8 @@ public struct ExtractView: View {
                 .buttonStyle(.plain)
                 .background(Color.accentColor)
                 .clipShape(RoundedRectangle(cornerRadius: 6))
-                
+                .keyboardShortcut("o", modifiers: .command)
+
                 Spacer()
             }
             

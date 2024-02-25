@@ -30,6 +30,7 @@ struct FileCommands: Commands {
             Button("Clean Cache") {
                 LibraryFolders.deleteCache()
             }
+            .keyboardShortcut("k", modifiers: .command)
         }
     }
 }
