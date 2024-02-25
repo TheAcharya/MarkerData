@@ -41,7 +41,19 @@ struct PlatformInfoTextField: View {
                     .padding(.leading, 8)
                     .textFieldStyle(.roundedBorder)
             }
-            
+
+            PasteButton(payloadType: String.self) { strings in
+                guard let first = strings.first else { return }
+
+                Task {
+                    await MainActor.run {
+                        text = first
+                    }
+                }
+            }
+            .buttonStyle(.plain)
+            .labelStyle(.iconOnly)
+
             Button {
                 text = ""
             } label: {
