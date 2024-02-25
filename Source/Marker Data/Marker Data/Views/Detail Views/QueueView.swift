@@ -9,9 +9,10 @@ import SwiftUI
 
 struct QueueView: View {
     @ObservedObject var queueModel: QueueModel
-    
+
     @State var showScanAlert = false
     @State var sortOrder = [KeyPathComparator(\QueueInstance.extractInfo.creationDate)]
+    @AppStorage("queueAutomaticScanEnabled") var automaticScanEnabled = true
 
     var body: some View {
         VStack {
@@ -25,7 +26,7 @@ struct QueueView: View {
         .overlayHelpButton(url: Links.queueHelpURL)
         .alert("Failed to scan export folder", isPresented: $showScanAlert) {}
         .task {
-            if queueModel.queueInstances.isEmpty {
+            if queueModel.queueInstances.isEmpty && automaticScanEnabled {
                 do {
                     try await queueModel.scanExportFolder()
                 } catch {
@@ -59,6 +60,7 @@ struct QueueView: View {
         .contextMenu {
             Button {
                 queueModel.queueInstances.removeAll()
+                automaticScanEnabled = false
             } label: {
                 Label("Clear", systemImage: "trash")
             }
@@ -67,6 +69,7 @@ struct QueueView: View {
     
     var actionsAndSettingsView: some View {
         HStack {
+            // Start upload button
             Button {
                 Task {
                     try await queueModel.upload()
@@ -86,7 +89,10 @@ struct QueueView: View {
             }
             .disabled(!queueModel.uploadInProgress)
 
+            // Load from Export Destination button
             Button {
+                automaticScanEnabled = true
+
                 Task {
                     do {
                         try await queueModel.scanExportFolder()
@@ -103,6 +109,7 @@ struct QueueView: View {
                 .frame(maxHeight: 20)
                 .padding(.horizontal, 5)
             
+            // Delete folders toggle
             Toggle("Delete Folders After Upload", isOn: $queueModel.deleteFolderAfterUpload)
             
             Spacer()
