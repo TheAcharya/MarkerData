@@ -15,4 +15,14 @@ struct RoleModel: Identifiable, Codable, Hashable, Equatable {
     var id: String {
         return self.role.rawValue
     }
+
+    var displayName: String {
+        var name = self.role.rawValue
+
+        if let captionRole = FinalCutPro.FCPXML.CaptionRole(rawValue: self.role.rawValue) {
+            name = "\(captionRole.role) (\(captionRole.captionFormat))"
+        }
+
+        return name
+    }
 }

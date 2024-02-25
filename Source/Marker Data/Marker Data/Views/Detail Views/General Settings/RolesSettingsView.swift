@@ -71,7 +71,7 @@ struct RolesSettingsView: View {
     
     var tableView: some View {
         Table(self.rolesManager.roles) {
-            TableColumn("Roles", value: \.role.rawValue)
+            TableColumn("Roles", value: \.displayName)
             
             TableColumn("Kind") { role in
                 Text(role.role.roleType.rawValue.titleCased)
