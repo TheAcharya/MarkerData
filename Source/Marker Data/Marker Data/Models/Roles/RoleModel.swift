@@ -8,7 +8,7 @@
 import Foundation
 import DAWFileKit
 
-struct RoleModel: Identifiable, Codable, Hashable {
+struct RoleModel: Identifiable, Codable, Hashable, Equatable {
     let role: FinalCutPro.FCPXML.AnyRole
     var enabled: Bool
     

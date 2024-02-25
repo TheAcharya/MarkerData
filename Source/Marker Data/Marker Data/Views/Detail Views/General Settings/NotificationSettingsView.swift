@@ -58,13 +58,11 @@ struct NotificationSettingsView: View {
 
 #Preview {
     @StateObject var settings = SettingsContainer()
-    @StateObject var databaseManager = DatabaseManager()
-    @StateObject var configurationsModel = ConfigurationsModel()
+    @StateObject var databaseManager = DatabaseManager(settings: settings)
     
     return NotificationSettingsView()
         .preferredColorScheme(.dark)
         .environmentObject(settings)
         .environmentObject(databaseManager)
-        .environmentObject(configurationsModel)
         .padding()
 }

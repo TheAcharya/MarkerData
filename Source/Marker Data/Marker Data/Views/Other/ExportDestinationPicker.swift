@@ -11,11 +11,30 @@ import FilePicker
 
 struct ExportDestinationPicker: View {
     @EnvironmentObject var settings: SettingsContainer
-    @EnvironmentObject var configurationsModel: ConfigurationsModel
     
-    @State var exportDestinationText = ""
-    @State var showWarning = false
-    
+    var exportDestinationText: String {
+        guard let exportDestination = self.settings.store.exportFolderURL else {
+            return "Please select!"
+        }
+
+        // Check if file exists
+        if !exportDestination.fileExists {
+            return "Missing Folder!"
+        }
+
+        return exportDestination.lastPathComponent
+    }
+
+    var showWarning: Bool {
+        // Check if url is nil
+        guard let url = settings.store.exportFolderURL else {
+            return true
+        }
+
+        // Check if folder exists
+        return !url.fileExists
+    }
+
     @State var settingsUpdateCancallable: AnyCancellable? = nil
     @State var configurationUpdaterCancellable: AnyCancellable? = nil
     
@@ -31,9 +50,6 @@ struct ExportDestinationPicker: View {
                 .truncationMode(.head)
                 .lineLimit(1)
                 .foregroundStyle(showWarning ? Color.red : .primary)
-                .onAppear {
-                    updateExportDestinationText()
-                }
             
             Spacer()
             
@@ -53,7 +69,6 @@ struct ExportDestinationPicker: View {
                     }
                     
                     settings.store.exportFolderURL = url
-                    updateExportDestinationText()
                 }
             } label: {
                 Image(systemName: "folder")
@@ -64,17 +79,6 @@ struct ExportDestinationPicker: View {
         .background(.black)
         .clipShape(RoundedRectangle(cornerRadius: 6))
         .shadow(color: .white, radius: 1)
-        .onAppear {
-            self.configurationUpdaterCancellable = configurationsModel.changePublisher
-                .sink {
-                    updateExportDestinationText()
-                }
-            
-            self.settingsUpdateCancallable = self.settings.store.objectWillChange
-                .sink {
-                    updateExportDestinationText()
-                }
-        }
         .onDisappear {
             self.settingsUpdateCancallable?.cancel()
             self.configurationUpdaterCancellable?.cancel()
@@ -90,31 +94,11 @@ struct ExportDestinationPicker: View {
             // Clear button
             Button {
                 settings.store.exportFolderURL = nil
-                updateExportDestinationText()
             } label: {
                 Label("Clear Path", systemImage: "trash")
             }
             .labelStyle(.titleAndIcon)
         }
-    }
-    
-    /// Updates the export destination url text and checks if the folder exists
-    private func updateExportDestinationText() {
-        guard let exportDestination = self.settings.store.exportFolderURL else {
-            self.exportDestinationText = "Please select!"
-            self.showWarning = true
-            return
-        }
-        
-        // Check if file exists
-        if !exportDestination.fileExists {
-            self.exportDestinationText = "Missing Folder!"
-            self.showWarning = true
-            return
-        }
-        
-        self.exportDestinationText = exportDestination.lastPathComponent
-        self.showWarning = false
     }
 }
 

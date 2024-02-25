@@ -8,30 +8,32 @@
 import SwiftUI
 
 struct ConfigurationCommands: Commands {
-    @ObservedObject var configurationsModel: ConfigurationsModel
     @ObservedObject var settings: SettingsContainer
     @Binding var sidebarSelection: MainViews
     
     var body: some Commands {
         CommandMenu("Configurations") {
             Button("Update Active Configuration") {
-                do {
-                    try configurationsModel.saveConfiguration(configurationName: configurationsModel.activeConfiguration, replace: true)
-                } catch {
-                    print("Failed to update configuration from Menu Bar Command")
+                Task {
+                    do {
+                        try await settings.store.saveAsConfiguration()
+                        await settings.checkForUnsavedChanges()
+                    } catch {
+                        print("Failed to update configuration from Menu Bar Command")
+                    }
                 }
             }
-            .disabled(configurationsModel.activeConfiguration == ConfigurationsModel.defaultConfigurationName)
+            .disabled(settings.isDefaultActive || !settings.unsavedChanges)
             .keyboardShortcut("s", modifiers: .command)
             
             Button("Discard Changes") {
                 do {
-                    try configurationsModel.loadConfiguration(configurationName: configurationsModel.activeConfiguration, settings: settings)
+                    try settings.discardChanges()
                 } catch {
                     print("Failed to discard changes from Menu Bar Command")
                 }
             }
-            .disabled(!configurationsModel.unsavedChanges)
+            .disabled(!settings.unsavedChanges)
             .keyboardShortcut("z", modifiers: .command)
 
             Divider()
@@ -48,18 +50,18 @@ struct ConfigurationCommands: Commands {
             
             Text("Select Configuration")
             
-            ForEach(configurationsModel.configurations) { config in
+            ForEach(settings.configurations) { store in
                 Button {
                     do {
-                        try configurationsModel.loadConfiguration(configurationName: config.name, settings: settings)
+                        try settings.load(store)
                     } catch {
                         print("Failed to load config from menu bar")
                     }
                 } label: {
-                    if config.name == configurationsModel.activeConfiguration {
-                        Label(config.name, systemImage: "checkmark")
+                    if settings.isStoreActive(store) {
+                        Label(store.name, systemImage: "checkmark")
                     } else {
-                        Text(config.name)
+                        Text(store.name)
                     }
                 }
                 .labelStyle(.titleAndIcon)

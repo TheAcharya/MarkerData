@@ -37,7 +37,6 @@ public struct ExtractView: View {
                     // Progress
                     if extractionModel.showProgressUI {
                         ExtractionAndUploadProgressView(
-                            settingsStore: self.settings.store,
                             extractionModel: extractionModel
                         )
                     }
@@ -117,7 +116,7 @@ public struct ExtractView: View {
     }
     
     struct ExtractionAndUploadProgressView: View {
-        @ObservedObject var settingsStore: SettingsStore
+        @EnvironmentObject var settings: SettingsContainer
         @EnvironmentObject var databaseManager: DatabaseManager
         @Environment(\.openWindow) var openWindow
         
@@ -135,7 +134,7 @@ public struct ExtractView: View {
                         .padding(.bottom, 5)
                     
                     // Upload progress
-                    if UnifiedExportProfile.load()?.exportProfileType == .extractAndUpload {
+                    if settings.store.unifiedExportProfile.exportProfileType == .extractAndUpload {
                         ExportProgressView(progressModel: extractionModel.databaseUploader.uploadProgress)
                     }
                 }
@@ -187,8 +186,8 @@ public struct ExtractView: View {
                     Label("Extract", systemImage: "gearshape.2")
                 }
                 .buttonStyle(.borderedProminent)
-                .disabled(!(self.settingsStore.exportFolderURL?.fileExists ?? false))
-                
+                .disabled(!(settings.store.exportFolderURL?.fileExists ?? false))
+
                 Button("Cancel") {
                     withAnimation {
                         extractionModel.cancelExternalFile()
@@ -354,8 +353,7 @@ public struct ExtractView: View {
 
 #Preview {
     @StateObject var settings = SettingsContainer()
-    @StateObject var databaseManager = DatabaseManager()
-    @StateObject var configurationsModel = ConfigurationsModel()
+    @StateObject var databaseManager = DatabaseManager(settings: settings)
 
     @StateObject var extractionModel = ExtractionModel(
         settings: settings,
@@ -366,6 +364,5 @@ public struct ExtractView: View {
         .frame(width: WindowSize.detailWidth, height: WindowSize.fullHeight)
         .environmentObject(settings)
         .environmentObject(databaseManager)
-        .environmentObject(configurationsModel)
         .preferredColorScheme(.dark)
 }

@@ -14,24 +14,21 @@ struct OverlaySettingsView: View {
     @State private var searchText = ""
     @State private var selectedTags: Set<String> = []
 
-    /// Loaded in bady onAppear
-    @State var overlays: [OverlayItem] = []
-
-    var filteredOverlays: [OverlayItem] {
-        overlays.filter {
+    var filteredOverlays: [ExportField] {
+        ExportField.allCases.filter {
             searchText.isEmpty || $0.name.localizedCaseInsensitiveContains(searchText)
         }
     }
 
-    var enabledOverlays: [OverlayItem] {
+    var enabledOverlays: [ExportField] {
         filteredOverlays.filter {
-            $0.isSelected
+            settings.store.overlays.contains($0)
         }
     }
 
-    var disabledOverlays: [OverlayItem] {
+    var disabledOverlays: [ExportField] {
         filteredOverlays.filter {
-            !$0.isSelected
+            !settings.store.overlays.contains($0)
         }
     }
 
@@ -46,14 +43,6 @@ struct OverlaySettingsView: View {
                 .padding(.bottom)
         }
         .frame(maxWidth: 520)
-        .onAppear {
-            let selectedOverlays = settings.store.overlays
-
-            overlays = ExportField.allCases.map {
-                OverlayItem(overlay: $0,
-                            isSelected: selectedOverlays.contains($0))
-            }
-        }
     }
     
     var overlaySelectionField: some View {
@@ -81,10 +70,6 @@ struct OverlaySettingsView: View {
     
     func removeActiveOverlays() {
         settings.store.overlays.removeAll()
-        self.overlays = ExportField.allCases.map {
-            OverlayItem(overlay: $0,
-                        isSelected: false)
-        }
     }
     
     var copyrightAndHideLabelNames: some View {
@@ -101,7 +86,7 @@ struct OverlaySettingsView: View {
         }
     }
 
-    func overlayListView(title: String, overlays: [OverlayItem], clear: (() -> Void)? = nil) -> some View {
+    func overlayListView(title: String, overlays: [ExportField], clear: (() -> Void)? = nil) -> some View {
         VStack(alignment: .leading) {
             VStack {
                 Text(title)
@@ -117,8 +102,13 @@ struct OverlaySettingsView: View {
                         ForEach(overlays) { overlay in
                             Button(overlay.name) {
                                 withAnimation(.spring(duration: 0.2)) {
-                                    if let index = self.overlays.firstIndex(of: overlay) {
-                                        self.overlays[index].flipSelection(settings: settings)
+                                    // Remove
+                                    if let index = settings.store.overlays.firstIndex(of: overlay) {
+                                        settings.store.overlays.remove(safeAt: index)
+                                    }
+                                    // Add
+                                    else {
+                                        settings.store.overlays.append(overlay)
                                     }
                                 }
                             }

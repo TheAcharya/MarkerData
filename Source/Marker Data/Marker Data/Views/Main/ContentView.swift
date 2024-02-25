@@ -11,11 +11,10 @@ import UniformTypeIdentifiers
 import MarkersExtractor
 
 struct ContentView: View {
+    @EnvironmentObject var settings: SettingsContainer
     @ObservedObject var extractionModel: ExtractionModel
     @ObservedObject var queueModel: QueueModel
     @Binding var sidebarSelection: MainViews
-    
-    @EnvironmentObject var configurationsModel: ConfigurationsModel
 
     //Main View Controller
     var body: some View {
@@ -39,7 +38,7 @@ struct ContentView: View {
                     
                     Label("Configurations", systemImage: "briefcase")
                         .if({
-                            return configurationsModel.unsavedChanges
+                            return settings.unsavedChanges
                         }()) { view in
                             view
                                 .badge(
@@ -81,18 +80,12 @@ struct ContentView: View {
             }
             .frame(width: WindowSize.detailWidth)
         }
-        // Check for unsaved configuration changes every time a new view is selected
-        .onChange(of: sidebarSelection) { _ in
-            Task(priority: .background) {
-                await self.configurationsModel.checkForUnsavedChanges()
-            }
-        }
     }
 }
 
 #Preview {
     @StateObject var settings = SettingsContainer()
-    @StateObject var databaseManager = DatabaseManager()
+    @StateObject var databaseManager = DatabaseManager(settings: settings)
 
     @StateObject var extractionModel = ExtractionModel(
         settings: settings,

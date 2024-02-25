@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import MarkersExtractor
 
 struct GeneralLabelSettingsView: View {
     @EnvironmentObject var settings: SettingsContainer
@@ -18,17 +19,17 @@ struct GeneralLabelSettingsView: View {
     
     var fontSizeBinding: Binding<String> {
         .init(get: {
-            "\(settings.store.selectedFontSize)"
+            "\(settings.store.fontSize)"
         }, set: {
-            settings.store.selectedFontSize = Int($0) ?? settings.store.selectedFontSize
+            settings.store.fontSize = Int($0) ?? settings.store.fontSize
         })
     }
     
     var strokeSizeBinding: Binding<String> {
         .init(get: {
-            "\(settings.store.selectedStrokeSize)"
+            "\(settings.store.strokeSize)"
         }, set: {
-            settings.store.selectedStrokeSize = Int($0) ?? settings.store.selectedStrokeSize
+            settings.store.strokeSize = Int($0) ?? settings.store.strokeSize
         })
     }
     
@@ -60,7 +61,7 @@ struct GeneralLabelSettingsView: View {
 
                 LabeledTextboxStepperForm(
                     label: "Size:",
-                    value: $settings.store.selectedFontSize,
+                    value: $settings.store.fontSize,
                     in: 6...100,
                     format: .number,
                     textFieldWidth: 50
@@ -71,8 +72,8 @@ struct GeneralLabelSettingsView: View {
                     Text("Color & Opacity:")
                     
                     ColorPickerOpacitySliderForm(
-                        color: $settings.store.selectedFontColor,
-                        opacity: $settings.store.selectedFontColorOpacity
+                        color: $settings.store.fontColor,
+                        opacity: $settings.store.fontColorOpacity
                     )
                     .formControlLeadingAlignmentGuide()
                 }
@@ -88,7 +89,7 @@ struct GeneralLabelSettingsView: View {
                 HStack {
                     LabeledTextboxStepperForm(
                         label: "Size:",
-                        value: $settings.store.selectedStrokeSize,
+                        value: $settings.store.strokeSize,
                         in: 0...100,
                         format: .number,
                         textFieldWidth: 50
@@ -101,7 +102,7 @@ struct GeneralLabelSettingsView: View {
                     Toggle("Auto", isOn: $settings.store.isStrokeSizeAuto)
                 }
                 
-                ColorPickerForm(color: $settings.store.selectedStrokeColor)
+                ColorPickerForm(color: $settings.store.strokeColor)
 
             }
 
@@ -114,8 +115,8 @@ struct GeneralLabelSettingsView: View {
             Group {
                 HStack {
                     Text("Horizontal:")
-                    Picker("", selection: $settings.store.selectedHorizonalAlignment) {
-                        ForEach(LabelHorizontalAlignment.allCases) { item in
+                    Picker("", selection: $settings.store.horizonalAlignment) {
+                        ForEach(MarkerLabelProperties.AlignHorizontal.allCases) { item in
                             Text(item.displayName).tag(item)
                         }
                     }
@@ -126,8 +127,8 @@ struct GeneralLabelSettingsView: View {
                 
                 HStack {
                     Text("Vertical:")
-                    Picker("", selection: $settings.store.selectedVerticalAlignment) {
-                        ForEach(LabelVerticalAlignment.allCases) { item in
+                    Picker("", selection: $settings.store.verticalAlignment) {
+                        ForEach(MarkerLabelProperties.AlignVertical.allCases) { item in
                             Text(item.displayName).tag(item)
                         }
                     }

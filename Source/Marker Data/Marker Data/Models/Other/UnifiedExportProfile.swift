@@ -11,7 +11,7 @@ import MarkersExtractor
 /// Holds both extract profile and database profile
 ///
 /// Selected profile is saved to application support
-struct UnifiedExportProfile: Codable, Hashable, Identifiable {
+struct UnifiedExportProfile: Codable, Hashable, Identifiable, Equatable {
     let displayName: String
     let extractProfile: ExportProfileFormat
     let databaseProfileName: String
@@ -19,46 +19,6 @@ struct UnifiedExportProfile: Codable, Hashable, Identifiable {
     
     var id: Self {
         self
-    }
-    
-    /// Saves a ``UnifiedExportProfile`` to disk
-    public func save() throws {
-        let encoder = JSONEncoder()
-        encoder.outputFormatting = .prettyPrinted
-        
-        let data = try encoder.encode(self)
-        
-        try data.write(to: URL.unifiedExportProfile)
-    }
-    
-    public static func defaultProfile() -> Self {
-        return UnifiedExportProfile(
-            displayName: "CSV",
-            extractProfile: .csv,
-            databaseProfileName: "",
-            exportProfileType: .extractOnly
-        )
-    }
-    
-    /// Loads the ``UnifiedExportProfile`` from disk
-    public static func load() -> UnifiedExportProfile? {
-        // Return default if file desn't exists
-        if !URL.unifiedExportProfile.fileExists {
-            return UnifiedExportProfile.defaultProfile()
-        }
-        
-        let decoder = JSONDecoder()
-        
-        do {
-            // Try to decode data
-            let data = try Data(contentsOf: URL.unifiedExportProfile)
-            let decoded = try decoder.decode(UnifiedExportProfile.self, from: data)
-            
-            return decoded
-        } catch {
-            print("Failed to decode UnifiedExportProfile")
-            return nil
-        }
     }
     
     /// Returns the no upload extraction proifles as a list of ``UnifiedExportProfile``

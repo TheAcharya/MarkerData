@@ -48,8 +48,6 @@ class QueueModel: ObservableObject {
             return
         }
 
-        let fileManager = FileManager.default
-
         var queueInstances: [QueueInstance] = []
         
         // Recursive iteration

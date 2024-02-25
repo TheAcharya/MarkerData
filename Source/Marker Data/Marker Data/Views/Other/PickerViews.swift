@@ -12,7 +12,7 @@ struct ImageModePicker: View {
     @EnvironmentObject var settings: SettingsContainer
 
     var body: some View {
-        Picker("Image Format", selection: $settings.store.selectedImageMode) {
+        Picker("Image Format", selection: $settings.store.imageMode) {
             ForEach(ImageMode.allCases) { imageMode in
                 Text(imageMode.displayName).tag(imageMode)
             }
@@ -24,7 +24,7 @@ struct FontNamePicker: View {
     @EnvironmentObject var settings: SettingsContainer
 
     var body: some View {
-        Picker("", selection: $settings.store.selectedFontNameType) {
+        Picker("", selection: $settings.store.fontNameType) {
             ForEach(FontNameType.allCases) { fontNameType in
                 Text(fontNameType.displayName).tag(fontNameType)
             }
@@ -36,7 +36,7 @@ struct FontStylePicker: View {
     @EnvironmentObject var settings: SettingsContainer
 
     var body: some View {
-        Picker("", selection: $settings.store.selectedFontStyleType) {
+        Picker("", selection: $settings.store.fontStyleType) {
             ForEach(FontStyleType.allCases) { fontStyleType in
                 Text(fontStyleType.displayName).tag(fontStyleType)
             }

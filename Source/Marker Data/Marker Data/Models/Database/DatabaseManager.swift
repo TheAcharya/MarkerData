@@ -13,13 +13,15 @@ import OSLog
 /// Holds and manages database profiles
 @MainActor
 class DatabaseManager: ObservableObject {
+    let settings: SettingsContainer
+
     /// List of database profiles
     @Published var profiles: [DatabaseProfileModel] = []
     
     var selectedDatabaseProfile: DatabaseProfileModel? {
         get {
-            let unifiedProfile = UnifiedExportProfile.load()
-            guard let databaseProfile = self.profiles.first(where: { $0.name == unifiedProfile?.databaseProfileName }) else {
+            let profileName = settings.store.unifiedExportProfile.databaseProfileName
+            guard let databaseProfile = self.profiles.first(where: { $0.name == profileName }) else {
                 return nil
             }
             
@@ -38,18 +40,15 @@ class DatabaseManager: ObservableObject {
                 databaseProfileName: databaseProfile.name,
                 exportProfileType: .extractAndUpload
             )
-            
-            do {
-                try unifiedProfile.save()
-            } catch {
-                Self.logger.error("Failed to save database profile as UnifiedExportProfile")
-            }
+
+            self.settings.store.unifiedExportProfile = unifiedProfile
         }
     }
     
     static let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "DatabaseManager")
     
-    init() {
+    init(settings: SettingsContainer) {
+        self.settings = settings
         self.loadProfilesFromDisk()
     }
     
