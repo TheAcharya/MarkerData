@@ -9,6 +9,7 @@ import Foundation
 import AppKit
 import Combine
 import OSLog
+import EonilFSEvents
 
 /// Manages and reloads settings
 ///
@@ -68,6 +69,28 @@ class SettingsContainer: ObservableObject {
             }
         }
         .store(in: &cancellables)
+
+        // Monitor preferences file for changes
+        // We need this because the roles might be changed from the FCP Workflow Extension
+        do {
+            try EonilFSEvents.startWatching(
+                paths: [URL.preferencesJSON.path(percentEncoded: false)],
+                for: ObjectIdentifier(self),
+                with: { event in
+                    do {
+                        let storeOnDisk = try self.loadStoreFromDisk(at: URL.preferencesJSON)
+
+                        if storeOnDisk.roles != self.store.roles {
+                            self.store = storeOnDisk
+                            Self.logger.notice("Roles have been modified from outside. Loading new store.")
+                        }
+                    } catch {
+                        Self.logger.error("File monitor error: \(error.localizedDescription)")
+                    }
+                })
+        } catch {
+            Self.logger.warning("Failed to start preferences file monitoring. \(error.localizedDescription)")
+        }
     }
 
     /// Sets the current store by name

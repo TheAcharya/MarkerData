@@ -57,17 +57,6 @@ extension URL {
             .appendingPathComponent("dropbox_token", conformingTo: .json)
     }
     
-    /// Path to ~/Library/Preferences/Marker Data/UnifiedExportProfile.json
-    public static var unifiedExportProfile: URL {
-        Self.markerDataLibraryFolder
-            .appendingPathComponent("UnifiedExportProfile.json", conformingTo: .json)
-    }
-    
-    /// Path to ~/Library/Preferences/Marker Data/roles.json
-    public static var rolesJSONStaticPath: URL {
-        URL(filePath: "/Users/\(NSUserName())/Library/Application Support/Marker Data/roles.json")
-    }
-    
     /// Path to ~/Library/Preferences/Marker Data/Logs
     public static var logsFolder: URL {
         Self.markerDataLibraryFolder

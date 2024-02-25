@@ -12,7 +12,7 @@
 	<true/>
 	<key>com.apple.security.temporary-exception.files.home-relative-path.read-write</key>
 	<array>
-		<string>/Library/Application Support/Marker Data/roles.json</string>
+		<string>/Library/Application Support/Marker Data/preferences.json</string>
 	</array>
 	<key>com.apple.security.scripting-targets</key>
 	<dict>

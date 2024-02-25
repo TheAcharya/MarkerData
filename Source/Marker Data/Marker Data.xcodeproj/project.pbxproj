@@ -61,7 +61,6 @@
 		4155B7222B653D2C008D3505 /* RoleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B7212B653D2C008D3505 /* RoleModel.swift */; };
 		4155B7232B653D35008D3505 /* RoleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B7212B653D2C008D3505 /* RoleModel.swift */; };
 		4155B7262B6574A8008D3505 /* RolesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B7252B6574A8008D3505 /* RolesManager.swift */; };
-		4155B7282B657741008D3505 /* URLExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414262BA2AD2E1AC00FC6CFC /* URLExtension.swift */; };
 		4155B72C2B668D29008D3505 /* LoggingOSLog in Frameworks */ = {isa = PBXBuildFile; productRef = 4155B72B2B668D29008D3505 /* LoggingOSLog */; };
 		4155B72E2B66BF9C008D3505 /* HelpButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47411FD92A3EA121005890FE /* HelpButton.swift */; };
 		4155B7312B6E96BE008D3505 /* SidebarSelectionSwitcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B7302B6E96BE008D3505 /* SidebarSelectionSwitcher.swift */; };
@@ -83,6 +82,8 @@
 		41A055732B8B770B006AC0E4 /* MarkersExtractorModelExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41176AE82B8216520093F4C8 /* MarkersExtractorModelExtensions.swift */; };
 		41A055742B8B772C006AC0E4 /* ExportProfileFormatExtrension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BFEB762B1E63EA00C8B551 /* ExportProfileFormatExtrension.swift */; };
 		41A055752B8B776F006AC0E4 /* RolesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B7252B6574A8008D3505 /* RolesManager.swift */; };
+		41A055762B8B8442006AC0E4 /* URLExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414262BA2AD2E1AC00FC6CFC /* URLExtension.swift */; };
+		41A055782B8B858C006AC0E4 /* EonilFSEvents in Frameworks */ = {isa = PBXBuildFile; productRef = 41A055772B8B858C006AC0E4 /* EonilFSEvents */; };
 		41BFEB6D2B1B9B6400C8B551 /* Links.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BFEB6C2B1B9B6400C8B551 /* Links.swift */; };
 		41BFEB702B1BA4CC00C8B551 /* PasswordField in Frameworks */ = {isa = PBXBuildFile; productRef = 41BFEB6F2B1BA4CC00C8B551 /* PasswordField */; };
 		41BFEB722B1BCE4600C8B551 /* ExportProfilePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BFEB712B1BCE4600C8B551 /* ExportProfilePicker.swift */; };
@@ -332,6 +333,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				41A055782B8B858C006AC0E4 /* EonilFSEvents in Frameworks */,
 				4155B7202B62E2A3008D3505 /* MarkersExtractor in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -847,6 +849,7 @@
 			name = "Workflow Extension";
 			packageProductDependencies = (
 				4155B71F2B62E2A3008D3505 /* MarkersExtractor */,
+				41A055772B8B858C006AC0E4 /* EonilFSEvents */,
 			);
 			productName = WorkflowExtension;
 			productReference = 4155B6D62B602694008D3505 /* Workflow Extension.appex */;
@@ -972,10 +975,10 @@
 				41A0556E2B8B766C006AC0E4 /* SettingsStore.swift in Sources */,
 				41A055742B8B772C006AC0E4 /* ExportProfileFormatExtrension.swift in Sources */,
 				4155B72E2B66BF9C008D3505 /* HelpButton.swift in Sources */,
-				4155B7282B657741008D3505 /* URLExtension.swift in Sources */,
 				41A055702B8B7685006AC0E4 /* NotificationFrequency.swift in Sources */,
 				4155B7172B62E131008D3505 /* RolesSettingsView.swift in Sources */,
 				41A055752B8B776F006AC0E4 /* RolesManager.swift in Sources */,
+				41A055762B8B8442006AC0E4 /* URLExtension.swift in Sources */,
 				4155B7232B653D35008D3505 /* RoleModel.swift in Sources */,
 				41A055722B8B76BC006AC0E4 /* ColorExtension.swift in Sources */,
 			);
@@ -1562,6 +1565,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4155B72A2B668C0D008D3505 /* XCRemoteSwiftPackageReference "swift-log-oslog" */;
 			productName = LoggingOSLog;
+		};
+		41A055772B8B858C006AC0E4 /* EonilFSEvents */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 41176ACE2B780C090093F4C8 /* XCRemoteSwiftPackageReference "FSEvents" */;
+			productName = EonilFSEvents;
 		};
 		41BFEB6F2B1BA4CC00C8B551 /* PasswordField */ = {
 			isa = XCSwiftPackageProductDependency;
