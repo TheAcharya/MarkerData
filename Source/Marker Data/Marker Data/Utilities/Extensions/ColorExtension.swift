@@ -31,14 +31,25 @@ extension Color: Codable {
 
     private func components() -> (red: CGFloat, green: CGFloat, blue: CGFloat) {
         guard let color = NSColor(self).usingColorSpace(.sRGB) else {
-            fatalError("Unable to convert SwiftUI Color to NSColor")
+            // Return black as default
+            return (0, 0, 0)
         }
+
         let red = color.redComponent
         let green = color.greenComponent
         let blue = color.blueComponent
         return (red, green, blue)
     }
-    
+
+    public func isEqual(to color: Color, tolerance: CGFloat = 0.1) -> Bool {
+        let (red1, green1, blue1) = components()
+        let (red2, green2, blue2) = color.components()
+
+        return abs(red1 - red2) <= tolerance &&
+               abs(green1 - green2) <= tolerance &&
+               abs(blue1 - blue2) <= tolerance
+    }
+
     static let darkPurple = Color(#colorLiteral(red: 0.2784313725, green: 0.03137254902, blue: 0.5843137255, alpha: 1))
 
     public func encode(to encoder: Encoder) throws {
@@ -54,11 +65,8 @@ extension Color: Codable {
     }
 
     static func == (lhs: Color, rhs: Color) -> Bool {
-        return lhs.hex == rhs.hex
-    }
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(self.hex)
+        print("\(lhs.hex) == \(rhs.hex): \(lhs.isEqual(to: rhs) ? "equal" : "not equal")")
+        return lhs.isEqual(to: rhs)
     }
 }
 
