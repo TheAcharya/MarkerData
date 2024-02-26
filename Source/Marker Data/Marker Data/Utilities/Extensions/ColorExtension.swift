@@ -65,7 +65,6 @@ extension Color: Codable {
     }
 
     static func == (lhs: Color, rhs: Color) -> Bool {
-        print("\(lhs.hex) == \(rhs.hex): \(lhs.isEqual(to: rhs) ? "equal" : "not equal")")
         return lhs.isEqual(to: rhs)
     }
 }
