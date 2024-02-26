@@ -23,6 +23,7 @@ extension ExtractionModel {
     }
     
     /// Handles the Open Document event, called when file is dragged to dock icon or FCP Share Destination exports
+    @MainActor 
     @objc func handleOpenDocument(notification: Notification) {
         guard let url = notification.userInfo?["url"] as? URL else {
             Self.logger.error("handleOpenDocument: Couldn't find URL info")
@@ -62,6 +63,7 @@ extension ExtractionModel {
     }
     
     /// Handles Workflow Extension notification, and starts the extraction
+    @MainActor 
     @objc func handleWorkflowExtensionEvent() {
         Self.logger.notice("handleWorkflowExtensionEvent: Recieved notification")
         

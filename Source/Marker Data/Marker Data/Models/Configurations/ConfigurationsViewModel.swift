@@ -62,6 +62,7 @@ class ConfigurationsViewModel: ObservableObject {
         }
     }
 
+    @MainActor 
     public func discardChanges() {
         do {
             try settings?.discardChanges()

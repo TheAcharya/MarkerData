@@ -49,6 +49,7 @@ final class ExtractionModel: ObservableObject {
     }
     
     public func performExtraction(_ urls: [URL]) async {
+        @MainActor 
         func validateExportDestination() throws {
             var isDir : ObjCBool = false
             
@@ -76,7 +77,7 @@ final class ExtractionModel: ObservableObject {
         @Sendable 
         func extractAndUpdateProgress(for url: URL) async throws -> ExportResult? {
             // Get extraction settings
-            guard let settings = try? self.settings.store.markersExtractorSettings(fcpxmlFileUrl: url) else {
+            guard let settings = try? await self.settings.store.markersExtractorSettings(fcpxmlFileUrl: url) else {
                 throw ExtractError.settingsReadError
             }
             
@@ -166,7 +167,7 @@ final class ExtractionModel: ObservableObject {
         
         // Validate export destination
         do {
-            try validateExportDestination()
+            try await validateExportDestination()
         } catch {
             self.extractionProgress.markasFailed(
                 progressMessage: "Empty or invalid export destination",

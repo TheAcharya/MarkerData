@@ -17,6 +17,7 @@ import EonilFSEvents
 /// configuraition using ``ConfigurationsModel`` the variables
 /// inside ``SettingsStore`` that use the `@AppStorage` property wrapper sometimes stay unchanged.
 /// With this container we can reload the whole settings object so our values are updated.
+@MainActor
 class SettingsContainer: ObservableObject {
     @Published var store: SettingsStore
     @Published var unsavedChanges = false
@@ -58,7 +59,7 @@ class SettingsContainer: ObservableObject {
         // Save file when changes are made
         self.objectWillChange.sink { _ in
             Task(priority: .background) {
-                if await !self.ignoreWillChange {
+                if !self.ignoreWillChange {
                     try await self.store.saveAsCurrent()
                     await self.checkForUnsavedChanges()
                 }
@@ -76,24 +77,14 @@ class SettingsContainer: ObservableObject {
             try EonilFSEvents.startWatching(
                 paths: [URL.preferencesJSON.path(percentEncoded: false)],
                 for: ObjectIdentifier(self),
-                with: { event in
-                    do {
-                        let storeOnDisk = try self.loadStoreFromDisk(at: URL.preferencesJSON)
-
-                        if storeOnDisk.roles != self.store.roles {
-                            self.store = storeOnDisk
-                            Self.logger.notice("Roles have been modified from outside. Loading new store.")
-                        }
-                    } catch {
-                        Self.logger.error("File monitor error: \(error.localizedDescription)")
-                    }
+                with: { [weak self] event in
+                    self?.monitorFileChanges(fileSystemEvent: event)
                 })
         } catch {
             Self.logger.warning("Failed to start preferences file monitoring. \(error.localizedDescription)")
         }
     }
 
-    @MainActor
     public func load(_ store: SettingsStore) throws {
         // Default
         if store.isDefault() {
@@ -107,13 +98,11 @@ class SettingsContainer: ObservableObject {
     }
 
     /// Saves current as a configuration
-    @MainActor
     public func saveCurrentAs(name: String) async throws {
         try await self.duplicateStore(store: self.store, as: name, setAsCurrent: true)
     }
 
     /// Duplicates a store
-    @MainActor
     public func duplicateStore(store: SettingsStore, as name: String, setAsCurrent: Bool = false) async throws {
         if name == SettingsStore.defaultName {
             throw ConfigurationSaveError.illegalName
@@ -135,17 +124,22 @@ class SettingsContainer: ObservableObject {
     }
 
     /// Removes a configuration by name
-    @MainActor
     public func removeConfiguration(name: String) async throws {
         if let index = self.configurations.firstIndex(where: { $0.name == name }) {
-            let isActive = isStoreActive(self.configurations[index])
+            let wasActive = isStoreActive(self.configurations[index])
 
+            // Delete file
             try self.configurations[index].delete()
-            self.configurations.remove(at: index)
+
+            // Remove model
+            self.configurations.remove(safeAt: index)
 
             // Select a new active conf if the deleted one was active
-            if isActive {
-                try await self.configurations.first?.saveAsCurrent()
+            if wasActive {
+                if let newStore = self.configurations.first {
+                    self.setCurrent(newStore)
+                    try await newStore.saveAsCurrent()
+                }
             }
 
             self.objectWillChange.send()
@@ -157,6 +151,7 @@ class SettingsContainer: ObservableObject {
         self.store = try self.loadStoreFromDisk(at: self.store.jsonURL)
     }
 
+    @MainActor
     public func findByName(_ name: String) -> SettingsStore? {
         if name.isEmpty {
             return nil
@@ -176,7 +171,6 @@ class SettingsContainer: ObservableObject {
     }
 
     /// Sets the current store
-    @MainActor
     private func setCurrent(_ store: SettingsStore) {
         self.store = store
         self.objectWillChange.send()
@@ -188,6 +182,12 @@ class SettingsContainer: ObservableObject {
 
         let data = try Data(contentsOf: url)
         let decoded = try decoder.decode(SettingsStore.self, from: data)
+        
+        // Check if configuration file exists
+        if !decoded.jsonURL.fileExists {
+            Self.logger.warning("Failed to load store from disk. Configuration named \"\(decoded.name)\" missing. Returning default.")
+            return SettingsStore.defaults()
+        }
 
         return decoded
     }
@@ -218,7 +218,6 @@ class SettingsContainer: ObservableObject {
     }
 
     /// Compares current store with the one on disk
-    @MainActor
     public func checkForUnsavedChanges() async {
         await MainActor.run {
             self.ignoreWillChange = true
@@ -236,5 +235,24 @@ class SettingsContainer: ObservableObject {
         }
 
         self.unsavedChanges = onDisk != self.store
+    }
+
+    private func monitorFileChanges(fileSystemEvent: EonilFSEventsEvent) {
+        guard let flags = fileSystemEvent.flag else {
+            return
+        }
+
+        if flags.contains(.itemModified) {
+            do {
+                let storeOnDisk = try self.loadStoreFromDisk(at: URL.preferencesJSON)
+
+                if storeOnDisk.roles != self.store.roles {
+                    self.store = storeOnDisk
+                    Self.logger.notice("Roles have been modified from outside. Loading new store.")
+                }
+            } catch {
+                Self.logger.error("File monitor error: \(error.localizedDescription)")
+            }
+        }
     }
 }

@@ -89,7 +89,7 @@ class QueueModel: ObservableObject {
     }
 
     public func scanExportFolder() async throws {
-        guard let exportFolder = self.settings.store.exportFolderURL else {
+        guard let exportFolder = await self.settings.store.exportFolderURL else {
             Self.logger.error("Missing output directory")
             throw QueueError.missingOutputDirectory
         }

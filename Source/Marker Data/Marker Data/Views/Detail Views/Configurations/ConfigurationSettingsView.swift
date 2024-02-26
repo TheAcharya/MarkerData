@@ -39,8 +39,6 @@ struct ConfigurationSettingsView: View {
             mainButtons
             
             showConfigurationsFolder
-
-            Text(settings.store.name)
         }
         .padding()
         .overlayHelpButton(url: Links.configurationSettingsURL)
@@ -88,6 +86,7 @@ struct ConfigurationSettingsView: View {
         .confirmationDialog("Delete configuration \(selectedStoreName.quoted)? This action cannot be undone.", isPresented: $showRemoveConfigurationConfirm) {
             Button("Delete", role: .destructive) {
                 confModel.remove(name: selectedStoreName)
+                self.selectedStoreName = ""
             }
             Button("Cancel", role: .cancel) {}
         }
