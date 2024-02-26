@@ -41,17 +41,26 @@ struct QueueView: View {
     var tableView: some View {
         Table(queueModel.queueInstances, sortOrder: $sortOrder) {
             TableColumn("Name", value: \.name)
+                .width(ideal: 120)
+
             TableColumn("Date", value: \.extractInfo.creationDate) { queueInstance in
                 Text(queueInstance.creationDateFormatted)
             }
+            .width(ideal: 80)
+
             TableColumn("Profile", value: \.extractInfo.profile.rawValue)
+                .width(ideal: 20)
+
             TableColumn("Upload Destination") { queueInstance in
                 UploadDestinationPickerView(queueInstance: queueInstance)
                     .disabled(queueModel.uploadInProgress)
             }
+            .width(ideal: 120)
+
             TableColumn("Status") { queueInstance in
                 QueueStatusView(queueInstance: queueInstance)
             }
+            .width(ideal: 60)
         }
         .onChange(of: sortOrder) { newOrder in
             queueModel.queueInstances.sort(using: newOrder)
