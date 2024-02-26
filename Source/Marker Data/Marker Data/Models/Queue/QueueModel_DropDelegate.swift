@@ -41,6 +41,8 @@ extension QueueModel: DropDelegate {
             }
         }
 
+        self.automaticScanEnabled = false
+
         return true
     }
 }

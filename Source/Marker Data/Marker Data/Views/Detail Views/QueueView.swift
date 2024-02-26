@@ -12,7 +12,6 @@ struct QueueView: View {
 
     @State var showScanAlert = false
     @State var sortOrder = [KeyPathComparator(\QueueInstance.extractInfo.creationDate)]
-    @AppStorage("queueAutomaticScanEnabled") var automaticScanEnabled = true
 
     var body: some View {
         VStack {
@@ -26,12 +25,10 @@ struct QueueView: View {
         .overlayHelpButton(url: Links.queueHelpURL)
         .alert("Failed to scan export folder", isPresented: $showScanAlert) {}
         .task {
-            if queueModel.queueInstances.isEmpty && automaticScanEnabled {
-                do {
-                    try await queueModel.scanExportFolder()
-                } catch {
-                    showScanAlert = true
-                }
+            do {
+                try await queueModel.scanExportFolder()
+            } catch {
+                showScanAlert = true
             }
 
             await queueModel.filterMissing()
@@ -68,8 +65,7 @@ struct QueueView: View {
         .onDrop(of: [.fileURL], delegate: queueModel)
         .contextMenu {
             Button {
-                queueModel.queueInstances.removeAll()
-                automaticScanEnabled = false
+                queueModel.clear()
             } label: {
                 Label("Clear", systemImage: "trash")
             }
@@ -100,7 +96,7 @@ struct QueueView: View {
 
             // Load from Export Destination button
             Button {
-                automaticScanEnabled = true
+                queueModel.automaticScanEnabled = true
 
                 Task {
                     do {

@@ -12,11 +12,15 @@ import OSLog
 class QueueModel: ObservableObject {
     let settings: SettingsContainer
     let databaseManager: DatabaseManager
+    
     @Published var queueInstances: [QueueInstance] = []
+
     @MainActor
     @Published var uploadInProgress = false
-    @AppStorage("deleteFolderAfterUpload") var deleteFolderAfterUpload = false
     
+    @AppStorage("deleteFolderAfterUpload") var deleteFolderAfterUpload = false
+    @AppStorage("queueAutomaticScanEnabled") var automaticScanEnabled = true
+
     // Cancellation
     private var taskGroup: TaskGroup<Void>? = nil
     
@@ -89,6 +93,10 @@ class QueueModel: ObservableObject {
     }
 
     public func scanExportFolder() async throws {
+        if !automaticScanEnabled {
+            return
+        }
+
         guard let exportFolder = await self.settings.store.exportFolderURL else {
             Self.logger.error("Missing output directory")
             throw QueueError.missingOutputDirectory
@@ -151,5 +159,11 @@ class QueueModel: ObservableObject {
         self.queueInstances = self.queueInstances.filter {
             $0.extractInfo.jsonURL.fileExists
         }
+    }
+
+    @MainActor
+    public func clear() {
+        self.queueInstances.removeAll()
+        self.automaticScanEnabled = false
     }
 }
