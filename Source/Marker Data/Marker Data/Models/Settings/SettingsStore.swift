@@ -154,7 +154,10 @@ struct SettingsStore: Codable, Hashable, Equatable, Identifiable {
         
         switch self.overrideImageSize {
         case .noOverride:
-            break
+            // If using GIF default to 50% image size
+            if self.imageMode == .GIF {
+                imageSizePercent = 50
+            }
         case .overrideImageSizePercent:
             imageSizePercent = self.imageSizePercent
         case .overrideImageWidthAndHeight:
