@@ -38,15 +38,15 @@ struct QueueView: View {
     var tableView: some View {
         Table(queueModel.queueInstances, sortOrder: $sortOrder) {
             TableColumn("Name", value: \.name)
-                .width(ideal: 120)
+                .width(ideal: 110)
 
             TableColumn("Date", value: \.extractInfo.creationDate) { queueInstance in
                 Text(queueInstance.creationDateFormatted)
             }
-            .width(ideal: 80)
+            .width(ideal: 100)
 
             TableColumn("Profile", value: \.extractInfo.profile.rawValue)
-                .width(ideal: 20)
+                .width(ideal: 25)
 
             TableColumn("Upload Destination") { queueInstance in
                 UploadDestinationPickerView(queueInstance: queueInstance)
