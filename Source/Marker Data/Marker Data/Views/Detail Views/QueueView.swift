@@ -37,16 +37,23 @@ struct QueueView: View {
     
     var tableView: some View {
         Table(queueModel.queueInstances, sortOrder: $sortOrder) {
-            TableColumn("Name", value: \.name)
-                .width(ideal: 110)
+            TableColumn("Name", value: \.name) { queueInstance in
+                Text(queueInstance.name)
+                    .help(queueInstance.name)
+            }
+            .width(ideal: 110)
 
             TableColumn("Date", value: \.extractInfo.creationDate) { queueInstance in
                 Text(queueInstance.creationDateFormatted)
+                    .help(queueInstance.creationDateFormatted)
             }
             .width(ideal: 100)
 
-            TableColumn("Profile", value: \.extractInfo.profile.rawValue)
-                .width(ideal: 25)
+            TableColumn("Profile", value: \.extractInfo.profile.rawValue) { queueInstance in
+                Text(queueInstance.extractInfo.profile.rawValue)
+                    .help(queueInstance.extractInfo.profile.rawValue)
+            }
+            .width(ideal: 25)
 
             TableColumn("Upload Destination") { queueInstance in
                 UploadDestinationPickerView(queueInstance: queueInstance)
