@@ -60,6 +60,12 @@
 </p>
 </details>
 
+<details><summary>Send to Airtable</summary>
+<p>
+<p align="center"> <img src="https://github.com/TheAcharya/MarkerData-Website/blob/main/docs/assets/md-send-to-airtable-03.gif?raw=true"> </p>
+</p>
+</details>
+
 <details><summary>Queue in Action</summary>
 <p>
 <p align="center"> <img src="https://github.com/TheAcharya/MarkerData-Website/blob/main/docs/assets/md-queue-01.gif?raw=true"> </p>
