@@ -78,19 +78,24 @@ struct ImageSettingsView: View {
                         TextField(
                             "",
                             value: $settings.store.imageSizePercent,
-                            format: .percent
+                            format: .number
                         )
                         .labelsHidden()
                         .frame(width: 50)
                         .formControlLeadingAlignmentGuide()
-                        
+                        .onChange(of: settings.store.imageSizePercent) { newValue in
+                            settings.store.imageSizePercent = newValue.clamped(to: 1...100)
+                        }
+
+                        Text("%")
+                            .padding(.leading, -7)
+
                         Stepper(
                             "",
                             value: $settings.store.imageSizePercent,
                             in: 0...100
                         )
                         .labelsHidden()
-                        .padding(.leading, -5)
                     }
                     .padding(.vertical, 6)
                     .tag(OverrideImageSizeOption.overrideImageSizePercent)
