@@ -11,12 +11,7 @@ import Combine
 import OSLog
 import EonilFSEvents
 
-/// Manages and reloads settings
-///
-/// This container object is needed because when we load a
-/// configuraition using ``ConfigurationsModel`` the variables
-/// inside ``SettingsStore`` that use the `@AppStorage` property wrapper sometimes stay unchanged.
-/// With this container we can reload the whole settings object so our values are updated.
+/// Holds app settings and provides methods to save, delete and modify them
 @MainActor
 class SettingsContainer: ObservableObject {
     @Published var store: SettingsStore
@@ -54,6 +49,8 @@ class SettingsContainer: ObservableObject {
             } catch {
                 Self.logger.error("Failed to save store during init")
             }
+
+            await self.checkForUnsavedChanges()
         }
 
         // Save file when changes are made
@@ -184,7 +181,7 @@ class SettingsContainer: ObservableObject {
         let decoded = try decoder.decode(SettingsStore.self, from: data)
         
         // Check if configuration file exists
-        if !decoded.jsonURL.fileExists {
+        if !decoded.jsonURL.fileExists && !decoded.isDefault() {
             Self.logger.warning("Failed to load store from disk. Configuration named \"\(decoded.name)\" missing. Returning default.")
             return SettingsStore.defaults()
         }
