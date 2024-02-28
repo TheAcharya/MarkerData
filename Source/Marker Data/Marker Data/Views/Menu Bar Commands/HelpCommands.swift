@@ -19,7 +19,7 @@ struct HelpCommands: Commands {
             Divider()
             
             Link("Release Notes", destination: URL(string: "https://markerdata.theacharya.co/release-notes/")!)
-            Link("Sponsor", destination: URL(string: "https://github.com/sponsors/TheAcharya")!)
+            Link("Sponsor Marker Data", destination: URL(string: "https://github.com/sponsors/TheAcharya")!)
             Link("About Marker Data", destination: URL(string: "https://markerdata.theacharya.co/credits/")!)
             
             Divider()
