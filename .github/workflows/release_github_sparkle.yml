@@ -297,7 +297,7 @@ jobs:
         PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
         echo -n "$PRIVATE_SPARKLE_KEY" > "$PARENT/dist/dmg-builds/sparkle/sparkle_private_key"
         
-    - name: Sparkle Sign
+    - name: Sparkle Sign DMG & Generate Appcast
       env:
         PRIVATE_SPARKLE_KEY: ${{ secrets.PRIVATE_SPARKLE_KEY }}
       run: |
@@ -305,10 +305,28 @@ jobs:
         TOOL_PATH="$PARENT/dist/dmg-builds/sparkle/sign_update"
         ED_KEY="$PARENT/dist/dmg-builds/sparkle/sparkle_private_key"
         VER=$(cat ./Distribution/version.txt)
+        APP_INFO="$PARENT/dist/dmg-builds/latest-build/Marker Data.app/Contents/Info.plist"
         DMG="$PARENT/dist/dmg-builds/dmg-output/Marker-Data_"
         
-        echo "Create Sparkle EdDSA Signature"
-        "$TOOL_PATH" "$DMG""$VER.dmg" --ed-key-file "$ED_KEY"
+        echo "Create & Print Sparkle EdDSA Signature"
+        "$TOOL_PATH" "$DMG""$VER.dmg" --ed-key-file "$ED_KEY" | tee "$PARENT/dist/dmg-builds/latest-build/EdDSA.txt"
+        EDSA=$(sudo cat "$PARENT/dist/dmg-builds/latest-build/EdDSA.txt")
+        
+        echo "Read & Print Bundle Version"
+        /usr/libexec/PlistBuddy -c "Print CFBundleShortVersionString" "$APP_INFO" | tee "$PARENT/dist/dmg-builds/latest-build/ShortVersionString.txt"
+        BUNDLE_VERSION=$(sudo cat "$PARENT/dist/dmg-builds/latest-build/ShortVersionString.txt")
+        
+        echo "Read & Print Bundle Build"
+        /usr/libexec/PlistBuddy -c "Print CFBundleVersion" "$APP_INFO" | tee "$PARENT/dist/dmg-builds/latest-build/BundleVersion.txt"
+        BUNDLE_BUILD=$(sudo cat "$PARENT/dist/dmg-builds/latest-build/BundleVersion.txt")
+        
+        python3 Distribution/dmg-builds/sparkle/generate_appcast_script.py "$BUNDLE_VERSION" "$BUNDLE_BUILD" "$EDSA"
+        
+        git config user.email "actions@example.com"
+        git config user.name "GitHub Actions"
+        git add ./appcast.xml
+        git commit -m "appcast.xml Update $BUNDLE_VERSION"
+        git push       
     
     - name: Create Environment Files
       run: |
