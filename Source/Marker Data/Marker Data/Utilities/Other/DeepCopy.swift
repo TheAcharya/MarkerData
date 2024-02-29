@@ -12,7 +12,7 @@ func deepCopy<T: Codable>(of object: T) -> T? {
         let json = try JSONEncoder().encode(object)
         return try JSONDecoder().decode(T.self, from: json)
     } catch let error {
-        print(error.localizedDescription)
+        print("Failed to deep copy \(object.self). \(error.localizedDescription)")
         return nil
     }
 }

@@ -17,6 +17,8 @@ extension ConfigurationSettingsView {
                 confModel.add(saveAs: configurationNameText)
                 showAddConfigurationSheet = false
             }
+
+            configurationNameText.removeAll()
         }
 
         return VStack(alignment: .leading) {
@@ -40,6 +42,7 @@ extension ConfigurationSettingsView {
                 Spacer()
 
                 Button("Cancel", role: .cancel) {
+                    configurationNameText.removeAll()
                     showAddConfigurationSheet = false
                     showRenameConfigurationSheet = false
                 }

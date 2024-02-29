@@ -106,7 +106,7 @@ struct DatabaseSettingsView: View {
                 // Edit button
                 Button {
                     if let profileToEdit = databaseManager.profiles.first(where: { $0.name == selection }) {
-                        editProfile = profileToEdit
+                        editProfile = profileToEdit.copy()
                         showCreateProfileSheet = true
                     } else {
                         print("Failed to find profile to edit")
