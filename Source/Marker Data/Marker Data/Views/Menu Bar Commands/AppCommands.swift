@@ -7,14 +7,22 @@
 
 import Foundation
 import SwiftUI
+import Sparkle
 
 struct AppCommands: Commands {
     @Binding var sidebarSelection: MainViews
-    
+    let updaterController: SPUStandardUpdaterController
+
     var body: some Commands {
         CommandGroup(replacing: .appInfo) {
             Button("About Marker Data") {
                 sidebarSelection = .about
+            }
+        }
+
+        CommandGroup(before: .systemServices) {
+            CheckForUpdatesView(updater: updaterController.updater) {
+                Text("Check for Updates...")
             }
         }
     }

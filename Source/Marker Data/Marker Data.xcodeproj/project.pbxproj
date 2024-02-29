@@ -73,6 +73,9 @@
 		417914FF2B7547CE00215688 /* DropboxSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417914FE2B7547CE00215688 /* DropboxSetupView.swift */; };
 		417915022B754E1500215688 /* DropboxInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417915012B754E1500215688 /* DropboxInfo.swift */; };
 		417915062B75547C00215688 /* DropboxSetupModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417915052B75547C00215688 /* DropboxSetupModel.swift */; };
+		418D5DB62B910F4900589E17 /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = 418D5DB52B910F4900589E17 /* Sparkle */; };
+		418D5DB92B91163500589E17 /* CheckForUpdatesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418D5DB82B91163500589E17 /* CheckForUpdatesView.swift */; };
+		418D5DBB2B9117BB00589E17 /* UpdateSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418D5DBA2B9117BB00589E17 /* UpdateSettingsView.swift */; };
 		41A0556E2B8B766C006AC0E4 /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BACA4D029FA9B5100EF6837 /* SettingsStore.swift */; };
 		41A0556F2B8B767B006AC0E4 /* SettingsModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B51D21529E9B13400DF7836 /* SettingsModels.swift */; };
 		41A055702B8B7685006AC0E4 /* NotificationFrequency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B6CA2B5D3B3B008D3505 /* NotificationFrequency.swift */; };
@@ -245,6 +248,8 @@
 		417914FE2B7547CE00215688 /* DropboxSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxSetupView.swift; sourceTree = "<group>"; };
 		417915012B754E1500215688 /* DropboxInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxInfo.swift; sourceTree = "<group>"; };
 		417915052B75547C00215688 /* DropboxSetupModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxSetupModel.swift; sourceTree = "<group>"; };
+		418D5DB82B91163500589E17 /* CheckForUpdatesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckForUpdatesView.swift; sourceTree = "<group>"; };
+		418D5DBA2B9117BB00589E17 /* UpdateSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateSettingsView.swift; sourceTree = "<group>"; };
 		41BFEB6C2B1B9B6400C8B551 /* Links.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Links.swift; sourceTree = "<group>"; };
 		41BFEB712B1BCE4600C8B551 /* ExportProfilePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportProfilePicker.swift; sourceTree = "<group>"; };
 		41BFEB762B1E63EA00C8B551 /* ExportProfileFormatExtrension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportProfileFormatExtrension.swift; sourceTree = "<group>"; };
@@ -345,6 +350,7 @@
 				9B61B44229F03866003EC14A /* libswiftCoreGraphics.tbd in Frameworks */,
 				4155B6C52B5D3709008D3505 /* DockProgress in Frameworks */,
 				41C538A22AE420EA00E8A8A1 /* ColorWellKit in Frameworks */,
+				418D5DB62B910F4900589E17 /* Sparkle in Frameworks */,
 				D5F74A512973019000EEE2FE /* OrderedCollections in Frameworks */,
 				41176AD02B780C090093F4C8 /* EonilFSEvents in Frameworks */,
 				D5F74A4F2973019000EEE2FE /* DequeModule in Frameworks */,
@@ -457,6 +463,7 @@
 				4155B70E2B62D350008D3505 /* FileSettingsView.swift */,
 				4155B7102B62D47B008D3505 /* NotificationSettingsView.swift */,
 				4155B70C2B62CED6008D3505 /* RolesSettingsView.swift */,
+				418D5DBA2B9117BB00589E17 /* UpdateSettingsView.swift */,
 			);
 			path = "General Settings";
 			sourceTree = "<group>";
@@ -713,6 +720,7 @@
 				41BFEB712B1BCE4600C8B551 /* ExportProfilePicker.swift */,
 				417272992B44533D005A04BE /* FailedExtractionsView.swift */,
 				417272A12B484B82005A04BE /* ExportDestinationPicker.swift */,
+				418D5DB82B91163500589E17 /* CheckForUpdatesView.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -876,6 +884,7 @@
 				4155B71D2B62E29A008D3505 /* MarkersExtractor */,
 				4155B72B2B668D29008D3505 /* LoggingOSLog */,
 				41176ACF2B780C090093F4C8 /* EonilFSEvents */,
+				418D5DB52B910F4900589E17 /* Sparkle */,
 			);
 			productName = "Marker Data";
 			productReference = D5F74A2D2972D31C00EEE2FE /* Marker Data.app */;
@@ -917,6 +926,7 @@
 				4155B71C2B62E29A008D3505 /* XCRemoteSwiftPackageReference "MarkersExtractor" */,
 				4155B72A2B668C0D008D3505 /* XCRemoteSwiftPackageReference "swift-log-oslog" */,
 				41176ACE2B780C090093F4C8 /* XCRemoteSwiftPackageReference "FSEvents" */,
+				418D5DB42B910F4900589E17 /* XCRemoteSwiftPackageReference "Sparkle" */,
 			);
 			productRefGroup = D5F74A2E2972D31C00EEE2FE /* Products */;
 			projectDirPath = "";
@@ -1034,6 +1044,7 @@
 				41C839862B52C9E300C6B133 /* Asset.m in Sources */,
 				41C8398B2B52C9E300C6B133 /* MediaAssetHelperKeys.m in Sources */,
 				D5F74A332972D31D00EEE2FE /* ContentView.swift in Sources */,
+				418D5DBB2B9117BB00589E17 /* UpdateSettingsView.swift in Sources */,
 				41176AE72B8167930093F4C8 /* QueueModel_DropDelegate.swift in Sources */,
 				41F88AE32B0C839B004A3B58 /* Shell.swift in Sources */,
 				4779AF592A4FC06C00F1B48B /* LabelSettingsView.swift in Sources */,
@@ -1065,6 +1076,7 @@
 				41F88ADC2B029D4A004A3B58 /* ColorPickerForm.swift in Sources */,
 				41C839822B52C9E300C6B133 /* ScriptingSupportCategories.m in Sources */,
 				41176ADE2B7BE5550093F4C8 /* ExtractInfo.swift in Sources */,
+				418D5DB92B91163500589E17 /* CheckForUpdatesView.swift in Sources */,
 				474595582A40254E00EF100D /* ColorPickerOpacitySliderForm.swift in Sources */,
 				41176AE32B7D3FA00093F4C8 /* QueueInstance.swift in Sources */,
 				410E3B812B4B0FF8005280FD /* LogManager.swift in Sources */,
@@ -1501,6 +1513,14 @@
 				minimumVersion = 0.2.2;
 			};
 		};
+		418D5DB42B910F4900589E17 /* XCRemoteSwiftPackageReference "Sparkle" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sparkle-project/Sparkle";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.5.2;
+			};
+		};
 		41BFEB6E2B1BA4CC00C8B551 /* XCRemoteSwiftPackageReference "PasswordField" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/MrAsterisco/PasswordField";
@@ -1557,6 +1577,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4155B72A2B668C0D008D3505 /* XCRemoteSwiftPackageReference "swift-log-oslog" */;
 			productName = LoggingOSLog;
+		};
+		418D5DB52B910F4900589E17 /* Sparkle */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 418D5DB42B910F4900589E17 /* XCRemoteSwiftPackageReference "Sparkle" */;
+			productName = Sparkle;
 		};
 		41A055772B8B858C006AC0E4 /* EonilFSEvents */ = {
 			isa = XCSwiftPackageProductDependency;

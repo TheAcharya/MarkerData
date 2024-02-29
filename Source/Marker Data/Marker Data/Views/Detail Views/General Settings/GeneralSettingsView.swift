@@ -6,24 +6,29 @@
 //
 
 import SwiftUI
+import Sparkle
 
 struct GeneralSettingsView: View {
-    @Environment(\.openURL) var openURL
+    let updater: SPUUpdater
 
+    @Environment(\.openURL) var openURL
     @EnvironmentObject var settings: SettingsContainer
     
     var body: some View {
         TabView {
             FileSettingsView()
                 .tabItem { Label("File", systemImage: "folder") }
-            
-            NotificationSettingsView()
-                .tabItem { Label("Notifications", systemImage: "bell.badge") }
-            
+
             RolesSettingsView()
                 .padding()
                 .padding(.bottom)
                 .tabItem { Label("Roles", systemImage: "movieclapper") }
+
+            NotificationSettingsView()
+                .tabItem { Label("Notifications", systemImage: "bell.badge") }
+            
+            UpdateSettingsView(updater: updater)
+                .tabItem { Label("Updates", systemImage: "arrow.clockwise") }
         }
         .padding(.top)
         .overlayHelpButton(url: Links.generalSettingsURL)
@@ -37,7 +42,7 @@ struct GeneralSettingsView_Previews: PreviewProvider {
     @StateObject static var databaseManager = DatabaseManager(settings: settings)
     
     static var previews: some View {
-        GeneralSettingsView()
+        GeneralSettingsView(updater: SPUStandardUpdaterController(startingUpdater: false, updaterDelegate: nil, userDriverDelegate: nil).updater)
             .preferredColorScheme(.dark)
             .environmentObject(settings)
             .environmentObject(databaseManager)

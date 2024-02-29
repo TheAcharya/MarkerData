@@ -9,12 +9,14 @@ import SwiftUI
 import Foundation
 import UniformTypeIdentifiers
 import MarkersExtractor
+import Sparkle
 
 struct ContentView: View {
     @EnvironmentObject var settings: SettingsContainer
     @ObservedObject var extractionModel: ExtractionModel
     @ObservedObject var queueModel: QueueModel
     @Binding var sidebarSelection: MainViews
+    let updater: SPUUpdater
 
     //Main View Controller
     var body: some View {
@@ -65,7 +67,7 @@ struct ContentView: View {
                 case .queue:
                     QueueView(queueModel: queueModel)
                 case .general:
-                    GeneralSettingsView()
+                    GeneralSettingsView(updater: updater)
                 case .image:
                     ImageSettingsView()
                 case .label:
@@ -100,7 +102,8 @@ struct ContentView: View {
     return ContentView(
         extractionModel: extractionModel,
         queueModel: queueModel,
-        sidebarSelection: .constant(.extract)
+        sidebarSelection: .constant(.extract),
+        updater: SPUStandardUpdaterController(startingUpdater: false, updaterDelegate: nil, userDriverDelegate: nil).updater
     )
     .environmentObject(settings)
 }

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Sparkle
 
 @main
 struct Marker_DataApp: App {
@@ -22,6 +23,9 @@ struct Marker_DataApp: App {
     @State var sidebarSelectionSwitcher: SidebarSelectionSwitcher? = nil
     
     @State var showLibraryFolderCreationAlert = false
+
+    /// Sparkle update controller
+    private let updaterController = SPUStandardUpdaterController(startingUpdater: true, updaterDelegate: nil, userDriverDelegate: nil)
 
     init() {
         let settings = SettingsContainer()
@@ -52,7 +56,8 @@ struct Marker_DataApp: App {
             ContentView(
                 extractionModel: self.extractionModel,
                 queueModel: self.queueModel,
-                sidebarSelection: $sidebarSelection
+                sidebarSelection: $sidebarSelection,
+                updater: self.updaterController.updater
             )
             .environmentObject(settings)
             .environmentObject(databaseManager)
@@ -85,7 +90,7 @@ struct Marker_DataApp: App {
             // Removes Toolbar Menu Items
             CommandGroup(replacing: .toolbar) {}
             
-            AppCommands(sidebarSelection: $sidebarSelection)
+            AppCommands(sidebarSelection: $sidebarSelection, updaterController: updaterController)
             
             FileCommands()
             
