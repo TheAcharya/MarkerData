@@ -32,10 +32,7 @@ sgt_now = utc_now + timedelta(hours=8)
 pub_date = sgt_now.strftime('%a, %d %b %Y %H:%M:%S +0800')
 
 # Define the new item content
-
-
 ET.register_namespace('sparkle', 'http://www.andymatuschak.org/xml-namespaces/sparkle')
-
 new_item_content = f'''
     <item xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle">
         <title>Version {BUNDLE_VERSION}</title>
@@ -53,19 +50,13 @@ new_item_content = f'''
 tree = ET.parse('./appcast.xml')
 root = tree.getroot()
 
-namespace_prefix = root.tag.split('}')[0][1:]
-namespace_uri = root.tag.split('}')[0][1:]
-
-print(namespace_uri)
-
 # Find the last item in the channel
 channel = root.find('.//channel')
 
 # Append the new item after the last item
-# print("el",ET.fromstring(new_item_content))
 channel.insert(1, ET.fromstring(new_item_content))
 
-print(ET.tostring(root).decode())
-
-# Write the modified XML back to the file
-tree.write('./appcast.xml', encoding='utf-8', xml_declaration=True)
+# Write the modified XML back to the file with manual XML declaration
+with open('./appcast.xml', 'wb') as f:
+    f.write('<?xml version="1.0" standalone="yes"?>\n'.encode())
+    f.write(ET.tostring(root, encoding='utf-8'))
