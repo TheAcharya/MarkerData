@@ -141,6 +141,24 @@ jobs:
         security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k $KEYCHAIN_PASSWORD_MX build-mx.keychain
         /usr/bin/codesign --force -s $APPLE_TEAM_ID --options runtime --entitlements "$ENTITLE" "$APPX" -v
         
+    - name: Codesign Marker Data Sparkle Framework
+      env: 
+        APPLE_CERT_DATA: ${{ secrets.APPLE_CERT_DATA }}
+        APPLE_CERT_PASSWORD: ${{ secrets.APPLE_CERT_PASSWORD }}
+        KEYCHAIN_PASSWORD_SF: ${{ secrets.KEYCHAIN_PASSWORD_SF }}
+        APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+      run: |
+        PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+        APPSF="$PARENT/dist/dmg-builds/latest-build/Marker Data.app/Contents/Frameworks/Sparkle.framework"
+        
+        echo $APPLE_CERT_DATA | base64 --decode > certificate.p12
+        security create-keychain -p $KEYCHAIN_PASSWORD_SF build-sf.keychain
+        security default-keychain -s build-sf.keychain
+        security unlock-keychain -p $KEYCHAIN_PASSWORD_SF build-sf.keychain
+        security import certificate.p12 -k build-sf.keychain -P $APPLE_CERT_PASSWORD -T /usr/bin/codesign
+        security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k $KEYCHAIN_PASSWORD_SF build-sf.keychain
+        /usr/bin/codesign --force --deep -s $APPLE_TEAM_ID --options runtime "$APPSF" -v
+        
     - name: Codesign Marker Data
       env: 
         APPLE_CERT_DATA: ${{ secrets.APPLE_CERT_DATA }}
