@@ -149,7 +149,11 @@ jobs:
         APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
       run: |
         PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
-        APPSF="$PARENT/dist/dmg-builds/latest-build/Marker Data.app/Contents/Frameworks/Sparkle.framework"
+        APPSF1="$PARENT/dist/dmg-builds/latest-build/Marker Data.app/Contents/Frameworks/Sparkle.framework/Versions/B/XPCServices/Installer.xpc"
+        APPSF2="$PARENT/dist/dmg-builds/latest-build/Marker Data.app/Contents/Frameworks/Sparkle.framework/Versions/B/XPCServices/Downloader.xpc"
+        APPSF3="$PARENT/dist/dmg-builds/latest-build/Marker Data.app/Contents/Frameworks/Sparkle.framework/Versions/B/Autoupdate"
+        APPSF4="$PARENT/dist/dmg-builds/latest-build/Marker Data.app/Contents/Frameworks/Sparkle.framework/Versions/B/Updater.app"
+        APPSF5="$PARENT/dist/dmg-builds/latest-build/Marker Data.app/Contents/Frameworks/Sparkle.framework"
         
         echo $APPLE_CERT_DATA | base64 --decode > certificate.p12
         security create-keychain -p $KEYCHAIN_PASSWORD_SF build-sf.keychain
@@ -157,7 +161,11 @@ jobs:
         security unlock-keychain -p $KEYCHAIN_PASSWORD_SF build-sf.keychain
         security import certificate.p12 -k build-sf.keychain -P $APPLE_CERT_PASSWORD -T /usr/bin/codesign
         security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k $KEYCHAIN_PASSWORD_SF build-sf.keychain
-        /usr/bin/codesign --force --deep -s $APPLE_TEAM_ID --options runtime "$APPSF" -v
+        /usr/bin/codesign --force -s $APPLE_TEAM_ID --options runtime "$APPSF1" -v
+        /usr/bin/codesign --force -s $APPLE_TEAM_ID --options runtime "$APPSF2" -v
+        /usr/bin/codesign --force -s $APPLE_TEAM_ID --options runtime "$APPSF3" -v
+        /usr/bin/codesign --force -s $APPLE_TEAM_ID --options runtime "$APPSF4" -v
+        /usr/bin/codesign --force -s $APPLE_TEAM_ID --options runtime "$APPSF5" -v
         
     - name: Codesign Marker Data
       env: 
