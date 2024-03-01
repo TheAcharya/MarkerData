@@ -5,6 +5,15 @@
         <item>
         <title>Version 1.0.0</title>
         <link>https://markerdata.theacharya.co</link>
+        <pubDate>Fri, 01 Mar 2024 14:16:25 +0800</pubDate>
+        <sparkle:version>1</sparkle:version>
+        <sparkle:shortVersionString>1.0.0</sparkle:shortVersionString>
+        <sparkle:minimumSystemVersion>13.0</sparkle:minimumSystemVersion>
+        <sparkle:releaseNotesLink>https://markerdata.theacharya.co/release-notes-appcast.html</sparkle:releaseNotesLink>
+        <enclosure url="https://github.com/TheAcharya/MarkerData/releases/download/v1.0.0/Marker-Data_v1.0.0.dmg" length="38669053" type="application/octet-stream" sparkle:edSignature="VbaBgXOMVYgRk7mrJow2O3JUpWwjxu62D0KN/LOPTN6zc9xA9pQPERWUqeSbib7525zvNuEM290AJogIsUs9DA==" />
+    </item><item>
+        <title>Version 1.0.0</title>
+        <link>https://markerdata.theacharya.co</link>
         <pubDate>Thu, 29 Feb 2024 19:42:55 +0800</pubDate>
         <sparkle:version>1</sparkle:version>
         <sparkle:shortVersionString>1.0.0</sparkle:shortVersionString>
