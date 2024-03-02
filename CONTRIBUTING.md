@@ -39,4 +39,4 @@ For Code Owners & Maintainers, the following release specification is used:
 5. Update the version number of `Distribution/version.txt`.
 6. Create [Test Build](https://github.com/TheAcharya/MarkerData/actions/workflows/test_build.yml) for internal and private (closed) beta test.
 7. Make GitHub Release using [Release GitHub](https://github.com/TheAcharya/MarkerData/actions/workflows/release_github_sparkle.yml).
-8. Update latest GitHub Release's from `CHANGELOG.md` accordingly.
+8. Update latest GitHub Release Notes from `CHANGELOG.md` accordingly.
