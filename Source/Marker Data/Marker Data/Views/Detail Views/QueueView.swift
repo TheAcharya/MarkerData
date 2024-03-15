@@ -10,25 +10,26 @@ import SwiftUI
 struct QueueView: View {
     @ObservedObject var queueModel: QueueModel
 
-    @State var showScanAlert = false
+    @State var scanFailed = false
     @State var sortOrder = [KeyPathComparator(\QueueInstance.extractInfo.creationDate)]
 
     var body: some View {
         VStack {
-            tableView
-                .clipShape(RoundedRectangle(cornerRadius: 8))
-                .padding(.bottom, 8)
-            
+            ZStack {
+                tableView
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                    .padding(.bottom, 8)
+            }
+
             actionsAndSettingsView
         }
         .padding()
         .overlayHelpButton(url: Links.queueHelpURL)
-        .alert("Failed to scan export folder", isPresented: $showScanAlert) {}
         .task {
             do {
                 try await queueModel.scanExportFolder()
             } catch {
-                showScanAlert = true
+                scanFailed = true
             }
 
             await queueModel.filterMissing()
@@ -109,7 +110,7 @@ struct QueueView: View {
                     do {
                         try await queueModel.scanExportFolder()
                     } catch {
-                        showScanAlert = true
+                        scanFailed = true
                     }
                 }
             } label: {
