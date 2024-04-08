@@ -1,26 +1,25 @@
-<a href="https://github.com/TheAcharya/MarkerData"><img src="assets/marker_data_app_icon.png" width="200" alt="App icon" align="left"/>
+<p align="center">
+  <a href="https://github.com/TheAcharya/MarkerData"><img src="assets/marker_data_app_icon.png" height="200">
+  <h1 align="center">Marker Data</h1>
+</p>
 
-<div>
-<h1>Marker Data</h1>
+
+<p align="center">
 <!-- license -->
-<a href="https://github.com/TheAcharya/MarkerData/blob/main/LICENSE">
-<img src="http://img.shields.io/badge/license-MIT-lightgrey.svg?style=flat" alt="license"/>
-</a>
+	<a href="https://github.com/TheAcharya/MarkerData/blob/main/LICENSE">
+	<	img src="http://img.shields.io/badge/license-MIT-lightgrey.svg?style=flat" alt="license"/>
+	</a>
 <!-- platform -->
-<a href="https://github.com/TheAcharya/MarkerData">
-<img src="https://img.shields.io/badge/platform-macOS-lightgrey.svg?style=flat" alt="platform"/>
-</a>
+	<a href="https://github.com/TheAcharya/MarkerData">
+	<	img src="https://img.shields.io/badge/platform-macOS-lightgrey.svg?style=flat" alt="platform"/>
+	</a>
 <!-- build -->
-<a href="https://github.com/TheAcharya/MarkerData/actions/workflows/build.yml">
-<img src="https://github.com/TheAcharya/MarkerData/actions/workflows/build.yml/badge.svg" alt="build"/>
-</a>
-<p>
-<p>Marker Data allows users to extract, convert & create databases from <a href="https://www.apple.com/final-cut-pro/“ target=”_blank">Final Cut Pro</a>’s Maker metadata effortlessly. Marker Data uses <a href="https://github.com/TheAcharya/MarkersExtractor" target="_blank">MarkersExtractor</a> Library.</p>
+	<a href="https://github.com/TheAcharya/MarkerData/actions/workflows/build.yml">
+		<img src="https://github.com/TheAcharya/MarkerData/actions/workflows/build.yml/badge.svg" alt="build"/>
+	</a>
+</p>
 
-<a href="https://github.com/TheAcharya/MarkerData/releases"><img src="assets/macos_badge_noborder.png" width="150" alt="Download for macOS"/></a>
-
-<br>
-</div>
+Marker Data allows users to extract, convert & create databases from <a href="https://www.apple.com/final-cut-pro/“ target=”_blank">Final Cut Pro</a>’s Maker metadata effortlessly. Marker Data uses <a href="https://github.com/TheAcharya/MarkersExtractor" target="_blank">MarkersExtractor</a> Library.
 
 ## Core Features
 
@@ -47,6 +46,7 @@
 - [Demo](#demo)
 - [Screenshot](#screenshot)
 - [System Requirements](#system-requirements)
+- [Download](https://github.com/TheAcharya/MarkerData/releases)
 - [Installation](#installation)
 - [Use Cases](#use-cases)
 - [Credits](#Credits)
