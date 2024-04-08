@@ -7,11 +7,11 @@
 <p align="center">
 <!-- license -->
 	<a href="https://github.com/TheAcharya/MarkerData/blob/main/LICENSE">
-	<	img src="http://img.shields.io/badge/license-MIT-lightgrey.svg?style=flat" alt="license"/>
+		<img src="http://img.shields.io/badge/license-MIT-lightgrey.svg?style=flat" alt="license"/>
 	</a>
 <!-- platform -->
 	<a href="https://github.com/TheAcharya/MarkerData">
-	<	img src="https://img.shields.io/badge/platform-macOS-lightgrey.svg?style=flat" alt="platform"/>
+		<img src="https://img.shields.io/badge/platform-macOS-lightgrey.svg?style=flat" alt="platform"/>
 	</a>
 <!-- build -->
 	<a href="https://github.com/TheAcharya/MarkerData/actions/workflows/build.yml">
