@@ -26,16 +26,10 @@ class ColorMood: ObservableObject {
         return flags
     }
 
-    init(method: ColorExtractMethod? = nil, formula: DeltaEFormula? = nil, isExcludeBlack: Bool? = nil, isExcludeWhite: Bool? = nil) {
-        // TODO: Check this, might want to use settings model
-//        let userDefaultsService = UserDefaultsService.default
-//        self.method = method ?? userDefaultsService.colorExtractMethod
-//        self.formula = formula ?? userDefaultsService.colorDominantFormula
-//        self.isExcludeBlack = isExcludeBlack ?? userDefaultsService.isExcludeBlack
-//        self.isExcludeWhite = isExcludeWhite ?? userDefaultsService.isExcludeWhite
-        self.method = method ?? .dominationColor
-        self.formula = formula ?? .CIE76
-        self.isExcludeBlack = isExcludeBlack ?? false
-        self.isExcludeWhite = isExcludeWhite ?? false
+    init(formula: DeltaEFormula, excludeBlack: Bool, excludeWhite: Bool) {
+        self.method = .dominationColor
+        self.formula = formula
+        self.isExcludeBlack = excludeBlack
+        self.isExcludeWhite = excludeWhite
     }
 }

@@ -9,6 +9,7 @@ import Foundation
 
 enum ExtractError: Error {
     case invalidExportDestination
+    case exportResultisNil
     case settingsReadError
     case unifiedExportProfileReadError
     case userCancel
@@ -25,6 +26,8 @@ extension ExtractError: LocalizedError {
             "Couldn't read export profile"
         case .userCancel:
             "User initiated cancel"
+        case .exportResultisNil:
+            "Failed to get export result"
         }
     }
 }

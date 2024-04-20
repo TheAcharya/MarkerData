@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-class ImageStrip: Hashable, Identifiable, ObservableObject {
-    
+struct ImageStrip: Hashable, Identifiable {
+
     let id: UUID
     let url: URL
     let ending = ".Strip"
@@ -33,15 +33,15 @@ class ImageStrip: Hashable, Identifiable, ObservableObject {
     
     var exportURL: URL?
     
-    @Published var colors = [Color]()
-    @ObservedObject var colorMood: ColorMood
+    var colors = [Color]()
+    var colorMood: ColorMood
     
-    init(url: URL, colors: [Color] = [Color](), exportDirectory: URL? = nil) {
+    init(url: URL, colors: [Color] = [Color](), exportDirectory: URL, colorMood: ColorMood) {
         self.id = UUID()
         self.url = url
         self.colors = colors
         self.exportURL = exportDirectory
-        self.colorMood = .init()
+        self.colorMood = colorMood
         self.title = url.deletingPathExtension().lastPathComponent
     }
     
@@ -62,28 +62,5 @@ class ImageStrip: Hashable, Identifiable, ObservableObject {
     
     static func == (lhs: ImageStrip, rhs: ImageStrip) -> Bool {
         lhs.id == rhs.id
-    }
-}
-
-extension ImageStrip {
-    static var placeholder: ImageStrip {
-        let url = Bundle.main.url(forResource: "Placeholder", withExtension: "jpg")!
-        
-        let imageStrip = ImageStrip(url: url)
-        
-        imageStrip.colors = [
-            Color.black,
-            Color.gray,
-            Color.white,
-            Color.red,
-            Color.orange,
-            Color.yellow,
-            Color.green,
-            Color.cyan,
-            Color.blue,
-            Color.purple
-        ]
-        
-        return imageStrip
     }
 }

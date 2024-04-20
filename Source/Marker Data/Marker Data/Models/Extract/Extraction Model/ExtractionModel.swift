@@ -108,17 +108,26 @@ final class ExtractionModel: ObservableObject {
             }
             
             observation.invalidate()
-            
-            // Save extraction info JSON
-            if let exportResultUnwrapped = exportResult,
-               let exportFolderURL = exportResult?.exportFolder {
-                let extractInfo = ExtractInfo(exportResult: exportResultUnwrapped)
-                
-                let jsonURL = exportFolderURL.appendingPathComponent("extract_info", conformingTo: .json)
-                
-                try extractInfo?.save(to: jsonURL)
+
+            guard let exportResult = exportResult else {
+                throw ExtractError.exportResultisNil
             }
-            
+
+            // Save extraction info JSON
+            let extractInfo = ExtractInfo(exportResult: exportResult)
+            let jsonURL = exportResult.exportFolder.appendingPathComponent("extract_info", conformingTo: .json)
+
+            try extractInfo?.save(to: jsonURL)
+
+            // Add color palette
+            let swatchSettings = await self.settings.store.colorSwatchSettings
+
+            if swatchSettings.enableSwatch {
+                Self.logger.notice("Color palette enabled. Calculating dominant colors.")
+                await ColorPaletteRenderer.render(exportResult: exportResult, swatchSettings: swatchSettings)
+                Self.logger.notice("Color palette render done.")
+            }
+
             // Set progress as finished
             await self.extractionProgress.markProcessAsFinished(url: url)
             

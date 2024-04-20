@@ -11,7 +11,6 @@
 		4100D5E42AD1616D0081F0EC /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4100D5E32AD1616D0081F0EC /* ColorExtension.swift */; };
 		4100D5E72AD19C980081F0EC /* FilePicker in Frameworks */ = {isa = PBXBuildFile; productRef = 4100D5E62AD19C980081F0EC /* FilePicker */; };
 		41083FEB2BC45944008B7B03 /* ImageMergeOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41083FEA2BC45944008B7B03 /* ImageMergeOperation.swift */; };
-		41083FED2BC45CB5008B7B03 /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41083FEC2BC45CB5008B7B03 /* AsyncOperation.swift */; };
 		41083FF02BC45D05008B7B03 /* ColorMood.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41083FEF2BC45D05008B7B03 /* ColorMood.swift */; };
 		41083FF22BC45D3D008B7B03 /* ColorExtractMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41083FF12BC45D3D008B7B03 /* ColorExtractMethod.swift */; };
 		41083FF62BC45E56008B7B03 /* ColorsExtractorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41083FF42BC45E56008B7B03 /* ColorsExtractorService.swift */; };
@@ -26,6 +25,7 @@
 		410840072BD3C76F008B7B03 /* DominantColors in Frameworks */ = {isa = PBXBuildFile; productRef = 410840062BD3C76F008B7B03 /* DominantColors */; };
 		4108400B2BD3D0A3008B7B03 /* ImageExtractionSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4108400A2BD3D0A3008B7B03 /* ImageExtractionSettingsView.swift */; };
 		4108400D2BD3D10B008B7B03 /* SwatchSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4108400C2BD3D10B008B7B03 /* SwatchSettingsView.swift */; };
+		4108400F2BD3E5F6008B7B03 /* ColorPaletteRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4108400E2BD3E5F6008B7B03 /* ColorPaletteRenderer.swift */; };
 		410E3B812B4B0FF8005280FD /* LogManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 410E3B802B4B0FF8005280FD /* LogManager.swift */; };
 		41176ACD2B7807640093F4C8 /* airlift in Resources */ = {isa = PBXBuildFile; fileRef = 41176ACC2B7807640093F4C8 /* airlift */; };
 		41176AD02B780C090093F4C8 /* EonilFSEvents in Frameworks */ = {isa = PBXBuildFile; productRef = 41176ACF2B780C090093F4C8 /* EonilFSEvents */; };
@@ -212,7 +212,6 @@
 		4100D5DD2AD052010081F0EC /* OverlaySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlaySettingsView.swift; sourceTree = "<group>"; };
 		4100D5E32AD1616D0081F0EC /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
 		41083FEA2BC45944008B7B03 /* ImageMergeOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageMergeOperation.swift; sourceTree = "<group>"; };
-		41083FEC2BC45CB5008B7B03 /* AsyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
 		41083FEF2BC45D05008B7B03 /* ColorMood.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorMood.swift; sourceTree = "<group>"; };
 		41083FF12BC45D3D008B7B03 /* ColorExtractMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtractMethod.swift; sourceTree = "<group>"; };
 		41083FF42BC45E56008B7B03 /* ColorsExtractorService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorsExtractorService.swift; sourceTree = "<group>"; };
@@ -224,6 +223,7 @@
 		410840022BD3C355008B7B03 /* ColorSwatchSettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSwatchSettingsModel.swift; sourceTree = "<group>"; };
 		4108400A2BD3D0A3008B7B03 /* ImageExtractionSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageExtractionSettingsView.swift; sourceTree = "<group>"; };
 		4108400C2BD3D10B008B7B03 /* SwatchSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwatchSettingsView.swift; sourceTree = "<group>"; };
+		4108400E2BD3E5F6008B7B03 /* ColorPaletteRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPaletteRenderer.swift; sourceTree = "<group>"; };
 		410E3B802B4B0FF8005280FD /* LogManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogManager.swift; sourceTree = "<group>"; };
 		41176ACC2B7807640093F4C8 /* airlift */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = airlift; sourceTree = "<group>"; };
 		41176AD12B78C6A90093F4C8 /* ShellArgumentList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShellArgumentList.swift; sourceTree = "<group>"; };
@@ -428,7 +428,6 @@
 			isa = PBXGroup;
 			children = (
 				41083FFF2BC45FBC008B7B03 /* ImageStrip.swift */,
-				41083FEC2BC45CB5008B7B03 /* AsyncOperation.swift */,
 				41083FF82BC45EBC008B7B03 /* ColorPaletteFileFormat.swift */,
 			);
 			path = Other;
@@ -609,6 +608,7 @@
 		4186A74C2BA4510F00FFD75B /* Color Swatch */ = {
 			isa = PBXGroup;
 			children = (
+				4108400E2BD3E5F6008B7B03 /* ColorPaletteRenderer.swift */,
 				410840012BD3C332008B7B03 /* Settings Model */,
 				41083FFA2BC45F04008B7B03 /* ImageRenderService */,
 				41083FF32BC45E28008B7B03 /* ColorsExtractorService */,
@@ -1114,6 +1114,7 @@
 				41083FF92BC45EBC008B7B03 /* ColorPaletteFileFormat.swift in Sources */,
 				41F88AFE2B126439004A3B58 /* ExtractionResult.swift in Sources */,
 				9B51D21629E9B13400DF7836 /* SettingsModels.swift in Sources */,
+				4108400F2BD3E5F6008B7B03 /* ColorPaletteRenderer.swift in Sources */,
 				414262BD2AD2E24A00FC6CFC /* BundleExtension.swift in Sources */,
 				4100D5DE2AD052010081F0EC /* OverlaySettingsView.swift in Sources */,
 				41C839872B52C9E300C6B133 /* FCPXMetadataKeys.m in Sources */,
@@ -1176,7 +1177,6 @@
 				41176AE02B7BF0420093F4C8 /* QueueView.swift in Sources */,
 				41176AD22B78C6AA0093F4C8 /* ShellArgumentList.swift in Sources */,
 				411F37632B5C5F5D00CC05E6 /* FileCommands.swift in Sources */,
-				41083FED2BC45CB5008B7B03 /* AsyncOperation.swift in Sources */,
 				41176ADC2B7BE3EF0093F4C8 /* QueueError.swift in Sources */,
 				414262C02AD5CE3200FC6CFC /* ConfigurationErrors.swift in Sources */,
 				4155B7022B612592008D3505 /* WorkflowExtensionView.swift in Sources */,

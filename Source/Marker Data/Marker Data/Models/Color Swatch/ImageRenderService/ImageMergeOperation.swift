@@ -8,7 +8,7 @@
 import SwiftUI
 import DominantColors
 
-class ImageMergeOperation: AsyncOperation {
+struct ImageMergeOperation {
     let colors: [Color]
     let cgImage: CGImage
     let stripHeight: CGFloat
@@ -16,7 +16,7 @@ class ImageMergeOperation: AsyncOperation {
     let colorsCount: Int
     let colorMood: ColorMood
     var result: Result<Data, Error>?
-    var colorsExtractorService: ColorsExtractorService?
+    var colorsExtractorService: ColorsExtractorService
     let format: ColorPaletteFileFormat
     let compressionFactor: Float
 
@@ -38,27 +38,24 @@ class ImageMergeOperation: AsyncOperation {
         self.colorMood = colorMood
         self.format = format
         self.compressionFactor = compressionFactor
+        self.colorsExtractorService = ColorsExtractorService()
     }
 
-    override func main() {
-        Task {
-            do {
-                // Создание штрих-кода
-                let stripCGImage = try await createStripImage(
-                    size: CGSize(width: CGFloat(cgImage.width), height: stripHeight),
-                    colors: colors,
-                    colorMood: colorMood
-                )
+    public func performMerge() async -> Data? {
+        do {
+            // Создание штрих-кода
+            let stripCGImage = try await createStripImage(
+                size: CGSize(width: CGFloat(cgImage.width), height: stripHeight),
+                colors: colors,
+                colorMood: colorMood
+            )
 
-                // Соединение изображения с цветовым штрих-кодом
-                let jpegData = try merge(image: cgImage, with: stripCGImage, format: format, paletteStripOnly: paletteStripOnly)
+            // Соединение изображения с цветовым штрих-кодом
+            let jpegData = try merge(image: cgImage, with: stripCGImage, format: format, paletteStripOnly: paletteStripOnly)
 
-                result = .success(jpegData)
-                self.state = .finished
-            } catch let error {
-                result = .failure(error)
-                self.state = .finished
-            }
+            return jpegData
+        } catch let error {
+            return nil
         }
     }
 
@@ -72,9 +69,7 @@ class ImageMergeOperation: AsyncOperation {
         // Если цветов нет, то вычислим цвета
         if colors.isEmpty {
             let image = CIImage(cgImage: cgImage)
-            if colorsExtractorService == nil {
-                colorsExtractorService = ColorsExtractorService()
-            }
+
             guard
                 let cgImage = image.cgImage
             else { throw ImageRenderServiceError.colorsIsEmpty }
