@@ -1,16 +1,15 @@
 //
-//  Marker Data • https://github.com/TheAcharya/MarkerData
-//  Licensed under MIT License
+//  ImageExtractionSettingsView.swift
+//  Marker Data
 //
-//  Maintained by Milán Várady
+//  Created by Milán Várady on 20/04/2024.
 //
 
 import SwiftUI
 import MarkersExtractor
 
-struct ImageSettingsView: View {
+struct ImageExtractionSettingsView: View {
     @EnvironmentObject var settings: SettingsContainer
-    
     let pickerWidth: CGFloat = 170
 
     var body: some View {
@@ -18,7 +17,7 @@ struct ImageSettingsView: View {
             Group {
                 Text("File Creation")
                     .font(.headline)
-                
+
                 // Naming mode
                 HStack {
                     Text("Naming Mode:")
@@ -34,11 +33,11 @@ struct ImageSettingsView: View {
                     .frame(width: self.pickerWidth)
                     .formControlLeadingAlignmentGuide()
                 }
-                
+
                 // Markers source
                 HStack {
                     Text("Markers Source:")
-                    
+
                     Picker("", selection: $settings.store.markersSource) {
                         ForEach(MarkersSource.allCases, id: \.self) { source in
                             Text(source.description)
@@ -48,7 +47,7 @@ struct ImageSettingsView: View {
                     .frame(width: self.pickerWidth)
                     .formControlLeadingAlignmentGuide()
                 }
-                
+
                 // Image format
                 HStack {
                     Text("Image Format:")
@@ -66,15 +65,15 @@ struct ImageSettingsView: View {
 
                 Text("Image Size")
                     .font(.headline)
-                
+
                 Picker("", selection: $settings.store.overrideImageSize) {
                     Text("Default")
                         .tag(OverrideImageSizeOption.noOverride)
-                    
+
                     // Image size percent
                     HStack {
                         Text("Size (%):")
-                        
+
                         TextField(
                             "",
                             value: $settings.store.imageSizePercent,
@@ -100,12 +99,12 @@ struct ImageSettingsView: View {
                     .padding(.vertical, 6)
                     .tag(OverrideImageSizeOption.overrideImageSizePercent)
                     .disabled(settings.store.overrideImageSize != OverrideImageSizeOption.overrideImageSizePercent)
-                    
+
                     // Image width and height
                     VStack {
                         HStack {
                             Text("Width:")
-                            
+
                             TextField(
                                 "",
                                 value: $settings.store.imageWidth,
@@ -115,10 +114,10 @@ struct ImageSettingsView: View {
                             .frame(width: 75)
                             .formControlLeadingAlignmentGuide()
                         }
-                        
+
                         HStack {
                             Text("Height:")
-                            
+
                             TextField(
                                 "",
                                 value: $settings.store.imageHeight,
@@ -223,18 +222,6 @@ struct ImageSettingsView: View {
                 }
             }
             .disabled(settings.store.imageMode != .GIF)
-
         }
-        .overlayHelpButton(url: Links.imageSettingsURL)
-        .navigationTitle("Image Settings")
-    }
-}
-
-struct ImageSettingsView_Previews: PreviewProvider {
-    static let settings = SettingsContainer()
-    
-    static var previews: some View {
-        ImageSettingsView()
-            .environmentObject(settings)
     }
 }

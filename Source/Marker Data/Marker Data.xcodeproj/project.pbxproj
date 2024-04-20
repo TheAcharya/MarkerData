@@ -24,6 +24,8 @@
 		410840042BD3C5C4008B7B03 /* ColorSwatchSettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 410840022BD3C355008B7B03 /* ColorSwatchSettingsModel.swift */; };
 		410840052BD3C603008B7B03 /* DeltaEFormulaExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41083FF52BC45E56008B7B03 /* DeltaEFormulaExtension.swift */; };
 		410840072BD3C76F008B7B03 /* DominantColors in Frameworks */ = {isa = PBXBuildFile; productRef = 410840062BD3C76F008B7B03 /* DominantColors */; };
+		4108400B2BD3D0A3008B7B03 /* ImageExtractionSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4108400A2BD3D0A3008B7B03 /* ImageExtractionSettingsView.swift */; };
+		4108400D2BD3D10B008B7B03 /* SwatchSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4108400C2BD3D10B008B7B03 /* SwatchSettingsView.swift */; };
 		410E3B812B4B0FF8005280FD /* LogManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 410E3B802B4B0FF8005280FD /* LogManager.swift */; };
 		41176ACD2B7807640093F4C8 /* airlift in Resources */ = {isa = PBXBuildFile; fileRef = 41176ACC2B7807640093F4C8 /* airlift */; };
 		41176AD02B780C090093F4C8 /* EonilFSEvents in Frameworks */ = {isa = PBXBuildFile; productRef = 41176ACF2B780C090093F4C8 /* EonilFSEvents */; };
@@ -220,6 +222,8 @@
 		41083FFC2BC45F38008B7B03 /* ImageRenderServiceError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageRenderServiceError.swift; sourceTree = "<group>"; };
 		41083FFF2BC45FBC008B7B03 /* ImageStrip.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageStrip.swift; sourceTree = "<group>"; };
 		410840022BD3C355008B7B03 /* ColorSwatchSettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSwatchSettingsModel.swift; sourceTree = "<group>"; };
+		4108400A2BD3D0A3008B7B03 /* ImageExtractionSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageExtractionSettingsView.swift; sourceTree = "<group>"; };
+		4108400C2BD3D10B008B7B03 /* SwatchSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwatchSettingsView.swift; sourceTree = "<group>"; };
 		410E3B802B4B0FF8005280FD /* LogManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogManager.swift; sourceTree = "<group>"; };
 		41176ACC2B7807640093F4C8 /* airlift */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = airlift; sourceTree = "<group>"; };
 		41176AD12B78C6A90093F4C8 /* ShellArgumentList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShellArgumentList.swift; sourceTree = "<group>"; };
@@ -457,6 +461,16 @@
 				410840022BD3C355008B7B03 /* ColorSwatchSettingsModel.swift */,
 			);
 			path = "Settings Model";
+			sourceTree = "<group>";
+		};
+		410840082BD3D01A008B7B03 /* Image */ = {
+			isa = PBXGroup;
+			children = (
+				9B4D90D72A0BAE3900FE7603 /* ImageSettingsView.swift */,
+				4108400A2BD3D0A3008B7B03 /* ImageExtractionSettingsView.swift */,
+				4108400C2BD3D10B008B7B03 /* SwatchSettingsView.swift */,
+			);
+			path = Image;
 			sourceTree = "<group>";
 		};
 		41176AD82B7BDA7B0093F4C8 /* Queue */ = {
@@ -811,7 +825,7 @@
 			children = (
 				4155B70B2B62CE64008D3505 /* General Settings */,
 				41176ADF2B7BF0420093F4C8 /* QueueView.swift */,
-				9B4D90D72A0BAE3900FE7603 /* ImageSettingsView.swift */,
+				410840082BD3D01A008B7B03 /* Image */,
 				4100D5DC2AD051DB0081F0EC /* Label */,
 				41C298EF2B82B0BF00AA7517 /* Configurations */,
 				41F88AF32B0E9D8E004A3B58 /* Database */,
@@ -1190,7 +1204,9 @@
 				41083FFE2BC45F38008B7B03 /* ImageRenderServiceError.swift in Sources */,
 				417272A02B46F65A005A04BE /* UnifiedExportProfile.swift in Sources */,
 				41BFEB6D2B1B9B6400C8B551 /* Links.swift in Sources */,
+				4108400B2BD3D0A3008B7B03 /* ImageExtractionSettingsView.swift in Sources */,
 				41176AE52B7D5C520093F4C8 /* QueueStatus.swift in Sources */,
+				4108400D2BD3D10B008B7B03 /* SwatchSettingsView.swift in Sources */,
 				4172729A2B44533D005A04BE /* FailedExtractionsView.swift in Sources */,
 				41F88AE52B0C83DE004A3B58 /* ShellResult.swift in Sources */,
 				4155B6C22B5D309C008D3505 /* NotificationManager.swift in Sources */,
