@@ -54,7 +54,7 @@ struct ImageMergeOperation {
             let jpegData = try merge(image: cgImage, with: stripCGImage, format: format, paletteStripOnly: paletteStripOnly)
 
             return jpegData
-        } catch let error {
+        } catch {
             return nil
         }
     }

@@ -9,8 +9,7 @@ import Foundation
 import CoreImage
 import DominantColors
 
-class ColorsExtractorService {
-    
+struct ColorsExtractorService {
     static func extract(from cgImage: CGImage, method: ColorExtractMethod, count: Int = 8, formula: DeltaEFormula = .CIE76, flags: [DominantColors.Flag] = []) async throws -> [CGColor] {
         return try await withCheckedThrowingContinuation({ continuation in
             DispatchQueue.global(qos: .utility).async {

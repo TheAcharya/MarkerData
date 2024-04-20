@@ -8,12 +8,11 @@
 import Foundation
 import DominantColors
 
-class ColorMood: ObservableObject {
-
-    @Published var formula: DeltaEFormula
-    @Published var method: ColorExtractMethod
-    @Published var isExcludeWhite: Bool
-    @Published var isExcludeBlack: Bool
+struct ColorMood {
+    var formula: DeltaEFormula
+    var method: ColorExtractMethod
+    var isExcludeWhite: Bool
+    var isExcludeBlack: Bool
 
     var flags: [DominantColors.Flag] {
         var flags = [DominantColors.Flag]()

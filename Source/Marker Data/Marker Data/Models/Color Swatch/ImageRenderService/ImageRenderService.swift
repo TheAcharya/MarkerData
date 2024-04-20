@@ -10,9 +10,6 @@ import OSLog
 
 class ImageRenderService {
     var error: ImageRenderServiceError?
-    var hasError: Bool = false
-
-    var isRendering: Bool = false
 
     private var exportImageStripFormat: ColorPaletteFileFormat = .jpeg
 
@@ -25,8 +22,6 @@ class ImageRenderService {
     // MARK: - Functions
     
     func export(imageStrips: [ImageStrip], stripHeight: CGFloat, colorsCount: Int, paletteStripOnly: Bool) async {
-        renderingStatus(is: true)
-
         await withTaskGroup(of: Void.self) { group in
             self.taskGroup = group
 
@@ -45,16 +40,9 @@ class ImageRenderService {
     
     func stop() {
         self.taskGroup?.cancelAll()
-        renderingStatus(is: false)
     }
     
     // MARK: - Private functions
-    
-    func renderingStatus(is rendering: Bool) {
-        DispatchQueue.main.async {
-            self.isRendering = rendering
-        }
-    }
 
     func addMergeOperation(imageStrip: ImageStrip, stripHeight: CGFloat, colorsCount: Int, paletteStripOnly: Bool) async {
         guard
@@ -81,7 +69,7 @@ class ImageRenderService {
             do {
                 try save(jpeg: jpegData, to: exportURL)
             } catch let error {
-                hasError(error: error)
+                Self.logger.error("Failed to save palette image. Error: \(error)")
             }
         }
     }
@@ -93,16 +81,5 @@ class ImageRenderService {
     func save(jpeg data: Data, to url: URL) throws {
         try writeImage(jpeg: data, to: url)
         url.stopAccessingSecurityScopedResource()
-    }
-    
-    func hasError(error: Error) {
-        guard let error = error as? LocalizedError else { return }
-        DispatchQueue.main.async {
-            self.error = ImageRenderServiceError.map(
-                errorDescription: error.localizedDescription,
-                recoverySuggestion: error.recoverySuggestion
-            )
-            self.hasError = true
-        }
     }
 }
