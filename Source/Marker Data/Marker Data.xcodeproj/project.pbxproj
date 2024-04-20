@@ -20,6 +20,10 @@
 		41083FFD2BC45F38008B7B03 /* ImageRenderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41083FFB2BC45F37008B7B03 /* ImageRenderService.swift */; };
 		41083FFE2BC45F38008B7B03 /* ImageRenderServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41083FFC2BC45F38008B7B03 /* ImageRenderServiceError.swift */; };
 		410840002BC45FBC008B7B03 /* ImageStrip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41083FFF2BC45FBC008B7B03 /* ImageStrip.swift */; };
+		410840032BD3C355008B7B03 /* ColorSwatchSettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 410840022BD3C355008B7B03 /* ColorSwatchSettingsModel.swift */; };
+		410840042BD3C5C4008B7B03 /* ColorSwatchSettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 410840022BD3C355008B7B03 /* ColorSwatchSettingsModel.swift */; };
+		410840052BD3C603008B7B03 /* DeltaEFormulaExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41083FF52BC45E56008B7B03 /* DeltaEFormulaExtension.swift */; };
+		410840072BD3C76F008B7B03 /* DominantColors in Frameworks */ = {isa = PBXBuildFile; productRef = 410840062BD3C76F008B7B03 /* DominantColors */; };
 		410E3B812B4B0FF8005280FD /* LogManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 410E3B802B4B0FF8005280FD /* LogManager.swift */; };
 		41176ACD2B7807640093F4C8 /* airlift in Resources */ = {isa = PBXBuildFile; fileRef = 41176ACC2B7807640093F4C8 /* airlift */; };
 		41176AD02B780C090093F4C8 /* EonilFSEvents in Frameworks */ = {isa = PBXBuildFile; productRef = 41176ACF2B780C090093F4C8 /* EonilFSEvents */; };
@@ -215,6 +219,7 @@
 		41083FFB2BC45F37008B7B03 /* ImageRenderService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageRenderService.swift; sourceTree = "<group>"; };
 		41083FFC2BC45F38008B7B03 /* ImageRenderServiceError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageRenderServiceError.swift; sourceTree = "<group>"; };
 		41083FFF2BC45FBC008B7B03 /* ImageStrip.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageStrip.swift; sourceTree = "<group>"; };
+		410840022BD3C355008B7B03 /* ColorSwatchSettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSwatchSettingsModel.swift; sourceTree = "<group>"; };
 		410E3B802B4B0FF8005280FD /* LogManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogManager.swift; sourceTree = "<group>"; };
 		41176ACC2B7807640093F4C8 /* airlift */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = airlift; sourceTree = "<group>"; };
 		41176AD12B78C6A90093F4C8 /* ShellArgumentList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShellArgumentList.swift; sourceTree = "<group>"; };
@@ -357,6 +362,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				410840072BD3C76F008B7B03 /* DominantColors in Frameworks */,
 				41A055782B8B858C006AC0E4 /* EonilFSEvents in Frameworks */,
 				4155B7202B62E2A3008D3505 /* MarkersExtractor in Frameworks */,
 			);
@@ -443,6 +449,14 @@
 				41083FFC2BC45F38008B7B03 /* ImageRenderServiceError.swift */,
 			);
 			path = ImageRenderService;
+			sourceTree = "<group>";
+		};
+		410840012BD3C332008B7B03 /* Settings Model */ = {
+			isa = PBXGroup;
+			children = (
+				410840022BD3C355008B7B03 /* ColorSwatchSettingsModel.swift */,
+			);
+			path = "Settings Model";
 			sourceTree = "<group>";
 		};
 		41176AD82B7BDA7B0093F4C8 /* Queue */ = {
@@ -581,6 +595,7 @@
 		4186A74C2BA4510F00FFD75B /* Color Swatch */ = {
 			isa = PBXGroup;
 			children = (
+				410840012BD3C332008B7B03 /* Settings Model */,
 				41083FFA2BC45F04008B7B03 /* ImageRenderService */,
 				41083FF32BC45E28008B7B03 /* ColorsExtractorService */,
 				41083FEE2BC45CEA008B7B03 /* Other */,
@@ -919,6 +934,7 @@
 			packageProductDependencies = (
 				4155B71F2B62E2A3008D3505 /* MarkersExtractor */,
 				41A055772B8B858C006AC0E4 /* EonilFSEvents */,
+				410840062BD3C76F008B7B03 /* DominantColors */,
 			);
 			productName = WorkflowExtension;
 			productReference = 4155B6D62B602694008D3505 /* Workflow Extension.appex */;
@@ -1039,6 +1055,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4155B71B2B62E18B008D3505 /* RoleExtension.swift in Sources */,
+				410840052BD3C603008B7B03 /* DeltaEFormulaExtension.swift in Sources */,
 				4155B71A2B62E182008D3505 /* UTTypeExtension.swift in Sources */,
 				41A055732B8B770B006AC0E4 /* MarkersExtractorModelExtensions.swift in Sources */,
 				4155B6DE2B602694008D3505 /* WorkflowExtensionViewController.swift in Sources */,
@@ -1047,6 +1064,7 @@
 				41A0556F2B8B767B006AC0E4 /* SettingsModels.swift in Sources */,
 				41A0556E2B8B766C006AC0E4 /* SettingsStore.swift in Sources */,
 				41A055742B8B772C006AC0E4 /* ExportProfileFormatExtrension.swift in Sources */,
+				410840042BD3C5C4008B7B03 /* ColorSwatchSettingsModel.swift in Sources */,
 				4155B72E2B66BF9C008D3505 /* HelpButton.swift in Sources */,
 				41A055702B8B7685006AC0E4 /* NotificationFrequency.swift in Sources */,
 				4155B7172B62E131008D3505 /* RolesSettingsView.swift in Sources */,
@@ -1149,6 +1167,7 @@
 				414262C02AD5CE3200FC6CFC /* ConfigurationErrors.swift in Sources */,
 				4155B7022B612592008D3505 /* WorkflowExtensionView.swift in Sources */,
 				411F37532B57255A00CC05E6 /* OpenEventHandler.swift in Sources */,
+				410840032BD3C355008B7B03 /* ColorSwatchSettingsModel.swift in Sources */,
 				D5F74A312972D31D00EEE2FE /* Marker_DataApp.swift in Sources */,
 				4155B70D2B62CED6008D3505 /* RolesSettingsView.swift in Sources */,
 				41F88ADC2B029D4A004A3B58 /* ColorPickerForm.swift in Sources */,
@@ -1640,6 +1659,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4100D5E52AD19C980081F0EC /* XCRemoteSwiftPackageReference "FilePicker" */;
 			productName = FilePicker;
+		};
+		410840062BD3C76F008B7B03 /* DominantColors */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4186A7492BA44EF300FFD75B /* XCRemoteSwiftPackageReference "DominantColors" */;
+			productName = DominantColors;
 		};
 		41176ACF2B780C090093F4C8 /* EonilFSEvents */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -7,6 +7,8 @@
 
 import DominantColors
 
+extension DeltaEFormula: Codable {}
+
 extension DeltaEFormula {
     var name: String {
         switch self {

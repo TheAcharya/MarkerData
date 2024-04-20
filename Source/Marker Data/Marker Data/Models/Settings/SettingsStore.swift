@@ -92,6 +92,9 @@ struct SettingsStore: Codable, Hashable, Equatable, Identifiable {
     var notificationFrequency: NotificationFrequency
     var showDockProgress: Bool
 
+    // MARK: Color swatch
+    var colorSwatchSettings: ColorSwatchSettingsModel
+
     /// Default settings
     public static func defaults() -> Self {
         let exportProfile = UnifiedExportProfile(
@@ -132,7 +135,8 @@ struct SettingsStore: Codable, Hashable, Equatable, Identifiable {
             hideLabelNames: false,
             roles: [],
             notificationFrequency: .onlyOnCompletion,
-            showDockProgress: true
+            showDockProgress: true,
+            colorSwatchSettings: .defaults()
         )
     }
 
