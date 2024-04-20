@@ -47,7 +47,7 @@ struct Marker_DataApp: App {
         self._databaseManager = StateObject(wrappedValue: databaseManager)
         self._queueModel = StateObject(wrappedValue: queueModel)
     }
-    
+
 //    @NSApplicationDelegateAdaptor(ApplicationDelegate.self) var appDelegate
     var body: some Scene {
         //Make Main Window Group To Launch Into

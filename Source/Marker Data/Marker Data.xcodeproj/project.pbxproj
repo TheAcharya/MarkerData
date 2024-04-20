@@ -10,6 +10,22 @@
 		4100D5DE2AD052010081F0EC /* OverlaySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4100D5DD2AD052010081F0EC /* OverlaySettingsView.swift */; };
 		4100D5E42AD1616D0081F0EC /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4100D5E32AD1616D0081F0EC /* ColorExtension.swift */; };
 		4100D5E72AD19C980081F0EC /* FilePicker in Frameworks */ = {isa = PBXBuildFile; productRef = 4100D5E62AD19C980081F0EC /* FilePicker */; };
+		41083FEB2BC45944008B7B03 /* ImageMergeOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41083FEA2BC45944008B7B03 /* ImageMergeOperation.swift */; };
+		41083FF02BC45D05008B7B03 /* ColorMood.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41083FEF2BC45D05008B7B03 /* ColorMood.swift */; };
+		41083FF22BC45D3D008B7B03 /* ColorExtractMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41083FF12BC45D3D008B7B03 /* ColorExtractMethod.swift */; };
+		41083FF62BC45E56008B7B03 /* ColorsExtractorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41083FF42BC45E56008B7B03 /* ColorsExtractorService.swift */; };
+		41083FF72BC45E56008B7B03 /* DeltaEFormulaExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41083FF52BC45E56008B7B03 /* DeltaEFormulaExtension.swift */; };
+		41083FF92BC45EBC008B7B03 /* ColorPaletteFileFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41083FF82BC45EBC008B7B03 /* ColorPaletteFileFormat.swift */; };
+		41083FFD2BC45F38008B7B03 /* ImageRenderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41083FFB2BC45F37008B7B03 /* ImageRenderService.swift */; };
+		41083FFE2BC45F38008B7B03 /* ImageRenderServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41083FFC2BC45F38008B7B03 /* ImageRenderServiceError.swift */; };
+		410840002BC45FBC008B7B03 /* ImageStrip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41083FFF2BC45FBC008B7B03 /* ImageStrip.swift */; };
+		410840032BD3C355008B7B03 /* ColorSwatchSettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 410840022BD3C355008B7B03 /* ColorSwatchSettingsModel.swift */; };
+		410840042BD3C5C4008B7B03 /* ColorSwatchSettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 410840022BD3C355008B7B03 /* ColorSwatchSettingsModel.swift */; };
+		410840052BD3C603008B7B03 /* DeltaEFormulaExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41083FF52BC45E56008B7B03 /* DeltaEFormulaExtension.swift */; };
+		410840072BD3C76F008B7B03 /* DominantColors in Frameworks */ = {isa = PBXBuildFile; productRef = 410840062BD3C76F008B7B03 /* DominantColors */; };
+		4108400B2BD3D0A3008B7B03 /* ImageExtractionSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4108400A2BD3D0A3008B7B03 /* ImageExtractionSettingsView.swift */; };
+		4108400D2BD3D10B008B7B03 /* SwatchSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4108400C2BD3D10B008B7B03 /* SwatchSettingsView.swift */; };
+		4108400F2BD3E5F6008B7B03 /* ColorPaletteRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4108400E2BD3E5F6008B7B03 /* ColorPaletteRenderer.swift */; };
 		410E3B812B4B0FF8005280FD /* LogManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 410E3B802B4B0FF8005280FD /* LogManager.swift */; };
 		41176ACD2B7807640093F4C8 /* airlift in Resources */ = {isa = PBXBuildFile; fileRef = 41176ACC2B7807640093F4C8 /* airlift */; };
 		41176AD02B780C090093F4C8 /* EonilFSEvents in Frameworks */ = {isa = PBXBuildFile; productRef = 41176ACF2B780C090093F4C8 /* EonilFSEvents */; };
@@ -73,6 +89,8 @@
 		417914FF2B7547CE00215688 /* DropboxSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417914FE2B7547CE00215688 /* DropboxSetupView.swift */; };
 		417915022B754E1500215688 /* DropboxInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417915012B754E1500215688 /* DropboxInfo.swift */; };
 		417915062B75547C00215688 /* DropboxSetupModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417915052B75547C00215688 /* DropboxSetupModel.swift */; };
+		4186A74B2BA44EF300FFD75B /* DominantColors in Frameworks */ = {isa = PBXBuildFile; productRef = 4186A74A2BA44EF300FFD75B /* DominantColors */; };
+		4186A7502BA451CD00FFD75B /* DominantColorAlgorithmExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4186A74F2BA451CD00FFD75B /* DominantColorAlgorithmExtension.swift */; };
 		418D5DB62B910F4900589E17 /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = 418D5DB52B910F4900589E17 /* Sparkle */; };
 		418D5DB92B91163500589E17 /* CheckForUpdatesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418D5DB82B91163500589E17 /* CheckForUpdatesView.swift */; };
 		418D5DBB2B9117BB00589E17 /* UpdateSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418D5DBA2B9117BB00589E17 /* UpdateSettingsView.swift */; };
@@ -193,6 +211,19 @@
 /* Begin PBXFileReference section */
 		4100D5DD2AD052010081F0EC /* OverlaySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlaySettingsView.swift; sourceTree = "<group>"; };
 		4100D5E32AD1616D0081F0EC /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
+		41083FEA2BC45944008B7B03 /* ImageMergeOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageMergeOperation.swift; sourceTree = "<group>"; };
+		41083FEF2BC45D05008B7B03 /* ColorMood.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorMood.swift; sourceTree = "<group>"; };
+		41083FF12BC45D3D008B7B03 /* ColorExtractMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtractMethod.swift; sourceTree = "<group>"; };
+		41083FF42BC45E56008B7B03 /* ColorsExtractorService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorsExtractorService.swift; sourceTree = "<group>"; };
+		41083FF52BC45E56008B7B03 /* DeltaEFormulaExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeltaEFormulaExtension.swift; sourceTree = "<group>"; };
+		41083FF82BC45EBC008B7B03 /* ColorPaletteFileFormat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPaletteFileFormat.swift; sourceTree = "<group>"; };
+		41083FFB2BC45F37008B7B03 /* ImageRenderService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageRenderService.swift; sourceTree = "<group>"; };
+		41083FFC2BC45F38008B7B03 /* ImageRenderServiceError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageRenderServiceError.swift; sourceTree = "<group>"; };
+		41083FFF2BC45FBC008B7B03 /* ImageStrip.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageStrip.swift; sourceTree = "<group>"; };
+		410840022BD3C355008B7B03 /* ColorSwatchSettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSwatchSettingsModel.swift; sourceTree = "<group>"; };
+		4108400A2BD3D0A3008B7B03 /* ImageExtractionSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageExtractionSettingsView.swift; sourceTree = "<group>"; };
+		4108400C2BD3D10B008B7B03 /* SwatchSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwatchSettingsView.swift; sourceTree = "<group>"; };
+		4108400E2BD3E5F6008B7B03 /* ColorPaletteRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPaletteRenderer.swift; sourceTree = "<group>"; };
 		410E3B802B4B0FF8005280FD /* LogManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogManager.swift; sourceTree = "<group>"; };
 		41176ACC2B7807640093F4C8 /* airlift */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = airlift; sourceTree = "<group>"; };
 		41176AD12B78C6A90093F4C8 /* ShellArgumentList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShellArgumentList.swift; sourceTree = "<group>"; };
@@ -248,6 +279,7 @@
 		417914FE2B7547CE00215688 /* DropboxSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxSetupView.swift; sourceTree = "<group>"; };
 		417915012B754E1500215688 /* DropboxInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxInfo.swift; sourceTree = "<group>"; };
 		417915052B75547C00215688 /* DropboxSetupModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxSetupModel.swift; sourceTree = "<group>"; };
+		4186A74F2BA451CD00FFD75B /* DominantColorAlgorithmExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DominantColorAlgorithmExtension.swift; sourceTree = "<group>"; };
 		418D5DB82B91163500589E17 /* CheckForUpdatesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckForUpdatesView.swift; sourceTree = "<group>"; };
 		418D5DBA2B9117BB00589E17 /* UpdateSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateSettingsView.swift; sourceTree = "<group>"; };
 		41BFEB6C2B1B9B6400C8B551 /* Links.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Links.swift; sourceTree = "<group>"; };
@@ -334,6 +366,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				410840072BD3C76F008B7B03 /* DominantColors in Frameworks */,
 				41A055782B8B858C006AC0E4 /* EonilFSEvents in Frameworks */,
 				4155B7202B62E2A3008D3505 /* MarkersExtractor in Frameworks */,
 			);
@@ -343,6 +376,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4186A74B2BA44EF300FFD75B /* DominantColors in Frameworks */,
 				4100D5E72AD19C980081F0EC /* FilePicker in Frameworks */,
 				41C8399B2B52D78900C6B133 /* AVFoundation.framework in Frameworks */,
 				4155B71E2B62E29A008D3505 /* MarkersExtractor in Frameworks */,
@@ -385,8 +419,57 @@
 				4155B7122B62DEA2008D3505 /* RoleExtension.swift */,
 				4155B7182B62E179008D3505 /* UTTypeExtension.swift */,
 				4741202D2A3EFC42005890FE /* EmptyOrIntFormatStyle.swift */,
+				4186A74F2BA451CD00FFD75B /* DominantColorAlgorithmExtension.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		41083FEE2BC45CEA008B7B03 /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				41083FFF2BC45FBC008B7B03 /* ImageStrip.swift */,
+				41083FF82BC45EBC008B7B03 /* ColorPaletteFileFormat.swift */,
+			);
+			path = Other;
+			sourceTree = "<group>";
+		};
+		41083FF32BC45E28008B7B03 /* ColorsExtractorService */ = {
+			isa = PBXGroup;
+			children = (
+				41083FF42BC45E56008B7B03 /* ColorsExtractorService.swift */,
+				41083FF52BC45E56008B7B03 /* DeltaEFormulaExtension.swift */,
+				41083FF12BC45D3D008B7B03 /* ColorExtractMethod.swift */,
+				41083FEF2BC45D05008B7B03 /* ColorMood.swift */,
+			);
+			path = ColorsExtractorService;
+			sourceTree = "<group>";
+		};
+		41083FFA2BC45F04008B7B03 /* ImageRenderService */ = {
+			isa = PBXGroup;
+			children = (
+				41083FEA2BC45944008B7B03 /* ImageMergeOperation.swift */,
+				41083FFB2BC45F37008B7B03 /* ImageRenderService.swift */,
+				41083FFC2BC45F38008B7B03 /* ImageRenderServiceError.swift */,
+			);
+			path = ImageRenderService;
+			sourceTree = "<group>";
+		};
+		410840012BD3C332008B7B03 /* Settings Model */ = {
+			isa = PBXGroup;
+			children = (
+				410840022BD3C355008B7B03 /* ColorSwatchSettingsModel.swift */,
+			);
+			path = "Settings Model";
+			sourceTree = "<group>";
+		};
+		410840082BD3D01A008B7B03 /* Image */ = {
+			isa = PBXGroup;
+			children = (
+				9B4D90D72A0BAE3900FE7603 /* ImageSettingsView.swift */,
+				4108400A2BD3D0A3008B7B03 /* ImageExtractionSettingsView.swift */,
+				4108400C2BD3D10B008B7B03 /* SwatchSettingsView.swift */,
+			);
+			path = Image;
 			sourceTree = "<group>";
 		};
 		41176AD82B7BDA7B0093F4C8 /* Queue */ = {
@@ -520,6 +603,18 @@
 				417915052B75547C00215688 /* DropboxSetupModel.swift */,
 			);
 			path = Dropbox;
+			sourceTree = "<group>";
+		};
+		4186A74C2BA4510F00FFD75B /* Color Swatch */ = {
+			isa = PBXGroup;
+			children = (
+				4108400E2BD3E5F6008B7B03 /* ColorPaletteRenderer.swift */,
+				410840012BD3C332008B7B03 /* Settings Model */,
+				41083FFA2BC45F04008B7B03 /* ImageRenderService */,
+				41083FF32BC45E28008B7B03 /* ColorsExtractorService */,
+				41083FEE2BC45CEA008B7B03 /* Other */,
+			);
+			path = "Color Swatch";
 			sourceTree = "<group>";
 		};
 		41BFEB732B1BD15A00C8B551 /* Other */ = {
@@ -730,7 +825,7 @@
 			children = (
 				4155B70B2B62CE64008D3505 /* General Settings */,
 				41176ADF2B7BF0420093F4C8 /* QueueView.swift */,
-				9B4D90D72A0BAE3900FE7603 /* ImageSettingsView.swift */,
+				410840082BD3D01A008B7B03 /* Image */,
 				4100D5DC2AD051DB0081F0EC /* Label */,
 				41C298EF2B82B0BF00AA7517 /* Configurations */,
 				41F88AF32B0E9D8E004A3B58 /* Database */,
@@ -783,6 +878,7 @@
 				4155B72D2B66BF1A008D3505 /* Configurations */,
 				41F88AE62B0E9126004A3B58 /* Database */,
 				4155B7242B657485008D3505 /* Roles */,
+				4186A74C2BA4510F00FFD75B /* Color Swatch */,
 				414262BE2AD5CE1900FC6CFC /* Errors */,
 				41BFEB732B1BD15A00C8B551 /* Other */,
 			);
@@ -852,6 +948,7 @@
 			packageProductDependencies = (
 				4155B71F2B62E2A3008D3505 /* MarkersExtractor */,
 				41A055772B8B858C006AC0E4 /* EonilFSEvents */,
+				410840062BD3C76F008B7B03 /* DominantColors */,
 			);
 			productName = WorkflowExtension;
 			productReference = 4155B6D62B602694008D3505 /* Workflow Extension.appex */;
@@ -885,6 +982,7 @@
 				4155B72B2B668D29008D3505 /* LoggingOSLog */,
 				41176ACF2B780C090093F4C8 /* EonilFSEvents */,
 				418D5DB52B910F4900589E17 /* Sparkle */,
+				4186A74A2BA44EF300FFD75B /* DominantColors */,
 			);
 			productName = "Marker Data";
 			productReference = D5F74A2D2972D31C00EEE2FE /* Marker Data.app */;
@@ -927,6 +1025,7 @@
 				4155B72A2B668C0D008D3505 /* XCRemoteSwiftPackageReference "swift-log-oslog" */,
 				41176ACE2B780C090093F4C8 /* XCRemoteSwiftPackageReference "FSEvents" */,
 				418D5DB42B910F4900589E17 /* XCRemoteSwiftPackageReference "Sparkle" */,
+				4186A7492BA44EF300FFD75B /* XCRemoteSwiftPackageReference "DominantColors" */,
 			);
 			productRefGroup = D5F74A2E2972D31C00EEE2FE /* Products */;
 			projectDirPath = "";
@@ -970,6 +1069,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4155B71B2B62E18B008D3505 /* RoleExtension.swift in Sources */,
+				410840052BD3C603008B7B03 /* DeltaEFormulaExtension.swift in Sources */,
 				4155B71A2B62E182008D3505 /* UTTypeExtension.swift in Sources */,
 				41A055732B8B770B006AC0E4 /* MarkersExtractorModelExtensions.swift in Sources */,
 				4155B6DE2B602694008D3505 /* WorkflowExtensionViewController.swift in Sources */,
@@ -978,6 +1078,7 @@
 				41A0556F2B8B767B006AC0E4 /* SettingsModels.swift in Sources */,
 				41A0556E2B8B766C006AC0E4 /* SettingsStore.swift in Sources */,
 				41A055742B8B772C006AC0E4 /* ExportProfileFormatExtrension.swift in Sources */,
+				410840042BD3C5C4008B7B03 /* ColorSwatchSettingsModel.swift in Sources */,
 				4155B72E2B66BF9C008D3505 /* HelpButton.swift in Sources */,
 				41A055702B8B7685006AC0E4 /* NotificationFrequency.swift in Sources */,
 				4155B7172B62E131008D3505 /* RolesSettingsView.swift in Sources */,
@@ -993,6 +1094,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				41C839832B52C9E300C6B133 /* Object.m in Sources */,
+				4186A7502BA451CD00FFD75B /* DominantColorAlgorithmExtension.swift in Sources */,
 				411F37452B56DE7400CC05E6 /* PulsingIcon.swift in Sources */,
 				41D1E4E02B717A5F00AE2E55 /* DatabasePlatform.swift in Sources */,
 				4156196B2B3AE41F0032E82C /* ProgressViewModel.swift in Sources */,
@@ -1005,11 +1107,14 @@
 				417389632AC86BE600984FD8 /* ExtractView.swift in Sources */,
 				41C538992AE3062000E8A8A1 /* HelpCommands.swift in Sources */,
 				41D1E4E82B72C21E00AE2E55 /* DeepCopy.swift in Sources */,
+				41083FF22BC45D3D008B7B03 /* ColorExtractMethod.swift in Sources */,
 				47411FDE2A3EA1BA005890FE /* AboutView.swift in Sources */,
 				414262BB2AD2E1AC00FC6CFC /* URLExtension.swift in Sources */,
 				41F88B032B1A4D40004A3B58 /* ShellOutputStream.swift in Sources */,
+				41083FF92BC45EBC008B7B03 /* ColorPaletteFileFormat.swift in Sources */,
 				41F88AFE2B126439004A3B58 /* ExtractionResult.swift in Sources */,
 				9B51D21629E9B13400DF7836 /* SettingsModels.swift in Sources */,
+				4108400F2BD3E5F6008B7B03 /* ColorPaletteRenderer.swift in Sources */,
 				414262BD2AD2E24A00FC6CFC /* BundleExtension.swift in Sources */,
 				4100D5DE2AD052010081F0EC /* OverlaySettingsView.swift in Sources */,
 				41C839872B52C9E300C6B133 /* FCPXMetadataKeys.m in Sources */,
@@ -1044,12 +1149,14 @@
 				41C839862B52C9E300C6B133 /* Asset.m in Sources */,
 				41C8398B2B52C9E300C6B133 /* MediaAssetHelperKeys.m in Sources */,
 				D5F74A332972D31D00EEE2FE /* ContentView.swift in Sources */,
+				41083FF72BC45E56008B7B03 /* DeltaEFormulaExtension.swift in Sources */,
 				418D5DBB2B9117BB00589E17 /* UpdateSettingsView.swift in Sources */,
 				41176AE72B8167930093F4C8 /* QueueModel_DropDelegate.swift in Sources */,
 				41F88AE32B0C839B004A3B58 /* Shell.swift in Sources */,
 				4779AF592A4FC06C00F1B48B /* LabelSettingsView.swift in Sources */,
 				9B4D90DA2A0BAF9E00FE7603 /* GeneralLabelSettingsView.swift in Sources */,
 				411F37392B53D84200CC05E6 /* MakeCommand.m in Sources */,
+				41083FFD2BC45F38008B7B03 /* ImageRenderService.swift in Sources */,
 				4155B7132B62DEA2008D3505 /* RoleExtension.swift in Sources */,
 				41D1E4ED2B742BC600AE2E55 /* AirtableFormView.swift in Sources */,
 				411F374A2B56F22300CC05E6 /* ShareDestinationInstaller.swift in Sources */,
@@ -1057,11 +1164,14 @@
 				47F5CDF82A60CA43005D9A98 /* ExtractionModel.swift in Sources */,
 				411F374E2B56FB5B00CC05E6 /* AppCommands.swift in Sources */,
 				4155B6CF2B5D929A008D3505 /* NSImageExtension.swift in Sources */,
+				41083FEB2BC45944008B7B03 /* ImageMergeOperation.swift in Sources */,
 				41D1E4EB2B742BA000AE2E55 /* NotionFormView.swift in Sources */,
 				41C839852B52C9E300C6B133 /* DocumentController.m in Sources */,
 				417915062B75547C00215688 /* DropboxSetupModel.swift in Sources */,
+				410840002BC45FBC008B7B03 /* ImageStrip.swift in Sources */,
 				41EBAD502AF7B6F200E6AF7C /* WindowSize.swift in Sources */,
 				41BFEB792B1F925800C8B551 /* ExportProcess.swift in Sources */,
+				41083FF02BC45D05008B7B03 /* ColorMood.swift in Sources */,
 				41176ADA2B7BDA9D0093F4C8 /* QueueModel.swift in Sources */,
 				41C538942AE1AFF200E8A8A1 /* SettingsContainer.swift in Sources */,
 				41176AE02B7BF0420093F4C8 /* QueueView.swift in Sources */,
@@ -1071,6 +1181,7 @@
 				414262C02AD5CE3200FC6CFC /* ConfigurationErrors.swift in Sources */,
 				4155B7022B612592008D3505 /* WorkflowExtensionView.swift in Sources */,
 				411F37532B57255A00CC05E6 /* OpenEventHandler.swift in Sources */,
+				410840032BD3C355008B7B03 /* ColorSwatchSettingsModel.swift in Sources */,
 				D5F74A312972D31D00EEE2FE /* Marker_DataApp.swift in Sources */,
 				4155B70D2B62CED6008D3505 /* RolesSettingsView.swift in Sources */,
 				41F88ADC2B029D4A004A3B58 /* ColorPickerForm.swift in Sources */,
@@ -1087,11 +1198,15 @@
 				41C839342B52C94000C6B133 /* ApplicationDelegate.swift in Sources */,
 				47411FDA2A3EA121005890FE /* HelpButton.swift in Sources */,
 				9B4D90DC2A0BB07500FE7603 /* ConfigurationSettingsView.swift in Sources */,
+				41083FF62BC45E56008B7B03 /* ColorsExtractorService.swift in Sources */,
 				4155B6D12B5D93BA008D3505 /* ResizedImage.swift in Sources */,
 				41BFEB722B1BCE4600C8B551 /* ExportProfilePicker.swift in Sources */,
+				41083FFE2BC45F38008B7B03 /* ImageRenderServiceError.swift in Sources */,
 				417272A02B46F65A005A04BE /* UnifiedExportProfile.swift in Sources */,
 				41BFEB6D2B1B9B6400C8B551 /* Links.swift in Sources */,
+				4108400B2BD3D0A3008B7B03 /* ImageExtractionSettingsView.swift in Sources */,
 				41176AE52B7D5C520093F4C8 /* QueueStatus.swift in Sources */,
+				4108400D2BD3D10B008B7B03 /* SwatchSettingsView.swift in Sources */,
 				4172729A2B44533D005A04BE /* FailedExtractionsView.swift in Sources */,
 				41F88AE52B0C83DE004A3B58 /* ShellResult.swift in Sources */,
 				4155B6C22B5D309C008D3505 /* NotificationManager.swift in Sources */,
@@ -1513,6 +1628,14 @@
 				minimumVersion = 0.2.2;
 			};
 		};
+		4186A7492BA44EF300FFD75B /* XCRemoteSwiftPackageReference "DominantColors" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/DenDmitriev/DominantColors?tab=readme-ov-file#installation";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.9;
+			};
+		};
 		418D5DB42B910F4900589E17 /* XCRemoteSwiftPackageReference "Sparkle" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/sparkle-project/Sparkle";
@@ -1553,6 +1676,11 @@
 			package = 4100D5E52AD19C980081F0EC /* XCRemoteSwiftPackageReference "FilePicker" */;
 			productName = FilePicker;
 		};
+		410840062BD3C76F008B7B03 /* DominantColors */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4186A7492BA44EF300FFD75B /* XCRemoteSwiftPackageReference "DominantColors" */;
+			productName = DominantColors;
+		};
 		41176ACF2B780C090093F4C8 /* EonilFSEvents */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 41176ACE2B780C090093F4C8 /* XCRemoteSwiftPackageReference "FSEvents" */;
@@ -1577,6 +1705,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4155B72A2B668C0D008D3505 /* XCRemoteSwiftPackageReference "swift-log-oslog" */;
 			productName = LoggingOSLog;
+		};
+		4186A74A2BA44EF300FFD75B /* DominantColors */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4186A7492BA44EF300FFD75B /* XCRemoteSwiftPackageReference "DominantColors" */;
+			productName = DominantColors;
 		};
 		418D5DB52B910F4900589E17 /* Sparkle */ = {
 			isa = XCSwiftPackageProductDependency;
