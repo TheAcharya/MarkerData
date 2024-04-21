@@ -15,7 +15,7 @@ struct SwatchSettingsView: View {
 
     var body: some View {
         VStack(alignment: .formControlAlignment) {
-            Text("Color Swatch")
+            Text("Swatch Analysis")
                 .font(.headline)
 
             // Enable
