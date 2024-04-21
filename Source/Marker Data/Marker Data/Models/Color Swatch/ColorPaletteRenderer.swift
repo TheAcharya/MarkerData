@@ -18,18 +18,15 @@ struct ColorPaletteRenderer {
     static let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "ColorPaletteRenderer")
 
     static func render(exportResult: ExportResult, swatchSettings: ColorSwatchSettingsModel) async {
-        guard let url = exportResult.jsonManifestPath,
-              let data = try? Data(contentsOf: url),
-              let json = try? JSONSerialization.jsonObject(with: data, options: []),
-              let extractResultDicts = json as? [[String: Any]] else {
+        guard let imageFileURLs = try? FileManager.default
+            .contentsOfDirectory(at: exportResult.exportFolder, includingPropertiesForKeys: [])
+            .filter({ ["png", "jpg", "jpeg", "gif"].contains($0.pathExtension.lowercased()) })
+        else {
+            Self.logger.error("Failed to get contents of directory")
             return
         }
 
-        let imageFilenames: [String] = extractResultDicts.compactMap {
-            $0["Image Filename"] as? String
-        }
-
-        let isGIF: Bool = imageFilenames.first?.lowercased().hasSuffix("gif") ?? false
+        let isGIF: Bool = imageFileURLs.first?.pathExtension == "gif"
 
         let imageService = ImageRenderService()
         let colorMood = ColorMood(
@@ -38,16 +35,14 @@ struct ColorPaletteRenderer {
             excludeWhite: swatchSettings.excludeWhite
         )
 
-        let imageStrips: [ImageStrip] = imageFilenames.map { imageFilename in
-            let imageURL = exportResult.exportFolder.appendingPathComponent(imageFilename, conformingTo: .image)
-            let outputFilenme = if isGIF {
-                Self.getSeparatePaletteFilename(gifFilename: imageFilename)
+        let imageStrips: [ImageStrip] = imageFileURLs.map { url in
+            let outputURL = if isGIF {
+                Self.getSeparatePaletteURL(from: url)
             } else {
-                imageFilename
+                url
             }
-            let outputURL = exportResult.exportFolder.appendingPathComponent(outputFilenme, conformingTo: .image)
 
-            let imageStrip = ImageStrip(url: imageURL, exportDirectory: outputURL, colorMood: colorMood)
+            let imageStrip = ImageStrip(url: url, exportDirectory: outputURL, colorMood: colorMood)
 
             return imageStrip
         }
@@ -58,6 +53,13 @@ struct ColorPaletteRenderer {
         if isGIF {
             Self.logger.notice("Updating JSON manifest with palette filenames")
 
+            guard let url = exportResult.jsonManifestPath,
+                  let data = try? Data(contentsOf: url),
+                  let json = try? JSONSerialization.jsonObject(with: data, options: []),
+                  let extractResultDicts = json as? [[String: Any]] else {
+                return
+            }
+
             guard let jsonURL = exportResult.jsonManifestPath else {
                 Self.logger.error("Failed to get JSON manifest path for palette creation")
                 return
@@ -67,15 +69,22 @@ struct ColorPaletteRenderer {
 
             for index in updatedResultDict.indices {
                 if let imageFilename = extractResultDicts[index]["Image Filename"] as? String {
-                    updatedResultDict[index]["Palette Filename"] = Self.getSeparatePaletteFilename(gifFilename: imageFilename)
+                    updatedResultDict[index]["Palette Filename"] = Self.getSeparatePaletteName(from: imageFilename)
                 }
             }
             Self.updateResultJSON(at: jsonURL, to: updatedResultDict)
         }
     }
 
-    private static func getSeparatePaletteFilename(gifFilename: String) -> String {
-        "\(gifFilename.removingSuffix(".gif"))-Palette.jpg"
+    private static func getSeparatePaletteURL(from url: URL) -> URL {
+        return url
+            .mutatingLastPathComponent {
+                Self.getSeparatePaletteName(from: $0)
+            }
+    }
+
+    private static func getSeparatePaletteName(from filename: String) -> String {
+        return "\(filename.removingSuffix(".gif"))-Palette.jpg"
     }
 
     // Used when rendering GIFs
