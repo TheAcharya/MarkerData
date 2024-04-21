@@ -52,7 +52,7 @@ struct ColorPaletteRenderer {
             return imageStrip
         }
 
-        await imageService.export(imageStrips: imageStrips, stripHeight: 80, colorsCount: 8, paletteStripOnly: isGIF)
+        await imageService.export(imageStrips: imageStrips, stripHeight: 128, colorsCount: 8, paletteStripOnly: isGIF)
 
         // Update JSON if exporting separate palette
         if isGIF {
