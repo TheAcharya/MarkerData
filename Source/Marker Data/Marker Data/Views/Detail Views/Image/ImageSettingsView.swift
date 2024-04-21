@@ -17,7 +17,7 @@ struct ImageSettingsView: View {
 
             SwatchSettingsView()
                 .tabItem {
-                    Text("Color Swatch")
+                    Text("Swatch")
                 }
         }
         .padding(.top)
