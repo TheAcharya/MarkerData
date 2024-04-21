@@ -10,6 +10,10 @@ import SwiftUI
 import MarkersExtractor
 
 struct SettingsStore: Codable, Hashable, Equatable, Identifiable {
+    /// Used for versioning
+    static var version: Int = 2
+    var version: Int = Self.version
+
     var name: String
 
     var id: String {

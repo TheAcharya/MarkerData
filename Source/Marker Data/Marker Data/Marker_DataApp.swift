@@ -29,7 +29,7 @@ struct Marker_DataApp: App {
 
     init() {
         let settings = SettingsContainer()
-        
+
         let databaseManager = DatabaseManager(settings: settings)
 
         let extractionModel = ExtractionModel(

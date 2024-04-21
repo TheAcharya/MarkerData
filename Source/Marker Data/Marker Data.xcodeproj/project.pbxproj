@@ -26,6 +26,10 @@
 		4108400B2BD3D0A3008B7B03 /* ImageExtractionSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4108400A2BD3D0A3008B7B03 /* ImageExtractionSettingsView.swift */; };
 		4108400D2BD3D10B008B7B03 /* SwatchSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4108400C2BD3D10B008B7B03 /* SwatchSettingsView.swift */; };
 		4108400F2BD3E5F6008B7B03 /* ColorPaletteRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4108400E2BD3E5F6008B7B03 /* ColorPaletteRenderer.swift */; };
+		41086A0D2BD559B600E0CE09 /* SettingsVersioningManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41086A0C2BD559B600E0CE09 /* SettingsVersioningManager.swift */; };
+		41086A0F2BD55AB400E0CE09 /* WalkDirectory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41086A0E2BD55AB400E0CE09 /* WalkDirectory.swift */; };
+		41086A112BD5653F00E0CE09 /* TaskExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41086A102BD5653F00E0CE09 /* TaskExtension.swift */; };
+		41086A132BD567EF00E0CE09 /* DicitionaryEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41086A122BD567EF00E0CE09 /* DicitionaryEncoder.swift */; };
 		410E3B812B4B0FF8005280FD /* LogManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 410E3B802B4B0FF8005280FD /* LogManager.swift */; };
 		41176ACD2B7807640093F4C8 /* airlift in Resources */ = {isa = PBXBuildFile; fileRef = 41176ACC2B7807640093F4C8 /* airlift */; };
 		41176AD02B780C090093F4C8 /* EonilFSEvents in Frameworks */ = {isa = PBXBuildFile; productRef = 41176ACF2B780C090093F4C8 /* EonilFSEvents */; };
@@ -224,6 +228,10 @@
 		4108400A2BD3D0A3008B7B03 /* ImageExtractionSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageExtractionSettingsView.swift; sourceTree = "<group>"; };
 		4108400C2BD3D10B008B7B03 /* SwatchSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwatchSettingsView.swift; sourceTree = "<group>"; };
 		4108400E2BD3E5F6008B7B03 /* ColorPaletteRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPaletteRenderer.swift; sourceTree = "<group>"; };
+		41086A0C2BD559B600E0CE09 /* SettingsVersioningManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsVersioningManager.swift; sourceTree = "<group>"; };
+		41086A0E2BD55AB400E0CE09 /* WalkDirectory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalkDirectory.swift; sourceTree = "<group>"; };
+		41086A102BD5653F00E0CE09 /* TaskExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskExtension.swift; sourceTree = "<group>"; };
+		41086A122BD567EF00E0CE09 /* DicitionaryEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DicitionaryEncoder.swift; sourceTree = "<group>"; };
 		410E3B802B4B0FF8005280FD /* LogManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogManager.swift; sourceTree = "<group>"; };
 		41176ACC2B7807640093F4C8 /* airlift */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = airlift; sourceTree = "<group>"; };
 		41176AD12B78C6A90093F4C8 /* ShellArgumentList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShellArgumentList.swift; sourceTree = "<group>"; };
@@ -420,6 +428,7 @@
 				4155B7182B62E179008D3505 /* UTTypeExtension.swift */,
 				4741202D2A3EFC42005890FE /* EmptyOrIntFormatStyle.swift */,
 				4186A74F2BA451CD00FFD75B /* DominantColorAlgorithmExtension.swift */,
+				41086A102BD5653F00E0CE09 /* TaskExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -576,6 +585,8 @@
 				411F373A2B55B77100CC05E6 /* LibraryFolders.swift */,
 				4155B7302B6E96BE008D3505 /* SidebarSelectionSwitcher.swift */,
 				41D1E4E72B72C21E00AE2E55 /* DeepCopy.swift */,
+				41086A0E2BD55AB400E0CE09 /* WalkDirectory.swift */,
+				41086A122BD567EF00E0CE09 /* DicitionaryEncoder.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -644,6 +655,7 @@
 				9BACA4D029FA9B5100EF6837 /* SettingsStore.swift */,
 				9B51D21529E9B13400DF7836 /* SettingsModels.swift */,
 				41176AE82B8216520093F4C8 /* MarkersExtractorModelExtensions.swift */,
+				41086A0C2BD559B600E0CE09 /* SettingsVersioningManager.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -1119,6 +1131,7 @@
 				4100D5DE2AD052010081F0EC /* OverlaySettingsView.swift in Sources */,
 				41C839872B52C9E300C6B133 /* FCPXMetadataKeys.m in Sources */,
 				9B4D90D82A0BAE3900FE7603 /* ImageSettingsView.swift in Sources */,
+				41086A132BD567EF00E0CE09 /* DicitionaryEncoder.swift in Sources */,
 				41C5389B2AE3067900E8A8A1 /* ConfigurationCommands.swift in Sources */,
 				9B25815E2A07A286002CED07 /* GeneralSettingsView.swift in Sources */,
 				41C298F72B84A0EF00AA7517 /* ConfigurationsViewModel.swift in Sources */,
@@ -1141,6 +1154,7 @@
 				41C298F12B82B0E000AA7517 /* Configurations_AddSheet.swift in Sources */,
 				9B35FE6829F94C110035B760 /* PickerViews.swift in Sources */,
 				41C839842B52C9E300C6B133 /* Document.m in Sources */,
+				41086A0F2BD55AB400E0CE09 /* WalkDirectory.swift in Sources */,
 				41EBAD522AF8172F00E6AF7C /* MainViews.swift in Sources */,
 				411F373B2B55B77100CC05E6 /* LibraryFolders.swift in Sources */,
 				41D1E4DE2B71769700AE2E55 /* AirtableDBModel.swift in Sources */,
@@ -1171,6 +1185,7 @@
 				410840002BC45FBC008B7B03 /* ImageStrip.swift in Sources */,
 				41EBAD502AF7B6F200E6AF7C /* WindowSize.swift in Sources */,
 				41BFEB792B1F925800C8B551 /* ExportProcess.swift in Sources */,
+				41086A0D2BD559B600E0CE09 /* SettingsVersioningManager.swift in Sources */,
 				41083FF02BC45D05008B7B03 /* ColorMood.swift in Sources */,
 				41176ADA2B7BDA9D0093F4C8 /* QueueModel.swift in Sources */,
 				41C538942AE1AFF200E8A8A1 /* SettingsContainer.swift in Sources */,
@@ -1208,6 +1223,7 @@
 				41176AE52B7D5C520093F4C8 /* QueueStatus.swift in Sources */,
 				4108400D2BD3D10B008B7B03 /* SwatchSettingsView.swift in Sources */,
 				4172729A2B44533D005A04BE /* FailedExtractionsView.swift in Sources */,
+				41086A112BD5653F00E0CE09 /* TaskExtension.swift in Sources */,
 				41F88AE52B0C83DE004A3B58 /* ShellResult.swift in Sources */,
 				4155B6C22B5D309C008D3505 /* NotificationManager.swift in Sources */,
 				41D1E4C32B6FCB4700AE2E55 /* ExtractionModel_DropDelegate.swift in Sources */,

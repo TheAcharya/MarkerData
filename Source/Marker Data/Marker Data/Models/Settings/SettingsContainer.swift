@@ -32,6 +32,11 @@ class SettingsContainer: ObservableObject {
     private static let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "SettingsContainer")
 
     init() {
+        // Check & update versions
+        Task.synchronous {
+            await SettingsVersioningManager.updateAll()
+        }
+
         self.store = .defaults()
         self.configurations = []
 

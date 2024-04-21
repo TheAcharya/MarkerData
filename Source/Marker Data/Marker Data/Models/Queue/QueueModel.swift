@@ -32,21 +32,6 @@ class QueueModel: ObservableObject {
     }
     
     public func scanFolder(at url: URL, append: Bool = false) async throws {
-        @Sendable
-        func walkDirectory(at url: URL, options: FileManager.DirectoryEnumerationOptions) -> AsyncStream<URL> {
-            AsyncStream { continuation in
-                Task {
-                    let enumerator = FileManager.default.enumerator(at: url, includingPropertiesForKeys: nil, options: options)
-
-                    while let fileURL = enumerator?.nextObject() as? URL {
-                        continuation.yield(fileURL)
-                    }
-
-                    continuation.finish()
-                }
-            }
-        }
-
         // Skip if upload is in progress
         if await self.uploadInProgress {
             return
