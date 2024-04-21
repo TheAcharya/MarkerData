@@ -89,9 +89,7 @@ Marker Data allows users to extract, convert & create databases from <a href="ht
 
 <p align="center"> <img src="https://github.com/TheAcharya/MarkerData-Website/blob/main/docs/assets/md-image-settings.png?raw=true"> </p>
 
-<p align="center"> <img src="https://github.com/TheAcharya/MarkerData-Website/blob/main/docs/assets/md-image-settings.png?raw=true"> </p>
-
-<p align="center"> <img src="https://github.com/TheAcharya/MarkerData-Website/blob/main/docs/assets/md-image-settings-swatch?raw=true"> </p>
+<p align="center"> <img src="https://github.com/TheAcharya/MarkerData-Website/blob/main/docs/assets/md-label-settings.png?raw=true"> </p>
 
 <p align="center"> <img src="https://github.com/TheAcharya/MarkerData-Website/blob/main/docs/assets/md-label-overlays-settings.png?raw=true"> </p>
 
