@@ -76,7 +76,15 @@ struct ImageMergeOperation {
 
             let formula = colorMood.formula
             let method = colorMood.method
-            let cgColors = try await ColorsExtractorService.extract(from: cgImage, method: method, count: colorsCount, formula: formula)
+
+            let cgColors = try await ColorsExtractorService.extract(
+                from: cgImage,
+                method: method, 
+                count: colorsCount,
+                formula: formula,
+                flags: colorMood.flags
+            )
+
             let colors = cgColors.map({ Color(cgColor: $0) })
             mutableColors = colors
         }
@@ -90,10 +98,9 @@ struct ImageMergeOperation {
 
     // Создание контекста и рисование цветов в нем по прямоугольникам
     static func createContextRectangle(colors: [Color], width: Int, height: Int) -> CGContext? {
-
-        let countSegments = colors.count
+        let countSegments = colors.count != 0 ? colors.count : 8
         let widthSegment = width / countSegments
-        let remainder = width % colors.count
+        let remainder = width % countSegments
 
         let colorsAsUInt = colors.map { color -> UInt32 in
             let nsColor = NSColor(color)
