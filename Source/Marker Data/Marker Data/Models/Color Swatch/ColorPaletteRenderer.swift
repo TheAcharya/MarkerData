@@ -20,13 +20,14 @@ struct ColorPaletteRenderer {
     static func render(exportResult: ExportResult, swatchSettings: ColorSwatchSettingsModel) async {
         guard let imageFileURLs = try? FileManager.default
             .contentsOfDirectory(at: exportResult.exportFolder, includingPropertiesForKeys: [])
-            .filter({ ["png", "jpg", "jpeg", "gif"].contains($0.pathExtension.lowercased()) })
+            .filter({ ["png", "jpg", "jpeg", "gif"].contains($0.pathExtension.lowercased()) }) // Filter for images
+            .filter({ !$0.lastPathComponent.contains("icon-marker") }) // Filter out marker icons
         else {
             Self.logger.error("Failed to get contents of directory")
             return
         }
 
-        let isGIF: Bool = imageFileURLs.first?.pathExtension == "gif"
+        let isGIF: Bool = imageFileURLs.contains(where: { $0.pathExtension == "gif" })
 
         let imageService = ImageRenderService()
         let colorMood = ColorMood(
@@ -57,6 +58,7 @@ struct ColorPaletteRenderer {
                   let data = try? Data(contentsOf: url),
                   let json = try? JSONSerialization.jsonObject(with: data, options: []),
                   let extractResultDicts = json as? [[String: Any]] else {
+                Self.logger.error("Failed to get extract result dict")
                 return
             }
 
