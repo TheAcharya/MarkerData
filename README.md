@@ -32,6 +32,7 @@ Marker Data allows users to extract, convert & create databases from <a href="ht
 - Versatile features for batch burning-in labels, embedding comprehensive metadata of each Marker onto stills or animated GIFs.
 - Allows the creation of multiple configurations tailored to diverse project requirements.
 - Harnesses the potential to utilise Captions as Markers, adding a layer of flexibility.
+- Automatically analyse and embed colour swatches from extracted images for shot reference.
 - Application is Notarised by Apple.
 
 ## Avaliable Extract Profiles
