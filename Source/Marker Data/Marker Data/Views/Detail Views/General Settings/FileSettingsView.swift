@@ -81,7 +81,15 @@ struct FileSettingsView: View {
                     .toggleStyle(CheckboxToggleStyle())
                     .formControlLeadingAlignmentGuide()
             }
-            
+
+            HStack {
+                Text("Include Disabled Clips:")
+
+                Toggle("", isOn: $settings.store.includeDisabledClips)
+                    .toggleStyle(CheckboxToggleStyle())
+                    .formControlLeadingAlignmentGuide()
+            }
+
             HStack {
                 Text("No Media:")
                 

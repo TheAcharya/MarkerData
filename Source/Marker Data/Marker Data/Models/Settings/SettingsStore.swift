@@ -11,7 +11,7 @@ import MarkersExtractor
 
 struct SettingsStore: Codable, Hashable, Equatable, Identifiable {
     /// Used for versioning
-    static var version: Int = 2
+    static var version: Int = 3
     var version: Int = Self.version
 
     var name: String
@@ -34,6 +34,7 @@ struct SettingsStore: Codable, Hashable, Equatable, Identifiable {
 
     var imageMode: ImageMode
     var enabledSubframes: Bool
+    var includeDisabledClips: Bool
     var enabledNoMedia: Bool
 
     var IDNamingMode: MarkerIDMode
@@ -114,6 +115,7 @@ struct SettingsStore: Codable, Hashable, Equatable, Identifiable {
             folderFormat: .medium,
             imageMode: .PNG,
             enabledSubframes: false,
+            includeDisabledClips: false, 
             enabledNoMedia: false,
             IDNamingMode: .projectTimecode,
             markersSource: .markers,
@@ -183,6 +185,7 @@ struct SettingsStore: Codable, Hashable, Equatable, Identifiable {
             enableSubframes: self.enabledSubframes,
             markersSource: self.markersSource,
             excludeRoles: excludeRoleNames,
+            includeDisabled: self.includeDisabledClips, 
             imageFormat: self.imageMode.markersExtractor,
             imageQuality: Int(self.JPEGImageQuality),
             imageWidth: imageWidth,

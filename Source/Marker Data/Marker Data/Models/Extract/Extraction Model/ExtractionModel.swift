@@ -83,7 +83,7 @@ final class ExtractionModel: ObservableObject {
             
             let markersExtractorLogger = Logger(label: Bundle.main.bundleIdentifier!, factory: LoggingOSLog.init)
             
-            let extractor = MarkersExtractor(settings, logger: markersExtractorLogger)
+            let extractor = MarkersExtractor(settings: settings, logger: markersExtractorLogger)
             
             // Observe progress changes
             let observation = extractor.observe(

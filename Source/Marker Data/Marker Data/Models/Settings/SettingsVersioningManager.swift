@@ -62,6 +62,8 @@ struct SettingsVersioningManager {
             // Add color swatch settings
             let colorSwatchDict = try DictionaryEncoder().encode(ColorSwatchSettingsModel.defaults())
             dict["colorSwatchSettings"] = colorSwatchDict
+        case 2:
+            dict["includeDisabledClips"] = false
         default:
             throw VersioningError.invalidVersion
         }
