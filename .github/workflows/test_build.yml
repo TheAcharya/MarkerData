@@ -188,7 +188,7 @@ jobs:
         mkdir -p dist
         PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
         cp -R $PARENT/dist/dmg-builds/latest-build/Marker\ Data.app "test_build/"
-        zip -q -r test_build/marker_data_test-build.zip "test_build/"
+        ditto -c -k --sequesterRsrc --keepParent "test_build/Marker Data.app" "test_build/marker_data_test-build.zip"
         rm -rf test_build/Marker\ Data.app
 
     - name: Save App as Artifact
