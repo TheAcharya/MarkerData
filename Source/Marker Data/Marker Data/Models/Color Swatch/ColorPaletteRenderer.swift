@@ -28,6 +28,13 @@ struct ColorPaletteRenderer {
         }
 
         let isGIF: Bool = imageFileURLs.contains(where: { $0.pathExtension == "gif" })
+        let isJSON = exportResult.jsonManifestPath != nil
+
+        // Skip palette if image format is GIF and the export format is not JSON
+        if isGIF && !isJSON {
+            Self.logger.warning("GIF export can be only used with JSON. Skipping palette creation.")
+            return
+        }
 
         let imageService = ImageRenderService()
         let colorMood = ColorMood(
