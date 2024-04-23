@@ -36,7 +36,7 @@ extension DeltaEFormula: CustomStringConvertible {
         case .CIE94:
             return "CIE94 algorithm is an improvement of CIE76, it calculates the difference in the Lab colour space."
         case .CIEDE2000:
-            return "CIEDE2000 algorithm is the most accurate color comparison algorithm in the Lab colour space."
+            return "CIEDE2000 algorithm is the most accurate colour comparison algorithm in the Lab colour space."
         case .CMC:
             return "CMC algorithm calculates the difference in the HCL (Hue, Chroma, Luminance) colour space."
         }
