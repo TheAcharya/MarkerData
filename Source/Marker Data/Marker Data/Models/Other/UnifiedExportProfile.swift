@@ -48,6 +48,8 @@ struct UnifiedExportProfile: Codable, Hashable, Identifiable, Equatable {
             return "NotionLogo"
         case .tsv:
             return "NumbersIcon"
+        case .youtube:
+            return "YouTubeLogo"
         }
     }
 }
