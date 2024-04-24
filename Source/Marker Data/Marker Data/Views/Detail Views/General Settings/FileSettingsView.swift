@@ -91,7 +91,7 @@ struct FileSettingsView: View {
             }
 
             HStack {
-                Text("No Media:")
+                Text("Skip Image Generation:")
                 
                 Toggle("", isOn: $settings.store.enabledNoMedia)
                     .toggleStyle(CheckboxToggleStyle())
