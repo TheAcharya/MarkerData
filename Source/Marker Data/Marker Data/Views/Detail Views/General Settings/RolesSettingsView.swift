@@ -20,7 +20,7 @@ struct RolesSettingsView: View {
                 
                 // If nil or empty
                 if self.rolesManager.roles.isEmpty {
-                    Text("Drag & Drop Final Cut Pro Project to Retrive Roles Metadata")
+                    Text("Drag & Drop Final Cut Pro Project (or .FCPXMLD) to Retrive Roles Metadata")
                 }
             }
             
