@@ -15,10 +15,8 @@ jobs:
         id: get_release
         run: |
           response=$(curl -sSL https://api.github.com/repos/TheAcharya/Airlift/releases/latest)
-          echo "$response" | jq '.' # Debug output for verification
 
           latest_release_tag=$(echo "$response" | jq -r '.tag_name | ltrimstr("v")')
-          # Adjust the `select` filter to accurately capture the correct asset name
           latest_release_url=$(echo "$response" | jq -r '.assets[] | select(.name | test("bin_airlift_.*_macos_x64.zip$")) | .browser_download_url')
 
           echo "Latest release tag: $latest_release_tag"
