@@ -14,21 +14,30 @@ jobs:
       - name: Get latest release info
         id: get_release
         run: |
-            latest_release_tag=$(curl -sSL https://api.github.com/repos/TheAcharya/Airlift/releases/latest | jq -r '.tag_name | ltrimstr("v")')
-            latest_release_url=$(curl -sSL https://api.github.com/repos/TheAcharya/Airlift/releases/latest | jq -r '.assets[] | select(.name | endswith("macos_x64.zip")) | .browser_download_url')
+          response=$(curl -sSL https://api.github.com/repos/TheAcharya/Airlift/releases/latest)
+          echo "$response" | jq '.' # Debug output for verification
 
-            echo "Latest release tag: $latest_release_tag"
-            echo "Latest release URL: $latest_release_url"
+          latest_release_tag=$(echo "$response" | jq -r '.tag_name | ltrimstr("v")')
+          # Adjust the `select` filter to accurately capture the correct asset name
+          latest_release_url=$(echo "$response" | jq -r '.assets[] | select(.name | test("bin_airlift_.*_macos_x64.zip$")) | .browser_download_url')
 
-            curl -L -o airlift.zip $latest_release_url
+          echo "Latest release tag: $latest_release_tag"
+          echo "Latest release URL: $latest_release_url"
 
-            unzip airlift.zip -d extracted_files
+          if [[ -z "$latest_release_url" ]]; then
+            echo "No valid download URL found for macOS x64 binary."
+            exit 1
+          fi
 
-            cp -R ./extracted_files/dist/airlift "./Source/Marker Data/Marker Data/Resources"
+          curl -L -o airlift.zip $latest_release_url
+          unzip airlift.zip -d extracted_files
+          cp -R ./extracted_files/dist/airlift "./Source/Marker Data/Marker Data/Resources"
 
-            git status
-            git config user.name "GitHub Actions"
-            git config user.email "actions@github.com"
-            git add Source
-            git commit -m "Updated Airlift Binary Version $latest_release_tag"
-            git push
+      - name: Commit and Push Update
+        run: |
+          git status
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add Source
+          git commit -m "Updated Airlift Binary Version $latest_release_tag"
+          git push
