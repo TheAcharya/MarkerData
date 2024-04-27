@@ -7,7 +7,6 @@
 
 import Foundation
 import OSLog
-import EonilFSEvents
 
 /// The roles manager manages the selected FCP roles
 ///
@@ -29,30 +28,13 @@ class RolesManager: ObservableObject {
             }
         }
 
-        // Monitor preferences file for changes
+        // Monitor roles for changes
         // We need this because the roles might be changed from the FCP Workflow Extension
-        do {
-            try EonilFSEvents.startWatching(
-                paths: [Self.staticPreferencesJSONURL.path(percentEncoded: false)],
-                for: ObjectIdentifier(self),
-                with: { event in
-                    Task {
-                        do {
-                            let storeOnDisk = try Self.loadStore()
-
-                            await MainActor.run {
-                                self.roles = storeOnDisk.roles
-                            }
-
-                            Self.logger.notice("Roles have been modified from outside. Loading new roles.")
-                        } catch {
-                            Self.logger.error("File monitor error: \(error.localizedDescription)")
-                        }
-                    }
-                })
-        } catch {
-            Self.logger.warning("Failed to start roles monitoring. \(error.localizedDescription)")
-        }
+        DistributedNotificationCenter.default.addObserver(
+            self,
+            selector: #selector(refresh),
+            name: Notification.Name("RolesChanged"),
+            object: nil)
     }
 
     @MainActor
@@ -70,8 +52,8 @@ class RolesManager: ObservableObject {
             Self.logger.error("Failed to save roles to disk: \(error.localizedDescription, privacy: .public)")
         }
     }
-    
-    @MainActor
+
+    @objc @MainActor
     func refresh() {
         self.roles = Self.loadRolesFromDisk()
     }
@@ -100,6 +82,9 @@ class RolesManager: ObservableObject {
         let data = try encoder.encode(store)
         
         try data.write(to: Self.staticPreferencesJSONURL)
+
+        // Notify of changes
+        DistributedNotificationCenter.default.post(name: Notification.Name("RolesChanged"), object: nil)
     }
     
     static func loadRolesFromDisk() -> [RoleModel] {

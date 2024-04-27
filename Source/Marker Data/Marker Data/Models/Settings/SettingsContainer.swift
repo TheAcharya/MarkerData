@@ -9,7 +9,6 @@ import Foundation
 import AppKit
 import Combine
 import OSLog
-import EonilFSEvents
 
 /// Holds app settings and provides methods to save, delete and modify them
 @MainActor
@@ -73,18 +72,13 @@ class SettingsContainer: ObservableObject {
         }
         .store(in: &cancellables)
 
-        // Monitor preferences file for changes
+        // Monitor roles for changes
         // We need this because the roles might be changed from the FCP Workflow Extension
-        do {
-            try EonilFSEvents.startWatching(
-                paths: [URL.preferencesJSON.path(percentEncoded: false)],
-                for: ObjectIdentifier(self),
-                with: { [weak self] event in
-                    self?.monitorFileChanges(fileSystemEvent: event)
-                })
-        } catch {
-            Self.logger.warning("Failed to start preferences file monitoring. \(error.localizedDescription)")
-        }
+        DistributedNotificationCenter.default.addObserver(
+            self,
+            selector: #selector(updateRoles),
+            name: Notification.Name("RolesChanged"),
+            object: nil)
     }
 
     public func load(_ store: SettingsStore) throws {
@@ -239,22 +233,15 @@ class SettingsContainer: ObservableObject {
         self.unsavedChanges = onDisk != self.store
     }
 
-    private func monitorFileChanges(fileSystemEvent: EonilFSEventsEvent) {
-        guard let flags = fileSystemEvent.flag else {
-            return
-        }
-
-        if flags.contains(.itemModified) {
-            do {
-                let storeOnDisk = try self.loadStoreFromDisk(at: URL.preferencesJSON)
-
-                if storeOnDisk.roles != self.store.roles {
-                    self.store = storeOnDisk
-                    Self.logger.notice("Roles have been modified from outside. Loading new store.")
-                }
-            } catch {
-                Self.logger.error("File monitor error: \(error.localizedDescription)")
-            }
+    @objc
+    private func updateRoles() {
+        do {
+            Self.logger.notice("Roles have been modified from outside. Loading new store.")
+            
+            let storeOnDisk = try self.loadStoreFromDisk(at: URL.preferencesJSON)
+            self.store = storeOnDisk
+        } catch {
+            Self.logger.error("Failed to load new roles: \(error.localizedDescription)")
         }
     }
 }

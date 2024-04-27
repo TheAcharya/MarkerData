@@ -154,7 +154,9 @@ struct SettingsStore: Codable, Hashable, Equatable, Identifiable {
         let outputDirURL: URL = self.exportFolderURL ?? URL.FCPExportCacheFolder
         
         // Exclude roles
-        let excludeRoles = self.roles.filter { !$0.enabled }
+        // Update roles in case of outside change
+        let roles = RolesManager.loadRolesFromDisk()
+        let excludeRoles = roles.filter { !$0.enabled }
         let excludeRoleNames: Set<String> = Set(excludeRoles.map { $0.role.rawValue })
         
         // Image size override
