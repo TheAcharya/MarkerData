@@ -142,6 +142,7 @@ class DatabaseUploader: ObservableObject {
             ShellParameter(for: "--table", value: airtableProfile.tableID),
             ShellParameter(for: "--dropbox-token", url: URL.dropboxTokenJSON),
             ShellRawArgument(#"--attachment-columns-map "Image Filename" "Attachments""#),
+            ShellRawArgument(#"--attachment-columns-map "Palette Filename" "Palette Attachments""#),
             ShellFlag("--md"),
             ShellParameter(for: "--log", url: logPath),
             ShellFlag("--verbose"),
