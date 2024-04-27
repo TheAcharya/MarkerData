@@ -12,7 +12,9 @@ import UniformTypeIdentifiers
 
 struct RolesSettingsView: View {
     @StateObject var rolesManager = RolesManager()
-    
+
+    @State var loadingRoles = false
+
     var body: some View {
         VStack {
             ZStack {
@@ -22,11 +24,21 @@ struct RolesSettingsView: View {
                 if self.rolesManager.roles.isEmpty {
                     Text("Drag & Drop Final Cut Pro Project (or .FCPXMLD) to Retrive Roles Metadata")
                 }
+
+                if loadingRoles {
+                    ProgressView()
+                }
             }
             
             buttonsView
         }
         .onDrop(of: [.fcpxml, .fileURL], isTargeted: nil) { providers -> Bool in
+            self.loadingRoles = true
+
+            defer {
+                self.loadingRoles = false
+            }
+
             for provider in providers {
                 // Load FCPXML
                 if provider.hasRepresentationConforming(toTypeIdentifier: "com.apple.finalcutpro.xml") {
