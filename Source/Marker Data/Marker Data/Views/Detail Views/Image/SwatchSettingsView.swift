@@ -7,11 +7,20 @@
 
 import SwiftUI
 import DominantColors
+import MarkersExtractor
 
 struct SwatchSettingsView: View {
     @EnvironmentObject var settings: SettingsContainer
 
     let pickerWidth: CGFloat = 170
+
+    var swatchDisabled: Bool {
+        let jsonProfiles: [ExportProfileFormat] = [.notion, .airtable]
+        let isJSON = jsonProfiles.contains(settings.store.unifiedExportProfile.extractProfile)
+        let isGIF = settings.store.imageMode == .GIF
+
+        return !isJSON && isGIF
+    }
 
     var body: some View {
         VStack(alignment: .formControlAlignment) {
@@ -59,10 +68,21 @@ struct SwatchSettingsView: View {
                     .toggleStyle(CheckboxToggleStyle())
                     .formControlLeadingAlignmentGuide()
             }
+
+            if swatchDisabled {
+                Text("**Swatch unavailable:** The currently selected export profile and GIF image format are incompatible.")
+                    .padding(.top)
+                    .frame(maxWidth: 320)
+            }
         }
+        .disabled(swatchDisabled)
     }
 }
 
 #Preview {
-    SwatchSettingsView()
+    @StateObject var settings = SettingsContainer()
+
+    return SwatchSettingsView()
+        .environmentObject(settings)
+        .preferredColorScheme(.dark)
 }
