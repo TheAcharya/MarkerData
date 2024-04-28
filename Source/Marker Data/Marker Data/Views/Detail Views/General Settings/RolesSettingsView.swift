@@ -7,78 +7,26 @@
 
 import SwiftUI
 import MarkersExtractor
-import DAWFileKit
-import UniformTypeIdentifiers
 
 struct RolesSettingsView: View {
     @StateObject var rolesManager = RolesManager()
-
-    @State var loadingRoles = false
 
     var body: some View {
         VStack {
             ZStack {
                 tableView
-                
-                // If nil or empty
-                if self.rolesManager.roles.isEmpty {
-                    Text("Drag & Drop Final Cut Pro Project (or .FCPXMLD) to Retrive Roles Metadata")
-                }
 
-                if loadingRoles {
+                if rolesManager.loadingInProgress {
                     ProgressView()
+                } else if self.rolesManager.roles.isEmpty {
+                    // If nil or empty
+                    Text("Drag & Drop Final Cut Pro Project (or .FCPXMLD) to Retrive Roles Metadata")
                 }
             }
             
             buttonsView
         }
-        .onDrop(of: [.fcpxml, .fileURL], isTargeted: nil) { providers -> Bool in
-            self.loadingRoles = true
-
-            defer {
-                self.loadingRoles = false
-            }
-
-            for provider in providers {
-                // Load FCPXML
-                if provider.hasRepresentationConforming(toTypeIdentifier: "com.apple.finalcutpro.xml") {
-                    _ = provider.loadDataRepresentation(for: .fcpxml) { data, error in
-                        Task {
-                            guard let dataUnwrapped = data else {
-                                return
-                            }
-                            
-                            if let extractedRoles = await getRoles(fcpxml: FCPXMLFile(fileContents: dataUnwrapped)) {
-                                await self.rolesManager.setRoles(extractedRoles)
-                            }
-                        }
-                    }
-                }
-                
-                // Load FCPXMLD
-                if provider.canLoadObject(ofClass: URL.self) {
-                    // Load the file URL from the provider
-                    let _ = provider.loadObject(ofClass: URL.self) { url, error in
-                        Task {
-                            guard let urlUnwrapped = url else {
-                                return
-                            }
-                            
-                            if !urlUnwrapped.conformsToType([.fcpxmld]) {
-                                print("File doesn't conform to FCPXMLD")
-                                return
-                            }
-                               
-                            if let extractedRoles = await getRoles(fcpxml: try FCPXMLFile(at: urlUnwrapped)) {
-                                 self.rolesManager.setRoles(extractedRoles)
-                            }
-                        }
-                    }
-                }
-            }
-            
-            return true
-        }
+        .onDrop(of: [.fcpxml, .fileURL], delegate: rolesManager)
     }
     
     var tableView: some View {
@@ -146,21 +94,6 @@ struct RolesSettingsView: View {
             }
             
             Spacer()
-        }
-    }
-    
-    func getRoles(fcpxml: FCPXMLFile) async -> [RoleModel]? {
-        do {
-            let rolesExtractor = RolesExtractor(fcpxml: fcpxml)
-            
-            let roles = try await rolesExtractor.extract()
-            
-            let roleModels = roles.map { RoleModel(role: $0, enabled: true) }
-            
-            return roleModels
-        } catch {
-            print("Failed to extract roles")
-            return nil
         }
     }
 }
