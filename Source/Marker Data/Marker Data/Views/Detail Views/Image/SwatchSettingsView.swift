@@ -69,11 +69,21 @@ struct SwatchSettingsView: View {
                     .formControlLeadingAlignmentGuide()
             }
 
-            if swatchDisabled {
-                Text("**Swatch unavailable:** The currently selected export profile and GIF image format are incompatible.")
-                    .padding(.top)
-                    .frame(maxWidth: 320)
-            }
+		if swatchDisabled {
+    		HStack(spacing: 10) {
+        		Image(systemName: "info.circle.fill")
+            		.foregroundColor(.white)
+            		.font(.system(size: 24)) 
+        		Text("The currently selected Export Profile and Image Format are incompatible.")
+            		.foregroundColor(.white)
+            		.font(.body)
+    		}
+    				.padding()
+    				.background(Color.black)
+    				.cornerRadius(10)
+    				.frame(maxWidth: 520)
+    				.padding(.top)
+			}
         }
         .disabled(swatchDisabled)
     }
