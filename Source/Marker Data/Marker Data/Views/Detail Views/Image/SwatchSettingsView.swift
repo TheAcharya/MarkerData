@@ -69,20 +69,17 @@ struct SwatchSettingsView: View {
                     .formControlLeadingAlignmentGuide()
             }
 
-		if swatchDisabled {
-    		HStack(spacing: 10) {
-        		Image(systemName: "info.circle.fill")
-            		.foregroundColor(.white)
-            		.font(.system(size: 24)) 
-        		Text("The currently selected Export Profile and Image Format are incompatible.")
-            		.foregroundColor(.white)
-            		.font(.body)
-    		}
-    				.padding()
-    				.background(Color.black)
-    				.cornerRadius(10)
-    				.frame(maxWidth: 520)
-    				.padding(.top)
+            if swatchDisabled {
+                HStack(spacing: 10) {
+                    Image(systemName: "info.circle.fill")
+
+                    Text("The currently selected Export Profile and Image Format are incompatible.")
+                }
+                .padding(8)
+                .background(.black)
+                .cornerRadius(8)
+                .frame(maxWidth: 520)
+                .padding(.top)
 			}
         }
         .disabled(swatchDisabled)
