@@ -80,7 +80,7 @@ jobs:
         PROJECT_PATH="Source/Marker Data/Marker Data.xcodeproj"
         SCHEME="Marker Data"
         CONFIGURATION="Debug"
-        DESTINATION="generic/platform=macOS,name=arm64"
+        DESTINATION="platform=macOS"
         BUILD_FOLDER="$PARENT/dist/dmg-builds/app-build"
         echo "PARENT=$PARENT" >> $GITHUB_ENV
         echo "CONFIG=$CONFIGURATION" >> $GITHUB_ENV
