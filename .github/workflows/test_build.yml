@@ -105,7 +105,9 @@ jobs:
       run: |
         PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
         ENTITLE="$PARENT/dist/dmg-builds/entitlements.plist"
-        APPX="$PARENT/dist/dmg-builds/latest-build/Marker Data.app/Contents/PlugIns/Workflow Extension.appex"
+        APPX1="$PARENT/dist/dmg-builds/latest-build/Marker Data.app/Contents/PlugIns/Workflow Extension.appex/Contents/MacOS/Workflow Extension"
+        APPX2="$PARENT/dist/dmg-builds/latest-build/Marker Data.app/Contents/PlugIns/Workflow Extension.appex/Contents/Resources/Assets.car"
+        APPX3="$PARENT/dist/dmg-builds/latest-build/Marker Data.app/Contents/PlugIns/Workflow Extension.appex"
         
         echo $APPLE_CERT_DATA | base64 --decode > certificate.p12
         security create-keychain -p $KEYCHAIN_PASSWORD_MX build-mx.keychain
@@ -113,7 +115,9 @@ jobs:
         security unlock-keychain -p $KEYCHAIN_PASSWORD_MX build-mx.keychain
         security import certificate.p12 -k build-mx.keychain -P $APPLE_CERT_PASSWORD -T /usr/bin/codesign
         security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k $KEYCHAIN_PASSWORD_MX build-mx.keychain
-        /usr/bin/codesign --force -s $APPLE_TEAM_ID --options runtime --entitlements "$ENTITLE" "$APPX" -v
+        /usr/bin/codesign --force -s $APPLE_TEAM_ID --options runtime --entitlements "$ENTITLE" "$APPX1" -v
+        /usr/bin/codesign --force -s $APPLE_TEAM_ID --options runtime --entitlements "$ENTITLE" "$APPX2" -v
+        /usr/bin/codesign --force -s $APPLE_TEAM_ID --options runtime --entitlements "$ENTITLE" "$APPX3" -v
         
     - name: Codesign Marker Data Sparkle Framework
       env: 
