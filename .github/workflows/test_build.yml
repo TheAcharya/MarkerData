@@ -79,7 +79,7 @@ jobs:
         PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
         PROJECT_PATH="Source/Marker Data/Marker Data.xcodeproj"
         SCHEME="Marker Data"
-        CONFIGURATION="Debug"
+        CONFIGURATION="Release"
         DESTINATION="platform=macOS"
         BUILD_FOLDER="$PARENT/dist/dmg-builds/app-build"
         echo "PARENT=$PARENT" >> $GITHUB_ENV
