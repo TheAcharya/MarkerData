@@ -94,7 +94,7 @@ jobs:
         PROJECT_PATH="Source/Marker Data/Marker Data.xcodeproj"
         SCHEME="Marker Data"
         CONFIGURATION="Release"
-        DESTINATION="platform=macOS"
+        DESTINATION="generic/platform=macOS,name=Any Mac"
         BUILD_FOLDER="$PARENT/dist/dmg-builds/app-build"
         echo "PARENT=$PARENT" >> $GITHUB_ENV
         echo "CONFIG=$CONFIGURATION" >> $GITHUB_ENV
