@@ -30,6 +30,10 @@ struct ImageExtractionSettingsView: View {
             gifSettingsView
                 .disabled(settings.store.imageMode != .GIF)
         }
+        // idk why, but whithout this negative padding
+        // there will be a small gap under the view
+        // (probably because of the fixed window size)
+        .padding(.vertical, -22)
     }
 
     var fileCreationSettingsView: some View {
