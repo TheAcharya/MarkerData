@@ -65,8 +65,8 @@ jobs:
         PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
         PROJECT_PATH="Source/Marker Data/Marker Data.xcodeproj"
         SCHEME="Marker Data"
-        CONFIGURATION="Debug"
-        DESTINATION="platform=macOS"
+        CONFIGURATION="Release"
+        DESTINATION="generic/platform=macOS,name=Any Mac"
         BUILD_FOLDER="$PARENT/dist/dmg-builds/app-build"
         
         xcodebuild -project "$PROJECT_PATH" -scheme "$SCHEME" -configuration "$CONFIGURATION" -destination "$DESTINATION" -derivedDataPath "$BUILD_FOLDER" clean build CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO -allowProvisioningUpdates | xcpretty && exit ${PIPESTATUS[0]}
