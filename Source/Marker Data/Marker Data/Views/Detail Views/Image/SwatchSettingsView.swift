@@ -28,45 +28,32 @@ struct SwatchSettingsView: View {
                 .font(.headline)
 
             // Enable
-            HStack {
-                Text("Enable Swatch:")
-
+            LabeledFormElement("Enable Swatch") {
                 Toggle("", isOn: $settings.store.colorSwatchSettings.enableSwatch)
                     .toggleStyle(CheckboxToggleStyle())
-                    .formControlLeadingAlignmentGuide()
             }
 
             // Algorithm
-            HStack {
-                Text("Algorithm:")
-
+            LabeledFormElement("Algorithm") {
                 Picker("", selection: $settings.store.colorSwatchSettings.algorithm) {
                     ForEach(DeltaEFormula.allCases, id: \.self) { algorithm in
                         Text(algorithm.name)
                             .help(algorithm.description)
                     }
                 }
-                .labelsHidden()
                 .frame(width: self.pickerWidth)
-                .formControlLeadingAlignmentGuide()
             }
 
             // Exclude black
-            HStack {
-                Text("Exclude Black:")
-
+            LabeledFormElement("Exclude Black") {
                 Toggle("", isOn: $settings.store.colorSwatchSettings.excludeBlack)
                     .toggleStyle(CheckboxToggleStyle())
-                    .formControlLeadingAlignmentGuide()
             }
 
             // Exclude white
-            HStack {
-                Text("Exclude White:")
-
+            LabeledFormElement("Exclude White") {
                 Toggle("", isOn: $settings.store.colorSwatchSettings.excludeWhite)
                     .toggleStyle(CheckboxToggleStyle())
-                    .formControlLeadingAlignmentGuide()
             }
 
             if swatchDisabled {

@@ -17,25 +17,18 @@ struct NotificationSettingsView: View {
             Text("Progress Reporting")
                 .font(.headline)
             
-            HStack {
-                Text("Notification Frequency:")
-                
+            LabeledFormElement("Notification Frequency") {
                 Picker("", selection: $settings.store.notificationFrequency) {
                     ForEach(NotificationFrequency.allCases) { frequency in
                         Text(frequency.displayName)
                             .tag(frequency)
                     }
                 }
-                .labelsHidden()
                 .frame(width: 250)
-                .formControlLeadingAlignmentGuide()
             }
             
-            HStack {
-                Text("Show Progress on Dock Icon: ")
-                
+            LabeledFormElement("Show Progress on Dock Icon") {
                 Toggle("", isOn: $settings.store.showDockProgress)
-                    .formControlLeadingAlignmentGuide()
             }
             
             Spacer()

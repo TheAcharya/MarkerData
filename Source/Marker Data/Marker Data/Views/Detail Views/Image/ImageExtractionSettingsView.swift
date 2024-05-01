@@ -14,214 +14,181 @@ struct ImageExtractionSettingsView: View {
 
     var body: some View {
         VStack(alignment: .formControlAlignment) {
-            Group {
-                Text("File Creation")
-                    .font(.headline)
+            fileCreationSettingsView
 
-                // Naming mode
-                HStack {
-                    Text("Naming Mode:")
+            Divider()
 
-                    //Picker To Change Selected ID Naming Mode
-                    Picker("", selection: $settings.store.IDNamingMode) {
-                        ForEach(MarkerIDMode.allCases) { item in
-                            Text(item.displayName)
-                                .tag(item)
-                        }
+            imageSizeSettingsView
+
+            Divider()
+
+            jpegSettingsView
+                .disabled(settings.store.imageMode != .JPG)
+
+            Divider()
+
+            gifSettingsView
+                .disabled(settings.store.imageMode != .GIF)
+        }
+    }
+
+    var fileCreationSettingsView: some View {
+        VStack(alignment: .formControlAlignment) {
+            Text("File Creation")
+                .font(.headline)
+
+            // Naming mode
+            LabeledFormElement("Naming Mode") {
+                Picker("", selection: $settings.store.IDNamingMode) {
+                    ForEach(MarkerIDMode.allCases) { item in
+                        Text(item.displayName)
+                            .tag(item)
                     }
-                    .labelsHidden()
-                    .frame(width: self.pickerWidth)
-                    .formControlLeadingAlignmentGuide()
                 }
-
-                // Markers source
-                HStack {
-                    Text("Markers Source:")
-
-                    Picker("", selection: $settings.store.markersSource) {
-                        ForEach(MarkersSource.allCases, id: \.self) { source in
-                            Text(source.description)
-                        }
-                    }
-                    .labelsHidden()
-                    .frame(width: self.pickerWidth)
-                    .formControlLeadingAlignmentGuide()
-                }
-
-                // Image format
-                HStack {
-                    Text("Image Format:")
-
-                    //Picker To Change Selected ID Naming Mode
-                    ImageModePicker()
-                        .labelsHidden()
-                        .frame(width: self.pickerWidth)
-                        .formControlLeadingAlignmentGuide()
-                }
+                .frame(width: self.pickerWidth)
             }
 
-            Group {
-                Divider()
+            // Markers source
+            LabeledFormElement("Markers Source") {
+                Picker("", selection: $settings.store.markersSource) {
+                    ForEach(MarkersSource.allCases, id: \.self) { source in
+                        Text(source.description)
+                    }
+                }
+                .frame(width: self.pickerWidth)
+            }
 
-                Text("Image Size")
-                    .font(.headline)
+            // Image format
+            LabeledFormElement("Image Format") {
+                ImageModePicker()
+                    .frame(width: self.pickerWidth)
+            }
+        }
+    }
 
-                Picker("", selection: $settings.store.overrideImageSize) {
-                    Text("Default")
-                        .tag(OverrideImageSizeOption.noOverride)
+    var imageSizeSettingsView: some View {
+        VStack(alignment: .formControlAlignment) {
+            Text("Image Size")
+                .font(.headline)
 
-                    // Image size percent
-                    HStack {
-                        Text("Size (%):")
+            Picker("", selection: $settings.store.overrideImageSize) {
+                Text("Default")
+                    .tag(OverrideImageSizeOption.noOverride)
 
+                // Image size percent
+                LabeledFormElement("Size (%)") {
+                    TextField(
+                        "",
+                        value: $settings.store.imageSizePercent,
+                        format: .number
+                    )
+                    .frame(width: 50)
+                    .onChange(of: settings.store.imageSizePercent) { newValue in
+                        settings.store.imageSizePercent = newValue.clamped(to: 1...100)
+                    }
+
+                    Text("%")
+                        .padding(.leading, -7)
+
+                    Stepper(
+                        "",
+                        value: $settings.store.imageSizePercent,
+                        in: 0...100
+                    )
+                }
+                .padding(.vertical, 6)
+                .tag(OverrideImageSizeOption.overrideImageSizePercent)
+                .disabled(settings.store.overrideImageSize != OverrideImageSizeOption.overrideImageSizePercent)
+
+                // Image width and height
+                VStack {
+                    LabeledFormElement("Width") {
                         TextField(
                             "",
-                            value: $settings.store.imageSizePercent,
+                            value: $settings.store.imageWidth,
                             format: .number
                         )
-                        .labelsHidden()
-                        .frame(width: 50)
-                        .formControlLeadingAlignmentGuide()
-                        .onChange(of: settings.store.imageSizePercent) { newValue in
-                            settings.store.imageSizePercent = newValue.clamped(to: 1...100)
-                        }
+                        .frame(width: 75)
+                    }
 
-                        Text("%")
-                            .padding(.leading, -7)
-
-                        Stepper(
+                    LabeledFormElement("Height:") {
+                        TextField(
                             "",
-                            value: $settings.store.imageSizePercent,
-                            in: 0...100
+                            value: $settings.store.imageHeight,
+                            format: .number
                         )
-                        .labelsHidden()
+                        .frame(width: 75)
                     }
-                    .padding(.vertical, 6)
-                    .tag(OverrideImageSizeOption.overrideImageSizePercent)
-                    .disabled(settings.store.overrideImageSize != OverrideImageSizeOption.overrideImageSizePercent)
-
-                    // Image width and height
-                    VStack {
-                        HStack {
-                            Text("Width:")
-
-                            TextField(
-                                "",
-                                value: $settings.store.imageWidth,
-                                format: .number
-                            )
-                            .labelsHidden()
-                            .frame(width: 75)
-                            .formControlLeadingAlignmentGuide()
-                        }
-
-                        HStack {
-                            Text("Height:")
-
-                            TextField(
-                                "",
-                                value: $settings.store.imageHeight,
-                                format: .number
-                            )
-                            .labelsHidden()
-                            .frame(width: 75)
-                            .formControlLeadingAlignmentGuide()
-                        }
-                    }
-                    .tag(OverrideImageSizeOption.overrideImageWidthAndHeight)
-                    .disabled(settings.store.overrideImageSize != .overrideImageWidthAndHeight)
                 }
-                .pickerStyle(.radioGroup)
-                .padding(.bottom)
+                .tag(OverrideImageSizeOption.overrideImageWidthAndHeight)
+                .disabled(settings.store.overrideImageSize != .overrideImageWidthAndHeight)
+            }
+            .pickerStyle(.radioGroup)
+            .padding(.bottom, 8)
+        }
+    }
+
+    var jpegSettingsView: some View {
+        VStack(alignment: .formControlAlignment) {
+            Text("JPG")
+                .font(.headline)
+
+            LabeledFormElement("Quality") {
+                TextField(
+                    "",
+                    value: $settings.store.JPEGImageQuality,
+                    format: .percent
+                )
+                .labelsHidden()
+                .frame(width: 50)
+
+                Stepper(
+                    "",
+                    value: $settings.store.JPEGImageQuality,
+                    in: 0...100
+                )
+                .labelsHidden()
+                .padding(.leading, -5.0)
+            }
+        }
+    }
+
+    var gifSettingsView: some View {
+        VStack(alignment: .formControlAlignment) {
+            Text("GIF")
+                .font(.headline)
+
+            LabeledFormElement("FPS") {
+                TextField(
+                    "",
+                    value: $settings.store.GIFFPS,
+                    format: .number.precision(.fractionLength(0))
+                )
+                .frame(width: 50)
+
+                Stepper(
+                    "",
+                    value: $settings.store.GIFFPS,
+                    in: 0...100
+                )
+                .padding(.leading, -5)
             }
 
-            Group {
+            LabeledFormElement("Span (Sec)") {
+                TextField(
+                    "",
+                    value: $settings.store.GIFLength,
+                    format: .number.precision(.fractionLength(0))
+                )
+                .frame(width: 50)
 
-                Divider()
-
-                Text("JPG")
-                    .font(.headline)
-
-                HStack {
-
-                    Text("Quality:")
-
-                    TextField(
-                        "",
-                        value: $settings.store.JPEGImageQuality,
-                        format: .percent
-                    )
-                    .labelsHidden()
-                    .frame(width: 50)
-                    .formControlLeadingAlignmentGuide()
-
-                    Stepper(
-                        "",
-                        value: $settings.store.JPEGImageQuality,
-                        in: 0...100
-                    )
-                    .labelsHidden()
-                    .padding(.leading, -5.0)
-
-                }
-
+                Stepper(
+                    "",
+                    value: $settings.store.GIFLength,
+                    in: 0...100
+                )
+                .padding(.leading, -5)
             }
-            .disabled(settings.store.imageMode != .JPG)
-
-            Group {
-
-                Divider()
-
-                Text("GIF")
-                    .font(.headline)
-
-                HStack {
-
-                    Text("FPS:")
-
-                    TextField(
-                        "",
-                        value: $settings.store.GIFFPS,
-                        format: .number.precision(.fractionLength(0))
-                    )
-                    .labelsHidden()
-                    .frame(width: 50)
-                    .formControlLeadingAlignmentGuide()
-
-                    Stepper(
-                        "",
-                        value: $settings.store.GIFFPS,
-                        in: 0...100
-                    )
-                    .labelsHidden()
-                    .padding(.leading, -5)
-
-                }
-
-                HStack {
-
-                    Text("Span (Sec):")
-
-                    TextField(
-                        "",
-                        value: $settings.store.GIFLength,
-                        format: .number.precision(.fractionLength(0))
-                    )
-                    .labelsHidden()
-                    .frame(width: 50)
-                    .formControlLeadingAlignmentGuide()
-
-                    Stepper(
-                        "",
-                        value: $settings.store.GIFLength,
-                        in: 0...100
-                    )
-                    .labelsHidden()
-                    .padding(.leading, -5)
-
-                }
-            }
-            .disabled(settings.store.imageMode != .GIF)
         }
     }
 }

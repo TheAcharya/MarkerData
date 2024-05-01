@@ -32,30 +32,19 @@ struct FileSettingsView: View {
             Text("Export Destination")
                 .font(.headline)
             
-            HStack {
-                Text("Export Folder:")
-                    .fixedSize(horizontal: true, vertical: false)
-                
+            LabeledFormElement("Export Folder") {
                 ExportDestinationPicker()
                     .frame(maxWidth: 250)
-                    .formControlLeadingAlignmentGuide()
             }
             
-            HStack {
-                
-                Text("Folder Format:")
-                // .border(.green)
-                
+            LabeledFormElement("Folder Format") {
                 Picker("", selection: $settings.store.folderFormat) {
                     ForEach(ExportFolderFormat.allCases) { item in
                         Text(item.displayName)
                             .tag(item)
                     }
                 }
-                .labelsHidden()
                 .frame(width: 250)
-                .formControlLeadingAlignmentGuide()
-                
             }
         }
     }
@@ -65,38 +54,24 @@ struct FileSettingsView: View {
             Text("Extraction Profile")
                 .font(.headline)
             
-            HStack {
-                Text("Profile:")
-                
+            LabeledFormElement("Profile") {
                 ExportProfilePicker()
-                    .labelsHidden()
                     .frame(width: 250)
-                    .formControlLeadingAlignmentGuide()
             }
             
-            HStack {
-                Text("Enable Subframes:")
-                
+            LabeledFormElement("Enable Subframes") {
                 Toggle("", isOn: $settings.store.enabledSubframes)
                     .toggleStyle(CheckboxToggleStyle())
-                    .formControlLeadingAlignmentGuide()
             }
 
-            HStack {
-                Text("Include Disabled Clips:")
-
+            LabeledFormElement("Include Disabled Clips") {
                 Toggle("", isOn: $settings.store.includeDisabledClips)
                     .toggleStyle(CheckboxToggleStyle())
-                    .formControlLeadingAlignmentGuide()
             }
 
-            HStack {
-                Text("Skip Image Generation:")
-                
+            LabeledFormElement("Skip Image Generation") {
                 Toggle("", isOn: $settings.store.enabledNoMedia)
                     .toggleStyle(CheckboxToggleStyle())
-                    .formControlLeadingAlignmentGuide()
-                
             }
         }
     }
