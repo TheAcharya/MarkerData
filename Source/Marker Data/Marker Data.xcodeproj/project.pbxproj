@@ -1660,8 +1660,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/DenDmitriev/DominantColors";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.9;
+				kind = exactVersion;
+				version = 1.0.9;
 			};
 		};
 		418D5DB42B910F4900589E17 /* XCRemoteSwiftPackageReference "Sparkle" */ = {
