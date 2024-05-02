@@ -12,6 +12,8 @@ struct ImageExtractionSettingsView: View {
     @EnvironmentObject var settings: SettingsContainer
     let pickerWidth: CGFloat = 170
 
+    @State var showNamingModeWarningPopover = false
+
     var body: some View {
         VStack(alignment: .formControlAlignment) {
             fileCreationSettingsView
@@ -50,6 +52,21 @@ struct ImageExtractionSettingsView: View {
                     }
                 }
                 .frame(width: self.pickerWidth)
+
+                if settings.store.IDNamingMode == .notes && settings.store.markersSource != .markers {
+                    Button {
+                        showNamingModeWarningPopover = true
+                    } label: {
+                        Image(systemName: "exclamationmark.triangle")
+                            .foregroundStyle(Color.yellow)
+                    }
+                    .buttonStyle(.plain)
+                    .popover(isPresented: $showNamingModeWarningPopover) {
+                        Text("Incompatible Settings Detected. The 'Naming Mode' is set to 'Notes', which conflicts with 'Marker Source' set to 'Marker and Captions' or Captions. Please adjust your settings to resolve this conflict.")
+                            .frame(maxWidth: 400, minHeight: 65)
+                            .padding(8)
+                    }
+                }
             }
 
             // Markers source
