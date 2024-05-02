@@ -40,7 +40,8 @@ struct ColorPaletteRenderer {
         let colorMood = ColorMood(
             formula: swatchSettings.algorithm,
             excludeBlack: swatchSettings.excludeBlack,
-            excludeWhite: swatchSettings.excludeWhite
+            excludeWhite: swatchSettings.excludeWhite,
+            excludeGray: swatchSettings.excludeGray
         )
 
         let imageStrips: [ImageStrip] = imageFileURLs.map { url in

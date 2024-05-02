@@ -64,6 +64,13 @@ struct SettingsVersioningManager {
             dict["colorSwatchSettings"] = colorSwatchDict
         case 2:
             dict["includeDisabledClips"] = false
+        case 3:
+            // Add exclude gray option to color swatch settings
+            guard var colorSwatchDict: [String: Any] = dict["colorSwatchSettings"] as? [String: Any] else {
+                return
+            }
+            colorSwatchDict["excludeGray"] = false
+            dict["colorSwatchSettings"] = colorSwatchDict
         default:
             throw VersioningError.invalidVersion
         }

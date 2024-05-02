@@ -11,24 +11,31 @@ import DominantColors
 struct ColorMood {
     var formula: DeltaEFormula
     var method: ColorExtractMethod
+    var quality: DominantColorQuality
     var isExcludeWhite: Bool
     var isExcludeBlack: Bool
+    var isExcludeGray: Bool
 
-    var flags: [DominantColors.Flag] {
-        var flags = [DominantColors.Flag]()
+    var options: [DominantColors.Options] {
+        var options = [DominantColors.Options]()
         if isExcludeBlack {
-            flags.append(.excludeBlack)
+            options.append(.excludeBlack)
         }
         if isExcludeWhite {
-            flags.append(.excludeWhite)
+            options.append(.excludeWhite)
         }
-        return flags
+        if isExcludeGray {
+            options.append(.excludeGray)
+        }
+        return options
     }
 
-    init(formula: DeltaEFormula, excludeBlack: Bool, excludeWhite: Bool) {
+    init(formula: DeltaEFormula, excludeBlack: Bool, excludeWhite: Bool, excludeGray: Bool) {
         self.method = .dominationColor
         self.formula = formula
         self.isExcludeBlack = excludeBlack
         self.isExcludeWhite = excludeWhite
+        self.isExcludeGray = excludeGray
+        self.quality = .best
     }
 }

@@ -13,13 +13,15 @@ struct ColorSwatchSettingsModel: Codable, Hashable, Equatable {
     var algorithm: DeltaEFormula
     var excludeBlack: Bool
     var excludeWhite: Bool
+    var excludeGray: Bool
 
     static func defaults() -> ColorSwatchSettingsModel {
         ColorSwatchSettingsModel(
             enableSwatch: false,
             algorithm: .CIE76,
             excludeBlack: false,
-            excludeWhite: false
+            excludeWhite: false, 
+            excludeGray: false
         )
     }
 }

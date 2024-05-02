@@ -81,8 +81,9 @@ struct ImageMergeOperation {
                 from: cgImage,
                 method: method, 
                 count: colorsCount,
-                formula: formula,
-                flags: colorMood.flags
+                formula: formula, 
+                quality: .best,
+                options: colorMood.options
             )
 
             let colors = cgColors.map({ Color(cgColor: $0) })
