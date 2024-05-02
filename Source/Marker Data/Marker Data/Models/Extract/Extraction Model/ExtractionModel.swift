@@ -77,9 +77,7 @@ final class ExtractionModel: ObservableObject {
         @Sendable 
         func extractAndUpdateProgress(for url: URL) async throws -> ExportResult? {
             // Get extraction settings
-            guard let settings = try? await self.settings.store.markersExtractorSettings(fcpxmlFileUrl: url) else {
-                throw ExtractError.settingsReadError
-            }
+            let settings = try await self.settings.store.markersExtractorSettings(fcpxmlFileUrl: url)
             
             let markersExtractorLogger = Logger(label: Bundle.main.bundleIdentifier!, factory: LoggingOSLog.init)
             

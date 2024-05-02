@@ -180,6 +180,13 @@ struct SettingsStore: Codable, Hashable, Equatable, Identifiable {
         // Stroke size
         let strokeSize: Int? = self.isStrokeSizeAuto ? nil : self.strokeSize
 
+        // Naming mode
+        // If naming modes is set to notes and marker source is set to
+        // "Marker and Captions" or "Captions" default to project timecode naming mode
+        if self.IDNamingMode == .notes && self.markersSource != .markers {
+            throw ExtractError.conflictingNamingAndSource
+        }
+
         let settings = try MarkersExtractor.Settings(
             fcpxml: .init(at: fcpxmlFileUrl),
             outputDir: outputDirURL,

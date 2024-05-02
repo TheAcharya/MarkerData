@@ -98,6 +98,7 @@
 		4188C3002BDE919100DA1806 /* RolesManager+DropDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4188C2FF2BDE919100DA1806 /* RolesManager+DropDelegate.swift */; };
 		4188C3012BDE92BE00DA1806 /* RolesManager+DropDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4188C2FF2BDE919100DA1806 /* RolesManager+DropDelegate.swift */; };
 		4188C3032BE2A4B200DA1806 /* LabeledFormElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4188C3022BE2A4B200DA1806 /* LabeledFormElement.swift */; };
+		4188C3062BE35A7F00DA1806 /* ExtractError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 415619662B3A18D60032E82C /* ExtractError.swift */; };
 		418D5DB62B910F4900589E17 /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = 418D5DB52B910F4900589E17 /* Sparkle */; };
 		418D5DB92B91163500589E17 /* CheckForUpdatesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418D5DB82B91163500589E17 /* CheckForUpdatesView.swift */; };
 		418D5DBB2B9117BB00589E17 /* UpdateSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418D5DBA2B9117BB00589E17 /* UpdateSettingsView.swift */; };
@@ -1093,6 +1094,7 @@
 				41A055732B8B770B006AC0E4 /* MarkersExtractorModelExtensions.swift in Sources */,
 				4155B6DE2B602694008D3505 /* WorkflowExtensionViewController.swift in Sources */,
 				4155B7032B612592008D3505 /* WorkflowExtensionView.swift in Sources */,
+				4188C3062BE35A7F00DA1806 /* ExtractError.swift in Sources */,
 				41A055712B8B7691006AC0E4 /* UnifiedExportProfile.swift in Sources */,
 				4188C3012BDE92BE00DA1806 /* RolesManager+DropDelegate.swift in Sources */,
 				41A0556F2B8B767B006AC0E4 /* SettingsModels.swift in Sources */,

@@ -13,6 +13,7 @@ enum ExtractError: Error {
     case settingsReadError
     case unifiedExportProfileReadError
     case userCancel
+    case conflictingNamingAndSource
 }
 
 extension ExtractError: LocalizedError {
@@ -28,6 +29,8 @@ extension ExtractError: LocalizedError {
             "User initiated cancel"
         case .exportResultisNil:
             "Failed to get export result"
+        case .conflictingNamingAndSource:
+            "Incompatible Settings Detected. The 'Naming Mode' is set to 'Notes', which conflicts with 'Marker Source' set to 'Marker and Captions' or Captions. Please adjust your settings to resolve this conflict."
         }
     }
 }
