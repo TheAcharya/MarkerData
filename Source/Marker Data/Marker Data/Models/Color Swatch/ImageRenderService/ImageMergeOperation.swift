@@ -47,7 +47,9 @@ struct ImageMergeOperation {
             let stripCGImage = try await createStripImage(
                 size: CGSize(width: CGFloat(cgImage.width), height: stripHeight),
                 colors: colors,
-                colorMood: colorMood
+                colorMood: colorMood,
+                border: 5,
+                borderColor: .white
             )
 
             // Соединение изображения с цветовым штрих-кодом
@@ -60,7 +62,7 @@ struct ImageMergeOperation {
     }
 
     // Создание штрих-кода с цветами из прямоугольников
-    private func createStripImage(size: CGSize, colors: [Color], colorMood: ColorMood) async throws -> CGImage {
+    private func createStripImage(size: CGSize, colors: [Color], colorMood: ColorMood, border: Int? = nil, borderColor: CGColor? = nil) async throws -> CGImage {
         let width = Int(size.width)
         let height = Int(size.height)
 
@@ -90,7 +92,7 @@ struct ImageMergeOperation {
             mutableColors = colors
         }
 
-        guard let context = Self.createContextRectangle(colors: mutableColors, width: width, height: height),
+        guard let context = Self.createContextRectangle(colors: mutableColors, width: width, height: height, border: border, borderColor: borderColor),
               let cgImage = context.makeImage()
         else { throw ImageRenderServiceError.stripRender }
 
@@ -98,44 +100,73 @@ struct ImageMergeOperation {
     }
 
     // Создание контекста и рисование цветов в нем по прямоугольникам
-    static func createContextRectangle(colors: [Color], width: Int, height: Int) -> CGContext? {
-        let countSegments = colors.count != 0 ? colors.count : 8
-        let widthSegment = width / countSegments
-        let remainder = width % countSegments
-
-        let colorsAsUInt = colors.map { color -> UInt32 in
-            let nsColor = NSColor(color)
-            let red   = UInt32(nsColor.redComponent * 255)
-            let green = UInt32(nsColor.greenComponent * 255)
-            let blue  = UInt32(nsColor.blueComponent * 255)
-            let alpha = UInt32(nsColor.alphaComponent * 255)
-            let colorAsUInt = (red << 24) | (green << 16) | (blue << 8) | (alpha << 0)
-            return colorAsUInt
+    static func createContextRectangle(colors: [Color], width: Int, height: Int, border: Int? = nil, borderColor: CGColor? = nil) -> CGContext? {
+        var widthBorder = border ?? .zero
+        // Check size border
+        if widthBorder > width / 10, !(0...99 ~= widthBorder), widthBorder > width / 3 {
+            widthBorder = .zero
         }
+        let countSegments = colors.count
+        let widthTotalBorder = widthBorder * (countSegments - 1) + 2 * widthBorder
+        let widthColors = width - widthTotalBorder
+        let widthSegment = widthColors / countSegments
+        let remainder = widthColors % colors.count
 
-        // Линия пикселей 1D
+        let borderColor = borderColor ?? CGColor(srgbRed: 1, green: 1, blue: 1, alpha: 1.0) // white
+        let borderColorAsUInt = Self.cgColorToUInt32(borderColor)
+
+        let colorsAsUInt = colors.map { cgColorToUInt32($0.cgColor ?? CGColor(srgbRed: 0, green: 0, blue: 0, alpha: 1))}
+
+        // Pixel line 1D
         var pixelsOnLine: [UInt32] = []
+        pixelsOnLine.reserveCapacity(width)
 
         guard
             width >= countSegments
         else { return nil }
 
+        let createBorder = widthBorder > .zero
         colorsAsUInt.forEach { colorAsUInt in
+            if createBorder {
+                for _ in Array(1...widthBorder) {
+                    pixelsOnLine.append(borderColorAsUInt)
+                }
+            }
             for _ in Array(1...widthSegment) {
                 pixelsOnLine.append(colorAsUInt)
             }
         }
+        // Add colors if has remainder pixels 1D
         if remainder != 0,
            let lastColor = colorsAsUInt.last {
             Array(1...remainder).forEach { _ in
                 pixelsOnLine.append(lastColor)
             }
         }
+        // Close line 1D with border
+        if createBorder {
+            for _ in Array(1...widthBorder) {
+                pixelsOnLine.append(borderColorAsUInt)
+            }
+        }
 
-        // Прямоугольник пикселей 2D
+        // Rectangle pixels 2D
         var pixels: [UInt32] = []
-        for _ in Array(1...height) {
+        pixels.reserveCapacity(width * height)
+        // Add top border
+        if createBorder {
+            let borderLine: [UInt32] = Array(repeating: borderColorAsUInt, count: width * Int(widthBorder))
+            pixels.append(contentsOf: borderLine)
+        }
+        // Add colors rectangles with separator
+        let heightColors = createBorder ? (height - (widthBorder * 2)) : height
+        for _ in Array(1...heightColors) {
             pixels += pixelsOnLine
+        }
+        // Add bottom border
+        if createBorder {
+            let borderLine: [UInt32] = Array(repeating: borderColorAsUInt, count: width * Int(widthBorder))
+            pixels.append(contentsOf: borderLine)
         }
 
         let mutableBufferPointer =  pixels.withUnsafeMutableBufferPointer { pixelsPtr in
@@ -157,6 +188,15 @@ struct ImageMergeOperation {
         )
 
         return context
+    }
+
+    private static func cgColorToUInt32(_ cgColor: CGColor) -> UInt32 {
+        let red255   = UInt32(cgColor.red * 255)
+        let green255 = UInt32(cgColor.green * 255)
+        let blue255  = UInt32(cgColor.blue * 255)
+        let alpha255 = UInt32(cgColor.alpha * 255)
+        let colorAsUInt: UInt32 = (red255 << 24) | (green255 << 16) | (blue255 << 8) | (alpha255 << 0)
+        return colorAsUInt
     }
 
     // Создание контекста и рисование цветов в нем по градиенту
