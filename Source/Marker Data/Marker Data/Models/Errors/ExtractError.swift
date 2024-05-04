@@ -30,7 +30,7 @@ extension ExtractError: LocalizedError {
         case .exportResultisNil:
             "Failed to get export result"
         case .conflictingNamingAndSource:
-            "**Incompatible Settings Detected** - The **Naming Mode* is set to *Notes*, which conflicts with *Marker Source* when set to **Marker and Captions** or **Captions**. Please adjust your settings to resolve this conflict."
+            "Incompatible Settings Detected - The Naming Mode is set to Notes, which conflicts with Marker Source when set to Marker and Captions or Captions. Please adjust your settings to resolve this conflict."
         }
     }
 }
