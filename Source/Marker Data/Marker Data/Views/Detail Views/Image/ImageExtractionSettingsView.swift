@@ -62,7 +62,7 @@ struct ImageExtractionSettingsView: View {
                     }
                     .buttonStyle(.plain)
                     .popover(isPresented: $showNamingModeWarningPopover) {
-                        Text("Incompatible Settings Detected. The 'Naming Mode' is set to 'Notes', which conflicts with 'Marker Source' set to 'Marker and Captions' or Captions. Please adjust your settings to resolve this conflict.")
+                        Text("Incompatible Settings Detected - The Naming Mode is set to Notes, which conflicts with Marker Source when set to Marker and Captions or Captions. Please adjust your settings to resolve this conflict.")
                             .frame(maxWidth: 400, minHeight: 65)
                             .padding(8)
                     }
