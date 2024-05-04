@@ -122,7 +122,15 @@ final class ExtractionModel: ObservableObject {
 
             if swatchSettings.enableSwatch {
                 Self.logger.notice("Color palette enabled. Calculating dominant colors.")
+
+                // Update progress message and icon
+                await MainActor.run {
+                    self.extractionProgress.message = "Analysing Swatch..."
+                    self.extractionProgress.icon = "swatchpalette"
+                }
+
                 await ColorPaletteRenderer.render(exportResult: exportResult, swatchSettings: swatchSettings)
+
                 Self.logger.notice("Color palette render done.")
             }
 
