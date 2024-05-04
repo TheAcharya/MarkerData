@@ -71,6 +71,13 @@ struct SettingsVersioningManager {
             }
             colorSwatchDict["excludeGray"] = false
             dict["colorSwatchSettings"] = colorSwatchDict
+        case 4:
+            // Add accuracy to color swatch settings
+            guard var colorSwatchDict: [String: Any] = dict["colorSwatchSettings"] as? [String: Any] else {
+                return
+            }
+            colorSwatchDict["accuracy"] = ColorSwatchSettingsModel.defaults().accuracy.rawValue
+            dict["colorSwatchSettings"] = colorSwatchDict
         default:
             throw VersioningError.invalidVersion
         }

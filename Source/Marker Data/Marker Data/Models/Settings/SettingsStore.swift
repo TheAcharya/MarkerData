@@ -11,7 +11,7 @@ import MarkersExtractor
 
 struct SettingsStore: Codable, Hashable, Equatable, Identifiable {
     /// Used for versioning
-    static var version: Int = 4
+    static var version: Int = 5
     var version: Int = Self.version
 
     var name: String
