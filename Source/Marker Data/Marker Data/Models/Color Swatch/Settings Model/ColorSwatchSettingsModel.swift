@@ -11,6 +11,7 @@ import DominantColors
 struct ColorSwatchSettingsModel: Codable, Hashable, Equatable {
     var enableSwatch: Bool
     var algorithm: DeltaEFormula
+    var accuracy: DominantColorQuality
     var excludeBlack: Bool
     var excludeWhite: Bool
     var excludeGray: Bool
@@ -18,7 +19,8 @@ struct ColorSwatchSettingsModel: Codable, Hashable, Equatable {
     static func defaults() -> ColorSwatchSettingsModel {
         ColorSwatchSettingsModel(
             enableSwatch: false,
-            algorithm: .CIE76,
+            algorithm: .CIE76, 
+            accuracy: .high,
             excludeBlack: false,
             excludeWhite: false, 
             excludeGray: false

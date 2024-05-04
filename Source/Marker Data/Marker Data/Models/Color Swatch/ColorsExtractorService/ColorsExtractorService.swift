@@ -30,7 +30,14 @@ struct ColorsExtractorService {
                     }
                 case .dominationColor:
                     do {
-                        let colors = try DominantColors.dominantColors(image: cgImage, quality: quality, algorithm: formula, maxCount: count, options: options)
+                        let colors = try DominantColors.dominantColors(
+                            image: cgImage,
+                            quality: quality,
+                            algorithm: formula,
+                            maxCount: count,
+                            options: options,
+                            sorting: .darkness
+                        )
                         continuation.resume(returning: colors)
                     } catch let error {
                         continuation.resume(throwing: error)

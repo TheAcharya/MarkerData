@@ -41,7 +41,8 @@ struct ColorPaletteRenderer {
             formula: swatchSettings.algorithm,
             excludeBlack: swatchSettings.excludeBlack,
             excludeWhite: swatchSettings.excludeWhite,
-            excludeGray: swatchSettings.excludeGray
+            excludeGray: swatchSettings.excludeGray,
+            quality: swatchSettings.accuracy
         )
 
         let imageStrips: [ImageStrip] = imageFileURLs.map { url in
