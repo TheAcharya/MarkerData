@@ -30,12 +30,12 @@ struct ColorMood {
         return options
     }
 
-    init(formula: DeltaEFormula, excludeBlack: Bool, excludeWhite: Bool, excludeGray: Bool) {
+    init(formula: DeltaEFormula, excludeBlack: Bool, excludeWhite: Bool, excludeGray: Bool, quality: DominantColorQuality) {
         self.method = .dominationColor
         self.formula = formula
         self.isExcludeBlack = excludeBlack
         self.isExcludeWhite = excludeWhite
         self.isExcludeGray = excludeGray
-        self.quality = .best
+        self.quality = quality
     }
 }

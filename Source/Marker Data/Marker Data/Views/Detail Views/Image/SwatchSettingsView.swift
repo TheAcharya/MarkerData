@@ -44,6 +44,17 @@ struct SwatchSettingsView: View {
                 .frame(width: self.pickerWidth)
             }
 
+            // Accuracy
+            LabeledFormElement("Accuracy") {
+                Picker("", selection: $settings.store.colorSwatchSettings.accuracy) {
+                    ForEach(DominantColorQuality.allCases, id: \.self) { accuracy in
+                        Text(accuracy.rawValue.titleCased)
+                    }
+                }
+                .frame(width: self.pickerWidth)
+            }
+
+
             // Exclude black
             LabeledFormElement("Exclude Black") {
                 Toggle("", isOn: $settings.store.colorSwatchSettings.excludeBlack)

@@ -84,7 +84,7 @@ struct ImageMergeOperation {
                 method: method, 
                 count: colorsCount,
                 formula: formula, 
-                quality: .best,
+                quality: colorMood.quality,
                 options: colorMood.options
             )
 
