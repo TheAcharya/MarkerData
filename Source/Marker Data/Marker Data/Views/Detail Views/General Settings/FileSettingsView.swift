@@ -69,6 +69,11 @@ struct FileSettingsView: View {
                     .toggleStyle(CheckboxToggleStyle())
             }
 
+            LabeledFormElement("Use Chapter Marker Pin Image") {
+                Toggle("", isOn: $settings.store.useChapterMarkerThumbnails)
+                    .toggleStyle(CheckboxToggleStyle())
+            }
+
             LabeledFormElement("Skip Image Generation") {
                 Toggle("", isOn: $settings.store.enabledNoMedia)
                     .toggleStyle(CheckboxToggleStyle())

@@ -78,6 +78,9 @@ struct SettingsVersioningManager {
             }
             colorSwatchDict["accuracy"] = ColorSwatchSettingsModel.defaults().accuracy.rawValue
             dict["colorSwatchSettings"] = colorSwatchDict
+        case 5:
+            // Add useChapterMarkerThumbnails MarkersExtractor parameter
+            dict["useChapterMarkerThumbnails"] = SettingsStore.defaults().useChapterMarkerThumbnails
         default:
             throw VersioningError.invalidVersion
         }

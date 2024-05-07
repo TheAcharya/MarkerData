@@ -11,7 +11,7 @@ import MarkersExtractor
 
 struct SettingsStore: Codable, Hashable, Equatable, Identifiable {
     /// Used for versioning
-    static var version: Int = 5
+    static var version: Int = 6
     var version: Int = Self.version
 
     var name: String
@@ -39,6 +39,7 @@ struct SettingsStore: Codable, Hashable, Equatable, Identifiable {
 
     var IDNamingMode: MarkerIDMode
     var markersSource: MarkersSource
+    var useChapterMarkerThumbnails: Bool
 
     // MARK: Overall image size settings
 
@@ -119,6 +120,7 @@ struct SettingsStore: Codable, Hashable, Equatable, Identifiable {
             enabledNoMedia: false,
             IDNamingMode: .projectTimecode,
             markersSource: .markers,
+            useChapterMarkerThumbnails: false,
             overrideImageSize: .noOverride,
             imageSizePercent: 100,
             imageWidth: 1920,
@@ -193,6 +195,7 @@ struct SettingsStore: Codable, Hashable, Equatable, Identifiable {
             exportFormat: self.unifiedExportProfile.extractProfile,
             enableSubframes: self.enabledSubframes,
             markersSource: self.markersSource,
+            useChapterMarkerThumbnails: self.useChapterMarkerThumbnails,
             excludeRoles: excludeRoleNames,
             includeDisabled: self.includeDisabledClips, 
             imageFormat: self.imageMode.markersExtractor,
