@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import MarkersExtractor
 
 struct NotionFormView: View {
     @ObservedObject var profileModel: NotionDBModel
@@ -54,7 +55,7 @@ struct NotionFormView: View {
             }
             
             ZStack {
-                List(NotionMergeOnlyColumn.allCases) { mergeColumn in
+                List(ExportField.allCases) { mergeColumn in
                     HStack {
                         Toggle("", isOn: Binding<Bool>(
                             get: {
@@ -71,7 +72,7 @@ struct NotionFormView: View {
                             }
                         ))
                         
-                        Text(mergeColumn.rawValue)
+                        Text(mergeColumn.name)
                     }
                 }
                 .clipShape(RoundedRectangle(cornerRadius: 8))

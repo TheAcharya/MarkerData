@@ -6,14 +6,15 @@
 //
 
 import Foundation
+import MarkersExtractor
 
 final class NotionDBModel: DatabaseProfileModel {
     @Published var workspaceName: String
     @Published var token: String
     @Published var databaseURL: String
     @Published var renameKeyColumn: String
-    @Published var mergeOnlyColumns: [NotionMergeOnlyColumn]
-    
+    @Published var mergeOnlyColumns: [ExportField]
+
     init() {
         self.workspaceName = ""
         self.token = ""
@@ -41,7 +42,7 @@ final class NotionDBModel: DatabaseProfileModel {
         self.token = try container.decode(String.self, forKey: .token)
         self.databaseURL = try container.decode(String.self, forKey: .databaseURL)
         self.renameKeyColumn = try container.decode(String.self, forKey: .renameKeyColumn)
-        self.mergeOnlyColumns = try container.decode([NotionMergeOnlyColumn].self, forKey: .mergeOnly)
+        self.mergeOnlyColumns = try container.decode([ExportField].self, forKey: .mergeOnly)
         
         // Parent's properties
         let name = try container.decode(String.self, forKey: .name)
@@ -76,29 +77,5 @@ final class NotionDBModel: DatabaseProfileModel {
     
     override func copy() -> NotionDBModel? {
         return deepCopy(of: self)
-    }
-}
-
-enum NotionMergeOnlyColumn: String, Codable, CaseIterable, Identifiable, Equatable {
-    case markerID = "Marker ID"
-    case markerName = "Marker Name"
-    case markerType = "Marker Type"
-    case checked = "Checked"
-    case status = "Status"
-    case notes = "Notes"
-    case markerPosition = "Marker Position"
-    case clipType = "Clip Type"
-    case clipName = "Clip Name"
-    case clipDuration = "Clip Duration"
-    case videoRoleAndSubrole = "Video Role & Subrole"
-    case audioRoleAndSubrole = "Audio Role & Subrole"
-    case eventName = "Event Name"
-    case projectName = "Project Name"
-    case libraryName = "Library Name"
-    case iconImage = "Icon Image"
-    case imageFilename = "Image Filename"
-    
-    var id: String {
-        self.rawValue
     }
 }
