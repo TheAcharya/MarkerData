@@ -89,7 +89,7 @@ class DatabaseUploader: ObservableObject {
         
         // Add merge only columns
         for column in notionProfile.mergeOnlyColumns {
-            argumentList.append(ShellParameter(for: "--merge-only-column", value: column.rawValue))
+            argumentList.append(ShellParameter(for: "--merge-only-column", value: column.name))
         }
         
         let shellOutputStream = ShellOutputStream()
@@ -107,7 +107,7 @@ class DatabaseUploader: ObservableObject {
                 }
             }
         })
-        
+
         let result = await shellOutputStream.run(argumentList.getCommand())
         
         cancellable.cancel()
