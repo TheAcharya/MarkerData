@@ -65,7 +65,7 @@ class DatabaseUploader: ObservableObject {
         var argumentList = ShellArgumentList(executablePath: csv2notionURL, parameters: [
             ShellParameter(for: "--workspace", value: notionProfile.workspaceName),
             ShellParameter(for: "--token", value: notionProfile.token),
-            ShellParameter(for: "--image-column", value: "Image Filename" "Palette Filename"),
+            ShellRawArgument(#"--image-column "Image Filename" "Palette Filename""#),
             ShellFlag("--image-column-keep"),
             ShellParameter(for: "--mandatory-column", value: "Marker ID"),
             ShellParameter(for: "--payload-key-column", value: "Marker ID"),
