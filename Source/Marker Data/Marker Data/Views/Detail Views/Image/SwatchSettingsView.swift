@@ -62,7 +62,7 @@ struct SwatchSettingsView: View {
             }
 
             // Exclude gray
-            LabeledFormElement("Exclude Gray") {
+            LabeledFormElement("Exclude Grey") {
                 Toggle("", isOn: $settings.store.colorSwatchSettings.excludeGray)
                     .toggleStyle(CheckboxToggleStyle())
             }
