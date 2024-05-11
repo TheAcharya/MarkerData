@@ -81,6 +81,12 @@ Marker Data allows users to extract, convert & create databases from <a href="ht
 </p>
 </details>
 
+<details><summary>Creating Shot Library</summary>
+<p>
+<p align="center"> <img src="https://github.com/TheAcharya/MarkerData-Website/blob/main/docs/assets/md-creating-shot-library-03.gif?raw=true"> </p>
+</p>
+</details>
+
 <details><summary>Utilising Workflow Extension</summary>
 <p>
 <p align="center"> <img src="https://github.com/TheAcharya/MarkerData-Website/blob/main/docs/assets/md-workflow-extension-roles.gif?raw=true"> </p>
@@ -127,6 +133,7 @@ macOS Ventura 13.6.2 or later <br> Final Cut Pro 10.6.9 <br> Runs natively on bo
 
 ## Use Cases
 - Marker Notes Database
+- Shot Library Database
 - VFX Database
 - ADR Database
 - Stock footage Database
