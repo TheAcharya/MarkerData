@@ -19,7 +19,7 @@ class ConfigurationsViewModel: ObservableObject {
             do {
                 try await settings?.saveCurrentAs(name: name)
             } catch {
-                showAlert("Couldn't create configuration", message: error.localizedDescription)
+                await showAlert("Couldn't create configuration", message: error.localizedDescription)
             }
         }
     }
@@ -29,11 +29,12 @@ class ConfigurationsViewModel: ObservableObject {
             do {
                 try await settings?.removeConfiguration(name: name)
             } catch {
-                showAlert("Failed to remove configuration", message: error.localizedDescription)
+                await showAlert("Failed to remove configuration", message: error.localizedDescription)
             }
         }
     }
 
+    @MainActor 
     public func makeActive(_ store: SettingsStore?, ignoreChanges: Bool = false) {
         guard let storeUnwrapped = store else {
             showAlert("Failed to load configuration")
@@ -57,7 +58,7 @@ class ConfigurationsViewModel: ObservableObject {
                 try await settings?.store.saveAsConfiguration()
                 await settings?.checkForUnsavedChanges()
             } catch {
-                showAlert("Failed to update active configuration", message: error.localizedDescription)
+                await showAlert("Failed to update active configuration", message: error.localizedDescription)
             }
         }
     }
@@ -71,22 +72,22 @@ class ConfigurationsViewModel: ObservableObject {
         }
     }
 
-    public func rename(store: SettingsStore?, to name: String) {
-        guard let storeUnwrapped = store else {
-            showAlert("Failed to rename")
+    public func rename(store: SettingsStore?, to newName: String) async {
+        guard let jsonURL = store?.jsonURL,
+              let loadedStore = try? await settings?.loadStoreFromDisk(at: jsonURL) else {
+            await showAlert("Failed to rename")
             return
         }
 
-        Task {
-            do {
-                try await settings?.duplicateStore(store: storeUnwrapped, as: name, setAsCurrent: true)
-                try await settings?.removeConfiguration(name: storeUnwrapped.name)
-            } catch {
-                showAlert("Failed to rename", message: error.localizedDescription)
-            }
+        do {
+            try await settings?.duplicateStore(store: loadedStore, as: newName, setAsCurrent: true)
+            try await settings?.removeConfiguration(name: loadedStore.name)
+        } catch {
+            await showAlert("Failed to rename", message: error.localizedDescription)
         }
     }
 
+    @MainActor
     private func showAlert(_ title: String, message: String = "") {
         self.showAlert = true
         self.alertTitle = title

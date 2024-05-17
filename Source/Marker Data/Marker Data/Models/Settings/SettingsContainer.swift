@@ -100,7 +100,7 @@ class SettingsContainer: ObservableObject {
 
     /// Duplicates a store
     public func duplicateStore(store: SettingsStore, as name: String, setAsCurrent: Bool = false) async throws {
-        if name == SettingsStore.defaultName {
+        if name == SettingsStore.defaultName || name.isEmpty {
             throw ConfigurationSaveError.illegalName
         }
 
@@ -173,7 +173,7 @@ class SettingsContainer: ObservableObject {
     }
 
     /// Loads a settings store from disk
-    private func loadStoreFromDisk(at url: URL) throws -> SettingsStore {
+    public func loadStoreFromDisk(at url: URL) throws -> SettingsStore {
         let decoder = JSONDecoder()
 
         let data = try Data(contentsOf: url)

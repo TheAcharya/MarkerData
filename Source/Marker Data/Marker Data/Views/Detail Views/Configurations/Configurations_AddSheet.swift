@@ -11,14 +11,15 @@ extension ConfigurationSettingsView {
     func addOrRenameConfigurationModal(rename: Bool = false) -> some View {
         func doAction() {
             if rename {
-                confModel.rename(store: selectedStore, to: configurationNameText)
+                Task {
+                    await confModel.rename(store: selectedStore, to: configurationNameText)
+                    configurationNameText.removeAll()
+                }
                 showRenameConfigurationSheet = false
             } else {
                 confModel.add(saveAs: configurationNameText)
                 showAddConfigurationSheet = false
             }
-
-            configurationNameText.removeAll()
         }
 
         return VStack(alignment: .leading) {
