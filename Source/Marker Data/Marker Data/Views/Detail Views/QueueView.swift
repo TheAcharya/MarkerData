@@ -91,7 +91,7 @@ struct QueueView: View {
                 Label("Start Upload", systemImage: "square.and.arrow.up")
             }
             .buttonStyle(.borderedProminent)
-            .disabled(queueModel.uploadInProgress)
+            .disabled(queueModel.uploadInProgress || queueModel.queueInstances.isEmpty)
 
 
             Button {
