@@ -186,7 +186,7 @@ final class ExtractionModel: ObservableObject {
         } catch {
             self.extractionProgress.markasFailed(
                 progressMessage: "Empty or invalid export destination",
-                alertMessage: "Empty or invalid export destination. Please select one."
+                alertMessage: "Export Folder is not selected. Please select an Export Folder and try again."
             )
             
             return
