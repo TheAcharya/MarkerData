@@ -18,6 +18,9 @@ struct ContentView: View {
     @Binding var sidebarSelection: MainViews
     let updater: SPUUpdater
 
+    /// Used in the toolbar configuration picker
+    @State var selectedConfiguration: SettingsStore?
+
     //Main View Controller
     var body: some View {
         NavigationSplitView {
@@ -81,6 +84,32 @@ struct ContentView: View {
                 }
             }
             .frame(width: WindowSize.detailWidth)
+        }
+        // Configuration picker
+        .toolbar {
+            Picker("Configuration", selection: $selectedConfiguration) {
+                if selectedConfiguration.isNone {
+                    Text("No Selection")
+                        .tag(nil as SettingsStore?)
+                }
+
+                ForEach(settings.configurations) { store in
+                    Text(store.name)
+                        .tag(store as SettingsStore?)
+                }
+            }
+            .onAppear {
+                selectedConfiguration = settings.store
+            }
+            .onChange(of: selectedConfiguration) { newStore in
+                do {
+                    if let store = newStore {
+                        try settings.load(store)
+                    }
+                } catch {
+                    print("Failed to load config from menu bar")
+                }
+            }
         }
     }
 }
