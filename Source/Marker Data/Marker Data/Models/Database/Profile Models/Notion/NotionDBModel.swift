@@ -25,11 +25,18 @@ final class NotionDBModel: DatabaseProfileModel {
         super.init(name: "", plaform: .notion)
     }
     
-    override func validate() -> Bool {
-        if self.name.isEmpty || self.workspaceName.isEmpty || self.token.isEmpty {
-            return false
-        } else {
-            return true
+    override func validate() throws {
+        if self.name.isEmpty {
+            throw NotionValidationError.emptyName
+        }
+        if self.workspaceName.isEmpty {
+            throw NotionValidationError.emptyWorkspaceName
+        }
+        if self.token.isEmpty {
+            throw NotionValidationError.noToken
+        }
+        if self.renameKeyColumn == "Marker ID" {
+            throw NotionValidationError.illegalRenameKeyColumn
         }
     }
     

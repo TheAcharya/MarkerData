@@ -9,14 +9,14 @@ import SwiftUI
 
 struct CreateDBProfileSheet: View {
     @EnvironmentObject var databaseManager: DatabaseManager
-    
+    @Environment(\.openURL) var openURL
+
     @Binding var editProfile: DatabaseProfileModel?
     @Binding var showSelf: Bool
-    @Binding var showAlert: Bool
-    @Binding var alertMessage: String
-    
-    @Environment(\.openURL) var openURL
-    
+
+    @State var showAlert: Bool = false
+    @State var alertMessage: String = ""
+
     @State var selectedProfileName: String = ""
     @State var selectedPlatform: DatabasePlatform = .notion
     
@@ -91,6 +91,9 @@ struct CreateDBProfileSheet: View {
                 }
                 .disabled(selectedProfileName.isEmpty)
             }
+            .alert("Validation Error", isPresented: $showAlert) {} message: {
+                Text(alertMessage)
+            }
         }
     }
     
@@ -133,6 +136,14 @@ struct CreateDBProfileSheet: View {
                 } else {
                     // Set profile name
                     selectedProfile.name = selectedProfileName
+
+                    // Validate profile
+                    do {
+                        try self.databaseManager.validateProfile(selectedProfile)
+                    } catch {
+                        showAlert(error.localizedDescription)
+                        return
+                    }
                     
                     do {
                         try self.databaseManager.addProfile(selectedProfile)
@@ -158,7 +169,7 @@ struct CreateDBProfileSheet: View {
 }
 
 #Preview {
-    CreateDBProfileSheet(editProfile: .constant(nil), showSelf: .constant(true), showAlert: .constant(false), alertMessage: .constant(""))
+    CreateDBProfileSheet(editProfile: .constant(nil), showSelf: .constant(true))
         .frame(maxWidth: 800, minHeight: 400)
         .padding()
 }

@@ -18,9 +18,6 @@ struct DatabaseSettingsView: View {
     /// If set to a ``DatabaseProfileModel`` the modal will let the user edit the profile instead of creating a new one
     @State var editProfile: DatabaseProfileModel? = nil
     
-    @State var showProfileCreateAlert = false
-    @State var profileCreateMessage = ""
-    
     @State var showProfileRemoveAlert = false
     @State var showDuplicationAlert = false
     
@@ -43,15 +40,10 @@ struct DatabaseSettingsView: View {
         .sheet(isPresented: $showCreateProfileSheet) {
             CreateDBProfileSheet(
                 editProfile: $editProfile,
-                showSelf: $showCreateProfileSheet,
-                showAlert: $showProfileCreateAlert,
-                alertMessage: $profileCreateMessage
+                showSelf: $showCreateProfileSheet
             )
             .padding()
             .frame(width: 700)
-        }
-        .alert("Failed to save profile", isPresented: $showProfileCreateAlert) { } message: {
-            Text(profileCreateMessage)
         }
         .alert("Failed to remove profile", isPresented: $showProfileRemoveAlert) { }
         .alert("Failed to duplicate profile", isPresented: $showDuplicationAlert) { }

@@ -22,11 +22,15 @@ final class AirtableDBModel: DatabaseProfileModel {
         super.init(name: "", plaform: .airtable)
     }
     
-    override func validate() -> Bool {
-        if self.name.isEmpty || self.baseID.isEmpty {
-            return false
-        } else {
-            return true
+    override func validate() throws {
+        if self.name.isEmpty {
+            throw AirtableValidationError.emptyName
+        }
+        if self.baseID.isEmpty {
+            throw AirtableValidationError.emptyBaseID
+        }
+        if self.renameKeyColumn == "Marker ID" {
+            throw NotionValidationError.illegalRenameKeyColumn
         }
     }
     

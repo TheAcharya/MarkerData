@@ -26,6 +26,47 @@ extension DatabaseValidationError: LocalizedError {
     }
 }
 
+enum NotionValidationError: Error {
+    case emptyName
+    case emptyWorkspaceName
+    case noToken
+    case illegalRenameKeyColumn
+}
+
+extension NotionValidationError: LocalizedError {
+    public var errorDescription: String? {
+        switch self {
+        case .emptyName:
+            "Empty name field"
+        case .emptyWorkspaceName:
+            "Empty workspace field"
+        case .noToken:
+            "No token provided"
+        case .illegalRenameKeyColumn:
+            "'Marker ID' is the default key column and cannot be used in the 'Rename Key Column' field. Please enter a different key column name if you wish to use this field."
+        }
+    }
+}
+
+enum AirtableValidationError: Error {
+    case emptyName
+    case emptyBaseID
+    case illegalRenameKeyColumn
+}
+
+extension AirtableValidationError: LocalizedError {
+    public var errorDescription: String? {
+        switch self {
+        case .emptyName:
+            "Empty name field"
+        case .emptyBaseID:
+            "Empty Base ID field"
+        case .illegalRenameKeyColumn:
+            "'Marker ID' is the default key column and cannot be used in the 'Rename Key Column' field. Please enter a different key column name if you wish to use this field."
+        }
+    }
+}
+
 enum DatabaseRemoveError: Error {
     case profileDoesntExist
 }

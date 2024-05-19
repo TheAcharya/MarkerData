@@ -36,8 +36,10 @@ class DatabaseProfileModel: ObservableObject, Equatable, Identifiable, Codable, 
         }
     }
     
-    func validate() -> Bool {
-        return !name.isEmpty
+    func validate() throws {
+        if name.isEmpty {
+            throw DatabaseValidationError.emptyCredentials
+        }
     }
     
     func copy() -> DatabaseProfileModel? {

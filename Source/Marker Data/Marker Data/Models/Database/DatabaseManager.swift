@@ -175,9 +175,7 @@ class DatabaseManager: ObservableObject {
     ///     - ingoreName: If set this name will be ignored when checking for existing names. (Used when editing a profile)
     func validateProfile(_ profile: DatabaseProfileModel, ignoreName: String? = nil) throws {
         // If required fields are not emtpy
-        if !profile.validate() {
-            throw DatabaseValidationError.emptyCredentials
-        }
+        try profile.validate()
         
         // Check for illegal names (names of no upload exports)
         let illegalNames = ExportProfileFormat.allExtractOnlyNames
