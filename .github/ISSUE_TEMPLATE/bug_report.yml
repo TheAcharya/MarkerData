@@ -21,7 +21,7 @@ body:
   attributes:
     label: macOS Version
     description: Which macOS version are you using?
-    placeholder: "e.g. macOS Sonoma 14.1.1"
+    placeholder: "e.g. macOS Sonoma 14.5"
   validations:
     required: true
 - type: textarea
@@ -33,5 +33,5 @@ body:
 - type: textarea
   attributes:
     label: Log excerpt
-    description: If possible, please attach log excerpt
+    description: Please attach log excerpt
     render: shell

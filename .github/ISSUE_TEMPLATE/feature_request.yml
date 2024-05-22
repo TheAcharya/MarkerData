@@ -1,0 +1,12 @@
+name: Feature Request
+about: Suggest an idea for Marker Data
+title: ''
+labels: 'feature request'
+assignees: ''
+body:
+- type: textarea
+  attributes:
+    label: Feature Request
+    description: A clear and detail description of the feature request here.
+  validations:
+    required: true
