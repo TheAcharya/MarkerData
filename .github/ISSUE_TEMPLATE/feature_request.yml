@@ -1,10 +1,19 @@
 name: Feature Request
 description: Suggest an idea for Marker Data
-title: ""
+title: "Feature Request: "
 labels: ["feature request"]
 body:
-  - type: markdown
+  - type: input
     attributes:
-      value: |
-        ### Feature Request
-        A clear and detailed description of the feature request here.
+      label: Title
+      description: Provide a short title for your feature request.
+      placeholder: "Enter the feature request title here"
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Description
+      description: A clear and detailed description of the feature request here.
+      placeholder: "Enter the detailed description here"
+    validations:
+      required: true
