@@ -3,13 +3,6 @@ description: Suggest an idea for Marker Data
 title: "Feature Request: "
 labels: ["feature request"]
 body:
-  - type: input
-    attributes:
-      label: Title
-      description: Provide a short title for your feature request.
-      placeholder: "Enter the feature request title here"
-    validations:
-      required: true
   - type: textarea
     attributes:
       label: Description
