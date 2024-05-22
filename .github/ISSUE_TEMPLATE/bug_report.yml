@@ -28,7 +28,7 @@ body:
 - type: textarea
   attributes:
     label: Bug Description
-    description: A clear description of the bug and how to reproduce it.
+    description: A clear description of the bug and how to reproduce it. Please attach FCPXMLD if necessary.
   validations:
     required: true
 - type: textarea
