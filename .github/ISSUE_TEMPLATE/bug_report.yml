@@ -24,13 +24,13 @@ body:
     placeholder: "e.g. macOS Sonoma 14.5"
   validations:
     required: true
-- type: markdown
+- type: textarea
   attributes:
     label: Bug Description
     description: A clear description of the bug and how to reproduce it.
   validations:
     required: true
-- type: markdown
+- type: textarea
   attributes:
     label: Log excerpt
     description: Please attach log excerpt
