@@ -16,6 +16,7 @@ body:
     options:
       - Apple Silicon
       - Intel
+    default: Apple Silicon
   validations:
     required: true
 - type: input
