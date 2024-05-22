@@ -1,8 +1,7 @@
 name: Feature Request
-about: Suggest an idea for Marker Data
-title: ''
-labels: 'feature request'
-assignees: ''
+description: Suggest an idea for Marker Data
+title: " "
+labels: "feature request"
 body:
 - type: textarea
   attributes:
