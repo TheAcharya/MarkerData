@@ -1,5 +1,8 @@
 blank_issues_enabled: true
 contact_links:
+  - name: Workflow Discussions
+    url: https://github.com/TheAcharya/MarkerData/discussions
+    about: Questions about specific workflow.
   - name: I need help setting up or troubleshooting
     url: https://github.com/TheAcharya/MarkerData/discussions
-    about: Questions not answered in the documentation, discussions forum, or example projects.
+    about: Questions not answered in the documentation.
