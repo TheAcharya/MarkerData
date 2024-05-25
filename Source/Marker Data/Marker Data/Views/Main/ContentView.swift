@@ -101,6 +101,11 @@ struct ContentView: View {
             .onAppear {
                 selectedConfiguration = settings.store
             }
+            // React to changes
+            .onChange(of: settings.store) { newStore in
+                selectedConfiguration = newStore
+            }
+            // Load configuration
             .onChange(of: selectedConfiguration) { newStore in
                 do {
                     if let store = newStore {
