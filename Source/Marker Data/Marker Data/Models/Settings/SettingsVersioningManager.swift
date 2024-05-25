@@ -81,6 +81,13 @@ struct SettingsVersioningManager {
         case 5:
             // Add useChapterMarkerThumbnails MarkersExtractor parameter
             dict["useChapterMarkerThumbnails"] = SettingsStore.defaults().useChapterMarkerThumbnails
+        case 6:
+            // Replace `projectTimecode` with `timelineNameAndTimecode`
+            if let IDNamingMode = dict["IDNamingMode"] as? String {
+                if IDNamingMode == "projectTimecode" {
+                    dict["IDNamingMode"] = "timelineNameAndTimecode"
+                }
+            }
         default:
             throw VersioningError.invalidVersion
         }

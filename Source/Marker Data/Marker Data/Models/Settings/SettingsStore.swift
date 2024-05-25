@@ -11,7 +11,7 @@ import MarkersExtractor
 
 struct SettingsStore: Codable, Hashable, Equatable, Identifiable {
     /// Used for versioning
-    static var version: Int = 6
+    static var version: Int = 7
     var version: Int = Self.version
 
     var name: String
@@ -118,7 +118,7 @@ struct SettingsStore: Codable, Hashable, Equatable, Identifiable {
             enabledSubframes: false,
             includeDisabledClips: false, 
             enabledNoMedia: false,
-            IDNamingMode: .projectTimecode,
+            IDNamingMode: .timelineNameAndTimecode,
             markersSource: .markers,
             useChapterMarkerThumbnails: false,
             overrideImageSize: .noOverride,

@@ -28,8 +28,8 @@ extension ExportFolderFormat: Codable, Identifiable {
 extension MarkerIDMode: Codable, Identifiable {
     var displayName: String {
         switch self {
-        case .projectTimecode:
-            "Timecode"
+        case .timelineNameAndTimecode:
+            "Timeline and Timecode"
         case .name:
             "Name"
         case .notes:
