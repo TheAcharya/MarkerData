@@ -12,13 +12,13 @@ extension ExtractionModel {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(handleOpenDocument(notification:)),
-            name: Notification.Name("OpenFile"),
+            name: .openFile,
             object: nil)
         
         DistributedNotificationCenter.default.addObserver(
             self,
             selector: #selector(handleWorkflowExtensionEvent),
-            name: Notification.Name("WorkflowExtensionFileReceived"),
+            name: .workflowExtensionFileReceived,
             object: nil)
     }
     

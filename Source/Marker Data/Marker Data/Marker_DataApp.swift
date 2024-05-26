@@ -24,6 +24,9 @@ struct Marker_DataApp: App {
     
     @State var showLibraryFolderCreationAlert = false
 
+    /// Is a new version available through Sparkle
+    @State private var isUpdateAvailable = false
+
     /// Sparkle update controller
     private let updaterController = SPUStandardUpdaterController(startingUpdater: true, updaterDelegate: nil, userDriverDelegate: nil)
 
@@ -77,6 +80,15 @@ struct Marker_DataApp: App {
                 } catch {
                     self.showLibraryFolderCreationAlert = true
                 }
+
+                // Recieve update available notification
+                NotificationCenter.default.addObserver(forName: .updateAvailable, object: nil, queue: .main) { _ in
+                    Task {
+                        await MainActor.run {
+                            self.isUpdateAvailable = true
+                        }
+                    }
+                }
             }
             .alert("Failed to initialize all Library folders", isPresented: $showLibraryFolderCreationAlert) {}
         }
@@ -90,8 +102,12 @@ struct Marker_DataApp: App {
             // Removes Toolbar Menu Items
             CommandGroup(replacing: .toolbar) {}
             
-            AppCommands(sidebarSelection: $sidebarSelection, updaterController: updaterController)
-            
+            AppCommands(
+                sidebarSelection: $sidebarSelection,
+                updateAvailable: $isUpdateAvailable,
+                updaterController: updaterController
+            )
+
             FileCommands()
             
             EditCommands()

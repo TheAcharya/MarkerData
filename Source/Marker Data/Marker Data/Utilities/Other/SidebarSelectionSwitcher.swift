@@ -19,13 +19,13 @@ final class SidebarSelectionSwitcher {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(switchToExtactView),
-            name: Notification.Name("OpenFile"),
+            name: .openFile,
             object: nil)
         
         DistributedNotificationCenter.default.addObserver(
             self,
             selector: #selector(switchToExtactView),
-            name: Notification.Name("WorkflowExtensionFileReceived"),
+            name: .workflowExtensionFileReceived,
             object: nil)
     }
     

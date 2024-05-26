@@ -36,7 +36,7 @@ class RolesManager: ObservableObject {
         DistributedNotificationCenter.default.addObserver(
             self,
             selector: #selector(refresh),
-            name: Notification.Name("RolesChanged"),
+            name: .rolesChanged,
             object: nil)
     }
 
@@ -87,7 +87,7 @@ class RolesManager: ObservableObject {
         try data.write(to: Self.staticPreferencesJSONURL)
 
         // Notify of changes
-        DistributedNotificationCenter.default.post(name: Notification.Name("RolesChanged"), object: nil)
+        DistributedNotificationCenter.default.post(name: .rolesChanged, object: nil)
     }
     
     static func loadRolesFromDisk() -> [RoleModel] {

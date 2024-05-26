@@ -77,7 +77,7 @@ class SettingsContainer: ObservableObject {
         DistributedNotificationCenter.default.addObserver(
             self,
             selector: #selector(updateRoles),
-            name: Notification.Name("RolesChanged"),
+            name: .rolesChanged,
             object: nil)
     }
 

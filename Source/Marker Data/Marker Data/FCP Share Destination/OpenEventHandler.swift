@@ -14,7 +14,7 @@ class OpenEventHandler: NSObject {
     
     override init() {
         super.init()
-        NotificationCenter.default.addObserver(self, selector: #selector(self.setupHandler), name: Notification.Name("FCPShareStart"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.setupHandler), name: .FCPShareStart, object: nil)
         self.setupHandler()
     }
     
@@ -49,7 +49,7 @@ class OpenEventHandler: NSObject {
                 let logger = Logger()
                 logger.notice("Open event has received file at URL: \(url, privacy: .public)")
                 
-                NotificationCenter.default.post(name: Notification.Name("OpenFile"), object: nil, userInfo: ["url": url])
+                NotificationCenter.default.post(name: .openFile, object: nil, userInfo: ["url": url])
             }
         }
     }

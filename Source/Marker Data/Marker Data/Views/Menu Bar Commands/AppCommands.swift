@@ -11,6 +11,7 @@ import Sparkle
 
 struct AppCommands: Commands {
     @Binding var sidebarSelection: MainViews
+    @Binding var updateAvailable: Bool
     let updaterController: SPUStandardUpdaterController
 
     var body: some Commands {
@@ -23,6 +24,10 @@ struct AppCommands: Commands {
         CommandGroup(before: .systemServices) {
             CheckForUpdatesView(updater: updaterController.updater) {
                 Text("Check for Updates...")
+            }
+            .if(updateAvailable) { view in
+                view
+                    .badge("Update Available")
             }
         }
     }

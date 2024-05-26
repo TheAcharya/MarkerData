@@ -124,6 +124,8 @@
 		41C538992AE3062000E8A8A1 /* HelpCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C538982AE3062000E8A8A1 /* HelpCommands.swift */; };
 		41C5389B2AE3067900E8A8A1 /* ConfigurationCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C5389A2AE3067900E8A8A1 /* ConfigurationCommands.swift */; };
 		41C538A22AE420EA00E8A8A1 /* ColorWellKit in Frameworks */ = {isa = PBXBuildFile; productRef = 41C538A12AE420EA00E8A8A1 /* ColorWellKit */; };
+		41C78C1E2C03DB21001F29C4 /* NotificationNameExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C78C1D2C03DB21001F29C4 /* NotificationNameExtension.swift */; };
+		41C78C1F2C03DB2A001F29C4 /* NotificationNameExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C78C1D2C03DB21001F29C4 /* NotificationNameExtension.swift */; };
 		41C839312B52C82A00C6B133 /* OSAScriptingDefinition.sdef in Resources */ = {isa = PBXBuildFile; fileRef = 41C839302B52C82A00C6B133 /* OSAScriptingDefinition.sdef */; };
 		41C839342B52C94000C6B133 /* ApplicationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C839332B52C94000C6B133 /* ApplicationDelegate.swift */; };
 		41C839822B52C9E300C6B133 /* ScriptingSupportCategories.m in Sources */ = {isa = PBXBuildFile; fileRef = 41C8396B2B52C9E300C6B133 /* ScriptingSupportCategories.m */; };
@@ -306,6 +308,7 @@
 		41C538932AE1AFF200E8A8A1 /* SettingsContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsContainer.swift; sourceTree = "<group>"; };
 		41C538982AE3062000E8A8A1 /* HelpCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpCommands.swift; sourceTree = "<group>"; };
 		41C5389A2AE3067900E8A8A1 /* ConfigurationCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationCommands.swift; sourceTree = "<group>"; };
+		41C78C1D2C03DB21001F29C4 /* NotificationNameExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationNameExtension.swift; sourceTree = "<group>"; };
 		41C839302B52C82A00C6B133 /* OSAScriptingDefinition.sdef */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = OSAScriptingDefinition.sdef; sourceTree = "<group>"; };
 		41C839332B52C94000C6B133 /* ApplicationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationDelegate.swift; sourceTree = "<group>"; };
 		41C8396A2B52C9E300C6B133 /* MakeCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MakeCommand.h; sourceTree = "<group>"; };
@@ -435,6 +438,7 @@
 				4741202D2A3EFC42005890FE /* EmptyOrIntFormatStyle.swift */,
 				4186A74F2BA451CD00FFD75B /* DominantColorAlgorithmExtension.swift */,
 				41086A102BD5653F00E0CE09 /* TaskExtension.swift */,
+				41C78C1D2C03DB21001F29C4 /* NotificationNameExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -587,6 +591,7 @@
 		4155B72F2B66C093008D3505 /* Other */ = {
 			isa = PBXGroup;
 			children = (
+				41C839332B52C94000C6B133 /* ApplicationDelegate.swift */,
 				41BFEB6C2B1B9B6400C8B551 /* Links.swift */,
 				410E3B802B4B0FF8005280FD /* LogManager.swift */,
 				411F373A2B55B77100CC05E6 /* LibraryFolders.swift */,
@@ -684,7 +689,6 @@
 			children = (
 				411F37482B56F1C600CC05E6 /* Install View */,
 				41C839692B52C9E300C6B133 /* Objective-C Code */,
-				41C839332B52C94000C6B133 /* ApplicationDelegate.swift */,
 				411F37522B57255A00CC05E6 /* OpenEventHandler.swift */,
 			);
 			path = "FCP Share Destination";
@@ -1088,6 +1092,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				41C78C1F2C03DB2A001F29C4 /* NotificationNameExtension.swift in Sources */,
 				4155B71B2B62E18B008D3505 /* RoleExtension.swift in Sources */,
 				410840052BD3C603008B7B03 /* DeltaEFormulaExtension.swift in Sources */,
 				4155B71A2B62E182008D3505 /* UTTypeExtension.swift in Sources */,
@@ -1209,6 +1214,7 @@
 				411F37532B57255A00CC05E6 /* OpenEventHandler.swift in Sources */,
 				410840032BD3C355008B7B03 /* ColorSwatchSettingsModel.swift in Sources */,
 				D5F74A312972D31D00EEE2FE /* Marker_DataApp.swift in Sources */,
+				41C78C1E2C03DB21001F29C4 /* NotificationNameExtension.swift in Sources */,
 				4155B70D2B62CED6008D3505 /* RolesSettingsView.swift in Sources */,
 				41F88ADC2B029D4A004A3B58 /* ColorPickerForm.swift in Sources */,
 				41C839822B52C9E300C6B133 /* ScriptingSupportCategories.m in Sources */,

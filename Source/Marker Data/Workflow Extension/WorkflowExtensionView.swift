@@ -110,7 +110,7 @@ struct WorkflowExtensionView: View {
             NSWorkspace.shared.openApplication(at: URL.markerDataApp,
                                                configuration: configuration) { app, error in
                 // Notify Marker Data that the file is available
-                DistributedNotificationCenter.default().post(name: Notification.Name("WorkflowExtensionFileReceived"), object: nil)
+                DistributedNotificationCenter.default().post(name: .workflowExtensionFileReceived, object: nil)
             }
         } catch {
             // Show error message
