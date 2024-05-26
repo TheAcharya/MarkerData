@@ -19,7 +19,7 @@ struct ContentView: View {
     let updater: SPUUpdater
 
     /// Used in the toolbar configuration picker
-    @State var selectedConfiguration: SettingsStore?
+    @State var selectedConfigurationName: String = SettingsStore.defaultName
 
     //Main View Controller
     var body: some View {
@@ -87,28 +87,23 @@ struct ContentView: View {
         }
         // Configuration picker
         .toolbar {
-            Picker("Configuration", selection: $selectedConfiguration) {
-                if selectedConfiguration.isNone {
-                    Text("No Selection")
-                        .tag(nil as SettingsStore?)
-                }
-
+            Picker("Configuration", selection: $selectedConfigurationName) {
                 ForEach(settings.configurations) { store in
                     Text(store.name)
-                        .tag(store as SettingsStore?)
+                        .tag(store.name)
                 }
             }
             .onAppear {
-                selectedConfiguration = settings.store
+                selectedConfigurationName = settings.store.name
             }
             // React to changes
-            .onChange(of: settings.store) { newStore in
-                selectedConfiguration = newStore
+            .onReceive(settings.objectWillChange) { _ in
+                selectedConfigurationName = settings.store.name
             }
             // Load configuration
-            .onChange(of: selectedConfiguration) { newStore in
+            .onChange(of: selectedConfigurationName) { newStoreName in
                 do {
-                    if let store = newStore {
+                    if let store = settings.findByName(newStoreName) {
                         try settings.load(store)
                     }
                 } catch {
