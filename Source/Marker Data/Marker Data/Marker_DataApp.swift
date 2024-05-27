@@ -51,7 +51,7 @@ struct Marker_DataApp: App {
         self._queueModel = StateObject(wrappedValue: queueModel)
     }
 
-//    @NSApplicationDelegateAdaptor(ApplicationDelegate.self) var appDelegate
+    @NSApplicationDelegateAdaptor(ApplicationDelegate.self) var appDelegate
     var body: some Scene {
         //Make Main Window Group To Launch Into
         WindowGroup {

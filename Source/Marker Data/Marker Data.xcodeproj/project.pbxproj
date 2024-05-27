@@ -591,7 +591,6 @@
 		4155B72F2B66C093008D3505 /* Other */ = {
 			isa = PBXGroup;
 			children = (
-				41C839332B52C94000C6B133 /* ApplicationDelegate.swift */,
 				41BFEB6C2B1B9B6400C8B551 /* Links.swift */,
 				410E3B802B4B0FF8005280FD /* LogManager.swift */,
 				411F373A2B55B77100CC05E6 /* LibraryFolders.swift */,
@@ -932,6 +931,7 @@
 			isa = PBXGroup;
 			children = (
 				D5F74A302972D31D00EEE2FE /* Marker_DataApp.swift */,
+				41C839332B52C94000C6B133 /* ApplicationDelegate.swift */,
 				9B35FE6629F94BF30035B760 /* Views */,
 				9B51D21429E9B10500DF7836 /* Models */,
 				9B51D20F29E99FFD00DF7836 /* Utilities */,

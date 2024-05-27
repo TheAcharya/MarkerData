@@ -16,6 +16,10 @@ class ApplicationDelegate: NSObject, NSApplicationDelegate, SPUUpdaterDelegate {
         updaterController = SPUStandardUpdaterController(startingUpdater: true, updaterDelegate: self, userDriverDelegate: nil)
     }
 
+    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
+        return true
+    }
+
     @objc func updater(_ updater: SPUUpdater, didFindValidUpdate item: SUAppcastItem) {
         // Notify SwiftUI view about the update
         NotificationCenter.default.post(name: .updateAvailable, object: nil)
