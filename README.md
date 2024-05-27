@@ -136,7 +136,7 @@ macOS Ventura 13.6.2 or later <br> Final Cut Pro 10.6.9 <br> Runs natively on bo
 - Shot Library Database
 - VFX Database
 - ADR Database
-- Stock footage Database
+- Stock Footage Database
 - Music Cue Sheet Database
 - Colourist’s Notes Database
 - Client Review & Tracking Database
