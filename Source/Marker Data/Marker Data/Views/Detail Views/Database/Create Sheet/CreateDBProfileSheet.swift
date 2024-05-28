@@ -109,7 +109,6 @@ struct CreateDBProfileSheet: View {
                         try self.databaseManager.validateProfile(profile, ignoreName: profile.name)
                     } catch {
                         showAlert(error.localizedDescription)
-                        reset()
                         return
                     }
                     
