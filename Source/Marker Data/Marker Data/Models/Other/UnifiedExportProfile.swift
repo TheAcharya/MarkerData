@@ -50,6 +50,8 @@ struct UnifiedExportProfile: Codable, Hashable, Identifiable, Equatable {
             return "NumbersIcon"
         case .youtube:
             return "YouTubeLogo"
+        case .xlsx:
+            return "ExcelIcon"
         }
     }
 }

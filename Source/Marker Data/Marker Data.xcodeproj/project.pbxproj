@@ -1652,8 +1652,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/TheAcharya/MarkersExtractor";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.3.6;
+				branch = main;
+				kind = branch;
 			};
 		};
 		4155B72A2B668C0D008D3505 /* XCRemoteSwiftPackageReference "swift-log-oslog" */ = {
