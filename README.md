@@ -41,6 +41,7 @@ Marker Data allows users to extract, convert & create databases from <a href="ht
 - Airtable (JSON)
 - Comma-separated values (CSV) - Compatible with spreadsheet applications
 - Tab-separated values (TSV) - Compatible with spreadsheet application
+- Microsoft Excel (XLSX)
 - YouTube Chapters
 - Standard MIDI File - Compatible with most audio DAWs
 
