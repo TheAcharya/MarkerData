@@ -17,6 +17,7 @@ struct AppCommands: Commands {
     var body: some Commands {
         CommandGroup(replacing: .appInfo) {
             Button("About Marker Data") {
+                deminiaturizeAllWindows()
                 sidebarSelection = .about
             }
         }

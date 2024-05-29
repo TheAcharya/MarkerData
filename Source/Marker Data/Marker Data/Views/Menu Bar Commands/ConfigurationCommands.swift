@@ -39,6 +39,7 @@ struct ConfigurationCommands: Commands {
             Divider()
             
             Button("Open Configurations Panel") {
+                deminiaturizeAllWindows()
                 sidebarSelection = .configurations
             }
             
