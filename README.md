@@ -30,6 +30,7 @@ Marker Data allows users to extract, convert & create databases from <a href="ht
 - Effortlessly synchronise Final Cut Pro's Marker metadata to cloud databases with a single click.
 - Functionality allowing batch extraction and rendering of stills or animated GIFs based on each Marker's timecode.
 - Versatile features for batch burning-in labels, embedding comprehensive metadata of each Marker onto stills or animated GIFs.
+- Comprehensive timeline functionality, encompassing support for timelines such as Projects and Compound Clips.
 - Allows the creation of multiple configurations tailored to diverse project requirements.
 - Harnesses the potential to utilise Captions as Markers, adding a layer of flexibility.
 - Automatically analyse and embed colour swatches from extracted images for shot reference.
@@ -165,6 +166,6 @@ Licensed under the MIT license. See [LICENSE](https://github.com/TheAcharya/Mark
 
 ## Reporting Bugs
 
-For bug reports, feature requests and other suggestions you can create [a new issue](https://github.com/TheAcharya/MarkerData/issues) to discuss.
+Technical support questions are best asked in the [Discussions](https://github.com/TheAcharya/MarkerData/discussions).
 
-If you have any general questions or feedback, you can discuss here.
+For bug reports, feature requests and other suggestions you can create a new [issue](https://github.com/TheAcharya/MarkerData/issues) to discuss.
