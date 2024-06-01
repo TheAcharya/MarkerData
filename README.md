@@ -19,7 +19,7 @@
 	</a>
 </p>
 
-Marker Data allows users to extract, convert & create databases from <a href="https://www.apple.com/final-cut-pro/“ target=”_blank">Final Cut Pro</a>’s Maker metadata effortlessly. Marker Data uses <a href="https://github.com/TheAcharya/MarkersExtractor" target="_blank">MarkersExtractor</a> Library.
+Marker Data allows users to extract, convert & create databases from <a href="https://www.apple.com/final-cut-pro/“ target=”_blank">Final Cut Pro</a>’s Marker metadata effortlessly. Marker Data uses <a href="https://github.com/TheAcharya/MarkersExtractor" target="_blank">MarkersExtractor</a> Library.
 
 ## Core Features
 
