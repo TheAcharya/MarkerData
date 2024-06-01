@@ -18,6 +18,12 @@ extension ConfigurationSettingsView {
             }
             .disabled(selectedStoreName == settings.store.name)
 
+            Button {
+                confModel.duplicateConfiguration(store: store)
+            } label: {
+                Label("Duplicate", systemImage: "square.filled.on.square")
+            }
+
             // If active configuration
             if store.name == settings.store.name {
                 // Discard changes button

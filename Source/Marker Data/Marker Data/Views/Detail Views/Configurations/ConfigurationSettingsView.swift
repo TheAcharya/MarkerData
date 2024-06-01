@@ -134,13 +134,14 @@ struct ConfigurationSettingsView: View {
                 }
             )
             .tag(configuration.name)
-            .contextMenu {
-                if let storeUnwrapped = selectedStore {
-                    contextMenuButtons(for: storeUnwrapped)
-                }
-            }
         }
         .clipShape(RoundedRectangle(cornerRadius: 10))
+        .contextMenu(forSelectionType: String.self) { storeNames in
+            if let storeName = storeNames.first,
+               let store = settings.findByName(storeName) {
+                contextMenuButtons(for: store)
+            }
+        }
     }
     
     /// Buttons to add and remove configurations
@@ -171,7 +172,7 @@ struct ConfigurationSettingsView: View {
                 .frame(maxHeight: 20)
             
             // Load configuration button
-            Button() {
+            Button {
                 if settings.unsavedChanges && !settings.isDefaultActive {
                     showSwitchUnsavedChangesDialog = true
                 } else {
@@ -181,6 +182,13 @@ struct ConfigurationSettingsView: View {
                 Label("Make Active", systemImage: "largecircle.fill.circle")
             }
             .disabled(selectedStore == nil || selectedStore == settings.store)
+
+            Button {
+                confModel.duplicateConfiguration(store: selectedStore)
+            } label: {
+                Label("Duplicate", systemImage: "square.filled.on.square")
+            }
+            .disabled(selectedStore.isNone)
 
             // Update active configuration button
             Button {

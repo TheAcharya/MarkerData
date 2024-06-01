@@ -37,7 +37,7 @@ class ConfigurationsViewModel: ObservableObject {
     @MainActor 
     public func makeActive(_ store: SettingsStore?, ignoreChanges: Bool = false) {
         guard let storeUnwrapped = store else {
-            showAlert("Failed to load configuration")
+            showAlert("Failed to get configuration")
             return
         }
 
@@ -48,6 +48,23 @@ class ConfigurationsViewModel: ObservableObject {
                 } catch {
                     showAlert("Failed to load configuration", message: error.localizedDescription)
                 }
+            }
+        }
+    }
+
+    @MainActor
+    public func duplicateConfiguration(store: SettingsStore?) {
+        guard let storeUnwrapped = store else {
+            showAlert("Failed to get configuration")
+            return
+        }
+
+        Task {
+            do {
+                try await settings?.duplicateStore(store: storeUnwrapped, as: storeUnwrapped.name + " copy")
+                settings?.objectWillChange.send()
+            } catch {
+                showAlert("Failed to duplicate configuration")
             }
         }
     }
