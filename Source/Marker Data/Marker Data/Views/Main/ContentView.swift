@@ -127,7 +127,7 @@ struct ContentView: View {
                 ignoreInstallLocation = true
             }
         } message: {
-            Text("Some features require Marker Data to be installed in the Applications folder (e.g. FCP integration)")
+            Text("Marker Data must be installed in the Applications folder to run correctly. Please move the application to the Applications folder and try again.")
         }
     }
 }
