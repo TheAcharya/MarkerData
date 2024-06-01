@@ -21,6 +21,10 @@ struct ContentView: View {
     /// Used in the toolbar configuration picker
     @State var selectedConfigurationName: String = SettingsStore.defaultName
 
+    // Marker Data installed outside of the Applications folder alert
+    @AppStorage("ignoreInstallLocation") var ignoreInstallLocation = false
+    @State var showInstallLocationAlert = false
+
     //Main View Controller
     var body: some View {
         NavigationSplitView {
@@ -110,6 +114,20 @@ struct ContentView: View {
                     print("Failed to load config from menu bar")
                 }
             }
+        }
+        // Notify user if Marker Data is installed outisde of the the Applications folder
+        .onAppear {
+            if !ignoreInstallLocation && Bundle.main.resourceURL != URL.markerDataApp {
+                showInstallLocationAlert = true
+            }
+        }
+        .alert("Install Location Warning", isPresented: $showInstallLocationAlert) {
+            Button("OK") {}
+            Button("Don't show again") {
+                ignoreInstallLocation = true
+            }
+        } message: {
+            Text("Some features require Marker Data to be installed in the Applications folder (e.g. FCP integration)")
         }
     }
 }
