@@ -117,8 +117,10 @@ struct ContentView: View {
         }
         // Notify user if Marker Data is installed outisde of the the Applications folder
         .onAppear {
-            if !ignoreInstallLocation && Bundle.main.resourceURL != URL.markerDataApp {
-                showInstallLocationAlert = true
+            if let appURL = Bundle.main.resourceURL {
+                if !ignoreInstallLocation && !appURL.hasPrefix(url: .applicationDirectory) {
+                    showInstallLocationAlert = true
+                }
             }
         }
         .alert("Install Location Warning", isPresented: $showInstallLocationAlert) {
