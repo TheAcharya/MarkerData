@@ -189,6 +189,7 @@ struct ConfigurationSettingsView: View {
                 Label("Duplicate", systemImage: "square.filled.on.square")
             }
             .disabled(selectedStore.isNone)
+            .keyboardShortcut("D", modifiers: .command)
 
             // Update active configuration button
             Button {
