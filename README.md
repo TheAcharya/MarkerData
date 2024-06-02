@@ -43,7 +43,7 @@ Marker Data allows users to extract, convert & create databases from <a href="ht
 - Comma-separated values (CSV) - Compatible with spreadsheet applications
 - Tab-separated values (TSV) - Compatible with spreadsheet application
 - Microsoft Excel (XLSX)
-- YouTube Chapters
+- YouTube Chapters (TXT)
 - Standard MIDI File - Compatible with most audio DAWs
 
 ## Table of contents
