@@ -58,7 +58,7 @@ let onboardingPages: [OnboardingPageView] = [
                 description: "Marker Data is capable of generating spreadsheet-compatible files, including CSV, TSV, and Excel formats, from the Marker metadata in Final Cut Pro."
             ),
             .init(
-                icon: "music.note",
+                icon: "waveform.path",
                 title: "DAW Compatible",
                 description: "Marker Data can generate MIDI Markers for import into any Digital Audio Workstation."
             ),
@@ -73,17 +73,17 @@ let onboardingPages: [OnboardingPageView] = [
         title: "Initial Steps",
         features: [
             .init(
-                icon: "square.and.arrow.up",
+                icon: "1.square",
                 title: "Share Destination",
                 description: "Install Marker Data’s Share Destination. Marker Data will proceed to install its Extension into Final Cut Pro."
             ),
             .init(
-                icon: "server.rack",
+                icon: "2.square",
                 title: "Database Templates",
                 description: "It is strongly recommended to duplicate the provided Marker Data Template if you intend to use Notion or Airtable."
             ),
             .init(
-                icon: "book",
+                icon: "3.square",
                 title: "Documentation",
                 description: "Enhance your understanding of Marker Data by thoroughly reading the provided documentation available through the Help menu."
             )
@@ -93,17 +93,17 @@ let onboardingPages: [OnboardingPageView] = [
         title: "Initial Steps",
         features: [
             .init(
-                icon: "square.and.arrow.up",
+                icon: "4.square",
                 title: "Your First Configuration",
                 description: "You are required to create a new Configuration in order to utilise the complete functionality of Marker Data."
             ),
             .init(
-                icon: "server.rack",
+                icon: "5.square",
                 title: "Select Your Export Folder",
-                description: "You can select your desired location by clicking on the Folder Icon under General."
+                description: "Select your desired location by clicking on the Folder Icon under General."
             ),
             .init(
-                icon: "book",
+                icon: "6.square",
                 title: "Update Active Configuration",
                 description: "Press ⌘+S on your keyboard to save your Active Configuration."
             )
