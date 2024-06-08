@@ -103,6 +103,12 @@
 		418D5DB92B91163500589E17 /* CheckForUpdatesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418D5DB82B91163500589E17 /* CheckForUpdatesView.swift */; };
 		418D5DBB2B9117BB00589E17 /* UpdateSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418D5DBA2B9117BB00589E17 /* UpdateSettingsView.swift */; };
 		419EC4A82C07D237003DB6E8 /* DeminiaturizeAllWindows.swift in Sources */ = {isa = PBXBuildFile; fileRef = 419EC4A72C07D237003DB6E8 /* DeminiaturizeAllWindows.swift */; };
+		419EC4AB2C147835003DB6E8 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 419EC4AA2C147835003DB6E8 /* OnboardingView.swift */; };
+		419EC4AF2C147AB6003DB6E8 /* OnboardingPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 419EC4AE2C147AB6003DB6E8 /* OnboardingPageView.swift */; };
+		419EC4B12C147C32003DB6E8 /* OnboardingFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 419EC4B02C147C32003DB6E8 /* OnboardingFeature.swift */; };
+		419EC4B32C14803C003DB6E8 /* OnboardingPages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 419EC4B22C14803C003DB6E8 /* OnboardingPages.swift */; };
+		419EC4B52C148309003DB6E8 /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 419EC4B42C148309003DB6E8 /* ArrayExtension.swift */; };
+		419EC4B72C148642003DB6E8 /* BigButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 419EC4B62C148642003DB6E8 /* BigButtonStyle.swift */; };
 		41A0556E2B8B766C006AC0E4 /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BACA4D029FA9B5100EF6837 /* SettingsStore.swift */; };
 		41A0556F2B8B767B006AC0E4 /* SettingsModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B51D21529E9B13400DF7836 /* SettingsModels.swift */; };
 		41A055702B8B7685006AC0E4 /* NotificationFrequency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B6CA2B5D3B3B008D3505 /* NotificationFrequency.swift */; };
@@ -300,6 +306,12 @@
 		418D5DB82B91163500589E17 /* CheckForUpdatesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckForUpdatesView.swift; sourceTree = "<group>"; };
 		418D5DBA2B9117BB00589E17 /* UpdateSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateSettingsView.swift; sourceTree = "<group>"; };
 		419EC4A72C07D237003DB6E8 /* DeminiaturizeAllWindows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeminiaturizeAllWindows.swift; sourceTree = "<group>"; };
+		419EC4AA2C147835003DB6E8 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		419EC4AE2C147AB6003DB6E8 /* OnboardingPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageView.swift; sourceTree = "<group>"; };
+		419EC4B02C147C32003DB6E8 /* OnboardingFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFeature.swift; sourceTree = "<group>"; };
+		419EC4B22C14803C003DB6E8 /* OnboardingPages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPages.swift; sourceTree = "<group>"; };
+		419EC4B42C148309003DB6E8 /* ArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
+		419EC4B62C148642003DB6E8 /* BigButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigButtonStyle.swift; sourceTree = "<group>"; };
 		41BFEB6C2B1B9B6400C8B551 /* Links.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Links.swift; sourceTree = "<group>"; };
 		41BFEB712B1BCE4600C8B551 /* ExportProfilePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportProfilePicker.swift; sourceTree = "<group>"; };
 		41BFEB762B1E63EA00C8B551 /* ExportProfileFormatExtrension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportProfileFormatExtrension.swift; sourceTree = "<group>"; };
@@ -441,6 +453,7 @@
 				4186A74F2BA451CD00FFD75B /* DominantColorAlgorithmExtension.swift */,
 				41086A102BD5653F00E0CE09 /* TaskExtension.swift */,
 				41C78C1D2C03DB21001F29C4 /* NotificationNameExtension.swift */,
+				419EC4B42C148309003DB6E8 /* ArrayExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -642,6 +655,17 @@
 			path = "Color Swatch";
 			sourceTree = "<group>";
 		};
+		419EC4A92C1477FB003DB6E8 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				419EC4AA2C147835003DB6E8 /* OnboardingView.swift */,
+				419EC4AE2C147AB6003DB6E8 /* OnboardingPageView.swift */,
+				419EC4B02C147C32003DB6E8 /* OnboardingFeature.swift */,
+				419EC4B22C14803C003DB6E8 /* OnboardingPages.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
 		41BFEB732B1BD15A00C8B551 /* Other */ = {
 			isa = PBXGroup;
 			children = (
@@ -829,6 +853,7 @@
 				411F37442B56DE7400CC05E6 /* PulsingIcon.swift */,
 				4155B6D02B5D93BA008D3505 /* ResizedImage.swift */,
 				4188C3022BE2A4B200DA1806 /* LabeledFormElement.swift */,
+				419EC4B62C148642003DB6E8 /* BigButtonStyle.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -865,6 +890,7 @@
 			children = (
 				47136CBE2A51079E00AB9C92 /* Main */,
 				9B25815C2A079FBC002CED07 /* Detail Views */,
+				419EC4A92C1477FB003DB6E8 /* Onboarding */,
 				47B21A6E2A4DF96D004FECFA /* Other */,
 				474595352A40110F00EF100D /* Components */,
 				41C538952AE3018100E8A8A1 /* Menu Bar Commands */,
@@ -1123,6 +1149,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				419EC4B72C148642003DB6E8 /* BigButtonStyle.swift in Sources */,
 				41C839832B52C9E300C6B133 /* Object.m in Sources */,
 				4186A7502BA451CD00FFD75B /* DominantColorAlgorithmExtension.swift in Sources */,
 				411F37452B56DE7400CC05E6 /* PulsingIcon.swift in Sources */,
@@ -1137,9 +1164,11 @@
 				41BFEB772B1E63EB00C8B551 /* ExportProfileFormatExtrension.swift in Sources */,
 				417389632AC86BE600984FD8 /* ExtractView.swift in Sources */,
 				41C538992AE3062000E8A8A1 /* HelpCommands.swift in Sources */,
+				419EC4B12C147C32003DB6E8 /* OnboardingFeature.swift in Sources */,
 				41D1E4E82B72C21E00AE2E55 /* DeepCopy.swift in Sources */,
 				41083FF22BC45D3D008B7B03 /* ColorExtractMethod.swift in Sources */,
 				47411FDE2A3EA1BA005890FE /* AboutView.swift in Sources */,
+				419EC4B52C148309003DB6E8 /* ArrayExtension.swift in Sources */,
 				414262BB2AD2E1AC00FC6CFC /* URLExtension.swift in Sources */,
 				41F88B032B1A4D40004A3B58 /* ShellOutputStream.swift in Sources */,
 				41083FF92BC45EBC008B7B03 /* ColorPaletteFileFormat.swift in Sources */,
@@ -1147,6 +1176,7 @@
 				9B51D21629E9B13400DF7836 /* SettingsModels.swift in Sources */,
 				4108400F2BD3E5F6008B7B03 /* ColorPaletteRenderer.swift in Sources */,
 				414262BD2AD2E24A00FC6CFC /* BundleExtension.swift in Sources */,
+				419EC4AB2C147835003DB6E8 /* OnboardingView.swift in Sources */,
 				4100D5DE2AD052010081F0EC /* OverlaySettingsView.swift in Sources */,
 				41C839872B52C9E300C6B133 /* FCPXMetadataKeys.m in Sources */,
 				9B4D90D82A0BAE3900FE7603 /* ImageSettingsView.swift in Sources */,
@@ -1164,6 +1194,7 @@
 				417272982B444211005A04BE /* ExportExitStatus.swift in Sources */,
 				4155B70F2B62D350008D3505 /* FileSettingsView.swift in Sources */,
 				41F88AF12B0E9367004A3B58 /* DatabaseManager.swift in Sources */,
+				419EC4B32C14803C003DB6E8 /* OnboardingPages.swift in Sources */,
 				4100D5E42AD1616D0081F0EC /* ColorExtension.swift in Sources */,
 				9B4D90DE2A0BB11000FE7603 /* DatabaseSettingsView.swift in Sources */,
 				417914FF2B7547CE00215688 /* DropboxSetupView.swift in Sources */,
@@ -1242,6 +1273,7 @@
 				41BFEB6D2B1B9B6400C8B551 /* Links.swift in Sources */,
 				4108400B2BD3D0A3008B7B03 /* ImageExtractionSettingsView.swift in Sources */,
 				41176AE52B7D5C520093F4C8 /* QueueStatus.swift in Sources */,
+				419EC4AF2C147AB6003DB6E8 /* OnboardingPageView.swift in Sources */,
 				4108400D2BD3D10B008B7B03 /* SwatchSettingsView.swift in Sources */,
 				4172729A2B44533D005A04BE /* FailedExtractionsView.swift in Sources */,
 				41086A112BD5653F00E0CE09 /* TaskExtension.swift in Sources */,

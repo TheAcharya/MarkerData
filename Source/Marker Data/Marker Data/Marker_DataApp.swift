@@ -27,6 +27,9 @@ struct Marker_DataApp: App {
     /// Is a new version available through Sparkle
     @State private var isUpdateAvailable = false
 
+    // Onboarding sheet
+    @AppStorage("showOnboarding") var showOnboarding = true
+
     /// Sparkle update controller
     private let updaterController = SPUStandardUpdaterController(startingUpdater: true, updaterDelegate: nil, userDriverDelegate: nil)
 
@@ -89,6 +92,9 @@ struct Marker_DataApp: App {
                         }
                     }
                 }
+            }
+            .sheet(isPresented: $showOnboarding) {
+                OnboardingView()
             }
             .alert("Failed to initialize all Library folders", isPresented: $showLibraryFolderCreationAlert) {}
         }
