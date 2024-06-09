@@ -14,8 +14,8 @@ struct OnboardingPageView: View {
     var body: some View {
         VStack {
             Text(title)
-                .font(.system(size: 26, weight: .bold))
-                .padding(.bottom, 20)
+                .font(.system(size: 30, weight: .bold))
+                .padding(.vertical, 15)
 
             VStack(alignment: .leading, spacing: 20) {
                 ForEach(features) { feature in
@@ -29,14 +29,14 @@ struct OnboardingPageView: View {
         HStack {
             Image(systemName: feature.icon)
                 .foregroundStyle(.accent)
-                .font(.system(size: 24))
+                .font(.system(size: 32))
 
             VStack(alignment: .leading) {
                 Text(feature.title)
-                    .font(.system(size: 16, weight: .bold))
+                    .font(.system(size: 20, weight: .bold))
 
                 Text(feature.description)
-                    .fontWeight(.light)
+                    .font(.system(size: 16, weight: .light))
             }
         }
     }

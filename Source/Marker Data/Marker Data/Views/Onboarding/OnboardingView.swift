@@ -9,7 +9,8 @@ import SwiftUI
 
 struct OnboardingView: View {
     @State var currentPage: Int = 0
-    let lastPage = onboardingPages.count - 1
+    let totalPages = onboardingPages.count
+    let lastPageIndex = onboardingPages.count - 1
 
     @AppStorage("showOnboarding") var showOnboarding = true
 
@@ -17,32 +18,41 @@ struct OnboardingView: View {
         VStack {
             if let onboardingPage = onboardingPages[safe: currentPage] {
                 onboardingPage
-                    .frame(maxWidth: 500)
+                    .frame(maxWidth: 600)
                     .padding(.top)
             }
 
             Spacer()
 
+            pageIndicators
+                .padding(.bottom)
+
             buttonsView
                 .padding(.bottom)
         }
-        .frame(width: 600, height: 370)
+        .frame(width: 700, height: 440)
+        .overlay(alignment: .topTrailing) {
+            closeButton
+        }
     }
 
     var buttonsView: some View {
         HStack {
-            if currentPage != lastPage {
-                Button("Close") {
-                    showOnboarding = false
+            if currentPage != lastPageIndex {
+                Button("Back") {
+                    withAnimation {
+                        currentPage = max(currentPage - 1, 0)
+                    }
                 }
-                .buttonStyle(BigButtonStyle(color: .secondary))
+                .buttonStyle(BigButtonStyle(color: .secondary, minWidth: 80))
+                .disabled(currentPage == 0)
 
                 Button("Next") {
                     withAnimation {
-                        currentPage = min(currentPage + 1, lastPage)
+                        currentPage = min(currentPage + 1, lastPageIndex)
                     }
                 }
-                .buttonStyle(BigButtonStyle(color: .accent, minWidth: 120))
+                .buttonStyle(BigButtonStyle(color: .accent, minWidth: 80))
             } else {
                 Button("Done") {
                     showOnboarding = false
@@ -50,6 +60,27 @@ struct OnboardingView: View {
                 .buttonStyle(BigButtonStyle(color: .accent, minWidth: 180))
             }
         }
+    }
+
+    var pageIndicators: some View {
+        HStack(spacing: 8) {
+            ForEach(0..<totalPages, id: \.self) { index in
+                Circle()
+                    .fill(index == currentPage ? Color.accentColor : Color.gray)
+                    .frame(width: 10, height: 10)
+            }
+        }
+    }
+
+    var closeButton: some View {
+        Button {
+            showOnboarding = false
+        } label: {
+            Image(systemName: "xmark")
+                .font(.system(size: 20))
+        }
+        .padding()
+        .buttonStyle(.plain)
     }
 }
 
