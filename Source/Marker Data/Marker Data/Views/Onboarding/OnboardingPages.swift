@@ -84,8 +84,8 @@ let onboardingPages: [OnboardingPageView] = [
             ),
             .init(
                 icon: "3.square",
-                title: "Documentation",
-                description: "Enhance your understanding of Marker Data by thoroughly reading the provided documentation available through the Help menu."
+                title: "Your First Configuration",
+                description: "You are required to create a new Configuration in order to utilise the complete functionality of Marker Data."
             )
         ]
     ),
@@ -94,18 +94,38 @@ let onboardingPages: [OnboardingPageView] = [
         features: [
             .init(
                 icon: "4.square",
-                title: "Your First Configuration",
-                description: "You are required to create a new Configuration in order to utilise the complete functionality of Marker Data."
+                title: "Select Your Export Folder",
+                description: "Select your desired location by clicking on the Folder Icon under General."
             ),
             .init(
                 icon: "5.square",
-                title: "Select Your Export Folder",
-                description: "Select your desired location by clicking on the Folder Icon under General."
+                title: "Select Your Extraction Profile",
+                description: "Select your preferred Extraction Profile. If you wish to use the Notion or Airtable profiles, it is necessary to create corresponding Database Profiles beforehand."
             ),
             .init(
                 icon: "6.square",
                 title: "Update Active Configuration",
                 description: "Press ⌘+S on your keyboard to save your Active Configuration."
+            )
+        ]
+    ),
+    .init(
+        title: "Initial Steps",
+        features: [
+            .init(
+                icon: "7.square",
+                title: "Your First Extraction",
+                description: "Initiate your first extraction by selecting either Marker Data Source or Marker Data H.264 from the Share menu in Final Cut Pro."
+            ),
+            .init(
+                icon: "8.square",
+                title: "Using Workflow Extension",
+                description: "If images are not required, you may simply drag and drop your timeline into the Marker Data Workflow Extension."
+            ),
+            .init(
+                icon: "9.square",
+                title: "Documentation",
+                description: "Enhance your understanding of Marker Data by thoroughly reading the provided documentation available through the Help menu."
             )
         ]
     ),
