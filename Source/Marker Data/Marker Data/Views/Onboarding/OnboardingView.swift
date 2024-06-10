@@ -38,27 +38,30 @@ struct OnboardingView: View {
 
     var buttonsView: some View {
         HStack {
-            if currentPage != lastPageIndex {
-                Button("Back") {
-                    withAnimation {
-                        currentPage = max(currentPage - 1, 0)
-                    }
+            // Back button
+            Button("Back") {
+                withAnimation {
+                    currentPage = max(currentPage - 1, 0)
                 }
-                .buttonStyle(BigButtonStyle(color: .secondary, minWidth: 80))
-                .disabled(currentPage == 0)
-
-                Button("Next") {
-                    withAnimation {
-                        currentPage = min(currentPage + 1, lastPageIndex)
-                    }
-                }
-                .buttonStyle(BigButtonStyle(color: .accent, minWidth: 80))
-            } else {
-                Button("Done") {
-                    showOnboarding = false
-                }
-                .buttonStyle(BigButtonStyle(color: .accent, minWidth: 180))
             }
+            .buttonStyle(BigButtonStyle(color: .secondary, minWidth: 80))
+            .disabled(currentPage == 0)
+
+            // Next and done button
+            Group {
+                if currentPage != lastPageIndex {
+                    Button("Next") {
+                        withAnimation {
+                            currentPage = min(currentPage + 1, lastPageIndex)
+                        }
+                    }
+                } else {
+                    Button("Done") {
+                        showOnboarding = false
+                    }
+                }
+            }
+            .buttonStyle(BigButtonStyle(color: .accent, minWidth: 80))
         }
     }
 
