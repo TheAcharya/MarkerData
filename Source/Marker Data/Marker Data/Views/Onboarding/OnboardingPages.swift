@@ -55,7 +55,7 @@ let onboardingPages: [OnboardingPageView] = [
             .init(
                 icon: "tablecells",
                 title: "Spreadsheet Compatible",
-                description: "Marker Data is capable of generating spreadsheet-compatible files, including CSV, TSV, and Excel formats, from the Marker metadata in Final Cut Pro."
+                description: "Marker Data can generate spreadsheet-compatible files, including CSV, TSV, and Excel formats."
             ),
             .init(
                 icon: "waveform.path",
