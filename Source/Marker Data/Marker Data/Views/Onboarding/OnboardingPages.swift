@@ -15,7 +15,7 @@ let onboardingPages: [OnboardingPageView] = [
             .init(
                 icon: "puzzlepiece.extension",
                 title: "Integration with Final Cut Pro",
-                description: "Integrates with Final Cut Pro, boasting a native Share Destination & Workflow Extension."
+                description: "Integrates with Final Cut Pro, boasting a native Share Destination and Workflow Extension."
             ),
             .init(
                 icon: "briefcase",
@@ -25,7 +25,7 @@ let onboardingPages: [OnboardingPageView] = [
             .init(
                 icon: "server.rack",
                 title: "Databases",
-                description: "Native integration with renowned databases such as Airtable and Notion."
+                description: "Native integration with renowned databases such as Notion and Airtable."
             )
         ]
     ),
@@ -43,9 +43,9 @@ let onboardingPages: [OnboardingPageView] = [
                 description: "Versatile features for batch burning-in labels, embedding comprehensive metadata of each Marker onto stills or animated GIFs."
             ),
             .init(
-                icon: "tablecells",
-                title: "Database Templates",
-                description: "It is strongly advised that to duplicate the supplied Marker Data Template."
+                icon: "checklist",
+                title: "Roles",
+                description: "Marker Data's Workflow Extension allows targeted extractions based on your specific role selections."
             )
         ]
     ),
@@ -120,7 +120,7 @@ let onboardingPages: [OnboardingPageView] = [
             .init(
                 icon: "8.square",
                 title: "Using Workflow Extension",
-                description: "If images are not required, you may simply drag and drop your timeline into the Marker Data Workflow Extension."
+                description: "If images are unnecessary, simply drag and drop your timeline into the Workflow Extension."
             ),
             .init(
                 icon: "9.square",
