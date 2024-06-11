@@ -23,17 +23,17 @@ Marker Data allows users to extract, convert & create databases from <a href="ht
 
 ## Core Features
 
-- Written in Apple Swift language and SwiftUI framework.
+- Functionality allowing batch extraction and rendering of stills or animated GIFs based on each Marker's timecode.
+- Automatically analyse and embed colour swatches from extracted images for shot reference.
 - Integrates with Final Cut Pro, boasting a native Share Destination & Workflow Extension.
 - Precise extraction of Markers, ensuring an accurate representation of metadata.
 - Native integration with renowned databases such as [Notion](https://www.notion.so) and [Airtable](https://www.airtable.com).
 - Effortlessly synchronise Final Cut Pro's Marker metadata to cloud databases with a single click.
-- Functionality allowing batch extraction and rendering of stills or animated GIFs based on each Marker's timecode.
 - Versatile features for batch burning-in labels, embedding comprehensive metadata of each Marker onto stills or animated GIFs.
 - Comprehensive timeline functionality, encompassing support for timelines such as Projects and Compound Clips.
 - Allows the creation of multiple configurations tailored to diverse project requirements.
 - Harnesses the potential to utilise Captions as Markers, adding a layer of flexibility.
-- Automatically analyse and embed colour swatches from extracted images for shot reference.
+- Written in Apple Swift language and SwiftUI framework.
 - Application is Notarised by Apple.
 
 ## Avaliable Extract Profiles
