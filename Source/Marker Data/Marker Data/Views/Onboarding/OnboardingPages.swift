@@ -19,7 +19,7 @@ let onboardingPages: [OnboardingPageView] = [
             ),
             .init(
                 icon: "photo",
-                title: "Image",
+                title: "Images",
                 description: "Functionality allowing batch extraction and rendering of stills or animated GIFs based on each Marker's timecode."
             ),
             .init(
