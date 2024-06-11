@@ -13,25 +13,10 @@ let onboardingPages: [OnboardingPageView] = [
         title: "Features of Marker Data",
         features: [
             .init(
-                icon: "puzzlepiece.extension",
-                title: "Integration with Final Cut Pro",
-                description: "Integrates with Final Cut Pro, boasting a native Share Destination and Workflow Extension."
-            ),
-            .init(
-                icon: "briefcase",
-                title: "Configurations",
-                description: "Allows the creation of multiple configurations tailored to diverse project requirements."
-            ),
-            .init(
                 icon: "server.rack",
                 title: "Databases",
-                description: "Native integration with renowned databases such as Notion and Airtable."
-            )
-        ]
-    ),
-    .init(
-        title: "Features of Marker Data",
-        features: [
+                description: "Marker Data enables the extraction, conversion, and creation of Notion and Airtable databases utilising metadata from Final Cut Pro Markers."
+            ),
             .init(
                 icon: "photo",
                 title: "Image",
@@ -41,6 +26,21 @@ let onboardingPages: [OnboardingPageView] = [
                 icon: "tag",
                 title: "Labels",
                 description: "Versatile features for batch burning-in labels, embedding comprehensive metadata of each Marker onto stills or animated GIFs."
+            )
+        ]
+    ),
+    .init(
+        title: "Features of Marker Data",
+        features: [
+            .init(
+                icon: "puzzlepiece.extension",
+                title: "Integration with Final Cut Pro",
+                description: "Integrates with Final Cut Pro, boasting a native Share Destination and Workflow Extension."
+            ),
+            .init(
+                icon: "briefcase",
+                title: "Configurations",
+                description: "Allows the creation of multiple configurations tailored to diverse project requirements."
             ),
             .init(
                 icon: "checklist",
