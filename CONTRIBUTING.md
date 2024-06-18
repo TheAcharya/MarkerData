@@ -8,7 +8,11 @@ Before contributing, it is encouraged to post an Issue to discuss a bug or new f
 
 Code Owners & Maintainers reserve the right to revise or reject contributions if they are not deemed fit.
 
-## Code Formatting
+### Languages
+
+We kindly request that all pull requests be submitted in English. Pull requests submitted in other languages will unfortunately have to be declined.
+
+### Code Formatting
 
 Code formatting is not strictly enforced but is a courtesy we would like contributors to employ.
 
