@@ -109,16 +109,18 @@ class DatabaseUploader: ObservableObject {
         })
 
         let result = await shellOutputStream.run(argumentList.getCommand())
-        
+
+        Self.logger.debug("Upload output: \(result.output)")
+
         cancellable.cancel()
         
-        if result.didFail {
+        if result.didFail || result.output.lowercased().contains("error") {
             // Failure
             if Task.isCancelled {
                 Self.logger.error("Upload to Notion cancelled by user.")
                 throw DatabaseUploadError.userCancel
             } else {
-                Self.logger.error("Failed to upload to Notion.\nOutput: \(result.output)")
+                Self.logger.error("Failed to upload to Notion.")
                 throw DatabaseUploadError.notionUploadError
             }
         } else {
@@ -171,16 +173,18 @@ class DatabaseUploader: ObservableObject {
         })
         
         let result = await shellOutputStream.run(argumentList.getCommand())
-        
+
+        Self.logger.debug("Upload output: \(result.output)")
+
         cancellable.cancel()
         
-        if result.didFail {
+        if result.didFail || result.output.lowercased().contains("error") {
             // Failure
             if Task.isCancelled {
                 Self.logger.error("Upload to Airtable cancelled by user.")
                 throw DatabaseUploadError.userCancel
             } else {
-                Self.logger.error("Failed to upload to Airtable.\nOutput: \(result.output)")
+                Self.logger.error("Failed to upload to Airtable.")
                 throw DatabaseUploadError.airtableUploadError
             }
         } else {
