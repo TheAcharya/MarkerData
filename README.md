@@ -143,6 +143,8 @@ macOS Ventura 13.6.2 or later <br> Final Cut Pro 10.6.9 <br> Runs natively on bo
 - Colourist’s Notes Database
 - Client Review & Tracking Database
 - Offline & Online Notes Database
+- Send Final Cut Pro's Markers to DAWs
+- Create YouTube Chapters
 
 ## Credits
 
