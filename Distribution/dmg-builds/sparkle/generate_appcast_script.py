@@ -1,5 +1,5 @@
 import xml.etree.ElementTree as ET
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import sys
 import re
 
@@ -25,7 +25,7 @@ else:
     print("No match found.")
 
 # Get current time in UTC
-utc_now = datetime.utcnow()
+utc_now = datetime.now(timezone.utc)
 # Calculate Singapore time (UTC +8 hours)
 sgt_now = utc_now + timedelta(hours=8)
 # Format the time
