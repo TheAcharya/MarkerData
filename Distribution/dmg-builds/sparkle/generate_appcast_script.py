@@ -42,6 +42,7 @@ new_item_content = f'''
         <sparkle:shortVersionString>{BUNDLE_VERSION}</sparkle:shortVersionString>
         <sparkle:minimumSystemVersion>13.0</sparkle:minimumSystemVersion>
         <sparkle:releaseNotesLink>https://markerdata.theacharya.co/release-notes-appcast.html</sparkle:releaseNotesLink>
+        <sparkle:fullReleaseNotesLink>https://markerdata.theacharya.co/release-notes/</sparkle:fullReleaseNotesLink>
         <enclosure url="{URL}" length="{length}" type="application/octet-stream" sparkle:edSignature="{ed_signature}"/>
     </item>
 '''
