@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>SUFeedURL</key>
-	<string>https://github.com/TheAcharya/MarkerData/blob/main/appcast.xml</string>
+	<string>https://raw.githubusercontent.com/TheAcharya/MarkerData/main/appcast.xml</string>
 	<key>SUPublicEDKey</key>
 	<string>hMSvu16Xrk1OmwatgJmD/Mu+xJ1ElpPruWeOBwzrTDU=</string>
 	<key>CFBundleDocumentTypes</key>
