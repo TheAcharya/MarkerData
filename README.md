@@ -120,6 +120,17 @@ macOS Ventura 13.6.2 or later <br> Final Cut Pro 10.6.9 or later <br> Runs nativ
 
 <p align="center"> <img src="https://github.com/TheAcharya/MarkerData-Website/blob/main/docs/assets/md-install.png?raw=true"> </p>
 
+1. Download the DMG to your system.
+2. Mount the DMG by double-clicking it.
+3. Move Marker Data to your Applications folder.
+4. Launch Marker Data.
+5. Read Onboarding information and instructions.
+6. Create your first Configuration.
+7. Start using Marker Data and have fun!
+
+> [!WARNING]  
+> Marker Data must be installed in the Applications folder to run correctly. Running the application outside of this designated directory would result in functionality issues.
+
 ## Use Cases
 - Marker Notes Database
 - Shot Library Database
