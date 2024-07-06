@@ -125,7 +125,7 @@ macOS Ventura 13.6.2 or later <br> Final Cut Pro 10.6.9 or later <br> Runs nativ
 3. Move Marker Data to your Applications folder.
 4. Launch Marker Data.
 5. Read Onboarding information and instructions.
-6. Create your first Configuration.
+6. Create your first [Configuration](https://markerdata.theacharya.co/user-guide/configurations/).
 7. Start using Marker Data and have fun!
 
 > [!WARNING]  
