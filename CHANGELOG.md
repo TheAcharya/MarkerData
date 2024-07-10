@@ -1,6 +1,7 @@
 # Changelog
 
 ### 1.0.0 (1)
+
 **🎉 Released:**
 - 11th July 2024
 
