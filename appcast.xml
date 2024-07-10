@@ -12,16 +12,6 @@
         <sparkle:releaseNotesLink>https://markerdata.theacharya.co/release-notes-appcast.html</sparkle:releaseNotesLink>
         <sparkle:fullReleaseNotesLink>https://markerdata.theacharya.co/release-notes/</sparkle:fullReleaseNotesLink>
         <enclosure url="https://github.com/TheAcharya/MarkerData/releases/download/v1.0.0/Marker-Data_v1.0.0.dmg" length="41350513" type="application/octet-stream" sparkle:edSignature="Qfm7fbZwLM5j9gFt38/CJfiMIaldrLKBnXeRQDscublL37J7AAeF5G93HTlyd0u8f4UmQEpnlRuDfmoiJsUsBg==" />
-    </item><item>
-        <title>Version 1.0.0</title>
-        <link>https://markerdata.theacharya.co</link>
-        <pubDate>Sat, 29 Jun 2024 08:51:02 +0800</pubDate>
-        <sparkle:version>1</sparkle:version>
-        <sparkle:shortVersionString>1.0.0</sparkle:shortVersionString>
-        <sparkle:minimumSystemVersion>13.0</sparkle:minimumSystemVersion>
-        <sparkle:releaseNotesLink>https://markerdata.theacharya.co/release-notes-appcast.html</sparkle:releaseNotesLink>
-        <sparkle:fullReleaseNotesLink>https://markerdata.theacharya.co/release-notes/</sparkle:fullReleaseNotesLink>
-        <enclosure url="https://github.com/TheAcharya/MarkerData/releases/download/v1.0.0/Marker-Data_v1.0.0.dmg" length="41344463" type="application/octet-stream" sparkle:edSignature="7f9Zm0U4yid2gEpjvVccwcCD+Tjb1yv7Be6/r6isz9AkJ/qaKCHwEJl5XVi7SnZknh25JnmK8TBVNA3Z4AuIDw==" />
     </item>
     </channel>
 </rss>
