@@ -32,6 +32,10 @@ class DictionaryEncoder {
 
     func encode<T>(_ value: T) throws -> [String: Any] where T : Encodable {
         let data = try encoder.encode(value)
-        return try JSONSerialization.jsonObject(with: data, options: .allowFragments) as! [String: Any]
+        if let dict = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any] {
+            return dict
+        } else {
+            return [:]
+        }
     }
 }

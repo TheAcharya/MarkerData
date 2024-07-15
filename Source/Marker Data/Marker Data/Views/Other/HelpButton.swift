@@ -49,8 +49,8 @@ struct HelpButton: NSViewRepresentable {
         }
         
         func bindButtonAction() {
-            self.button!.target = self
-            self.button!.action = #selector(self.didPressButton)
+            self.button?.target = self
+            self.button?.action = #selector(self.didPressButton)
         }
         
         @objc func didPressButton() {

@@ -34,8 +34,7 @@ final class ExtractionModel: ObservableObject {
     
     // Cancellation
     private var taskGroup: TaskGroup<Void>? = nil
-    
-//    static let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "ExtractionModel")
+
     static let logger = Logger(label: Bundle.main.bundleIdentifier!)
 
     init(settings: SettingsContainer, databaseManager: DatabaseManager) {
@@ -88,8 +87,10 @@ final class ExtractionModel: ObservableObject {
                 \.progress.fractionCompleted,
                  options: [.old, .new]
             ) { object, change in
-                Task {
-                    await self.extractionProgress.updateProgress(of: url, to: Int64(change.newValue! * 100))
+                if let newValue = change.newValue {
+                    Task {
+                        await self.extractionProgress.updateProgress(of: url, to: Int64(newValue * 100))
+                    }
                 }
             }
             

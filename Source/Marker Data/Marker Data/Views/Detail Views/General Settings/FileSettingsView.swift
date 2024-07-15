@@ -85,7 +85,9 @@ struct FileSettingsView: View {
         HStack {
             // Open Files and Folders Access in System Settings
             Button {
-                NSWorkspace.shared.open(URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_FilesAndFolders")!)
+                if let filesAccessURL = URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_FilesAndFolders") {
+                    NSWorkspace.shared.open(filesAccessURL)
+                }
             } label: {
                 Label("Open Files and Folders Access", systemImage: "folder")
             }
@@ -96,7 +98,9 @@ struct FileSettingsView: View {
                 .padding(.horizontal, 4)
             
             Button {
-                NSWorkspace.shared.open(URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_AllFiles")!)
+                if let fullDiskAccessURL = URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_AllFiles") {
+                    NSWorkspace.shared.open(fullDiskAccessURL)
+                }
             } label: {
                 Label("Open Full Disk Access", systemImage: "internaldrive")
             }

@@ -88,8 +88,7 @@ extension URL {
     
     func conformsToType(_ types: [UTType]) -> Bool {
         let fileExtensions = types
-            .map { $0.preferredFilenameExtension }
-            .filter { $0 != nil }
+            .compactMap { $0.preferredFilenameExtension }
         
         return fileExtensions.contains(pathExtension)
     }

@@ -59,8 +59,10 @@ struct LibraryFolders {
     public static func deleteOldCache() {
         let directory = URL.FCPExportCacheFolder
         let fileManager = FileManager.default
-        let oneMonthAgo = Calendar.current.date(byAdding: .month, value: -1, to: Date())!
-        
+        guard let oneMonthAgo = Calendar.current.date(byAdding: .month, value: -1, to: Date()) else {
+            return
+        }
+
         do {
             let resourceKeys: Set<URLResourceKey> = [.contentModificationDateKey]
             let directoryContents = try fileManager.contentsOfDirectory(at: directory, includingPropertiesForKeys: Array(resourceKeys), options: .skipsHiddenFiles)

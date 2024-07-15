@@ -36,7 +36,9 @@ struct NotificationSettingsView: View {
             HStack {
                 // Open preferences button
                 Button {
-                    NSWorkspace.shared.open(URL(string: "x-apple.systempreferences:com.apple.Notifications-Settings.extension")!)
+                    if let notificationSettingsURL = URL(string: "x-apple.systempreferences:com.apple.Notifications-Settings.extension") {
+                        NSWorkspace.shared.open(notificationSettingsURL)
+                    }
                 } label: {
                     Label("Open macOS Notification Settings", systemImage: "bell.badge")
                 }

@@ -15,10 +15,14 @@ extension Bundle {
     }
     
     var version: String {
-        return infoDictionary?["CFBundleShortVersionString"] as! String
+        return infoDictionary?["CFBundleShortVersionString"] as? String ?? "unknown version"
     }
     
     var buildNumber: String {
-        return infoDictionary?["CFBundleVersion"] as! String
+        return infoDictionary?["CFBundleVersion"] as? String ?? "?"
+    }
+
+    var safeBundleID: String {
+        return Bundle.main.bundleIdentifier ?? "co.theacharya.MarkerData"
     }
 }
