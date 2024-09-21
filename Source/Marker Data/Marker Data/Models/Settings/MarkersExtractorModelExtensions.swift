@@ -8,7 +8,7 @@
 import Foundation
 import MarkersExtractor
 
-extension ExportFolderFormat: Codable, Identifiable {
+extension ExportFolderFormat: Codable {
     var displayName: String {
         switch self {
         case .short:
@@ -19,13 +19,9 @@ extension ExportFolderFormat: Codable, Identifiable {
             "Long"
         }
     }
-
-    public var id: String {
-        self.rawValue
-    }
 }
 
-extension MarkerIDMode: Codable, Identifiable {
+extension MarkerIDMode: Codable {
     var displayName: String {
         switch self {
         case .timelineNameAndTimecode:
@@ -36,13 +32,9 @@ extension MarkerIDMode: Codable, Identifiable {
             "Notes"
         }
     }
-
-    public var id: String {
-        self.rawValue
-    }
 }
 
-extension MarkerLabelProperties.AlignHorizontal: Codable, Identifiable {
+extension MarkerLabelProperties.AlignHorizontal: Codable {
     var displayName: String {
         switch self {
         case .left:
@@ -53,13 +45,9 @@ extension MarkerLabelProperties.AlignHorizontal: Codable, Identifiable {
             "Right"
         }
     }
-
-    public var id: String {
-        self.rawValue
-    }
 }
 
-extension MarkerLabelProperties.AlignVertical: Codable, Identifiable {
+extension MarkerLabelProperties.AlignVertical: Codable {
     var displayName: String {
         switch self {
         case .top:
@@ -70,16 +58,8 @@ extension MarkerLabelProperties.AlignVertical: Codable, Identifiable {
             "Bottom"
         }
     }
-
-    public var id: String {
-        self.rawValue
-    }
 }
 
-extension ExportField: Codable, Identifiable {
-    public var id: String {
-        self.rawValue
-    }
-}
+extension ExportField: Codable {}
 
 extension MarkersSource: Codable {}

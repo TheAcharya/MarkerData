@@ -8,8 +8,4 @@
 import Foundation
 import DAWFileKit
 
-extension FinalCutPro.FCPXML.AnyRole: Identifiable, Codable {
-    public var id: String {
-        self.role
-    }
-}
+extension FinalCutPro.FCPXML.AnyRole: Codable {}
