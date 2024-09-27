@@ -18,8 +18,7 @@ extension ExtractionModel: DropDelegate {
             DropProposal(operation: .forbidden)
         }
     }
-    
-    @MainActor
+
     func performDrop(info: DropInfo) -> Bool {
         let providers = info.itemProviders(
             for: [.fileURL]

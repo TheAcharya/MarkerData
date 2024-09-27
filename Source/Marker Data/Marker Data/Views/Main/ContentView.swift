@@ -134,6 +134,7 @@ struct ContentView: View {
     }
 }
 
+#if compiler(>=6)
 #Preview {
     @StateObject var settings = SettingsContainer()
     @StateObject var databaseManager = DatabaseManager(settings: settings)
@@ -156,3 +157,4 @@ struct ContentView: View {
     )
     .environmentObject(settings)
 }
+#endif

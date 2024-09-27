@@ -79,7 +79,9 @@ struct WorkflowExtensionView: View {
         .onDrop(of: [.fcpxml], isTargeted: nil) { providers -> Bool in
             for provider in providers {
                 _ = provider.loadDataRepresentation(for: .fcpxml) { data, error in
-                    self.handleDrop(data: data)
+                    Task { @MainActor in
+                        self.handleDrop(data: data)
+                    }
                 }
             }
             return true

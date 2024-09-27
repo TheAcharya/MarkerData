@@ -44,7 +44,7 @@ extension RolesManager: DropDelegate {
             if provider.canLoadObject(ofClass: URL.self) {
                 // Load the file URL from the provider
                 let _ = provider.loadObject(ofClass: URL.self) { url, error in
-                    Task {
+                    Task { @MainActor in
                         defer {
                             self.loadingInProgress = false
                         }
