@@ -147,7 +147,7 @@ macOS Ventura 13.6.7 or later <br> Final Cut Pro 10.7.1 or later <br> Runs only 
 
 ## Featured
 
-- [FCP Cafe](https://fcp.cafe/#11th-july-2024)
+- [FCP Cafe](https://fcp.cafe/ecosystem/tools/#marker-data)
 - [Newsshooter](https://www.newsshooter.com/2024/07/10/marker-data-for-final-cut-pro/)
 - [ProVideo Coalition](https://www.provideocoalition.com/marker-data-a-quick-look/)
 
