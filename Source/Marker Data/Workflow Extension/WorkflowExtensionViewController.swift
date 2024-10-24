@@ -20,4 +20,13 @@ import SwiftUI
         swiftuiView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
         swiftuiView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
     }
+
+    @objc var hostInfoString: String {
+        guard let host = ProExtensionHostSingleton() as? FCPXHost else {
+            print("Could not get host information")
+            return ""
+        }
+
+        return String(format:"%@ %@", host.name, host.versionString)
+    }
 }
