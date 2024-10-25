@@ -1,5 +1,15 @@
 # Changelog
 
+### 1.0.1 (2)
+
+**🎉 Released:**
+- Date Pending
+
+**🔨 Improvements:**
+- Codebase updates for better compatibility with Xcode 16 & Swift 6 and changes in dependency API
+
+---
+
 ### 1.0.0 (1)
 
 **🎉 Released:**
