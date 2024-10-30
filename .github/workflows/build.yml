@@ -19,7 +19,7 @@ jobs:
     - name: List Xcode Installations
       run: sudo ls -1 /Applications | grep "Xcode"
       
-    - name: Select Xcode 16.0
+    - name: Select Xcode 16.1
       run: sudo xcode-select -s /Applications/Xcode_16.1.app/Contents/Developer
     
     - name: Change to Project Directory
