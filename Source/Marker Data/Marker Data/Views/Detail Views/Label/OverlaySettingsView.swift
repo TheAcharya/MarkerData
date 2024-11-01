@@ -140,8 +140,8 @@ struct OverlaySettingsView: View {
 }
 
 #Preview {
-    @StateObject var settings = SettingsContainer()
-    
+    let settings = SettingsContainer()
+
     return OverlaySettingsView()
         .padding()
         .environmentObject(settings)

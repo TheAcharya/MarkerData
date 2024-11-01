@@ -181,13 +181,13 @@ struct QueueView: View {
 }
 
 #Preview {
-    @StateObject var settings = SettingsContainer()
-    @StateObject var databaseManager = DatabaseManager(settings: settings)
-    
-    @StateObject var queueModel = QueueModel(
+    let settings = SettingsContainer()
+    let databaseManager = DatabaseManager(settings: settings)
+    let queueModel = QueueModel(
         settings: settings,
         databaseManager: databaseManager
     )
-    
+
     return QueueView(queueModel: queueModel)
+        .environmentObject(settings)
 }

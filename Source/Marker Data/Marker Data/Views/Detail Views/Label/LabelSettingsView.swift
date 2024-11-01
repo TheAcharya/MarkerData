@@ -37,11 +37,9 @@ struct LabelSettingsView: View {
 
 }
 
-struct LabelSettingsView_Previews: PreviewProvider {
-    @StateObject static private var settings = SettingsContainer()
+#Preview {
+    let settings = SettingsContainer()
 
-    static var previews: some View {
-        LabelSettingsView()
-            .environmentObject(settings)
-    }
+    return LabelSettingsView()
+        .environmentObject(settings)
 }

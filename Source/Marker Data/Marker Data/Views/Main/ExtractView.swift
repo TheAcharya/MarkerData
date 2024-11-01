@@ -353,13 +353,9 @@ public struct ExtractView: View {
 }
 
 #Preview {
-    @StateObject var settings = SettingsContainer()
-    @StateObject var databaseManager = DatabaseManager(settings: settings)
-
-    @StateObject var extractionModel = ExtractionModel(
-        settings: settings,
-        databaseManager: databaseManager
-    )
+    let settings = SettingsContainer()
+    let databaseManager = DatabaseManager(settings: settings)
+    let extractionModel = ExtractionModel(settings: settings, databaseManager: databaseManager)
 
     return ExtractView(extractionModel: extractionModel)
         .frame(width: WindowSize.detailWidth, height: WindowSize.fullHeight)

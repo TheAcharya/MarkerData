@@ -103,8 +103,7 @@ struct ExportDestinationPicker: View {
 }
 
 #Preview {
-    @StateObject var settings = SettingsContainer()
-    
+    let settings = SettingsContainer()
     settings.store.exportFolderURL = URL(string: "/Users/user/marker_data")
     
     return ExportDestinationPicker()

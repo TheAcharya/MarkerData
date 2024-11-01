@@ -27,10 +27,8 @@ struct AboutView: View {
     }
 }
 
-struct AboutView_Previews: PreviewProvider {
-    static var previews: some View {
-        AboutView()
-            .padding()
-            .frame(width: 500, height: 500)
-    }
+#Preview {
+    AboutView()
+        .padding()
+        .frame(width: 500, height: 500)
 }
