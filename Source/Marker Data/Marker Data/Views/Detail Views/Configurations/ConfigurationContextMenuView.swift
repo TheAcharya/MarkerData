@@ -76,7 +76,11 @@ struct ConfigurationContextMenuView: View {
             Menu {
                 ForEach(Array(settings.keyboardShortcuts.enumerated()), id: \.offset) { index, confName in
                     Button {
-                        settings.keyboardShortcuts[index] = store.name
+                        settings.keyboardShortcuts[index] = if settings.keyboardShortcuts[index] == store.name {
+                            "" // Unassign shortcut
+                        } else {
+                            store.name // Assign shortcut
+                        }
 
                         // Call objectWillChange manually as keyboardShortcuts is not a published property
                         settings.objectWillChange.send()
