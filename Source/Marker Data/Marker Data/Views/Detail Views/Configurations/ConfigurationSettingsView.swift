@@ -100,7 +100,7 @@ struct ConfigurationSettingsView: View {
     // MARK: Views
     
     private var tableView: some View {
-        List(self.settings.configurations, selection: $selectedStoreName) { configuration in
+        List(self.$settings.configurations, selection: $selectedStoreName) { $configuration in
             let isActive = configuration.name == settings.store.name
 
             let unsavedChangesText = if isActive && settings.unsavedChanges {
@@ -134,14 +134,16 @@ struct ConfigurationSettingsView: View {
                 }
             )
             .tag(configuration.name)
-        }
-        .clipShape(RoundedRectangle(cornerRadius: 10))
-        .contextMenu(forSelectionType: String.self) { storeNames in
-            if let storeName = storeNames.first,
-               let store = settings.findByName(storeName) {
-                contextMenuButtons(for: store)
+            .contextMenu {
+                ConfigurationContextMenuView(
+                    confModel: confModel,
+                    store: $configuration,
+                    selectedStoreName: $selectedStoreName,
+                    showRenameConfigurationSheet: $showRenameConfigurationSheet
+                )
             }
         }
+        .clipShape(RoundedRectangle(cornerRadius: 10))
     }
     
     /// Buttons to add and remove configurations
