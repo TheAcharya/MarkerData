@@ -140,8 +140,9 @@ struct OverlaySettingsView: View {
 }
 
 #Preview {
-    @StateObject var settings = SettingsContainer()
-    
+    // Create the settings object outside the preview closure
+    let settings = SettingsContainer()
+
     return OverlaySettingsView()
         .padding()
         .environmentObject(settings)

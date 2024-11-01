@@ -136,15 +136,16 @@ struct ContentView: View {
 
 #if compiler(>=6)
 #Preview {
-    @StateObject var settings = SettingsContainer()
-    @StateObject var databaseManager = DatabaseManager(settings: settings)
-
-    @StateObject var extractionModel = ExtractionModel(
+    // Declare settings, databaseManager, extractionModel, and queueModel outside the closure
+    let settings = SettingsContainer()
+    let databaseManager = DatabaseManager(settings: settings)
+    
+    let extractionModel = ExtractionModel(
         settings: settings,
         databaseManager: databaseManager
     )
     
-    @StateObject var queueModel = QueueModel(
+    let queueModel = QueueModel(
         settings: settings,
         databaseManager: databaseManager
     )

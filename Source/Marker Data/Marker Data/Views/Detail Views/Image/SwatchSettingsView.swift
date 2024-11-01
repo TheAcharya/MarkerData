@@ -91,7 +91,8 @@ struct SwatchSettingsView: View {
 }
 
 #Preview {
-    @StateObject var settings = SettingsContainer()
+    // Initialize the StateObject outside the closure
+    let settings = SettingsContainer()
 
     return SwatchSettingsView()
         .environmentObject(settings)
