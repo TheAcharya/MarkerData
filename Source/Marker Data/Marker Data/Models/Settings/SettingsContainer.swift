@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 import AppKit
 import Combine
 import OSLog
@@ -22,11 +23,12 @@ class SettingsContainer: ObservableObject {
 
     var configurations: [SettingsStore]
 
-    private var cancellables = Set<AnyCancellable>()
+    /// Keyboard shortcuts for configurations
+    /// Each array element can be assigned to a configuration name
+    /// The keyboard shortcut is command + index of the name +1
+    @UserDefaultsArray("configurationShortcuts") var keyboardShortcuts: [String] = Array(repeating: "", count: 9)
 
-    /// Avoids recursion when checking for unsaved changes
-    @MainActor
-    private var ignoreWillChange = false
+    private var cancellables = Set<AnyCancellable>()
 
     private static let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "SettingsContainer")
 
@@ -57,20 +59,15 @@ class SettingsContainer: ObservableObject {
             await self.checkForUnsavedChanges()
         }
 
-        // Save file when changes are made
-        self.objectWillChange.sink { _ in
-            Task(priority: .background) {
-                if !self.ignoreWillChange {
+        $store
+            .dropFirst() // Ignore initial value
+            .sink { _ in
+                Task(priority: .background) { @MainActor in
                     try await self.store.saveAsCurrent()
                     await self.checkForUnsavedChanges()
                 }
-
-                await MainActor.run {
-                    self.ignoreWillChange = false
-                }
             }
-        }
-        .store(in: &cancellables)
+            .store(in: &cancellables)
 
         // Monitor roles for changes
         // We need this because the roles might be changed from the FCP Workflow Extension
@@ -215,10 +212,6 @@ class SettingsContainer: ObservableObject {
 
     /// Compares current store with the one on disk
     public func checkForUnsavedChanges() async {
-        await MainActor.run {
-            self.ignoreWillChange = true
-        }
-
         // In case of default
         if isDefaultActive {
             self.unsavedChanges = self.store != SettingsStore.defaults()

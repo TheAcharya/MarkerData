@@ -66,6 +66,13 @@ struct ConfigurationCommands: Commands {
                     }
                 }
                 .labelStyle(.titleAndIcon)
+                .if(settings.keyboardShortcuts.contains(store.name)) { view in
+                    let shortcutIndex = settings.keyboardShortcuts.firstIndex(of: store.name) ?? 0
+                    let shortcut = KeyEquivalent("\(shortcutIndex + 1)".first ?? "0")
+
+                    return view
+                        .keyboardShortcut(shortcut, modifiers: .command)
+                }
             }
         }
     }
