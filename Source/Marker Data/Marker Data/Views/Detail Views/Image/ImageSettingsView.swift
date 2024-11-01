@@ -26,11 +26,9 @@ struct ImageSettingsView: View {
     }
 }
 
-struct ImageSettingsView_Previews: PreviewProvider {
-    static let settings = SettingsContainer()
-    
-    static var previews: some View {
-        ImageSettingsView()
-            .environmentObject(settings)
-    }
+#Preview {
+    let settings = SettingsContainer()
+
+    return ImageSettingsView()
+        .environmentObject(settings)
 }

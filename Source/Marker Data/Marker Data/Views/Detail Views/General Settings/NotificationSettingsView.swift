@@ -52,7 +52,6 @@ struct NotificationSettingsView: View {
 }
 
 #Preview {
-    // Declare settings and databaseManager outside the closure
     let settings = SettingsContainer()
     let databaseManager = DatabaseManager(settings: settings)
     

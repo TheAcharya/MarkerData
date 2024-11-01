@@ -156,13 +156,11 @@ struct DatabaseSettingsView: View {
     }
 }
 
-struct DatabaseSettingsView_Previews: PreviewProvider {
-    static let settings = SettingsContainer()
-    static let databaseManager = DatabaseManager(settings: settings)
-    
-    static var previews: some View {
-        DatabaseSettingsView()
-            .environmentObject(settings)
-            .environmentObject(databaseManager)
-    }
+#Preview {
+    let settings = SettingsContainer()
+    let databaseManager = DatabaseManager(settings: settings)
+
+    return DatabaseSettingsView()
+        .environmentObject(settings)
+        .environmentObject(databaseManager)
 }

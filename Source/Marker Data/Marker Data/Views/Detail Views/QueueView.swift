@@ -181,7 +181,6 @@ struct QueueView: View {
 }
 
 #Preview {
-    // Initialize StateObject instances outside the closure
     let settings = SettingsContainer()
     let databaseManager = DatabaseManager(settings: settings)
     let queueModel = QueueModel(

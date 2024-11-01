@@ -61,27 +61,6 @@ struct HelpButton: NSViewRepresentable {
 
 }
 
-struct HelpButton_Previews: PreviewProvider {
-    
-    struct Preview: View {
-        
-        @State private var bool = true
-        
-        var body: some View {
-            VStack {
-                HelpButton {
-                    bool.toggle()
-                }
-                Text(verbatim: "\(bool)")
-            }
-            .padding(20)
-            .frame(minWidth: 100, minHeight: 100)
-        }
-        
-    }
-
-    static var previews: some View {
-        Preview()
-    }
-    
+#Preview {
+    HelpButton(action: {})
 }

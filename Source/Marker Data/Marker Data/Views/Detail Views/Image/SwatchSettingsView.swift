@@ -91,7 +91,6 @@ struct SwatchSettingsView: View {
 }
 
 #Preview {
-    // Initialize the StateObject outside the closure
     let settings = SettingsContainer()
 
     return SwatchSettingsView()

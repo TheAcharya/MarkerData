@@ -223,11 +223,9 @@ struct ConfigurationSettingsView: View {
     }
 }
 
-struct ConfigurationSettingsView_Previews: PreviewProvider {
-    static let settings = SettingsContainer()
-    
-    static var previews: some View {
-        ConfigurationSettingsView()
-            .environmentObject(settings)
-    }
+#Preview {
+    let settings = SettingsContainer()
+
+    return ConfigurationSettingsView()
+        .environmentObject(settings)
 }

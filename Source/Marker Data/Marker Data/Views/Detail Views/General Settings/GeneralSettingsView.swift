@@ -37,16 +37,13 @@ struct GeneralSettingsView: View {
     }
 }
 
-struct GeneralSettingsView_Previews: PreviewProvider {
-    @StateObject static var settings = SettingsContainer()
-    @StateObject static var databaseManager = DatabaseManager(settings: settings)
-    
-    static var previews: some View {
-        GeneralSettingsView(updater: SPUStandardUpdaterController(startingUpdater: false, updaterDelegate: nil, userDriverDelegate: nil).updater)
+#Preview {
+    let settings = SettingsContainer()
+    let databaseManager = DatabaseManager(settings: settings)
+
+    return GeneralSettingsView(updater: SPUStandardUpdaterController(startingUpdater: false, updaterDelegate: nil, userDriverDelegate: nil).updater)
             .preferredColorScheme(.dark)
             .environmentObject(settings)
             .environmentObject(databaseManager)
             .padding()
-    }
-    
 }

@@ -136,11 +136,9 @@ struct GeneralLabelSettingsView: View {
     }
 }
 
-struct GeneralLabelSettingsView_Previews: PreviewProvider {
-    @StateObject static private var settings = SettingsContainer()
-    
-    static var previews: some View {
-        GeneralLabelSettingsView()
-            .environmentObject(settings)
-    }
+#Preview {
+    let settings = SettingsContainer()
+
+    return GeneralLabelSettingsView()
+        .environmentObject(settings)
 }

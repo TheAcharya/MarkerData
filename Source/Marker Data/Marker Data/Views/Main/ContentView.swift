@@ -136,7 +136,6 @@ struct ContentView: View {
 
 #if compiler(>=6)
 #Preview {
-    // Declare settings, databaseManager, extractionModel, and queueModel outside the closure
     let settings = SettingsContainer()
     let databaseManager = DatabaseManager(settings: settings)
     

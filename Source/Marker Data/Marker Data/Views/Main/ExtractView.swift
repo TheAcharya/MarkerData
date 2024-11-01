@@ -353,7 +353,6 @@ public struct ExtractView: View {
 }
 
 #Preview {
-    // Create instances of the necessary objects
     let settings = SettingsContainer()
     let databaseManager = DatabaseManager(settings: settings)
     let extractionModel = ExtractionModel(settings: settings, databaseManager: databaseManager)

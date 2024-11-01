@@ -140,7 +140,6 @@ struct OverlaySettingsView: View {
 }
 
 #Preview {
-    // Create the settings object outside the preview closure
     let settings = SettingsContainer()
 
     return OverlaySettingsView()
