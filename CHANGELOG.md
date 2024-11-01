@@ -1,11 +1,12 @@
 # Changelog
 
-### 1.0.1 (2)
+### 1.1.0 (2)
 
 **🎉 Released:**
 - Date Pending
 
 **🔨 Improvements:**
+- User can now Assign Shortcut to Configurations (#47)
 - Codebase updates for better compatibility with Xcode 16 & Swift 6 and changes in dependency API
 
 ---
