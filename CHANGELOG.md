@@ -5,8 +5,9 @@
 **🎉 Released:**
 - Date Pending
 
+**Marker Data** is now exclusively build and optimised for Apple Silicon only.
+
 **🔨 Improvements:**
-- Marker Data is now exclusively build and optimised for Apple Silicon only
 - Application bundle size has been reduced
 - User can now Assign Shortcut to Configurations (#47)
 - Codebase updates for better compatibility with Xcode 16 & Swift 6 and changes in dependency API
