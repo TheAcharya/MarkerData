@@ -76,18 +76,26 @@ struct ConfigurationContextMenuView: View {
             Menu {
                 ForEach(Array(settings.keyboardShortcuts.enumerated()), id: \.offset) { index, confName in
                     Button {
-                        settings.keyboardShortcuts[index] = if settings.keyboardShortcuts[index] == store.name {
-                            "" // Unassign shortcut
+                        if settings.keyboardShortcuts[index] == store.name {
+                            // Unassign shortcut
+                            settings.keyboardShortcuts[index] = ""
                         } else {
-                            store.name // Assign shortcut
+                            // Remove previous bindings
+                            settings.keyboardShortcuts = settings.keyboardShortcuts.map { $0 == store.name ? "" : $0 }
+                            // Assign shortcut
+                            settings.keyboardShortcuts[index] = store.name
                         }
 
                         // Call objectWillChange manually as keyboardShortcuts is not a published property
                         settings.objectWillChange.send()
                     } label: {
+                        // We have to add the tick symbol this a hacky way because
+                        // the Menu view ignores any other types layout modifiers
                         HStack {
-                            Label("\(index + 1)", systemImage: confName == store.name ? "checkmark" : "command")
-                                .tag(index)
+                            // Tick or space
+                            Text(confName == store.name ? "✓ " : String(repeating: " ", count: 4)) +
+                            // Shortcut
+                            Text("⌘ \(index + 1)")
                         }
                     }
                 }
