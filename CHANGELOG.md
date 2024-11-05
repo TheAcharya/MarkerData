@@ -10,7 +10,10 @@
 **🔨 Improvements:**
 - Application bundle size has been reduced
 - User can now Assign Shortcut to Configurations (#47)
-- Codebase updates for better compatibility with Xcode 16 & Swift 6 and changes in dependency API
+- Updated Notion Module CS2Notion Neo to version 1.3.2
+
+**🐞 Bug Fix:**
+- Fixed a critical bug in the Notion module that prevented Marker Data's Data Set uploads when Notion Database URL is not provided
 
 ---
 
