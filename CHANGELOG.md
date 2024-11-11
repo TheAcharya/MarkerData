@@ -3,7 +3,7 @@
 ### 1.1.0 (2)
 
 **🎉 Released:**
-- Date Pending
+- 11th November 2024
 
 **Marker Data** is now exclusively build and optimised for Apple Silicon only.
 
