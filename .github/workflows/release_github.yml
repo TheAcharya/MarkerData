@@ -10,7 +10,7 @@ on:
       
 jobs:
   build:
-    runs-on: macos-14
+    runs-on: macos-15
 
     steps:
     - name: Checkout Repository
@@ -348,7 +348,7 @@ jobs:
         
         python3 Distribution/dmg-builds/sparkle/generate_appcast_script.py "$BUNDLE_VERSION" "$BUNDLE_BUILD" "$EDSA"
         
-        git config user.email "actions@example.com"
+        git config user.email "actions@github.com"
         git config user.name "GitHub Actions"
         git add ./appcast.xml
         git commit -m "appcast.xml Update $BUNDLE_VERSION"
