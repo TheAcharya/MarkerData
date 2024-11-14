@@ -3,12 +3,12 @@
 ### 1.1.1 (3)
 
 **🎉 Released:**
-- Pending Date
+- 14th November 2024
 
 **Marker Data** is now exclusively build and optimised for Apple Silicon only.
 
 **🔨 Improvements:**
-- Added suppprt and compatibility for FCPXML v1.13 (Final Cut Pro 11)
+- Added support and compatibility for FCPXML v1.13 (Final Cut Pro 11)
 - Added support and compatibility for frame rates `90p`, `100p` and `120p`
 
 ---
