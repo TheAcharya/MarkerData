@@ -63,11 +63,11 @@ jobs:
     - name: Copy Workflow Extensions SDK
       run: |
         mkdir -p dist/dmg-builds/sdk
-        cp -R ./SDK/Workflow_Extensions_1.0.2.dmg ./dist/dmg-builds/sdk
+        cp -R ./SDK/Workflow_Extensions_1.0.3.dmg ./dist/dmg-builds/sdk
         
     - name: Mount Workflow Extensions DMG
       run: |
-        hdiutil attach ./dist/dmg-builds/sdk/Workflow_Extensions_1.0.2.dmg
+        hdiutil attach ./dist/dmg-builds/sdk/Workflow_Extensions_1.0.3.dmg
     
     - name: Install Workflow Extensions SDK
       run: |
@@ -351,7 +351,7 @@ jobs:
         git config user.email "actions@github.com"
         git config user.name "GitHub Actions"
         git add ./appcast.xml
-        git commit -m "appcast.xml Update $BUNDLE_VERSION"
+        git commit -m "Marker Data $BUNDLE_VERSION Released"
         git push       
     
     - name: Create Environment Files

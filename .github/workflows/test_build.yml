@@ -48,11 +48,11 @@ jobs:
     - name: Copy Workflow Extensions SDK
       run: |
         mkdir -p dist/dmg-builds/sdk
-        cp -R ./SDK/Workflow_Extensions_1.0.2.dmg ./dist/dmg-builds/sdk
+        cp -R ./SDK/Workflow_Extensions_1.0.3.dmg ./dist/dmg-builds/sdk
         
     - name: Mount Workflow Extensions DMG
       run: |
-        hdiutil attach ./dist/dmg-builds/sdk/Workflow_Extensions_1.0.2.dmg
+        hdiutil attach ./dist/dmg-builds/sdk/Workflow_Extensions_1.0.3.dmg
     
     - name: Install Workflow Extensions SDK
       run: |
