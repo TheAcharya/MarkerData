@@ -8,7 +8,8 @@ import Logging
 import LoggingOSLog
 import DockProgress
 
-final class ExtractionModel: ObservableObject {
+@MainActor
+final class ExtractionModel: ObservableObject, Sendable {
     let settings: SettingsContainer
     let databaseManager: DatabaseManager
     
@@ -37,12 +38,16 @@ final class ExtractionModel: ObservableObject {
 
     static let logger = Logger(label: Bundle.main.bundleIdentifier!)
 
+    static let loggingHandler: @Sendable (String) -> any LogHandler = { label in
+        LoggingOSLog(label: label)
+    }
+
     init(settings: SettingsContainer, databaseManager: DatabaseManager) {
         self.settings = settings
         self.databaseManager = databaseManager
         
         // Configure swift-log logging system to use OSLog backend
-        LoggingSystem.bootstrap(LoggingOSLog.init)
+        LoggingSystem.bootstrap(Self.loggingHandler)
         
         self.setupEventHandlers()
     }
@@ -100,7 +105,7 @@ final class ExtractionModel: ObservableObject {
                 // Do extraction
                 exportResult = try await extractor.extract()
             } catch {
-                Self.logger.error("Failed to extract: \(error.localizedDescription)")
+                await Self.logger.error("Failed to extract: \(error.localizedDescription)")
                 await MainActor.run {
                     failedTasks.append(ExtractionFailure(url: url, exitStatus: .failedToExtract, errorMessage: error.localizedDescription))
                 }
@@ -122,7 +127,7 @@ final class ExtractionModel: ObservableObject {
             let swatchSettings = await self.settings.store.colorSwatchSettings
 
             if swatchSettings.enableSwatch {
-                Self.logger.notice("Color palette enabled. Calculating dominant colors.")
+                await Self.logger.notice("Color palette enabled. Calculating dominant colors.")
 
                 // Update progress message and icon
                 await MainActor.run {
@@ -132,14 +137,14 @@ final class ExtractionModel: ObservableObject {
 
                 await ColorPaletteRenderer.render(exportResult: exportResult, swatchSettings: swatchSettings)
 
-                Self.logger.notice("Color palette render done.")
+                await Self.logger.notice("Color palette render done.")
             }
 
             // Set progress as finished
             await self.extractionProgress.markProcessAsFinished(url: url)
             
-            Self.logger.notice("Successfully extracted: \(url.path(percentEncoded: false))")
-            
+            await Self.logger.notice("Successfully extracted: \(url.path(percentEncoded: false))")
+
             return exportResult
         }
         
@@ -148,21 +153,21 @@ final class ExtractionModel: ObservableObject {
             // Check if a database profile is set
             guard let databaseProfile = await self.databaseManager.selectedDatabaseProfile else {
                 // Skip upload if no database profile is selected
-                Self.logger.notice("Skipping upload for: \(url.path(percentEncoded: true))")
+                await Self.logger.notice("Skipping upload for: \(url.path(percentEncoded: true))")
                 return
             }
             
             guard let jsonURL = exportResult?.jsonManifestPath else {
-                Self.logger.error("Failed to upload \(url): missing json URL. Most likely no markers were extracted.")
+                await Self.logger.error("Failed to upload \(url): missing json URL. Most likely no markers were extracted.")
                 throw DatabaseUploadError.missingJsonFile
             }
             
-            Self.logger.notice("Upload started. Platform: \(databaseProfile.plaform.rawValue)")
-            
+            await Self.logger.notice("Upload started. Platform: \(databaseProfile.plaform.rawValue)")
+
             // Upload
             try await self.databaseUploader.uploadToDatabase(url: jsonURL, databaseProfile: databaseProfile)
             
-            Self.logger.notice("Successfully uploaded: \(url.path(percentEncoded: false))")
+            await Self.logger.notice("Successfully uploaded: \(url.path(percentEncoded: false))")
         }
         
         // MARK: Prepare for extraction
@@ -178,12 +183,12 @@ final class ExtractionModel: ObservableObject {
         }
         
         Self.logger.notice("Extraction started")
-        
+
         await self.clearProgress()
         
         // Validate export destination
         do {
-            try await validateExportDestination()
+            try validateExportDestination()
         } catch {
             self.extractionProgress.markasFailed(
                 progressMessage: "Empty or invalid export destination",

@@ -45,19 +45,24 @@ extension ExtractionModel: DropDelegate {
             // Check if the provider can load a file URL
             if provider.canLoadObject(ofClass: URL.self) {
                 group.enter()
+                
+                // Use a local closure to capture static properties safely
+                let supportedTypes = Self.supportedContentTypes
+                let bundleLogger = Self.logger
+
                 // Load the file URL from the provider
                 let _ = provider.loadObject(ofClass: URL.self) { url, error in
                     if let fileURL = url {
-                        // Check file type
-                        if fileURL.conformsToType(Self.supportedContentTypes) {
+                        // Check file type using local captured supportedTypes
+                        if fileURL.conformsToType(supportedTypes) {
                             filesToProcess.append(fileURL)
                         } else {
-                            Self.logger.notice("Skipping file \(fileURL.path(percentEncoded: false)). Not supported.")
+                            bundleLogger.notice("Skipping file \(fileURL.path(percentEncoded: false)). Not supported.")
                         }
                     } else if let error = error {
-                        Self.logger.error("File drop error: \(error.localizedDescription)")
+                        bundleLogger.error("File drop error: \(error.localizedDescription)")
                     }
-                    
+
                     group.leave()
                 }
             }

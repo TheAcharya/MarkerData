@@ -10,7 +10,7 @@ import OSLog
 import DockProgress
 
 /// Holds the list of subprocesses and calculates the total progress
-class ProgressViewModel: ObservableObject {
+final class ProgressViewModel: ObservableObject {
     let progress: Progress = Progress(totalUnitCount: 100)
     
     /// Progressbar message

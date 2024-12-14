@@ -8,7 +8,7 @@
 import Foundation
 import OSLog
 
-class DatabaseUploader: ObservableObject {
+final class DatabaseUploader: ObservableObject {
     @Published var uploadProgress = ProgressViewModel(taskDescription: "Upload")
     
     private var uploadProcesses: [Process?] = []

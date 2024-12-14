@@ -7,7 +7,7 @@
 
 import Foundation
 import CoreImage
-import DominantColors
+@preconcurrency import DominantColors
 
 struct ColorsExtractorService {
     static func extract(from cgImage: CGImage, method: ColorExtractMethod, count: Int = 8, formula: DeltaEFormula = .CIE76, quality: DominantColorQuality, options: [DominantColors.Options] = []) async throws -> [CGColor] {
