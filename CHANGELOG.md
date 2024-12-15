@@ -1,5 +1,16 @@
 # Changelog
 
+### 1.2.0 (4)
+
+**🎉 Released:**
+TBD
+
+**🔨 Improvements:**
+- Updated Workflow Extensions SDK to 1.0.3
+- Codebase updates for Xcode 16.2 and Swift concurrency compatibility
+
+---
+
 ### 1.1.1 (3)
 
 **🎉 Released:**
