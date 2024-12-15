@@ -3,7 +3,7 @@
 ### 1.2.0 (4)
 
 **🎉 Released:**
-TBD
+- TBD
 
 **🔨 Improvements:**
 - Updated Workflow Extensions SDK to 1.0.3
