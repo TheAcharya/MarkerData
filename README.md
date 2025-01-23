@@ -153,7 +153,7 @@ macOS Ventura 13.6.7 or later <br> Final Cut Pro 10.7.1 or later <br> Runs only 
 
 ## Credits
 
-Original Idea, Application Direction and Workflow Architecture by [Vigneswaran Rajkumar](https://twitter.com/IAmVigneswaran)
+Original Idea, Application Direction and Workflow Architecture by [Vigneswaran Rajkumar](https://bsky.app/profile/vigneswaranrajkumar.com)
 
 **Graphical User Interface and UI/UX Logic**
 
