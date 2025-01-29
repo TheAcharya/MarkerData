@@ -100,7 +100,7 @@ jobs:
         echo "PARENT=$PARENT" >> $GITHUB_ENV
         echo "CONFIG=$CONFIGURATION" >> $GITHUB_ENV
 
-        xcodebuild -project "$PROJECT_PATH" -scheme "$SCHEME" -configuration "$CONFIGURATION" -destination "$DESTINATION" -derivedDataPath "$BUILD_FOLDER" clean build ONLY_ACTIVE_ARCH=NO EXCLUDED_ARCHS="x86_64" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO -allowProvisioningUpdates | xcpretty
+        xcodebuild -project "$PROJECT_PATH" -scheme "$SCHEME" -configuration "$CONFIGURATION" -destination "$DESTINATION" -derivedDataPath "$BUILD_FOLDER" clean build ONLY_ACTIVE_ARCH=NO EXCLUDED_ARCHS="x86_64" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO -allowProvisioningUpdates | xcbeautify
         
     - name: Prepare VM Directories
       run: |
