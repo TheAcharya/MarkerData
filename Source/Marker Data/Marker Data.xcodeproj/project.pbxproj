@@ -1560,7 +1560,7 @@
 				INFOPLIST_KEY_NSDesktopFolderUsageDescription = "To Use Files On The Desktop, You Must Allow Access.";
 				INFOPLIST_KEY_NSDocumentsFolderUsageDescription = "To Use Files In The Documents Folder, You Must Allow Access.";
 				INFOPLIST_KEY_NSDownloadsFolderUsageDescription = "To Use Files In The Downloads Folder, You Must Allow Access.";
-				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2024 The Acharya. All rights reserved.";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2025 The Acharya. All rights reserved.";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -1608,7 +1608,7 @@
 				INFOPLIST_KEY_NSDesktopFolderUsageDescription = "To Use Files On The Desktop, You Must Allow Access.";
 				INFOPLIST_KEY_NSDocumentsFolderUsageDescription = "To Use Files In The Documents Folder, You Must Allow Access.";
 				INFOPLIST_KEY_NSDownloadsFolderUsageDescription = "To Use Files In The Downloads Folder, You Must Allow Access.";
-				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2024 The Acharya. All rights reserved.";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2025 The Acharya. All rights reserved.";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
