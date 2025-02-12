@@ -20,7 +20,6 @@ final class ExtractionModel: ObservableObject, Sendable {
     /// Controls whether progress UI is shown in the ExtractView
     @Published var showProgressUI = false
     /// Extraction currently is in progress
-    @MainActor
     @Published var extractionInProgress = false
     /// External file recieved
     @Published var externalFileRecieved = false
@@ -53,7 +52,6 @@ final class ExtractionModel: ObservableObject, Sendable {
     }
     
     public func performExtraction(_ urls: [URL]) async {
-        @MainActor 
         func validateExportDestination() throws {
             var isDir : ObjCBool = false
             
@@ -72,16 +70,13 @@ final class ExtractionModel: ObservableObject, Sendable {
             self.extractionProgress.setProcesses(urls: urls)
             
             // Show extraction progress
-            await MainActor.run {
-                self.showProgressUI = true
-                self.extractionInProgress = true
-            }
+            self.showProgressUI = true
+            self.extractionInProgress = true
         }
-        
-        @Sendable 
+
         func extractAndUpdateProgress(for url: URL) async throws -> ExportResult? {
             // Get extraction settings
-            let settings = try await self.settings.store.markersExtractorSettings(fcpxmlFileUrl: url)
+            let settings = try self.settings.store.markersExtractorSettings(fcpxmlFileUrl: url)
             
             let markersExtractorLogger = Logger(label: Bundle.main.bundleIdentifier!, factory: LoggingOSLog.init)
             
@@ -105,10 +100,8 @@ final class ExtractionModel: ObservableObject, Sendable {
                 // Do extraction
                 exportResult = try await extractor.extract()
             } catch {
-                await Self.logger.error("Failed to extract: \(error.localizedDescription)")
-                await MainActor.run {
-                    failedTasks.append(ExtractionFailure(url: url, exitStatus: .failedToExtract, errorMessage: error.localizedDescription))
-                }
+                Self.logger.error("Failed to extract: \(error.localizedDescription)")
+                failedTasks.append(ExtractionFailure(url: url, exitStatus: .failedToExtract, errorMessage: error.localizedDescription))
             }
             
             observation.invalidate()
@@ -124,50 +117,47 @@ final class ExtractionModel: ObservableObject, Sendable {
             try extractInfo?.save(to: jsonURL)
 
             // Add color palette
-            let swatchSettings = await self.settings.store.colorSwatchSettings
+            let swatchSettings = self.settings.store.colorSwatchSettings
 
             if swatchSettings.enableSwatch {
-                await Self.logger.notice("Color palette enabled. Calculating dominant colors.")
+                Self.logger.notice("Color palette enabled. Calculating dominant colors.")
 
                 // Update progress message and icon
-                await MainActor.run {
-                    self.extractionProgress.message = "Analysing Swatch..."
-                    self.extractionProgress.icon = "swatchpalette"
-                }
+                self.extractionProgress.message = "Analysing Swatch..."
+                self.extractionProgress.icon = "swatchpalette"
 
                 await ColorPaletteRenderer.render(exportResult: exportResult, swatchSettings: swatchSettings)
 
-                await Self.logger.notice("Color palette render done.")
+                Self.logger.notice("Color palette render done.")
             }
 
             // Set progress as finished
             await self.extractionProgress.markProcessAsFinished(url: url)
             
-            await Self.logger.notice("Successfully extracted: \(url.path(percentEncoded: false))")
+            Self.logger.notice("Successfully extracted: \(url.path(percentEncoded: false))")
 
             return exportResult
         }
-        
-        @Sendable
+
         func uploadToDatabaseAndTrackProgress(url: URL, exportResult: ExportResult?) async throws {
             // Check if a database profile is set
-            guard let databaseProfile = await self.databaseManager.selectedDatabaseProfile else {
+            guard let databaseProfile = self.databaseManager.selectedDatabaseProfile else {
                 // Skip upload if no database profile is selected
-                await Self.logger.notice("Skipping upload for: \(url.path(percentEncoded: true))")
+                Self.logger.notice("Skipping upload for: \(url.path(percentEncoded: true))")
                 return
             }
             
             guard let jsonURL = exportResult?.jsonManifestPath else {
-                await Self.logger.error("Failed to upload \(url): missing json URL. Most likely no markers were extracted.")
+                Self.logger.error("Failed to upload \(url): missing json URL. Most likely no markers were extracted.")
                 throw DatabaseUploadError.missingJsonFile
             }
             
-            await Self.logger.notice("Upload started. Platform: \(databaseProfile.plaform.rawValue)")
+            Self.logger.notice("Upload started. Platform: \(databaseProfile.plaform.rawValue)")
 
             // Upload
             try await self.databaseUploader.uploadToDatabase(url: jsonURL, databaseProfile: databaseProfile)
             
-            await Self.logger.notice("Successfully uploaded: \(url.path(percentEncoded: false))")
+            Self.logger.notice("Successfully uploaded: \(url.path(percentEncoded: false))")
         }
         
         // MARK: Prepare for extraction

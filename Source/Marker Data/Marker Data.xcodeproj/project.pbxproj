@@ -1705,7 +1705,7 @@
 			repositoryURL = "https://github.com/DenDmitriev/DominantColors";
 			requirement = {
 				kind = upToNextMinorVersion;
-				minimumVersion = 1.1.9;
+				minimumVersion = 1.2.2;
 			};
 		};
 		418D5DB42B910F4900589E17 /* XCRemoteSwiftPackageReference "Sparkle" */ = {

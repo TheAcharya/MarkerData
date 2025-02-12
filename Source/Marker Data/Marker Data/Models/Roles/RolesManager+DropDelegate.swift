@@ -9,8 +9,10 @@ import SwiftUI
 import MarkersExtractor
 
 extension RolesManager: DropDelegate {
-    func performDrop(info: DropInfo) -> Bool {
-        self.loadingInProgress = true
+    nonisolated func performDrop(info: DropInfo) -> Bool {
+        Task { @MainActor in
+            self.loadingInProgress = true
+        }
 
         let providers = info.itemProviders(
             for: [.fcpxml, .fileURL]
@@ -22,10 +24,8 @@ extension RolesManager: DropDelegate {
                 _ = provider.loadDataRepresentation(for: .fcpxml) { data, error in
                     Task {
                         defer {
-                            Task {
-                                await MainActor.run {
-                                    self.loadingInProgress = false
-                                }
+                            Task { @MainActor in
+                                self.loadingInProgress = false
                             }
                         }
 
@@ -44,9 +44,11 @@ extension RolesManager: DropDelegate {
             if provider.canLoadObject(ofClass: URL.self) {
                 // Load the file URL from the provider
                 let _ = provider.loadObject(ofClass: URL.self) { url, error in
-                    Task { @MainActor in
+                    Task {
                         defer {
-                            self.loadingInProgress = false
+                            Task { @MainActor in
+                                self.loadingInProgress = false
+                            }
                         }
 
                         guard let urlUnwrapped = url else {
@@ -59,7 +61,7 @@ extension RolesManager: DropDelegate {
                         }
 
                         if let extractedRoles = await self.getRoles(fcpxml: try FCPXMLFile(at: urlUnwrapped)) {
-                            self.setRoles(extractedRoles)
+                            await self.setRoles(extractedRoles)
                         }
                     }
                 }
@@ -69,7 +71,7 @@ extension RolesManager: DropDelegate {
         return true
     }
 
-    private func getRoles(fcpxml: FCPXMLFile) async -> [RoleModel]? {
+    nonisolated private func getRoles(fcpxml: FCPXMLFile) async -> [RoleModel]? {
         do {
             let rolesExtractor = RolesExtractor(fcpxml: fcpxml)
 
