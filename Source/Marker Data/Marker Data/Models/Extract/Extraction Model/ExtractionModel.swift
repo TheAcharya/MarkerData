@@ -88,8 +88,8 @@ final class ExtractionModel: ObservableObject, Sendable {
             let extractor = MarkersExtractor(settings: settings, logger: markersExtractorLogger)
             
             // Observe progress changes
-            let observation = extractor.observe(
-                \.progress.fractionCompleted,
+            let observation = extractor.progress.observe(
+                \.fractionCompleted,
                  options: [.old, .new]
             ) { object, change in
                 if let newValue = change.newValue {
@@ -98,7 +98,7 @@ final class ExtractionModel: ObservableObject, Sendable {
                     }
                 }
             }
-            
+
             var exportResult: ExportResult? = nil
             
             do {
