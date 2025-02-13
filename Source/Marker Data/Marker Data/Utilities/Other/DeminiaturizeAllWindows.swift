@@ -8,6 +8,7 @@
 import Foundation
 import AppKit
 
+@MainActor
 func deminiaturizeAllWindows() {
     for window in NSApplication.shared.windows {
         if window.title == "Colors" {

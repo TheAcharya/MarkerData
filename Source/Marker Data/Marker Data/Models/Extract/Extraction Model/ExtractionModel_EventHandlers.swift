@@ -45,9 +45,7 @@ extension ExtractionModel {
         if let exportFolder = self.settings.store.exportFolderURL,
            exportFolder.fileExists {
             // Extract
-            Task {
-                await self.performExtraction([url])
-            }
+            self.startExtraction(for: [url])
         } else {
             // Default to opening external file recieved popup
             self.externalFileRecieved = true
@@ -55,11 +53,13 @@ extension ExtractionModel {
         }
         
         // Send notification
-        NotificationManager.sendNotification(
-            taskFinished: false,
-            title: "Recieved External File",
-            body: "\(url.path(percentEncoded: false))"
-        )
+        Task {
+            await NotificationManager.sendNotification(
+                taskFinished: false,
+                title: "Recieved External File",
+                body: "\(url.path(percentEncoded: false))"
+            )
+        }
     }
     
     /// Handles Workflow Extension notification, and starts the extraction
@@ -82,9 +82,7 @@ extension ExtractionModel {
         if let exportFolder = self.settings.store.exportFolderURL,
            exportFolder.fileExists {
             // Extract
-            Task {
-                await self.performExtraction([url])
-            }
+            self.startExtraction(for: [url])
         } else {
             // Default to opening external file recieved popup
             self.externalFileRecieved = true
@@ -92,11 +90,13 @@ extension ExtractionModel {
         }
         
         // Send notification
-        NotificationManager.sendNotification(
-            taskFinished: false,
-            title: "Recieved External File",
-            body: "\(url.path(percentEncoded: false))"
-        )
+        Task {
+            await NotificationManager.sendNotification(
+                taskFinished: false,
+                title: "Recieved External File",
+                body: "\(url.path(percentEncoded: false))"
+            )
+        }
     }
     
     public func processExternalFile() {
@@ -108,10 +108,8 @@ extension ExtractionModel {
         guard let url = self.externalFileURL else {
             return
         }
-        
-        Task {
-            await self.performExtraction([url])
-        }
+
+        self.startExtraction(for: [url])
     }
     
     @MainActor

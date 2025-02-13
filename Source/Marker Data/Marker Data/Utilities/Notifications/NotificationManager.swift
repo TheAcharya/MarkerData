@@ -12,7 +12,7 @@ import OSLog
 struct NotificationManager {
     private static let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "NotificationManager")
     
-    static func sendNotification(taskFinished: Bool, title: String, body: String = "") {
+    static func sendNotification(taskFinished: Bool, title: String, body: String = "") async {
         let frequencyInt = UserDefaults.standard.integer(forKey: "notificationFrequency")
         guard let notificationFrequency = NotificationFrequency(rawValue: frequencyInt) else {
             Self.logger.error("Failed to read notification frequency settings")
@@ -33,34 +33,34 @@ struct NotificationManager {
         }
         
         let center = UNUserNotificationCenter.current()
-        
-        center.getNotificationSettings { settings in
-            guard (settings.authorizationStatus == .authorized) ||
-                    (settings.authorizationStatus == .provisional) else {
-                
-                // Ask for authorization
-                Task {
-                    do {
-                        try await center.requestAuthorization(options: [.alert, .sound, .badge])
-                    } catch {
-                        Self.logger.error("Failed to get notification permission: \(error.localizedDescription)")
-                    }
-                }
-                return
+        let settings = await center.notificationSettings()
+
+        guard (settings.authorizationStatus == .authorized) ||
+                (settings.authorizationStatus == .provisional) else {
+
+            // Ask for authorization
+            do {
+                try await center.requestAuthorization(options: [.alert, .sound, .badge])
+            } catch {
+                logger.error("Failed to request notification authorization. Error: \(error.localizedDescription)")
             }
-            
-            let content = UNMutableNotificationContent()
-            
-            content.title = title
-            content.body = body
-            content.sound = .default
-            
-            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: .leastNonzeroMagnitude, repeats: false)
-            let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-            
-            Task {
-                try await UNUserNotificationCenter.current().add(request)
-            }
+
+            return
+        }
+
+        let content = UNMutableNotificationContent()
+
+        content.title = title
+        content.body = body
+        content.sound = .default
+
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: .leastNonzeroMagnitude, repeats: false)
+        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+
+        do {
+            try await UNUserNotificationCenter.current().add(request)
+        } catch {
+            logger.error("Failed to send notication. Error: \(error.localizedDescription)")
         }
     }
 }

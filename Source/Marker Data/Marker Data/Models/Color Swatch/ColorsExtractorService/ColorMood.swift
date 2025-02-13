@@ -6,9 +6,9 @@
 //
 
 import Foundation
-import DominantColors
+@preconcurrency import DominantColors
 
-struct ColorMood {
+struct ColorMood: Sendable {
     var formula: DeltaEFormula
     var method: ColorExtractMethod
     var quality: DominantColorQuality

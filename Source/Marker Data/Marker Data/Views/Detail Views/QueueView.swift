@@ -11,7 +11,8 @@ struct QueueView: View {
     @ObservedObject var queueModel: QueueModel
 
     @State var scanFailed = false
-    @State var sortOrder = [KeyPathComparator(\QueueInstance.extractInfo.creationDate)]
+    // TODO: revisit sorting
+//    @State var sortOrder = [SendableComparator(\QueueInstance.extractInfo.creationDate)]
 
     var body: some View {
         VStack {
@@ -37,7 +38,7 @@ struct QueueView: View {
     }
     
     var tableView: some View {
-        Table(queueModel.queueInstances, sortOrder: $sortOrder) {
+        Table(queueModel.queueInstances, sortOrder: .constant(.init())) {
             TableColumn("Name", value: \.name) { queueInstance in
                 Text(queueInstance.name)
                     .help(queueInstance.name)
@@ -67,10 +68,14 @@ struct QueueView: View {
             }
             .width(ideal: 60)
         }
-        .onChange(of: sortOrder) { newOrder in
-            queueModel.queueInstances.sort(using: newOrder)
+        // TODO: revisit sorting
+//        .onChange(of: sortOrder) { newOrder in
+//            queueModel.queueInstances.sort(using: newOrder)
+//        }
+        .dropDestination(for: URL.self) { urls, location in
+            queueModel.performDrop(urls: urls)
+            return true
         }
-        .onDrop(of: [.fileURL], delegate: queueModel)
         .contextMenu {
             Button {
                 queueModel.clear()

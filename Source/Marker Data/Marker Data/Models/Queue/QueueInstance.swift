@@ -8,15 +8,15 @@
 import Foundation
 import OSLog
 
-class QueueInstance: ObservableObject, Identifiable {
+@MainActor
+class QueueInstance: ObservableObject, Identifiable, Sendable {
     public let name: String
     private let folderURL: URL
     let extractInfo: ExtractInfo
     let uploader = DatabaseUploader()
     let availableDatabaseProfiles: [DatabaseProfileModel]
-    @MainActor
+
     @Published var uploadDestination: DatabaseProfileModel? = nil
-    @MainActor
     @Published var status: QueueStatus = .idle
     
     var creationDateFormatted: String {
@@ -34,25 +34,20 @@ class QueueInstance: ObservableObject, Identifiable {
     }
     
     public func upload() async throws {
-        guard let uploadDestinationUnwrapped = await self.uploadDestination else {
+        guard let uploadDestinationUnwrapped = self.uploadDestination else {
             return
         }
-        
-        await MainActor.run {
-            self.status = .uploading
-        }
+
+        self.status = .uploading
         
         try await self.uploader.uploadToDatabase(
             url: extractInfo.jsonURL,
             databaseProfile: uploadDestinationUnwrapped
         )
-        
-        await MainActor.run {
-            self.status = .success
-        }
+
+        self.status = .success
     }
-    
-    @MainActor 
+
     public func deleteFolder() async {
         // Return if no upload destination was selected
         if self.uploadDestination == nil {

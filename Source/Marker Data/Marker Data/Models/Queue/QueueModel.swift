@@ -9,13 +9,12 @@ import Foundation
 import SwiftUI
 import OSLog
 
+@MainActor
 class QueueModel: ObservableObject {
     let settings: SettingsContainer
     let databaseManager: DatabaseManager
     
     @Published var queueInstances: [QueueInstance] = []
-
-    @MainActor
     @Published var uploadInProgress = false
     
     @AppStorage("deleteFolderAfterUpload") var deleteFolderAfterUpload = false
@@ -31,9 +30,9 @@ class QueueModel: ObservableObject {
         self.databaseManager = databaseManager
     }
     
-    public func scanFolder(at url: URL, append: Bool = false) async throws {
+    func scanFolder(at url: URL, append: Bool = false) async throws {
         // Skip if upload is in progress
-        if await self.uploadInProgress {
+        if self.uploadInProgress {
             return
         }
 
@@ -52,7 +51,7 @@ class QueueModel: ObservableObject {
                 let extractInfo = try decoder.decode(ExtractInfo.self, from: data)
 
                 // Add queue instance
-                await queueInstances.append(
+                queueInstances.append(
                     QueueInstance(
                         extractInfo: extractInfo,
                         folderURL: extractInfoURL.deletingLastPathComponent(),
@@ -65,24 +64,22 @@ class QueueModel: ObservableObject {
             }
         }
 
-        await MainActor.run { [queueInstances] in
-            let queueInstancesSorted = queueInstances
-                .sorted(by: { $0.extractInfo.creationDate > $1.extractInfo.creationDate })
+        let queueInstancesSorted = queueInstances
+            .sorted(by: { $0.extractInfo.creationDate > $1.extractInfo.creationDate })
 
-            if append {
-                self.queueInstances.append(contentsOf: queueInstancesSorted)
-            } else {
-                self.queueInstances = queueInstancesSorted
-            }
+        if append {
+            self.queueInstances.append(contentsOf: queueInstancesSorted)
+        } else {
+            self.queueInstances = queueInstancesSorted
         }
     }
 
-    public func scanExportFolder() async throws {
+    func scanExportFolder() async throws {
         if !automaticScanEnabled {
             return
         }
 
-        guard let exportFolder = await self.settings.store.exportFolderURL else {
+        guard let exportFolder = self.settings.store.exportFolderURL else {
             Self.logger.error("Missing output directory")
             throw QueueError.missingOutputDirectory
         }
@@ -90,19 +87,13 @@ class QueueModel: ObservableObject {
         try await self.scanFolder(at: exportFolder)
     }
 
-    public func upload() async throws {
+    func upload() async throws {
         defer {
-            Task {
-                await MainActor.run {
-                    self.uploadInProgress = false
-                    self.taskGroup = nil
-                }
-            }
+            self.uploadInProgress = false
+            self.taskGroup = nil
         }
-        
-        await MainActor.run {
-            self.uploadInProgress = true
-        }
+
+        self.uploadInProgress = true
         
         await withTaskGroup(of: Void.self) { group in
             self.taskGroup = group
@@ -112,23 +103,22 @@ class QueueModel: ObservableObject {
                     do {
                         try await queueInstance.upload()
                         
-                        if self.deleteFolderAfterUpload && !Task.isCancelled {
+                        if await self.deleteFolderAfterUpload && !Task.isCancelled {
                             await queueInstance.deleteFolder()
                         }
                     } catch {
                         await MainActor.run {
                             queueInstance.status = .failed
                         }
-                        
-                        Self.logger.error("Failed to upload \(queueInstance.name)")
+
+                        await Self.logger.error("Failed to upload \(queueInstance.name)")
                     }
                 }
             }
         }
     }
-    
-    @MainActor
-    public func cancelUpload() {
+
+    func cancelUpload() {
         self.taskGroup?.cancelAll()
         
         for queueInstance in queueInstances {
@@ -139,16 +129,32 @@ class QueueModel: ObservableObject {
     }
 
     /// Filters out queue instaces which no loger point to existing files
-    @MainActor
-    public func filterMissing() async {
+    func filterMissing() async {
         self.queueInstances = self.queueInstances.filter {
             $0.extractInfo.jsonURL.fileExists
         }
     }
 
-    @MainActor
-    public func clear() {
+    func clear() {
         self.queueInstances.removeAll()
+        self.automaticScanEnabled = false
+    }
+
+    func performDrop(urls: [URL]) {
+        // Clear current queue instances
+        self.queueInstances.removeAll()
+
+        for url in urls {
+            // Check file type
+            if url.hasDirectoryPath {
+                Task { [weak self] in
+                    try await self?.scanFolder(at: url, append: true)
+                }
+            } else {
+                Self.logger.notice("Skipping file \(url.path(percentEncoded: false)). Not supported.")
+            }
+        }
+
         self.automaticScanEnabled = false
     }
 }

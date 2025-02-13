@@ -6,18 +6,17 @@
 //
 
 import SwiftUI
+import ButtonKit
 
 extension ConfigurationSettingsView {
     func addOrRenameConfigurationModal(rename: Bool = false) -> some View {
-        func doAction() {
+        func doAction() async {
             if rename {
-                Task {
-                    await confModel.rename(store: selectedStore, to: configurationNameText)
-                    configurationNameText.removeAll()
-                }
+                await confModel.rename(store: selectedStore, to: configurationNameText)
+                configurationNameText.removeAll()
                 showRenameConfigurationSheet = false
             } else {
-                confModel.add(saveAs: configurationNameText)
+                await confModel.add(saveAs: configurationNameText)
                 showAddConfigurationSheet = false
             }
         }
@@ -35,7 +34,9 @@ extension ConfigurationSettingsView {
                         configurationNameText = String(newName.prefix(50))
                     }
                     .onSubmit {
-                        doAction()
+                        Task {
+                            await doAction()
+                        }
                     }
             }
 
@@ -48,8 +49,8 @@ extension ConfigurationSettingsView {
                     showRenameConfigurationSheet = false
                 }
 
-                Button("Save") {
-                    doAction()
+                AsyncButton("Save") {
+                    await doAction()
                 }
             }
         }

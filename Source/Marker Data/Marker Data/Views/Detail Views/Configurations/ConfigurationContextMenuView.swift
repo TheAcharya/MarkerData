@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import ButtonKit
 
 struct ConfigurationContextMenuView: View {
     @EnvironmentObject var settings: SettingsContainer
@@ -25,11 +26,12 @@ struct ConfigurationContextMenuView: View {
             }
             .disabled(selectedStoreName == settings.store.name)
 
-            Button {
-                confModel.duplicateConfiguration(store: store)
+            AsyncButton {
+                await confModel.duplicateConfiguration(store: store)
             } label: {
                 Label("Duplicate", systemImage: "square.filled.on.square")
             }
+            .asyncButtonStyle(.none)
 
             // If active configuration
             if store.name == settings.store.name {
@@ -46,11 +48,12 @@ struct ConfigurationContextMenuView: View {
             if !store.isDefault() {
                 if settings.isStoreActive(store) {
                     // Update configuration
-                    Button {
-                        confModel.updateCurrent()
+                    AsyncButton {
+                        await confModel.updateCurrent()
                     } label: {
                         Label("Update", systemImage: "gearshape.arrow.triangle.2.circlepath")
                     }
+                    .asyncButtonStyle(.none)
                     .disabled(!settings.unsavedChanges)
                 }
 
@@ -64,11 +67,12 @@ struct ConfigurationContextMenuView: View {
                 Divider()
 
                 // Remove configuration
-                Button(role: .destructive) {
-                    confModel.remove(name: store.name)
+                AsyncButton(role: .destructive) {
+                    await confModel.remove(name: store.name)
                 } label: {
                     Label("Remove", systemImage: "trash")
                 }
+                .asyncButtonStyle(.none)
             }
 
             Divider()

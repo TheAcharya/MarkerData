@@ -59,7 +59,11 @@ class RolesManager: ObservableObject {
     func disableAll() {
         self.setRoles(self.roles.map { RoleModel(role: $0.role, enabled: false) })
     }
-    
+
+    func performDrop() {
+        self.loadingInProgress = true
+    }
+
     // MARK: Static methods
 
     func saveRolesToDisk(_ roles: [RoleModel]) throws {

@@ -7,6 +7,7 @@
 
 import SwiftUI
 import FilePicker
+import UniformTypeIdentifiers
 
 public struct ExtractView: View {
     @ObservedObject var extractionModel: ExtractionModel
@@ -46,11 +47,18 @@ public struct ExtractView: View {
             }
             .padding(.vertical)
             // Handle file drop and perform extraction
-            .onDrop(
-                of: [.fileURL],
-                delegate: extractionModel
-            )
-            
+            .dropDestination(for: URL.self) { urls, location in
+                let supportedURLs = urls.filter { $0.conformsToType(ExtractionModel.supportedContentTypes) }
+
+                guard !supportedURLs.isEmpty else {
+                    return false
+                }
+
+                extractionModel.startExtraction(for: urls)
+
+                return true
+            }
+
             // Quick Settings
             QuickSettingsView()
         }
@@ -93,9 +101,7 @@ public struct ExtractView: View {
                 
                 FilePicker(types: [.fcpxml, .fcpxmld], allowMultiple: true) { urls in
                     if !urls.isEmpty {
-                        Task {
-                            await extractionModel.performExtraction(urls)
-                        }
+                        extractionModel.startExtraction(for: urls)
                     }
                 } label: {
                     Label("Choose File", systemImage: "folder")

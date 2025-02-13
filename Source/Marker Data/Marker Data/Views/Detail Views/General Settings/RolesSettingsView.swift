@@ -7,6 +7,7 @@
 
 import SwiftUI
 import MarkersExtractor
+import UniformTypeIdentifiers
 
 struct RolesSettingsView: View {
     @StateObject var rolesManager = RolesManager()

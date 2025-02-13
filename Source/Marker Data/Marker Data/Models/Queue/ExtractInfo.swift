@@ -8,7 +8,7 @@
 import Foundation
 import MarkersExtractor
 
-struct ExtractInfo: Codable, Identifiable {
+struct ExtractInfo: Sendable, Codable, Identifiable {
     let jsonURL: URL
     let creationDate: Date
     let profile: DatabasePlatform
