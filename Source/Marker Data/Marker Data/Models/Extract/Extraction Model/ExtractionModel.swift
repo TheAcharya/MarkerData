@@ -242,55 +242,53 @@ final class ExtractionModel: ObservableObject, Sendable {
         }
         
         // MARK: Show result
-        await MainActor.run {
-            if self.failedTasks.isEmpty {
-                // Successful extraction
-                Self.logger.notice("All extractions successfull")
-                self.exportResult = .success
-                
-                // Send notification
-                NotificationManager.sendNotification(taskFinished: true, title: "All complete")
-            } else {
-                // Failed extraction
-                self.exportResult = .failed
-                
-                var message = "Failed to complete the following files:"
-                for failure in failedTasks {
-                    message += "\n\(failure.url.lastPathComponent), reason: \(failure.errorMessage)"
-                }
+        if self.failedTasks.isEmpty {
+            // Successful extraction
+            Self.logger.notice("All extractions successfull")
+            self.exportResult = .success
 
-                Self.logger.error("\(message)")
-                
-                var alertMessage = "Multiple failures. Click \"Show Error Details\" for more information."
-                
-                // Show error message in case of only one extractoin
-                if urls.count == 1 {
-                    if let firstFailure = self.failedTasks.first {
-                        alertMessage = "Error message: \(firstFailure.errorMessage)"
-                    }
-                }
+            // Send notification
+            await NotificationManager.sendNotification(taskFinished: true, title: "All complete")
+        } else {
+            // Failed extraction
+            self.exportResult = .failed
 
-                if failedTasks.contains(where: { $0.exitStatus == .failedToExtract }) {
-                    self.extractionProgress.markasFailed(
-                        progressMessage: "Failed to complete extraction",
-                        alertMessage: alertMessage
-                    )
-                }
-                
-                if failedTasks.contains(where: { $0.exitStatus == .failedToUpload }) {
-                    self.databaseUploader.uploadProgress.markasFailed(
-                        progressMessage: "Failed to complete upload",
-                        alertMessage: alertMessage
-                    )
+            var message = "Failed to complete the following files:"
+            for failure in failedTasks {
+                message += "\n\(failure.url.lastPathComponent), reason: \(failure.errorMessage)"
+            }
+
+            Self.logger.error("\(message)")
+
+            var alertMessage = "Multiple failures. Click \"Show Error Details\" for more information."
+
+            // Show error message in case of only one extractoin
+            if urls.count == 1 {
+                if let firstFailure = self.failedTasks.first {
+                    alertMessage = "Error message: \(firstFailure.errorMessage)"
                 }
             }
-            if self.completedOutputFolder == nil {
-                self.completedOutputFolder = settings.store.exportFolderURL
+
+            if failedTasks.contains(where: { $0.exitStatus == .failedToExtract }) {
+                self.extractionProgress.markasFailed(
+                    progressMessage: "Failed to complete extraction",
+                    alertMessage: alertMessage
+                )
+            }
+
+            if failedTasks.contains(where: { $0.exitStatus == .failedToUpload }) {
+                self.databaseUploader.uploadProgress.markasFailed(
+                    progressMessage: "Failed to complete upload",
+                    alertMessage: alertMessage
+                )
             }
         }
+
+        if self.completedOutputFolder == nil {
+            self.completedOutputFolder = settings.store.exportFolderURL
+        }
     }
-    
-    @MainActor
+
     public func clearProgress() async {
         self.exportResult = .none
         self.completedOutputFolder = nil
@@ -298,8 +296,7 @@ final class ExtractionModel: ObservableObject, Sendable {
         self.extractionProgress.reset()
         self.databaseUploader.uploadProgress.reset()
     }
-    
-    @MainActor
+
     public func cancelAll() {
         Self.logger.notice("User initiated cancel.")
         Self.logger.notice("Cancelling task group.")

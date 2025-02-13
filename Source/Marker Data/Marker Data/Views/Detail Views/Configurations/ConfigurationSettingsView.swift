@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import ButtonKit
 
 struct ConfigurationSettingsView: View {
     @EnvironmentObject var settings: SettingsContainer
@@ -51,13 +52,14 @@ struct ConfigurationSettingsView: View {
         .confirmationDialog("Unsaved Changes", isPresented: $showSwitchUnsavedChangesDialog) {
             // Save to current and switch (if not default configuration)
             if !settings.isDefaultActive {
-                Button("Save changes to \(settings.store.name) and switch") {
+                AsyncButton("Save changes to \(settings.store.name) and switch") {
                     // Save changes to current config
-                    confModel.updateCurrent()
+                    await confModel.updateCurrent()
 
                     // Load selected
                     confModel.makeActive(selectedStore)
                 }
+                .asyncButtonStyle(.none)
             }
             
             // Discard and switch
@@ -75,19 +77,22 @@ struct ConfigurationSettingsView: View {
             }
             
             // Save to current and create new
-            Button("Save changes both \(settings.store.name) and to new configuration") {
-                confModel.updateCurrent()
+            AsyncButton("Save changes both \(settings.store.name) and to new configuration") {
+                await confModel.updateCurrent()
                 showAddConfigurationSheet = true
             }
-            
+            .asyncButtonStyle(.none)
+
             Button("Cancel", role: .cancel) { }
         }
         // Remove configuration confirmation dialog
         .confirmationDialog("Delete configuration \(selectedStoreName.quoted)? This action cannot be undone.", isPresented: $showRemoveConfigurationConfirm) {
-            Button("Delete", role: .destructive) {
-                confModel.remove(name: selectedStoreName)
+            AsyncButton("Delete", role: .destructive) {
+                await confModel.remove(name: selectedStoreName)
                 self.selectedStoreName = ""
             }
+            .asyncButtonStyle(.none)
+
             Button("Cancel", role: .cancel) {}
         }
         .alert(confModel.alertTitle, isPresented: $confModel.showAlert) {
@@ -185,20 +190,22 @@ struct ConfigurationSettingsView: View {
             }
             .disabled(selectedStore == nil || selectedStore == settings.store)
 
-            Button {
-                confModel.duplicateConfiguration(store: selectedStore)
+            AsyncButton {
+                await confModel.duplicateConfiguration(store: selectedStore)
             } label: {
                 Label("Duplicate", systemImage: "square.filled.on.square")
             }
+            .asyncButtonStyle(.none)
             .disabled(selectedStore.isNone)
             .keyboardShortcut("D", modifiers: .command)
 
             // Update active configuration button
-            Button {
-                confModel.updateCurrent()
+            AsyncButton {
+                await confModel.updateCurrent()
             } label: {
                 Label("Update Active Configuration", systemImage: "gearshape.arrow.triangle.2.circlepath")
             }
+            .asyncButtonStyle(.none)
             .disabled(!settings.unsavedChanges || settings.isDefaultActive)
         }
         .padding(.bottom)

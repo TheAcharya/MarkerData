@@ -9,6 +9,7 @@ import Foundation
 import OSLog
 import EonilFSEvents
 
+@MainActor
 class DropboxSetupModel: ObservableObject {
     @Published var setupComplete: Bool = false
     @Published var authURL: URL? = nil
@@ -23,32 +24,28 @@ class DropboxSetupModel: ObservableObject {
     /// Save and register Dropbox app key
     /// - returns: authentication URL
     func saveAppKeyAndLaunchTerminal(_ appKey: String) async throws {
-        await MainActor.run {
-            self.authRequestStatus = .inProgress
-        }
+        self.authRequestStatus = .inProgress
         
         try await self.saveAppKeyToDisk(appKey)
         
         try launchTerminal()
-        
-        try await MainActor.run {
-            // Monitor file for changes
-            try EonilFSEvents.startWatching(
-                paths: [URL.dropboxTokenJSON.path(percentEncoded: false)],
-                for: ObjectIdentifier(self),
-                with: { event in
-                    guard let flags = event.flag else {
-                        return
+
+        // Monitor file for changes
+        try EonilFSEvents.startWatching(
+            paths: [URL.dropboxTokenJSON.path(percentEncoded: false)],
+            for: ObjectIdentifier(self),
+            with: { event in
+                guard let flags = event.flag else {
+                    return
+                }
+
+                if flags.contains(.itemModified) {
+                    if self.isRefreshTokenDefined() {
+                        self.authRequestStatus = .success
+                        self.setupComplete = true
                     }
-                    
-                    if flags.contains(.itemModified) {
-                        if self.isRefreshTokenDefined() {
-                            self.authRequestStatus = .success
-                            self.setupComplete = true
-                        }
-                    }
-                })
-        }
+                }
+            })
     }
     
     private func saveAppKeyToDisk(_ appKey: String) async throws {

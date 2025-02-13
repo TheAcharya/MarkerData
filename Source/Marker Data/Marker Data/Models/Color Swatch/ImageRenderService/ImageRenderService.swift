@@ -9,11 +9,8 @@ import SwiftUI
 import OSLog
 
 class ImageRenderService {
-    var error: ImageRenderServiceError?
-
-    private var exportImageStripFormat: ColorPaletteFileFormat = .jpeg
-
-    private var exportImageStripCompressionFactor: Double = 0.0
+    private static let exportImageStripFormat: ColorPaletteFileFormat = .jpeg
+    private static let exportImageStripCompressionFactor: Double = 0.0
 
     static let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "ImageRenderService")
 
@@ -25,9 +22,9 @@ class ImageRenderService {
         await withTaskGroup(of: Void.self) { group in
             self.taskGroup = group
 
-            imageStrips.forEach { imageStrip in
+            for imageStrip in imageStrips {
                 group.addTask {
-                    await self.addMergeOperation(
+                    await Self.addMergeOperation(
                         imageStrip: imageStrip,
                         stripHeight: stripHeight,
                         colorsCount: colorsCount,
@@ -37,14 +34,14 @@ class ImageRenderService {
             }
         }
     }
-    
+
     func stop() {
         self.taskGroup?.cancelAll()
     }
     
     // MARK: - Private functions
 
-    func addMergeOperation(imageStrip: ImageStrip, stripHeight: CGFloat, colorsCount: Int, paletteStripOnly: Bool) async {
+    static func addMergeOperation(imageStrip: ImageStrip, stripHeight: CGFloat, colorsCount: Int, paletteStripOnly: Bool) async {
         guard
             let nsImage = imageStrip.nsImage(),
             let cgImage = nsImage.cgImage(forProposedRect: nil, context: nil, hints: nil),
@@ -61,8 +58,8 @@ class ImageRenderService {
             paletteStripOnly: paletteStripOnly,
             colorsCount: colorsCount,
             colorMood: imageStrip.colorMood, 
-            format: exportImageStripFormat, 
-            compressionFactor: Float(exportImageStripCompressionFactor)
+            format: Self.exportImageStripFormat,
+            compressionFactor: Float(Self.exportImageStripCompressionFactor)
         )
 
         if let jpegData = await mergeOperation.performMerge() {
@@ -74,11 +71,11 @@ class ImageRenderService {
         }
     }
 
-   func writeImage(jpeg data: Data, to url: URL) throws {
+    static func writeImage(jpeg data: Data, to url: URL) throws {
         try data.write(to: url, options: .atomic)
     }
 
-    func save(jpeg data: Data, to url: URL) throws {
+    static func save(jpeg data: Data, to url: URL) throws {
         try writeImage(jpeg: data, to: url)
         url.stopAccessingSecurityScopedResource()
     }

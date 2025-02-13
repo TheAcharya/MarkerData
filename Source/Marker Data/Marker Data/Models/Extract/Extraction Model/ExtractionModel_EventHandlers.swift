@@ -55,11 +55,13 @@ extension ExtractionModel {
         }
         
         // Send notification
-        NotificationManager.sendNotification(
-            taskFinished: false,
-            title: "Recieved External File",
-            body: "\(url.path(percentEncoded: false))"
-        )
+        Task {
+            await NotificationManager.sendNotification(
+                taskFinished: false,
+                title: "Recieved External File",
+                body: "\(url.path(percentEncoded: false))"
+            )
+        }
     }
     
     /// Handles Workflow Extension notification, and starts the extraction
@@ -92,11 +94,13 @@ extension ExtractionModel {
         }
         
         // Send notification
-        NotificationManager.sendNotification(
-            taskFinished: false,
-            title: "Recieved External File",
-            body: "\(url.path(percentEncoded: false))"
-        )
+        Task {
+            await NotificationManager.sendNotification(
+                taskFinished: false,
+                title: "Recieved External File",
+                body: "\(url.path(percentEncoded: false))"
+            )
+        }
     }
     
     public func processExternalFile() {

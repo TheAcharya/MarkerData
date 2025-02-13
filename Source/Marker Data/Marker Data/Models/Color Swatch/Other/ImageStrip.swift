@@ -7,8 +7,7 @@
 
 import SwiftUI
 
-struct ImageStrip: Hashable, Identifiable {
-
+struct ImageStrip: Sendable, Hashable, Identifiable {
     let id: UUID
     let url: URL
     let ending = ".Strip"

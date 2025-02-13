@@ -10,6 +10,7 @@ import OSLog
 import DockProgress
 
 /// Holds the list of subprocesses and calculates the total progress
+@MainActor
 final class ProgressViewModel: ObservableObject {
     let progress: Progress = Progress(totalUnitCount: 100)
     
@@ -52,12 +53,7 @@ final class ProgressViewModel: ObservableObject {
     /// Initializes new export processes
     public func setProcesses(urls: [URL]) {
         self.processes = urls.map { ExportProcess(url: $0) }
-        
-        Task {
-            await MainActor.run {
-                DockProgress.progressInstance = self.shouldShowDockProgress ? self.progress : nil
-            }
-        }
+        DockProgress.progressInstance = self.shouldShowDockProgress ? self.progress : nil
     }
     
     /// Adds a process
@@ -66,16 +62,11 @@ final class ProgressViewModel: ObservableObject {
         
         // Only set on first addition
         if self.processes.count == 1 {
-            Task {
-                await MainActor.run {
-                    DockProgress.progressInstance = self.shouldShowDockProgress ? self.progress : nil
-                }
-            }
+            DockProgress.progressInstance = self.shouldShowDockProgress ? self.progress : nil
         }
     }
     
     /// Update progress of a single process
-    @MainActor
     public func updateProgress(of url: URL, to percentage: Int64) async {
         guard let process = self.processes.first(where: { $0.url == url }) else {
             Self.logger.error("Failed to update progress of: \(url)")
@@ -98,7 +89,7 @@ final class ProgressViewModel: ObservableObject {
         await self.updateTotalProgress()
         
         // Send notification
-        NotificationManager.sendNotification(
+        await NotificationManager.sendNotification(
             taskFinished: false,
             title: "\(self.message)",
             body: "\(url.path(percentEncoded: false))"
@@ -106,7 +97,6 @@ final class ProgressViewModel: ObservableObject {
     }
     
     /// Calculate and update current progress
-    @MainActor
     private func updateTotalProgress() async {
         let processCount = self.processes.count
         
@@ -137,9 +127,7 @@ final class ProgressViewModel: ObservableObject {
         }
         
         // Publish progress
-        await MainActor.run {
-            self.objectWillChange.send()
-        }
+        self.objectWillChange.send()
     }
     
     /// Marks the progress as failed

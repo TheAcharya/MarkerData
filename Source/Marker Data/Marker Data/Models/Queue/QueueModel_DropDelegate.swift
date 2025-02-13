@@ -28,14 +28,18 @@ extension QueueModel: DropDelegate {
                     if let url = url {
                         // Check file type
                         if url.hasDirectoryPath {
-                            Task {
-                                try await self.scanFolder(at: url, append: true)
+                            Task { [weak self] in
+                                try await self?.scanFolder(at: url, append: true)
                             }
                         } else {
-                            Self.logger.notice("Skipping file \(url.path(percentEncoded: false)). Not supported.")
+                            Task { @MainActor in
+                                Self.logger.notice("Skipping file \(url.path(percentEncoded: false)). Not supported.")
+                            }
                         }
                     } else if let error = error {
-                        Self.logger.error("File drop error: \(error.localizedDescription)")
+                        Task { @MainActor in
+                            Self.logger.error("File drop error: \(error.localizedDescription)")
+                        }
                     }
                 }
             }

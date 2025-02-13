@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+@MainActor
 struct HelpButton: NSViewRepresentable {
     
     let action: () -> Void
@@ -31,6 +32,7 @@ struct HelpButton: NSViewRepresentable {
         
     }
 
+    @MainActor
     class Coordinator {
         
         let parent: HelpButton

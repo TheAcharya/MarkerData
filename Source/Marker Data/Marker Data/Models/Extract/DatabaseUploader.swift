@@ -8,6 +8,7 @@
 import Foundation
 import OSLog
 
+@MainActor
 final class DatabaseUploader: ObservableObject {
     @Published var uploadProgress = ProgressViewModel(taskDescription: "Upload")
     
@@ -92,30 +93,26 @@ final class DatabaseUploader: ObservableObject {
             argumentList.append(ShellParameter(for: "--merge-only-column", value: column.name))
         }
         
-        let shellOutputStream = ShellOutputStream()
-        
-        self.uploadProcesses.append(shellOutputStream.task)
-        
+        let (task, pipe) = try Shell.createProcess(command: argumentList.getCommand(), pty: false)
+
+        self.uploadProcesses.append(task)
+
         let percentRegex = /([0-9]+)%/
-        
-        // Update progress
-        let cancellable = shellOutputStream.outputPublisher.sink(receiveValue: { output in
-            if let match = output.firstMatch(of: percentRegex),
-               let percent = match.1.int {
-                Task {
+
+        var completeOutput = ""
+
+        do {
+            for try await line in Shell.stream(task: task, pipe: pipe) {
+                completeOutput += line + "\n"
+
+                if let match = line.firstMatch(of: percentRegex),
+                   let percent = match.1.int {
                     await self.uploadProgress.updateProgress(of: url, to: Int64(percent))
                 }
             }
-        })
+        } catch {
+            Self.logger.error("Upload output: \(completeOutput)")
 
-        let result = await shellOutputStream.run(argumentList.getCommand())
-
-        Self.logger.debug("Upload output: \(result.output)")
-
-        cancellable.cancel()
-        
-        if result.didFail || result.output.lowercased().contains("error") {
-            // Failure
             if Task.isCancelled {
                 Self.logger.error("Upload to Notion cancelled by user.")
                 throw DatabaseUploadError.userCancel
@@ -123,10 +120,9 @@ final class DatabaseUploader: ObservableObject {
                 Self.logger.error("Failed to upload to Notion.")
                 throw DatabaseUploadError.notionUploadError
             }
-        } else {
-            // Success
-            await self.uploadProgress.markProcessAsFinished(url: url)
         }
+
+        await self.uploadProgress.markProcessAsFinished(url: url)
     }
     
     private func uploadToAirtable(url: URL, airtableProfile: AirtableDBModel) async throws {
@@ -156,30 +152,26 @@ final class DatabaseUploader: ObservableObject {
             argumentList.append(ShellRawArgument("--rename-key-column \"Marker ID\" \(airtableProfile.renameKeyColumn.quoted)"))
         }
         
-        let shellOutputStream = ShellOutputStream()
-        
-        self.uploadProcesses.append(shellOutputStream.task)
-        
+        let (task, pipe) = try Shell.createProcess(command: argumentList.getCommand(), pty: false)
+
+        self.uploadProcesses.append(task)
+
         let percentRegex = /([0-9]+)%/
         
-        // Update progress
-        let cancellable = shellOutputStream.outputPublisher.sink(receiveValue: { output in
-            if let match = output.firstMatch(of: percentRegex),
-               let percent = match.1.int {
-                Task {
+        var completeOutput = ""
+
+        do {
+            for try await line in Shell.stream(task: task, pipe: pipe) {
+                completeOutput += line + "\n"
+
+                if let match = line.firstMatch(of: percentRegex),
+                   let percent = match.1.int {
                     await self.uploadProgress.updateProgress(of: url, to: Int64(percent))
                 }
             }
-        })
-        
-        let result = await shellOutputStream.run(argumentList.getCommand())
+        } catch {
+            Self.logger.error("Upload output: \(completeOutput)")
 
-        Self.logger.debug("Upload output: \(result.output)")
-
-        cancellable.cancel()
-        
-        if result.didFail || result.output.lowercased().contains("error") {
-            // Failure
             if Task.isCancelled {
                 Self.logger.error("Upload to Airtable cancelled by user.")
                 throw DatabaseUploadError.userCancel
@@ -187,9 +179,9 @@ final class DatabaseUploader: ObservableObject {
                 Self.logger.error("Failed to upload to Airtable.")
                 throw DatabaseUploadError.airtableUploadError
             }
-        } else {
-            // Success
-            await self.uploadProgress.markProcessAsFinished(url: url)
         }
+
+        // Success
+        await self.uploadProgress.markProcessAsFinished(url: url)
     }
 }

@@ -9,9 +9,9 @@ import Foundation
 import SwiftUI
 import MarkersExtractor
 
-struct SettingsStore: Codable, Hashable, Equatable, Identifiable {
+struct SettingsStore: Sendable, Codable, Hashable, Equatable, Identifiable {
     /// Used for versioning
-    static var version: Int = 7
+    static let version: Int = 7
     var version: Int = Self.version
 
     var name: String

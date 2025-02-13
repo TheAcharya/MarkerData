@@ -6,9 +6,9 @@
 //
 
 import Foundation
-import DominantColors
+@preconcurrency import DominantColors
 
-struct ColorSwatchSettingsModel: Codable, Hashable, Equatable {
+struct ColorSwatchSettingsModel: Sendable, Codable, Hashable, Equatable {
     var enableSwatch: Bool
     var algorithm: DeltaEFormula
     var accuracy: DominantColorQuality
