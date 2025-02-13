@@ -9,10 +9,13 @@
 - Updated Notion Module CSV2Notion Neo to version 1.3.4
 - Updated Workflow Extensions SDK to 1.0.3
 - Updated Internal Dependencies
-- Codebase updates for Xcode 16.2 and Swift concurrency compatibility
+- Codebase updates for Xcode 16.2 and Swift 6 concurrency compatibility
 
 **🐞 Bug Fix:**
-- Fixed a critical bug in the Notion module that prevented Marker Data's Data Set uploads due to Notion API Changes
+- Fixed a critical bug in the Notion module that prevented Marker Data's Data Set uploads due to Notion API changes
+- Markers placed on transitions are now extracted correctly
+- YouTube Chapters Extraction Profile now formats output timestamps consistently formatted as `HH:MM:SS`
+- YouTube Chapters Extraction Profile now inserts initial chapter marker at `00:00:00` if one does not exist
 
 ---
 
