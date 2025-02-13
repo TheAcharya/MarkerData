@@ -72,7 +72,10 @@ struct QueueView: View {
 //        .onChange(of: sortOrder) { newOrder in
 //            queueModel.queueInstances.sort(using: newOrder)
 //        }
-        .onDrop(of: [.fileURL], delegate: queueModel)
+        .dropDestination(for: URL.self) { urls, location in
+            queueModel.performDrop(urls: urls)
+            return true
+        }
         .contextMenu {
             Button {
                 queueModel.clear()

@@ -30,7 +30,7 @@ class QueueModel: ObservableObject {
         self.databaseManager = databaseManager
     }
     
-    public func scanFolder(at url: URL, append: Bool = false) async throws {
+    func scanFolder(at url: URL, append: Bool = false) async throws {
         // Skip if upload is in progress
         if self.uploadInProgress {
             return
@@ -74,7 +74,7 @@ class QueueModel: ObservableObject {
         }
     }
 
-    public func scanExportFolder() async throws {
+    func scanExportFolder() async throws {
         if !automaticScanEnabled {
             return
         }
@@ -87,7 +87,7 @@ class QueueModel: ObservableObject {
         try await self.scanFolder(at: exportFolder)
     }
 
-    public func upload() async throws {
+    func upload() async throws {
         defer {
             self.uploadInProgress = false
             self.taskGroup = nil
@@ -118,7 +118,7 @@ class QueueModel: ObservableObject {
         }
     }
 
-    public func cancelUpload() {
+    func cancelUpload() {
         self.taskGroup?.cancelAll()
         
         for queueInstance in queueInstances {
@@ -129,14 +129,32 @@ class QueueModel: ObservableObject {
     }
 
     /// Filters out queue instaces which no loger point to existing files
-    public func filterMissing() async {
+    func filterMissing() async {
         self.queueInstances = self.queueInstances.filter {
             $0.extractInfo.jsonURL.fileExists
         }
     }
 
-    public func clear() {
+    func clear() {
         self.queueInstances.removeAll()
+        self.automaticScanEnabled = false
+    }
+
+    func performDrop(urls: [URL]) {
+        // Clear current queue instances
+        self.queueInstances.removeAll()
+
+        for url in urls {
+            // Check file type
+            if url.hasDirectoryPath {
+                Task { [weak self] in
+                    try await self?.scanFolder(at: url, append: true)
+                }
+            } else {
+                Self.logger.notice("Skipping file \(url.path(percentEncoded: false)). Not supported.")
+            }
+        }
+
         self.automaticScanEnabled = false
     }
 }

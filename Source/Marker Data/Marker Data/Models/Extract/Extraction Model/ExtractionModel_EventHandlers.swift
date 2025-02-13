@@ -45,9 +45,7 @@ extension ExtractionModel {
         if let exportFolder = self.settings.store.exportFolderURL,
            exportFolder.fileExists {
             // Extract
-            Task {
-                await self.performExtraction([url])
-            }
+            self.startExtraction(for: [url])
         } else {
             // Default to opening external file recieved popup
             self.externalFileRecieved = true
@@ -84,9 +82,7 @@ extension ExtractionModel {
         if let exportFolder = self.settings.store.exportFolderURL,
            exportFolder.fileExists {
             // Extract
-            Task {
-                await self.performExtraction([url])
-            }
+            self.startExtraction(for: [url])
         } else {
             // Default to opening external file recieved popup
             self.externalFileRecieved = true
@@ -112,10 +108,8 @@ extension ExtractionModel {
         guard let url = self.externalFileURL else {
             return
         }
-        
-        Task {
-            await self.performExtraction([url])
-        }
+
+        self.startExtraction(for: [url])
     }
     
     @MainActor

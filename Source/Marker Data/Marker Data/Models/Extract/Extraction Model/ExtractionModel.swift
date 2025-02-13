@@ -33,7 +33,7 @@ final class ExtractionModel: ObservableObject, Sendable {
     public var failedTasks: [ExtractionFailure] = []
     
     // Cancellation
-    private var taskGroup: TaskGroup<Void>? = nil
+    private var extractionTask: Task<Void, Never>? = nil
 
     static let logger = Logger(label: Bundle.main.bundleIdentifier!)
 
@@ -50,8 +50,17 @@ final class ExtractionModel: ObservableObject, Sendable {
         
         self.setupEventHandlers()
     }
-    
-    public func performExtraction(_ urls: [URL]) async {
+
+    func startExtraction(for urls: [URL]) {
+        let task = Task {
+            await self.performExtraction(urls)
+            self.extractionTask = nil
+        }
+
+        self.extractionTask = task
+    }
+
+    private func performExtraction(_ urls: [URL]) async {
         func validateExportDestination() throws {
             var isDir : ObjCBool = false
             
@@ -163,7 +172,6 @@ final class ExtractionModel: ObservableObject, Sendable {
         // MARK: Prepare for extraction
         
         defer {
-            self.taskGroup = nil
             self.databaseUploader.resetProgress()
             
             DispatchQueue.main.async {
@@ -193,8 +201,6 @@ final class ExtractionModel: ObservableObject, Sendable {
         // MARK: Perform extraction and upload in parallel (in case of multiple files
         
         await withTaskGroup(of: Void.self) { group in
-            self.taskGroup = group
-            
             for url in urls {
                 group.addTask {
                     var exportResult: ExportResult? = nil
@@ -301,7 +307,7 @@ final class ExtractionModel: ObservableObject, Sendable {
         Self.logger.notice("User initiated cancel.")
         Self.logger.notice("Cancelling task group.")
         
-        self.taskGroup?.cancelAll()
+        self.extractionTask?.cancel()
         self.databaseUploader.cancelAll()
     }
 }
