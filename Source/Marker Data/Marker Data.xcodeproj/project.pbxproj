@@ -1676,7 +1676,7 @@
 		};
 		411D9CC12D5DFB8200465CBC /* XCRemoteSwiftPackageReference "ButtonKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Dean151/ButtonKit?tab=readme-ov-file";
+			repositoryURL = "https://github.com/Dean151/ButtonKit";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 0.6.1;
