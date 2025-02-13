@@ -83,7 +83,7 @@ final class ExtractionModel: ObservableObject, Sendable {
             let extractor = MarkersExtractor(settings: settings, logger: markersExtractorLogger)
             
             // Observe progress changes
-            let observation = extractor.progress.observe(
+            let observation = await extractor.progress.observe(
                 \.fractionCompleted,
                  options: [.old, .new]
             ) { object, change in
