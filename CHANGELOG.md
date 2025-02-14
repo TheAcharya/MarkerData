@@ -8,8 +8,9 @@
 **🔨 Improvements:**
 - Updated Notion Module CSV2Notion Neo to version 1.3.4
 - Updated Workflow Extensions SDK to 1.0.3
-- Updated Internal Dependencies
-- Codebase updates for Xcode 16.2 and Swift 6 concurrency compatibility
+- Internal dependencies updates
+- Codebase updates for Xcode 16.2
+- Complete codebase updates and refactors for Swift 6 strict concurrency compatibility
 
 **🐞 Bug Fix:**
 - Fixed a critical bug in the Notion module that prevented Marker Data's Data Set uploads due to Notion API changes
