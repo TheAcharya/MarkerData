@@ -3,7 +3,7 @@
 ### 1.1.2 (4)
 
 **🎉 Released:**
-- TBD
+- 17th February 2025
 
 **🔨 Improvements:**
 - Updated Notion Module CSV2Notion Neo to version 1.3.4
