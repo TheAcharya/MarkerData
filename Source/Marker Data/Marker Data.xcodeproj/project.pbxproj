@@ -1348,7 +1348,7 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "Workflow Extension/WorkflowExtension-Bridging-Header.h";
-				SWIFT_VERSION = 6.0;
+				SWIFT_VERSION = 5.0;
 				WRAPPER_EXTENSION = appex;
 			};
 			name = Debug;
@@ -1403,7 +1403,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "Workflow Extension/WorkflowExtension-Bridging-Header.h";
-				SWIFT_VERSION = 6.0;
+				SWIFT_VERSION = 5.0;
 				WRAPPER_EXTENSION = appex;
 			};
 			name = Release;
