@@ -1,5 +1,18 @@
 # Changelog
 
+### 1.1.3 (5)
+
+**🎉 Released:**
+- TBD
+
+**🔨 Improvements:**
+- Updated [Troubleshooting](https://markerdata.theacharya.co/troubleshooting/) to include Module Status
+
+**🐞 Bug Fix:**
+- Fixed a critical bug that cause Marker Data's Workflow Extension to crash in macOS Sequoia
+
+---
+
 ### 1.1.2 (4)
 
 **🎉 Released:**
