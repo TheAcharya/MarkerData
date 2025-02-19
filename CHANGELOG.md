@@ -6,7 +6,7 @@
 - TBD
 
 **🔨 Improvements:**
-- Updated [Troubleshooting](https://markerdata.theacharya.co/troubleshooting/) to include Module Status
+- Updated [Troubleshooting](https://markerdata.theacharya.co/troubleshooting/) guide to include Module Status
 
 **🐞 Bug Fix:**
 - Fixed a critical bug that cause Marker Data's Workflow Extension to crash in macOS Sequoia
