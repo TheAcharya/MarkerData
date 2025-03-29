@@ -1,5 +1,15 @@
 # Changelog
 
+### 1.1.4 (6)
+
+**🎉 Released:**
+- 29th March 2025
+
+**🐞 Bug Fix:**
+- Removed unintended exposure of the XML Path column in certain Extraction Profile
+
+---
+
 ### 1.1.3 (5)
 
 **🎉 Released:**
