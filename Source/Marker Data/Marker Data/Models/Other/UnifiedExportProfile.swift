@@ -41,17 +41,17 @@ struct UnifiedExportProfile: Codable, Hashable, Identifiable, Equatable {
         case .airtable:
             return "AirtableLogo"
         case .csv:
-            return "NumbersIcon"
+            return "NumbersLogo"
         case .midi:
-            return "MusicIcon"
+            return "MusicLogo"
         case .notion:
             return "NotionLogo"
         case .tsv:
-            return "NumbersIcon"
+            return "NumbersLogo"
         case .youtube:
             return "YouTubeLogo"
         case .xlsx:
-            return "ExcelIcon"
+            return "ExcelLogo"
         case .json:
             return ""
         }
