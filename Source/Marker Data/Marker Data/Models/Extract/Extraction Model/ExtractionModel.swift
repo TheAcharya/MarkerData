@@ -132,10 +132,13 @@ final class ExtractionModel: ObservableObject, Sendable {
                 Self.logger.notice("Color palette enabled. Calculating dominant colors.")
 
                 // Update progress message and icon
-                self.extractionProgress.message = "Analysing Swatch..."
-                self.extractionProgress.icon = "swatchpalette"
+                self.extractionProgress.reset(message: "Analysing Swatch...", icon: "swatchpalette")
 
-                await ColorPaletteRenderer.render(exportResult: exportResult, swatchSettings: swatchSettings)
+                await ColorPaletteRenderer.render(
+                    exportResult: exportResult,
+                    swatchSettings: swatchSettings,
+                    progress: extractionProgress
+                )
 
                 Self.logger.notice("Color palette render done.")
             }

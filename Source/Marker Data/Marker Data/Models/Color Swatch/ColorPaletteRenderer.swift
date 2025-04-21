@@ -17,7 +17,7 @@ import OSLog
 struct ColorPaletteRenderer {
     static let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "ColorPaletteRenderer")
 
-    static func render(exportResult: ExportResult, swatchSettings: ColorSwatchSettingsModel) async {
+    static func render(exportResult: ExportResult, swatchSettings: ColorSwatchSettingsModel, progress: ProgressViewModel) async {
         guard let imageFileURLs = try? FileManager.default
             .contentsOfDirectory(at: exportResult.exportFolder, includingPropertiesForKeys: [])
             .filter({ ["png", "jpg", "jpeg", "gif"].contains($0.pathExtension.lowercased()) }) // Filter for images
@@ -57,7 +57,13 @@ struct ColorPaletteRenderer {
             return imageStrip
         }
 
-        await imageService.export(imageStrips: imageStrips, stripHeight: 96, colorsCount: 14, paletteStripOnly: isGIF)
+        await imageService.export(
+            imageStrips: imageStrips,
+            stripHeight: 96,
+            colorsCount: 14,
+            paletteStripOnly: isGIF,
+            progress: progress
+        )
 
         // Update JSON if exporting separate palette
         if isGIF {

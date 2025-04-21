@@ -51,13 +51,13 @@ final class ProgressViewModel: ObservableObject {
     }
     
     /// Initializes new export processes
-    public func setProcesses(urls: [URL]) {
+    func setProcesses(urls: [URL]) {
         self.processes = urls.map { ExportProcess(url: $0) }
         DockProgress.progressInstance = self.shouldShowDockProgress ? self.progress : nil
     }
     
     /// Adds a process
-    public func addProcess(url: URL) {
+    func addProcess(url: URL) {
         self.processes.append(ExportProcess(url: url))
         
         // Only set on first addition
@@ -67,7 +67,7 @@ final class ProgressViewModel: ObservableObject {
     }
     
     /// Update progress of a single process
-    public func updateProgress(of url: URL, to percentage: Int64) async {
+    func updateProgress(of url: URL, to percentage: Int64) async {
         guard let process = self.processes.first(where: { $0.url == url }) else {
             Self.logger.error("Failed to update progress of: \(url)")
             return
@@ -78,7 +78,7 @@ final class ProgressViewModel: ObservableObject {
         await self.updateTotalProgress()
     }
     
-    public func markProcessAsFinished(url: URL) async {
+    func markProcessAsFinished(url: URL) async {
         guard let process = self.processes.first(where: { $0.url == url }) else {
             Self.logger.error("Failed to mark \(url) as finished")
             return
@@ -131,7 +131,7 @@ final class ProgressViewModel: ObservableObject {
     }
     
     /// Marks the progress as failed
-    public func markasFailed(progressMessage: String, alertMessage: String) {
+    func markasFailed(progressMessage: String, alertMessage: String) {
         self.message = progressMessage
         self.icon = "xmark"
         
@@ -140,10 +140,24 @@ final class ProgressViewModel: ObservableObject {
         self.alertMessage = alertMessage
     }
     
-    public func reset() {
-        self.message = "\(taskDescription) - waiting..."
-        self.icon = "clock"
+    func reset(message: String? = nil, icon: String = "clock") {
+        self.message = message ?? "\(taskDescription) - waiting..."
+        self.icon = icon
         self.processes.removeAll()
+        self.progress.totalUnitCount = 100
         self.progress.completedUnitCount = 0
+    }
+
+    func setUnitCount(_ unitCount: Int64) {
+        self.progress.totalUnitCount = unitCount
+    }
+
+    func setUnitCount(_ unitCount: Int) {
+        self.setUnitCount(Int64(unitCount))
+    }
+
+    func incrementUnitCount() {
+        self.progress.completedUnitCount += 1
+        self.objectWillChange.send()
     }
 }

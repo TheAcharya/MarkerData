@@ -18,7 +18,15 @@ class ImageRenderService {
 
     // MARK: - Functions
     
-    func export(imageStrips: [ImageStrip], stripHeight: CGFloat, colorsCount: Int, paletteStripOnly: Bool) async {
+    func export(
+        imageStrips: [ImageStrip],
+        stripHeight: CGFloat,
+        colorsCount: Int,
+        paletteStripOnly: Bool,
+        progress: ProgressViewModel
+    ) async {
+        await progress.setUnitCount(imageStrips.count)
+
         await withTaskGroup(of: Void.self) { group in
             self.taskGroup = group
 
@@ -30,6 +38,8 @@ class ImageRenderService {
                         colorsCount: colorsCount,
                         paletteStripOnly: paletteStripOnly
                     )
+
+                    await progress.incrementUnitCount()
                 }
             }
         }
