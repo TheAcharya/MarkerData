@@ -71,7 +71,7 @@ final class DatabaseUploader: ObservableObject {
             ShellParameter(for: "--mandatory-column", value: "Marker ID"),
             ShellParameter(for: "--payload-key-column", value: "Marker ID"),
             ShellParameter(for: "--icon-column", value: "Icon Image"),
-            ShellParameter(for: "--max-threads", value: "15"),
+            ShellParameter(for: "--max-threads", value: "5"),
             ShellParameter(for: "--log", url: logPath),
             ShellFlag("--verbose"),
             ShellArgument(url: url)
