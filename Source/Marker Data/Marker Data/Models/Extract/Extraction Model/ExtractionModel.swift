@@ -28,7 +28,7 @@ final class ExtractionModel: ObservableObject, Sendable {
     @Published var exportResult: ExportExitStatus = .none
     @Published var completedOutputFolder: URL? = nil
     
-    @Published var extractionProgress = ProgressViewModel(taskDescription: "Extract")
+    @Published var extractionProgress = ProgressViewModel(taskDescription: "Extract", taskIcon: "gearshape.2")
     
     public var failedTasks: [ExtractionFailure] = []
     
@@ -132,7 +132,7 @@ final class ExtractionModel: ObservableObject, Sendable {
                 Self.logger.notice("Color palette enabled. Calculating dominant colors.")
 
                 // Update progress message and icon
-                self.extractionProgress.reset(message: "Analysing Swatch...", icon: "swatchpalette")
+                self.extractionProgress.reset(taskDescription: "Analysing swatch", taskIcon: "swatchpalette")
 
                 await ColorPaletteRenderer.render(
                     exportResult: exportResult,
@@ -302,7 +302,7 @@ final class ExtractionModel: ObservableObject, Sendable {
         self.exportResult = .none
         self.completedOutputFolder = nil
         self.failedTasks.removeAll()
-        self.extractionProgress.reset()
+        self.extractionProgress.reset(taskDescription: "Extract", taskIcon: "gearshape.2")
         self.databaseUploader.uploadProgress.reset()
     }
 

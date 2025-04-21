@@ -25,7 +25,7 @@ class ImageRenderService {
         paletteStripOnly: Bool,
         progress: ProgressViewModel
     ) async {
-        await progress.setUnitCount(imageStrips.count)
+        await progress.setProcesses(urls: imageStrips.map(\.url))
 
         await withTaskGroup(of: Void.self) { group in
             self.taskGroup = group
@@ -39,7 +39,7 @@ class ImageRenderService {
                         paletteStripOnly: paletteStripOnly
                     )
 
-                    await progress.incrementUnitCount()
+                    await progress.markProcessAsFinished(url: imageStrip.url)
                 }
             }
         }

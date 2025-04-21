@@ -21,8 +21,9 @@ final class ProgressViewModel: ObservableObject {
     @Published var icon: String
     
     /// Task descripting showed on the progress bar
-    let taskDescription: String
-    
+    var taskDescription: String
+    var taskIcon: String
+
     var showDockProgress: Bool
     
     /// List of processes
@@ -34,10 +35,11 @@ final class ProgressViewModel: ObservableObject {
     
     static let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "ProgressViewModel")
     
-    init(taskDescription: String, showDockProgress: Bool = true) {
+    init(taskDescription: String, taskIcon: String, showDockProgress: Bool = true) {
         self.message = "\(taskDescription) - waiting..."
         self.icon = "clock"
         self.taskDescription = taskDescription
+        self.taskIcon = taskIcon
         self.showDockProgress = showDockProgress
     }
     
@@ -83,7 +85,8 @@ final class ProgressViewModel: ObservableObject {
             Self.logger.error("Failed to mark \(url) as finished")
             return
         }
-        
+
+        process.progress.completedUnitCount = 100
         process.isFinished = true
         
         await self.updateTotalProgress()
@@ -123,7 +126,7 @@ final class ProgressViewModel: ObservableObject {
             // In progress
             self.progress.completedUnitCount = percentage
             self.message = message
-            self.icon = "gearshape.2"
+            self.icon = taskIcon
         }
         
         // Publish progress
@@ -140,24 +143,13 @@ final class ProgressViewModel: ObservableObject {
         self.alertMessage = alertMessage
     }
     
-    func reset(message: String? = nil, icon: String = "clock") {
-        self.message = message ?? "\(taskDescription) - waiting..."
-        self.icon = icon
+    func reset(taskDescription: String? = nil, taskIcon: String? = nil) {
+        if let taskDescription { self.taskDescription = taskDescription }
+        if let taskIcon { self.taskIcon = taskIcon }
+        
+        self.icon = "clock"
         self.processes.removeAll()
         self.progress.totalUnitCount = 100
         self.progress.completedUnitCount = 0
-    }
-
-    func setUnitCount(_ unitCount: Int64) {
-        self.progress.totalUnitCount = unitCount
-    }
-
-    func setUnitCount(_ unitCount: Int) {
-        self.setUnitCount(Int64(unitCount))
-    }
-
-    func incrementUnitCount() {
-        self.progress.completedUnitCount += 1
-        self.objectWillChange.send()
     }
 }

@@ -10,8 +10,8 @@ import OSLog
 
 @MainActor
 final class DatabaseUploader: ObservableObject {
-    @Published var uploadProgress = ProgressViewModel(taskDescription: "Upload")
-    
+    @Published var uploadProgress = ProgressViewModel(taskDescription: "Upload", taskIcon: "square.and.arrow.up")
+
     private var uploadProcesses: [Process?] = []
     
     static let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "DatabaseUploader")
