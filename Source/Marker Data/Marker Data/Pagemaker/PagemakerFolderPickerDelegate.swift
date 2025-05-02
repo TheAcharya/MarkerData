@@ -21,8 +21,8 @@ class PagemakerFolderPickerDelegate: NSObject, WKUIDelegate {
         panel.canChooseFiles = false
         panel.canChooseDirectories = true
         panel.allowsMultipleSelection = parameters.allowsMultipleSelection
-        panel.message = "Select a folder"
-        panel.prompt = "Choose"
+        panel.message = "Select a folder extracted from Marker Data"
+        panel.prompt = "Select Folder"
 
         let response = await panel.beginSheetModal(for: NSApp.keyWindow!)
 
