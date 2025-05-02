@@ -171,6 +171,7 @@
 		41F88AFA2B0FF62A004A3B58 /* DatabaseErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F88AF92B0FF62A004A3B58 /* DatabaseErrors.swift */; };
 		41F88AFE2B126439004A3B58 /* ExtractionResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F88AFD2B126439004A3B58 /* ExtractionResult.swift */; };
 		41FAC46A2CD564520034FC09 /* UserDefaultsArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41FAC4692CD564520034FC09 /* UserDefaultsArray.swift */; };
+		41FB26FE2DC50937005F8303 /* WebViewStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41FB26FD2DC50937005F8303 /* WebViewStateManager.swift */; };
 		47411FDA2A3EA121005890FE /* HelpButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47411FD92A3EA121005890FE /* HelpButton.swift */; };
 		47411FDC2A3EA140005890FE /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47411FDB2A3EA140005890FE /* ViewExtensions.swift */; };
 		47411FDE2A3EA1BA005890FE /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47411FDD2A3EA1BA005890FE /* AboutView.swift */; };
@@ -372,6 +373,7 @@
 		41F88AF92B0FF62A004A3B58 /* DatabaseErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseErrors.swift; sourceTree = "<group>"; };
 		41F88AFD2B126439004A3B58 /* ExtractionResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractionResult.swift; sourceTree = "<group>"; };
 		41FAC4692CD564520034FC09 /* UserDefaultsArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsArray.swift; sourceTree = "<group>"; };
+		41FB26FD2DC50937005F8303 /* WebViewStateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewStateManager.swift; sourceTree = "<group>"; };
 		47411FD92A3EA121005890FE /* HelpButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpButton.swift; sourceTree = "<group>"; };
 		47411FDB2A3EA140005890FE /* ViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
 		47411FDD2A3EA1BA005890FE /* AboutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
@@ -475,6 +477,7 @@
 				4102133F2DC4D5EE00955DC6 /* PagemakerView.swift */,
 				410213412DC4D62200955DC6 /* PagemakerFolderPickerDelegate.swift */,
 				410213432DC4D68A00955DC6 /* PagemakerPDFExportHandler.swift */,
+				41FB26FD2DC50937005F8303 /* WebViewStateManager.swift */,
 			);
 			path = Pagemaker;
 			sourceTree = "<group>";
@@ -1204,6 +1207,7 @@
 				4108400F2BD3E5F6008B7B03 /* ColorPaletteRenderer.swift in Sources */,
 				414262BD2AD2E24A00FC6CFC /* BundleExtension.swift in Sources */,
 				419EC4AB2C147835003DB6E8 /* OnboardingView.swift in Sources */,
+				41FB26FE2DC50937005F8303 /* WebViewStateManager.swift in Sources */,
 				4100D5DE2AD052010081F0EC /* OverlaySettingsView.swift in Sources */,
 				41C839872B52C9E300C6B133 /* FCPXMetadataKeys.m in Sources */,
 				9B4D90D82A0BAE3900FE7603 /* ImageSettingsView.swift in Sources */,

@@ -12,7 +12,11 @@ import WebKit
 class PagemakerFolderPickerDelegate: NSObject, WKUIDelegate {
     static let shared = PagemakerFolderPickerDelegate()
 
-    func webView(_ webView: WKWebView, runOpenPanelWith parameters: WKOpenPanelParameters, initiatedByFrame frame: WKFrameInfo) async -> [URL]? {
+    func webView(
+        _ webView: WKWebView,
+        runOpenPanelWith parameters: WKOpenPanelParameters,
+        initiatedByFrame frame: WKFrameInfo
+    ) async -> [URL]? {
         return try? await selectFolders(parameters: parameters)
     }
 
