@@ -9,8 +9,15 @@ import Foundation
 import SwiftUI
 
 struct FileCommands: Commands {
+    @Environment(\.openWindow) var openWindow
+
     var body: some Commands {
         CommandGroup(after: .importExport) {
+            Button("Open Pagemaker") {
+                openWindow(id: "pagemaker")
+            }
+            .keyboardShortcut("p", modifiers: .command)
+
             Button("Install FCP Share Destination...") {
                 Task {
                     do {
