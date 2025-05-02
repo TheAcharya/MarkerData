@@ -18,6 +18,8 @@ struct FileCommands: Commands {
             }
             .keyboardShortcut("p", modifiers: .command)
 
+            Divider()
+
             Button("Install FCP Share Destination...") {
                 Task {
                     do {
