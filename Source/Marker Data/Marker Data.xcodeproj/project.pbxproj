@@ -12,7 +12,6 @@
 		4100D5E72AD19C980081F0EC /* FilePicker in Frameworks */ = {isa = PBXBuildFile; productRef = 4100D5E62AD19C980081F0EC /* FilePicker */; };
 		4102133D2DC4D5A300955DC6 /* WebViewKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4102133C2DC4D5A300955DC6 /* WebViewKit */; };
 		410213402DC4D5EE00955DC6 /* PagemakerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4102133F2DC4D5EE00955DC6 /* PagemakerView.swift */; };
-		410213422DC4D62200955DC6 /* PagemakerFolderPickerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 410213412DC4D62200955DC6 /* PagemakerFolderPickerDelegate.swift */; };
 		410213442DC4D68A00955DC6 /* PagemakerPDFExportHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 410213432DC4D68A00955DC6 /* PagemakerPDFExportHandler.swift */; };
 		410213462DC4D74500955DC6 /* Pagemaker.html in Resources */ = {isa = PBXBuildFile; fileRef = 410213452DC4D74500955DC6 /* Pagemaker.html */; };
 		41083FEB2BC45944008B7B03 /* ImageMergeOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41083FEA2BC45944008B7B03 /* ImageMergeOperation.swift */; };
@@ -172,6 +171,8 @@
 		41F88AFE2B126439004A3B58 /* ExtractionResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F88AFD2B126439004A3B58 /* ExtractionResult.swift */; };
 		41FAC46A2CD564520034FC09 /* UserDefaultsArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41FAC4692CD564520034FC09 /* UserDefaultsArray.swift */; };
 		41FB26FE2DC50937005F8303 /* WebViewStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41FB26FD2DC50937005F8303 /* WebViewStateManager.swift */; };
+		41FB27002DC60D09005F8303 /* PagemakerUIDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41FB26FF2DC60D09005F8303 /* PagemakerUIDelegate.swift */; };
+		41FB27022DC6124E005F8303 /* PagemakerCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41FB27012DC6124E005F8303 /* PagemakerCoordinator.swift */; };
 		47411FDA2A3EA121005890FE /* HelpButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47411FD92A3EA121005890FE /* HelpButton.swift */; };
 		47411FDC2A3EA140005890FE /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47411FDB2A3EA140005890FE /* ViewExtensions.swift */; };
 		47411FDE2A3EA1BA005890FE /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47411FDD2A3EA1BA005890FE /* AboutView.swift */; };
@@ -235,7 +236,6 @@
 		4100D5DD2AD052010081F0EC /* OverlaySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlaySettingsView.swift; sourceTree = "<group>"; };
 		4100D5E32AD1616D0081F0EC /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
 		4102133F2DC4D5EE00955DC6 /* PagemakerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagemakerView.swift; sourceTree = "<group>"; };
-		410213412DC4D62200955DC6 /* PagemakerFolderPickerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagemakerFolderPickerDelegate.swift; sourceTree = "<group>"; };
 		410213432DC4D68A00955DC6 /* PagemakerPDFExportHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagemakerPDFExportHandler.swift; sourceTree = "<group>"; };
 		410213452DC4D74500955DC6 /* Pagemaker.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = Pagemaker.html; sourceTree = "<group>"; };
 		41083FEA2BC45944008B7B03 /* ImageMergeOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageMergeOperation.swift; sourceTree = "<group>"; };
@@ -374,6 +374,8 @@
 		41F88AFD2B126439004A3B58 /* ExtractionResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractionResult.swift; sourceTree = "<group>"; };
 		41FAC4692CD564520034FC09 /* UserDefaultsArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsArray.swift; sourceTree = "<group>"; };
 		41FB26FD2DC50937005F8303 /* WebViewStateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewStateManager.swift; sourceTree = "<group>"; };
+		41FB26FF2DC60D09005F8303 /* PagemakerUIDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagemakerUIDelegate.swift; sourceTree = "<group>"; };
+		41FB27012DC6124E005F8303 /* PagemakerCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagemakerCoordinator.swift; sourceTree = "<group>"; };
 		47411FD92A3EA121005890FE /* HelpButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpButton.swift; sourceTree = "<group>"; };
 		47411FDB2A3EA140005890FE /* ViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
 		47411FDD2A3EA1BA005890FE /* AboutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
@@ -475,9 +477,10 @@
 			isa = PBXGroup;
 			children = (
 				4102133F2DC4D5EE00955DC6 /* PagemakerView.swift */,
-				410213412DC4D62200955DC6 /* PagemakerFolderPickerDelegate.swift */,
 				410213432DC4D68A00955DC6 /* PagemakerPDFExportHandler.swift */,
 				41FB26FD2DC50937005F8303 /* WebViewStateManager.swift */,
+				41FB26FF2DC60D09005F8303 /* PagemakerUIDelegate.swift */,
+				41FB27012DC6124E005F8303 /* PagemakerCoordinator.swift */,
 			);
 			path = Pagemaker;
 			sourceTree = "<group>";
@@ -1227,7 +1230,7 @@
 				4155B70F2B62D350008D3505 /* FileSettingsView.swift in Sources */,
 				41F88AF12B0E9367004A3B58 /* DatabaseManager.swift in Sources */,
 				419EC4B32C14803C003DB6E8 /* OnboardingPages.swift in Sources */,
-				410213422DC4D62200955DC6 /* PagemakerFolderPickerDelegate.swift in Sources */,
+				41FB27002DC60D09005F8303 /* PagemakerUIDelegate.swift in Sources */,
 				4100D5E42AD1616D0081F0EC /* ColorExtension.swift in Sources */,
 				9B4D90DE2A0BB11000FE7603 /* DatabaseSettingsView.swift in Sources */,
 				417914FF2B7547CE00215688 /* DropboxSetupView.swift in Sources */,
@@ -1274,6 +1277,7 @@
 				41C538942AE1AFF200E8A8A1 /* SettingsContainer.swift in Sources */,
 				41176AE02B7BF0420093F4C8 /* QueueView.swift in Sources */,
 				41FAC46A2CD564520034FC09 /* UserDefaultsArray.swift in Sources */,
+				41FB27022DC6124E005F8303 /* PagemakerCoordinator.swift in Sources */,
 				419EC4A82C07D237003DB6E8 /* DeminiaturizeAllWindows.swift in Sources */,
 				411F37632B5C5F5D00CC05E6 /* FileCommands.swift in Sources */,
 				41176ADC2B7BE3EF0093F4C8 /* QueueError.swift in Sources */,

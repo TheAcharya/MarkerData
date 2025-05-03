@@ -479,10 +479,10 @@
          // ==================================================================================
          // Click handler for drop zone to select a folder with Swift WebKit interception
          // ==================================================================================
-         
-         dropZone.addEventListener('click', async () => {
-             // Use the WebKit file dialog by triggering an input type=file
-             try {
+
+         function webkitFileDialog() {
+            // Use the WebKit file dialog by triggering an input type=file
+            try {
                  // This will trigger the WKWebView delegate method in Swift
                  const input = document.createElement('input');
                  input.type = 'file';
@@ -549,6 +549,10 @@
                  console.error("Error opening folder selector:", error);
                  alert("There was a problem opening the folder selector. Please try dropping a folder instead.");
              }
+         }
+         
+         dropZone.addEventListener('click', async () => {
+             webkitFileDialog();
          });
          
          // ==================================================================================

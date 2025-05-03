@@ -7,9 +7,11 @@
 
 import SwiftUI
 import WebViewKit
+import WebKit
 
 struct PagemakerView: View {
     @StateObject private var webViewState = WebViewStateManager()
+    @StateObject private var coordinator = PagemakerCoordinator()
 
     var body: some View {
         ZStack {
@@ -17,8 +19,9 @@ struct PagemakerView: View {
             WebView(
                 url: Bundle.main.url(forResource: "Pagemaker", withExtension: "html"),
                 viewConfig: { webView in
-                    // Set UI delegate for folder picking
-                    webView.uiDelegate = PagemakerFolderPickerDelegate.shared
+                    // Set delegates
+                    webView.uiDelegate = PagemakerUIDelegate.shared
+                    webView.navigationDelegate = webViewState
 
                     // Add message handler for PDF export
                     webView.configuration.userContentController.add(
@@ -26,10 +29,20 @@ struct PagemakerView: View {
                         name: "exportPDF"
                     )
 
+                    webView.configuration.preferences.javaScriptCanOpenWindowsAutomatically = true
+
                     // Set navigation delegate to handle both loading state and external links
-                    webView.navigationDelegate = webViewState
+                    webView.navigationDelegate = self.webViewState
+
+                    coordinator.setWebView(webView)
                 }
             )
+            .onAppear {
+                coordinator.setupKeyboardMonitoring()
+            }
+            .onDisappear {
+                coordinator.cleanupKeyboardMonitoring()
+            }
 
             // Loading overlay
             if webViewState.isLoading {
