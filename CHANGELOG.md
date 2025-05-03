@@ -1,5 +1,17 @@
 # Changelog
 
+### 1.2.0 (7)
+
+**🎉 Released:**
+- TBA
+
+**🔨 Improvements:**
+- Introducing Marker Data Pagemaker
+- Swatch analysis now provides percentage progress, including completion status for each processed image. (#122)
+- Updated Notion Module CSV2Notion Neo to version 1.3.5
+
+---
+
 ### 1.1.4 (6)
 
 **🎉 Released:**
