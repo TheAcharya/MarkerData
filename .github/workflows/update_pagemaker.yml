@@ -1,0 +1,31 @@
+name: update_pagemaker
+
+on:
+  workflow_dispatch:
+
+jobs:
+  update_pagemaker:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download Pagemaker.html
+        run: |
+          # Get the raw content URL for Pagemaker.html
+          pagemaker_url="https://raw.githubusercontent.com/TheAcharya/MarkerData-Pagemaker/main/Pagemaker.html"
+          
+          # Download the Pagemaker.html file (will replace if exists)
+          curl -L -o "./Source/Marker Data/Marker Data/Resources/Pagemaker.html" $pagemaker_url
+          
+          echo "Downloaded and replaced Pagemaker.html from $pagemaker_url"
+
+      - name: Commit and push changes
+        run: |
+          git status
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add "./Source/Marker Data/Marker Data/Resources/Pagemaker.html"
+          git commit -m "Updated Pagemaker"
+          git push
