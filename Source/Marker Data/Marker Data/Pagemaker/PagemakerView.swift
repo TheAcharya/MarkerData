@@ -52,6 +52,11 @@ struct PagemakerView: View {
                         webViewRef?.evaluateJavaScript("if(typeof webkitFileDialog === 'function') { webkitFileDialog(); }")
                     }
                     .keyboardShortcut("o", modifiers: .command)
+
+                    Button("") {
+                        webViewRef?.evaluateJavaScript("if(typeof showPDFExportDialog === 'function') { showPDFExportDialog(); }")
+                    }
+                    .keyboardShortcut("s", modifiers: [.command, .shift])
                 }
                 .opacity(0)
             }

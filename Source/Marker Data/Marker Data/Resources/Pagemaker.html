@@ -1306,10 +1306,9 @@
          // ==================================================================================
          // Export PDF button event listener
          // ==================================================================================
-         
-         // Add event listener for PDF export
-         exportPdfButton.addEventListener('click', async () => {
-             if (!globalData || globalData.length === 0) {
+
+         async function showPDFExportDialog() {
+            if (!globalData || globalData.length === 0) {
                  alert('Please load JSON data first');
                  return;
              }
@@ -1334,6 +1333,11 @@
                  alert(`PDF generation failed: ${error.message || 'Unknown error'}`);
                  pdfLoader.classList.add('hidden');
              }
+         }
+         
+         // Add event listener for PDF export
+         exportPdfButton.addEventListener('click', async () => {
+            showPDFExportDialog();
          });
          
          // ==================================================================================
