@@ -1,0 +1,1811 @@
+<!DOCTYPE html>
+<!--
+   //
+   //  Pagemaker.html
+   //  Marker Data Pagemaker • https://github.com/TheAcharya/MarkerData-Pagemaker
+   //  Created by Vigneswaran Rajkumar on May 2, 2025
+   //  Licensed under MIT License
+   //
+   -->
+<html lang="en" class="dark">
+   <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Marker Data Pagemaker</title>
+      <!-- External scripts -->
+      <script src="https://cdn.tailwindcss.com"></script>
+      <script src="https://unpkg.com/lucide@latest"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/3.0.1/jspdf.umd.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.1.0"></script>
+      <!-- Tailwind configuration -->
+      <script>
+         tailwind.config = {
+             darkMode: 'class',
+             theme: {
+                 extend: {
+                     fontFamily: {
+                         sans: ['Inter', 'ui-sans-serif', 'system-ui'],
+                     },
+                     colors: {
+                         dark: {
+                             background: '#1e1e1e',
+                             surface: '#2a2a2a',
+                             border: '#3a3a3a',
+                             text: '#e8e8e8',
+                             secondary: '#a0a0a0',
+                         },
+                         primary: {
+                             DEFAULT: '#5e5cde',
+                             hover: '#4d4bc7',
+                         }
+                     }
+                 }
+             }
+         };
+      </script>
+      <style>
+         @media print {
+         .no-print { display: none !important; }
+         .card {
+         break-inside: avoid;
+         page-break-inside: avoid;
+         }
+         .grid-cols-1, .grid-cols-2, .grid-cols-3, .grid-cols-4, .grid-cols-5 {
+         display: grid;
+         grid-template-columns: repeat(2, 1fr);
+         gap: 1rem;
+         }
+         }
+         .type-suggestion:hover {
+         background-color: #5e5cde !important;
+         color: white !important;
+         }
+         .type-suggestion.bg-primary, 
+         .type-suggestion.text-white {
+         background-color: #5e5cde !important;
+         color: white !important;
+         }
+         #search-tags {
+         display: flex;
+         align-items: center;
+         gap: 0.25rem;
+         padding-left: 0.75rem;
+         pointer-events: none;
+         }
+         #search-tags > span {
+         pointer-events: auto;
+         }
+         #search-input {
+         transition: padding-left 0.2s ease;
+         }
+         /* Ensure type suggestions dropdown appears above checkboxes */
+         #type-suggestions {
+         z-index: 20;
+         }
+         .card-checkbox {
+         z-index: 10;
+         }
+         /* Placeholder text behaviour */
+         @media (max-width: 960px) {
+         #search-placeholder {
+         display: none !important;
+         }
+         }
+      </style>
+   </head>
+   <body class="font-sans text-gray-800 bg-gray-100 dark:bg-dark-background dark:text-dark-text">
+      <div class="container mx-auto p-6 max-w-7xl">
+         <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 gap-4">
+            <div>
+               <h1 class="text-3xl font-bold">Marker Data Pagemaker</h1>
+               <p class="text-gray-500 dark:text-dark-secondary text-sm">From Timeline to PDF, Effortlessly Built.</p>
+            </div>
+            <!-- Top Navigation -->
+            <div class="flex items-center gap-4">
+               <input type="file" id="file-input" accept=".json" class="hidden" />
+               <button id="export-pdf" class="rounded-full p-2 bg-primary text-white hover:bg-primary-hover" title="Export PDF">
+               <i data-lucide="save"></i>
+               </button>
+               <button onclick="window.location.reload()" class="rounded-full p-2 bg-primary text-white hover:bg-primary-hover" title="Reload">
+               <i data-lucide="refresh-cw"></i>
+               </button>
+               <a href="https://markerdata.theacharya.co/user-guide/pagemaker/" target="_blank" class="rounded-full p-2 bg-primary text-white hover:bg-primary-hover inline-flex items-center justify-center" role="button" title="Help">
+               <i data-lucide="help-circle"></i>
+               </a>
+            </div>
+         </div>
+         <div class="mb-4 no-print">
+            <!-- Status selection -->
+            <div class="flex items-center justify-between gap-4">
+               <div class="flex items-center gap-1">
+                  <div class="flex rounded-lg bg-white dark:bg-dark-surface p-1 gap-px">
+                     <button data-status="" class="status-btn p-2 rounded-md flex items-center justify-center bg-primary text-white hover:bg-primary-hover" title="All Statuses">
+                     <i data-lucide="grid" class="w-4 h-4"></i>
+                     </button>
+                     <button data-status="done" class="status-btn p-2 rounded-md flex items-center justify-center text-gray-700 dark:text-gray-300 hover:bg-primary hover:text-white dark:hover:bg-primary" title="Done">
+                     <i data-lucide="check" class="w-4 h-4"></i>
+                     </button>
+                     <button data-status="progress" class="status-btn p-2 rounded-md flex items-center justify-center text-gray-700 dark:text-gray-300 hover:bg-primary hover:text-white dark:hover:bg-primary" title="In Progress">
+                     <i data-lucide="circle-dot-dashed" class="w-4 h-4"></i>
+                     </button>
+                     <button data-status="not started" class="status-btn p-2 rounded-md flex items-center justify-center text-gray-700 dark:text-gray-300 hover:bg-primary hover:text-white dark:hover:bg-primary" title="Not Started">
+                     <i data-lucide="circle" class="w-4 h-4"></i>
+                     </button>
+                  </div>
+                  <!-- Checkbox selection -->
+                  <div class="flex rounded-lg bg-white dark:bg-dark-surface p-1 gap-px">
+                     <button id="select-all" class="p-2 rounded-md flex items-center justify-center text-gray-700 dark:text-gray-300 hover:bg-primary hover:text-white dark:hover:bg-primary" title="Select All">
+                     <i data-lucide="check-square" class="w-4 h-4"></i>
+                     </button>
+                     <button id="deselect-all" class="p-2 rounded-md flex items-center justify-center text-gray-700 dark:text-gray-300 hover:bg-primary hover:text-white dark:hover:bg-primary" title="Deselect All">
+                     <i data-lucide="square" class="w-4 h-4"></i>
+                     </button>
+                     <!-- Type suggestions button -->
+                     <button id="type-suggestions-btn" class="p-2 rounded-md flex items-center justify-center text-gray-700 dark:text-gray-300 hover:bg-primary hover:text-white dark:hover:bg-primary" title="Type Suggestions">
+                     <i data-lucide="search-code" class="w-4 h-4"></i>
+                     </button>
+                  </div>
+               </div>
+               <!-- Search field -->
+               <div class="flex-1 relative">
+                  <div class="relative">
+                     <div id="search-tags" class="absolute top-1/2 left-3 -translate-y-1/2 flex items-center gap-1"></div>
+                     <input id="search-input" type="text" class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-dark-border bg-white dark:bg-dark-surface text-sm text-gray-700 dark:text-dark-text pl-12 pr-10" />
+                     <div id="search-placeholder" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none text-gray-400 dark:text-gray-500 text-sm">Search by name, notes or type ...</div>
+                     <div class="absolute top-1/2 right-3 -translate-y-1/2">
+                        <i data-lucide="search" class="h-4 w-4 text-gray-400 dark:text-gray-500"></i>
+                     </div>
+                  </div>
+                  <!-- Marker type suggestions -->
+                  <div id="type-suggestions" class="absolute top-full left-0 right-0 bg-white dark:bg-dark-surface border border-gray-200 dark:border-dark-border rounded-md z-10 hidden mt-1 shadow-lg overflow-hidden">
+                     <div class="type-suggestion px-3 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 rounded-t-md" data-type="standard">Standard</div>
+                     <div class="type-suggestion px-3 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700" data-type="to do">To Do</div>
+                     <div class="type-suggestion px-3 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700" data-type="chapter">Chapter</div>
+                     <div class="type-suggestion px-3 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 rounded-b-md" data-type="caption">Caption</div>
+                  </div>
+               </div>
+               <!-- Column selection -->
+               <div class="flex rounded-lg bg-white dark:bg-dark-surface p-1 gap-px">
+                  <button data-columns="1" class="column-btn px-3 py-1 rounded-md text-sm text-gray-700 dark:text-gray-300 hover:bg-primary hover:text-white dark:hover:bg-primary">1</button>
+                  <button data-columns="2" class="column-btn px-3 py-1 rounded-md text-sm bg-primary text-white hover:bg-primary-hover">2</button>
+                  <button data-columns="3" class="column-btn px-3 py-1 rounded-md text-sm text-gray-700 dark:text-gray-300 hover:bg-primary hover:text-white dark:hover:bg-primary">3</button>
+                  <button data-columns="4" class="column-btn px-3 py-1 rounded-md text-sm text-gray-700 dark:text-gray-300 hover:bg-primary hover:text-white dark:hover:bg-primary">4</button>
+                  <button data-columns="5" class="column-btn px-3 py-1 rounded-md text-sm text-gray-700 dark:text-gray-300 hover:bg-primary hover:text-white dark:hover:bg-primary">5</button>
+               </div>
+            </div>
+         </div>
+         <!-- Body -->
+         <div id="project-name-display" class="text-center text-lg font-semibold mb-6 dark:text-dark-text hidden"></div>
+         <div id="gallery-container" class="text-center mb-6">
+            <div id="drop-zone" class="border-2 border-dashed border-gray-300 dark:border-dark-border rounded-xl p-8 max-w-2xl mx-auto cursor-pointer hover:bg-gray-50 dark:hover:bg-dark-surface transition-colors duration-200">
+               <div class="flex flex-col items-center justify-center gap-4">
+                  <div class="p-4 rounded-full bg-gray-100 dark:bg-gray-700">
+                     <i data-lucide="folder" class="w-8 h-8 text-gray-400 dark:text-dark-secondary"></i>
+                  </div>
+                  <div>
+                     <p class="text-lg font-medium text-gray-700 dark:text-dark-text mb-1">Drop your Marker Data's Extracted Data Set</p>
+                     <p class="text-sm text-gray-500 dark:text-dark-secondary">or click to open folder</p>
+                  </div>
+               </div>
+            </div>
+            <input type="file" id="file-input" accept=".json" class="hidden" />
+         </div>
+         <!-- Footer -->
+         <div class="flex justify-between text-xs text-gray-500 dark:text-dark-secondary mt-8 mb-4 no-print">
+            <div>© 2025 <a href="https://tech.theacharya.co" target="_blank" class="hover:text-primary">The Acharya Technology</a></div>
+            <div><a href="https://github.com/TheAcharya/MarkerData-Pagemaker" target="_blank" class="hover:text-primary">Pagemaker v1.0.0</a></div>
+         </div>
+      </div>
+      <!-- PDF export progress loading overlay -->
+      <div id="pdf-loader" class="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center z-50 text-white flex-col hidden">
+         <div class="bg-white dark:bg-dark-surface shadow-md rounded-lg px-8 py-6 flex flex-col items-center">
+            <div class="flex items-center space-x-3 mb-4">
+               <div class="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+               <span class="text-gray-700 dark:text-dark-text font-medium">Generating PDF...</span>
+            </div>
+            <div class="w-full h-4 bg-gray-200 dark:bg-gray-700 rounded-full mt-2 overflow-hidden">
+               <div id="progress-bar" class="h-full bg-primary transition-all duration-300" style="width: 0%"></div>
+            </div>
+         </div>
+      </div>
+      <script>
+         // ==================================================================================
+         // Initialise Lucide icons
+         // ==================================================================================
+         
+         lucide.createIcons();
+         
+         // ==================================================================================
+         // Initial global constants and variables
+         // ==================================================================================
+         
+         const fileInput = document.getElementById('file-input');
+         const galleryContainer = document.getElementById('gallery-container');
+         const searchInput = document.getElementById('search-input');
+         const searchPlaceholder = document.getElementById('search-placeholder');
+         const searchTagsContainer = document.getElementById('search-tags');
+         const columnButtons = document.querySelectorAll('.column-btn');
+         const statusButtons = document.querySelectorAll('.status-btn');
+         const exportPdfButton = document.getElementById('export-pdf');
+         const pdfLoader = document.getElementById('pdf-loader');
+         const progressBar = document.getElementById('progress-bar');
+         const projectNameDisplay = document.getElementById('project-name-display');
+         const typeSuggestions = document.getElementById('type-suggestions');
+         const selectAllButton = document.getElementById('select-all');
+         const deselectAllButton = document.getElementById('deselect-all');
+         const typeSuggestionsBtn = document.getElementById('type-suggestions-btn');
+         const dropZone = document.getElementById('drop-zone');
+         
+         // ==================================================================================
+         // Setting date and time format for filename
+         // ==================================================================================
+         
+         // Get current date and time
+         const now = new Date();
+         // Format date as YYYYMMDD
+         const dateStr = now.toISOString().slice(0,10).replace(/-/g, '');
+         // Format time as HHMMSS
+         const timeStr = now.toTimeString().slice(0,8).replace(/:/g, '');
+         
+         let globalData = [];
+         let currentColumns = 'grid-cols-2';
+         let currentStatus = '';
+         let fileName = 'marker-data';
+         let activeSearchTags = [];
+         let selectedCards = new Set();
+         let activeSuggestionIndex = -1;
+         let filteredDataForPDF = [];
+         let folderHandle = null;
+         let folderBasePath = '';
+         let folderFiles = {};
+         
+         // ==================================================================================
+         // Set dark mode by default
+         // ==================================================================================
+         
+         document.documentElement.classList.add('dark');
+         
+         // ==================================================================================
+         // Safari browser detection
+         // ==================================================================================
+         
+         // Add this function to detect Safari browser
+         function isMacOSSafari() {
+             const userAgent = navigator.userAgent;
+             return userAgent.includes('Macintosh') && userAgent.includes('Safari') && !userAgent.includes('Chrome');
+         }
+         
+         // ==================================================================================
+         // Placeholder SVG for data set with no images
+         // ==================================================================================
+         
+         const placeholderSVG = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1920 1080'%3E%3Crect width='100%25' height='100%25' fill='white'/%3E%3Ctext x='50%25' y='50%25' font-family='Helvetica, Arial, sans-serif' font-size='48' fill='%239ca3af' text-anchor='middle' dominant-baseline='middle'%3ENo Image%3C/text%3E%3C/svg%3E`;
+         
+         // ==================================================================================
+         // Folder drag & drop Handling
+         // ==================================================================================
+         
+         dropZone.addEventListener('dragover', (e) => {
+             e.preventDefault();
+             dropZone.classList.add('border-primary', 'bg-gray-100', 'dark:bg-gray-700');
+         });
+         
+         dropZone.addEventListener('dragleave', () => {
+             dropZone.classList.remove('border-primary', 'bg-gray-100', 'dark:bg-gray-700');
+         });
+         
+         dropZone.addEventListener('drop', async (e) => {
+             e.preventDefault();
+             dropZone.classList.remove('border-primary', 'bg-gray-100', 'dark:bg-gray-700');
+             
+             // Check if items exist in the dataTransfer
+             if (e.dataTransfer.items) {
+                 let hasFolder = false;
+                 
+                 // Process all dragged items
+                 for (let i = 0; i < e.dataTransfer.items.length; i++) {
+                     const item = e.dataTransfer.items[i];
+                     
+                     // Check if we're dealing with a folder (Safari reports this as a "file" with no file extension)
+                     if (item.kind === 'file') {
+                         const entry = item.webkitGetAsEntry();
+                         
+                         if (entry && entry.isDirectory) {
+                             hasFolder = true;
+                             await processFolder(entry);
+                             break; // Only process the first folder
+                         }
+                     }
+                 }
+                 
+                 // If no folder was dropped, check if a single JSON file was dropped (fallback to original behaviour)
+                 if (!hasFolder && e.dataTransfer.files.length) {
+                     const file = e.dataTransfer.files[0];
+                     
+                     if (file.name.endsWith('.json')) {
+                         folderBasePath = ''; // Reset folder path for single file
+                         folderFiles = {}; // Reset folder files cache
+                         fileInput.files = e.dataTransfer.files;
+                         const event = new Event('change');
+                         fileInput.dispatchEvent(event);
+                     } else {
+                         showError("Please drop a folder extracted from Marker Data. Only Notion or Airtable profiles are supported.");
+                     }
+                 }
+             }
+         });
+         
+         // Function to show error message
+         function showError(message) {
+             galleryContainer.innerHTML = `<p class="bg-red-500 text-white rounded-md px-3 py-2">${message}</p>`;
+             projectNameDisplay.classList.add('hidden');
+         }
+         
+         // Process the dropped folder
+         async function processFolder(folderEntry) {
+             try {
+                 // Reset the folder files cache
+                 folderFiles = {};
+                 
+                 // Show loading indicator
+                 galleryContainer.innerHTML = `
+                     <div class="flex justify-center items-center p-8">
+                       <div class="bg-white dark:bg-dark-surface shadow-md rounded-lg px-6 py-4 flex items-center space-x-3">
+                         <div class="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+                         <span class="text-gray-700 dark:text-dark-text font-medium">Processing folder...</span>
+                       </div>
+                     </div>
+                 `;
+                 
+                 // Get folder path for image resolution
+                 folderBasePath = folderEntry.fullPath || '';
+                 
+                 // Read all files in the folder
+                 await readFolderContents(folderEntry);
+                 
+                 // Find JSON files (excluding extract_info.json)
+                 const jsonFiles = Object.keys(folderFiles).filter(
+                     filename => filename.endsWith('.json') && filename !== 'extract_info.json'
+                 );
+                 
+                 if (jsonFiles.length === 0) {
+                     showError("Compatible JSON file not found. Only Notion or Airtable profiles are supported.");
+                     return;
+                 }
+                 
+                 // If multiple JSON files exist, use the first one
+                 const primaryJsonFile = jsonFiles[0];
+                 console.log(`Loading JSON file: ${primaryJsonFile}`);
+                 
+                 // Load the JSON file content
+                 const jsonContent = await folderFiles[primaryJsonFile].text();
+                 processJsonContent(jsonContent, primaryJsonFile);
+                 
+             } catch (error) {
+                 console.error('Error processing folder:', error);
+                 showError(`Error processing folder: ${error.message}`);
+             }
+         }
+         
+         // Read all files in the folder recursively
+         function readFolderContents(folderEntry) {
+             return new Promise((resolve, reject) => {
+                 const reader = folderEntry.createReader();
+                 const readEntries = () => {
+                     reader.readEntries(async (entries) => {
+                         if (entries.length === 0) {
+                             resolve();
+                             return;
+                         }
+                         
+                         try {
+                             // Process all entries
+                             const promises = entries.map(entry => {
+                                 if (entry.isDirectory) {
+                                     return readFolderContents(entry);
+                                 } else if (entry.isFile) {
+                                     return new Promise((fileResolve, fileReject) => {
+                                         entry.file(file => {
+                                             // Store file reference with its relative path
+                                             const relativePath = entry.fullPath.startsWith('/') 
+                                                 ? entry.fullPath.substring(1) 
+                                                 : entry.fullPath;
+                                             
+                                             folderFiles[relativePath] = file;
+                                             fileResolve();
+                                         }, fileReject);
+                                     });
+                                 }
+                                 return Promise.resolve();
+                             });
+                             
+                             await Promise.all(promises);
+                             readEntries(); // Continue reading if there are more entries
+                         } catch (error) {
+                             reject(error);
+                         }
+                     }, reject);
+                 };
+                 
+                 readEntries();
+             });
+         }
+         
+         // Process the JSON content
+         function processJsonContent(jsonContent, jsonFileName) {
+             try {
+                 const data = JSON.parse(jsonContent);
+                 globalData = data;
+                 
+                 // Extract only the base filename without the folder path
+                 // First, handle Windows and Unix-style paths by replacing both slashes
+                 const baseFileName = jsonFileName.split(/[\/\\]/).pop();
+                 // Then remove the extension
+                 fileName = baseFileName.replace(/\.[^/.]+$/, "");
+                 
+                 console.log("Using filename for PDF export:", fileName);
+                 
+                 // Initialise with all cards selected
+                 selectedCards = new Set(data.map(item => item['Marker ID'] || Math.random().toString(36).substr(2, 9)));
+                 
+                 // Display project name
+                 const projectName = data[0]?.['Project Name'] || '';
+                 if (projectName) {
+                     projectNameDisplay.textContent = `Project Name: ${projectName}`;
+                     projectNameDisplay.classList.remove('hidden');
+                 } else {
+                     projectNameDisplay.classList.add('hidden');
+                 }
+                 
+                 renderGallery(globalData);
+             } catch (err) {
+                 showError(`Error parsing JSON: ${err.message}`);
+             }
+         }
+         
+         // ==================================================================================
+         // Event listeners for page unload and page visibility change
+         // ==================================================================================
+         
+         // Add event listener to clean up blob URLs when the page is hidden or unloaded
+         window.addEventListener('visibilitychange', () => {
+             if (document.visibilityState === 'hidden') {
+                 cleanupBlobUrls();
+             }
+         });
+         
+         window.addEventListener('beforeunload', cleanupBlobUrls);
+         
+         // ==================================================================================
+         // Click handler for drop zone to select a folder with Swift WebKit interception
+         // ==================================================================================
+
+         function webkitFileDialog() {
+            // Use the WebKit file dialog by triggering an input type=file
+            try {
+                 // This will trigger the WKWebView delegate method in Swift
+                 const input = document.createElement('input');
+                 input.type = 'file';
+                 input.style.display = 'none';
+                 input.setAttribute('webkitdirectory', '');
+                 input.setAttribute('directory', '');
+                 
+                 document.body.appendChild(input);
+                 
+                 // This will trigger the WKWebView delegate method for file selection
+                 input.click();
+                 
+                 // The delegate method in Swift will handle the folder selection
+                 // and return the selected folder via the completionHandler
+                 
+                 input.addEventListener('change', async (e) => {
+                     if (e.target.files.length > 0) {
+                         // Reset folder files cache
+                         folderFiles = {};
+                         
+                         // Show loading indicator
+                         galleryContainer.innerHTML = `
+                             <div class="flex justify-center items-center p-8">
+                               <div class="bg-white dark:bg-dark-surface shadow-md rounded-lg px-6 py-4 flex items-center space-x-3">
+                                 <div class="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+                                 <span class="text-gray-700 dark:text-dark-text font-medium">Processing folder...</span>
+                               </div>
+                             </div>
+                         `;
+                         
+                         // Process all files in the selected folder
+                         const files = Array.from(e.target.files);
+                         
+                         // Store all files in folderFiles object with their relative paths
+                         for (const file of files) {
+                             // Create a relative path based on the file's path
+                             const relativePath = file.webkitRelativePath;
+                             folderFiles[relativePath] = file;
+                         }
+                         
+                         // Find JSON files (excluding extract_info.json)
+                         const jsonFiles = Object.keys(folderFiles).filter(
+                             filename => filename.endsWith('.json') && filename !== 'extract_info.json'
+                         );
+                         
+                         if (jsonFiles.length === 0) {
+                             showError("Compatible JSON file not found. Only Notion or Airtable profiles are supported.");
+                             return;
+                         }
+                         
+                         // Use the first JSON file
+                         const primaryJsonFile = jsonFiles[0];
+                         console.log(`Loading JSON file: ${primaryJsonFile}`);
+                         
+                         // Load the JSON file content
+                         const jsonContent = await folderFiles[primaryJsonFile].text();
+                         processJsonContent(jsonContent, primaryJsonFile);
+                     }
+                     
+                     // Remove the temporary input element
+                     document.body.removeChild(input);
+                 });
+             } catch (error) {
+                 console.error("Error opening folder selector:", error);
+                 alert("There was a problem opening the folder selector. Please try dropping a folder instead.");
+             }
+         }
+         
+         dropZone.addEventListener('click', async () => {
+             webkitFileDialog();
+         });
+         
+         // ==================================================================================
+         // Drop zone text to reflect folder drop capability
+         // ==================================================================================
+         
+         const dropZoneContent = dropZone.querySelector('div > div:nth-child(2)');
+         if (dropZoneContent) {
+             const paragraphs = dropZoneContent.querySelectorAll('p');
+             if (paragraphs && paragraphs.length >= 2) {
+                 paragraphs[0].textContent = 'Drop your Marker Data\'s Extracted Data Set';
+                 paragraphs[1].textContent = 'or click to open folder';
+             }
+         }
+         
+         // ==================================================================================
+         // Image path resolution and reconstruction functions
+         // ==================================================================================
+         
+         // Function to resolve image paths based on whether we're loading from a folder or not
+         async function resolveImagePath(imagePath) {
+             if (!imagePath) return placeholderSVG;
+             
+             // If we're loading from a folder and have cached files
+             if (Object.keys(folderFiles).length > 0) {
+                 // Try to find the image in the folder files
+                 // First try direct match
+                 if (folderFiles[imagePath]) {
+                     return URL.createObjectURL(folderFiles[imagePath]);
+                 }
+                 
+                 // Try to find by filename only (in case the JSON has just filenames)
+                 const filenameOnly = imagePath.split('/').pop();
+                 const matchingFile = Object.keys(folderFiles).find(path => path.endsWith(filenameOnly));
+                 
+                 if (matchingFile) {
+                     return URL.createObjectURL(folderFiles[matchingFile]);
+                 }
+                 
+                 // If still not found, try case insensitive search
+                 const lowerImagePath = filenameOnly.toLowerCase();
+                 const caseInsensitiveMatch = Object.keys(folderFiles).find(
+                     path => path.split('/').pop().toLowerCase() === lowerImagePath
+                 );
+                 
+                 if (caseInsensitiveMatch) {
+                     return URL.createObjectURL(folderFiles[caseInsensitiveMatch]);
+                 }
+                 
+                 console.warn(`Image not found in folder: ${imagePath}`);
+                 return placeholderSVG;
+             }
+             
+             // If not loading from a folder, just return the path as is
+             return imagePath;
+         }
+         
+         // ==================================================================================
+         // Image base64 conversion function
+         // ==================================================================================
+         
+         async function loadImageAsBase64ForPDF(url) {
+             return new Promise((resolve) => {
+                 // If already a data URL, return as is
+                 if (typeof url === 'string' && url.startsWith('data:')) {
+                     resolve(url);
+                     return;
+                 }
+                 
+                 // For blob URLs in Safari, we need special handling
+                 if (typeof url === 'string' && url.startsWith('blob:') && isMacOSSafari()) {
+                     const xhr = new XMLHttpRequest();
+                     xhr.onload = function() {
+                         const reader = new FileReader();
+                         reader.onloadend = function() {
+                             resolve(reader.result);
+                         };
+                         reader.onerror = function() {
+                             console.warn(`Failed to convert blob to base64: ${url}`);
+                             resolve(placeholderSVG);
+                         };
+                         reader.readAsDataURL(xhr.response);
+                     };
+                     xhr.onerror = function() {
+                         console.warn(`Failed to load blob URL: ${url}`);
+                         resolve(placeholderSVG);
+                     };
+                     xhr.open('GET', url);
+                     xhr.responseType = 'blob';
+                     xhr.send();
+                     return;
+                 }
+                 
+                 // For all other cases, use Image element approach
+                 const img = new Image();
+                 
+                 img.onload = () => {
+                     try {
+                         // Create canvas to convert to base64
+                         const canvas = document.createElement('canvas');
+                         canvas.width = img.naturalWidth || img.width;
+                         canvas.height = img.naturalHeight || img.height;
+                         
+                         // Make sure we have valid dimensions
+                         if (canvas.width === 0 || canvas.height === 0 || canvas.width > 8000 || canvas.height > 8000) {
+                             console.warn("Image has invalid dimensions or is too large, using placeholder");
+                             resolve(placeholderSVG);
+                             return;
+                         }
+                         
+                         const ctx = canvas.getContext('2d');
+                         ctx.drawImage(img, 0, 0);
+                         
+                         // Always use JPEG for consistency in Safari
+                         try {
+                             const dataURL = canvas.toDataURL('image/jpeg', 0.8);
+                             resolve(dataURL);
+                         } catch (e) {
+                             console.error("Error creating dataURL, using placeholder", e);
+                             resolve(placeholderSVG);
+                         }
+                     } catch (error) {
+                         console.error("Error converting image:", error);
+                         resolve(placeholderSVG); // Fall back to placeholder
+                     }
+                 };
+                 
+                 img.onerror = () => {
+                     console.warn(`Failed to load image: ${url}`);
+                     resolve(placeholderSVG);
+                 };
+                 
+                 img.crossOrigin = "Anonymous";
+                 
+                 // Different handling based on URL type
+                 try {
+                     if (typeof url === 'string' && url.startsWith('blob:')) {
+                         img.src = url;
+                     } else {
+                         img.src = url + (url.includes('?') ? '&' : '?') + 'cachebust=' + Date.now();
+                     }
+                 } catch (e) {
+                     console.error("Error setting image source:", e);
+                     resolve(placeholderSVG);
+                 }
+                 
+                 // Add a timeout to prevent hanging
+                 setTimeout(() => {
+                     if (!img.complete) {
+                         console.warn("Image load timed out:", url);
+                         resolve(placeholderSVG);
+                     }
+                 }, 5000);
+             });
+         }
+         
+         // ==================================================================================
+         // Function to clean up blob URLs to prevent memory leaks
+         // ==================================================================================
+         
+         function cleanupBlobUrls() {
+             // Revoke any blob URLs we've created
+             const images = document.querySelectorAll('img[src^="blob:"]');
+             images.forEach(img => {
+                 URL.revokeObjectURL(img.src);
+             });
+         }
+         
+         // ==================================================================================
+         // Date functionality for PDF
+         // ==================================================================================
+         
+         function getOrdinalSuffix(day) {
+           if (day > 3 && day < 21) return 'th';
+           switch (day % 10) {
+             case 1: return 'st';
+             case 2: return 'nd';
+             case 3: return 'rd';
+             default: return 'th';
+           }
+         }
+         
+         function formatDate(date, includePrefix = true) {
+           const day = date.getDate();
+           const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+           const month = monthNames[date.getMonth()];
+           const year = date.getFullYear();
+           const suffix = getOrdinalSuffix(day);
+           
+           return includePrefix 
+             ? `Generated on ${day}${suffix} ${month} ${year}`
+             : `${day}${suffix} ${month} ${year}`;
+         }
+         
+         // ==================================================================================
+         // Quick search "type:" filter function
+         // ==================================================================================
+         
+         function addTypeFilter(type) {
+           const typeTag = `type:${type}`;
+           if (!activeSearchTags.includes(typeTag)) {
+             if (activeSearchTags.filter(t => t.startsWith('type:')).length >= 4) {
+               return; // Limit to 4 type filters
+             }
+             activeSearchTags.push(typeTag);
+             updateSearchTags();
+             // Force focus to input after adding type to ensure proper cursor positioning
+             setTimeout(() => {
+               searchInput.focus();
+             }, 10);
+           }
+           searchInput.value = '';
+           typeSuggestions.classList.add('hidden');
+           renderGallery(globalData);
+         }
+         
+         function updateSearchTags() {
+           searchTagsContainer.innerHTML = '';
+           
+           // Filter out type tags to maintain order
+           const typeTags = activeSearchTags.filter(tag => tag.startsWith('type:'));
+           const otherTags = activeSearchTags.filter(tag => !tag.startsWith('type:'));
+         
+           // Add type tags first
+           typeTags.forEach(tag => {
+             const tagElement = document.createElement('span');
+             tagElement.className = 'inline-flex items-center bg-primary text-white px-2.5 py-1 rounded-full text-xs font-medium mr-1';
+             tagElement.innerHTML = `${tag.replace('type:', '')}<button type="button" data-tag="${tag}" class="ml-1.5 pointer-events-auto text-white hover:text-white/80">&times;</button>`;
+             searchTagsContainer.appendChild(tagElement);
+           });
+         
+           // Add other tags
+           otherTags.forEach(tag => {
+             const tagElement = document.createElement('span');
+             tagElement.className = 'inline-flex items-center bg-gray-500 text-white px-2.5 py-1 rounded-full text-xs font-medium mr-1';
+             tagElement.innerHTML = `${tag}<button type="button" data-tag="${tag}" class="ml-1.5 pointer-events-auto text-white hover:text-white/80">&times;</button>`;
+             searchTagsContainer.appendChild(tagElement);
+           });
+         
+           // Use requestAnimationFrame to ensure DOM updates are complete before measuring
+           requestAnimationFrame(() => {
+             // Update cursor input positioning
+             if (activeSearchTags.length > 0) {
+               const totalWidth = searchTagsContainer.offsetWidth;
+               searchInput.style.paddingLeft = `${totalWidth + 16}px`;
+               searchPlaceholder.classList.add('hidden');
+             } else {
+               searchInput.style.paddingLeft = '';
+               // Only show placeholder if input is also empty
+               if (searchInput.value.length === 0) {
+                 searchPlaceholder.classList.remove('hidden');
+               }
+             }
+           });
+         
+           // Add event listeners to remove search type suggestions pills
+           searchTagsContainer.querySelectorAll('button').forEach(btn => {
+             btn.addEventListener('click', (e) => {
+               e.stopPropagation();
+               const tagToRemove = btn.dataset.tag;
+               activeSearchTags = activeSearchTags.filter(t => t !== tagToRemove);
+               updateSearchTags();
+               renderGallery(globalData);
+             });
+           });
+         }
+         
+         function highlightSuggestion(index) {
+           const suggestions = typeSuggestions.querySelectorAll('.type-suggestion');
+           suggestions.forEach((suggestion, i) => {
+             if (i === index) {
+               suggestion.classList.add('bg-primary', 'text-white');
+             } else {
+               suggestion.classList.remove('bg-primary', 'text-white', 'bg-gray-200', 'dark:bg-gray-700');
+             }
+           });
+         }
+         
+         // ==================================================================================
+         // File input handler to use image path resolution
+         // ==================================================================================
+         
+         fileInput.addEventListener('change', (e) => {
+             if (e.target.files.length) {
+                 const file = e.target.files[0];
+                 
+                 if (file.name.endsWith('.json')) {
+                     fileName = file.name.replace(/\.[^/.]+$/, "");
+                     
+                     // Reset folder-related variables for single file mode
+                     folderBasePath = '';
+                     folderFiles = {};
+                     
+                     const reader = new FileReader();
+                     reader.onload = function (event) {
+                         processJsonContent(event.target.result, file.name);
+                     };
+                     reader.readAsText(file);
+                 } else {
+                     showError("Please select a JSON file");
+                 }
+             }
+         });
+         
+         // ==================================================================================
+         // Column selection
+         // ==================================================================================
+         
+         columnButtons.forEach(btn => {
+           btn.addEventListener('click', () => {
+             columnButtons.forEach(b => {
+               b.classList.remove('bg-primary', 'text-white', 'hover:bg-primary-hover');
+               b.classList.add('text-gray-700', 'dark:text-gray-300', 'hover:bg-gray-100', 'dark:hover:bg-gray-700');
+             });
+             btn.classList.add('bg-primary', 'text-white', 'hover:bg-primary-hover');
+             btn.classList.remove('text-gray-700', 'dark:text-gray-300', 'hover:bg-gray-100', 'dark:hover:bg-gray-700');
+             currentColumns = `grid-cols-${btn.dataset.columns}`;
+             renderGallery(globalData);
+           });
+         });
+         
+         // ==================================================================================
+         // Status selection
+         // ==================================================================================
+         
+         statusButtons.forEach(btn => {
+           btn.addEventListener('click', () => {
+             statusButtons.forEach(b => {
+               b.classList.remove('bg-primary', 'text-white', 'hover:bg-primary-hover');
+               b.classList.add('text-gray-700', 'dark:text-gray-300', 'hover:bg-gray-100', 'dark:hover:bg-gray-700');
+             });
+             btn.classList.add('bg-primary', 'text-white', 'hover:bg-primary-hover');
+             btn.classList.remove('text-gray-700', 'dark:text-gray-300', 'hover:bg-gray-100', 'dark:hover:bg-gray-700');
+             currentStatus = btn.dataset.status;
+             renderGallery(globalData);
+           });
+         });
+         
+         // ==================================================================================
+         // Select all and deselect all buttons
+         // ==================================================================================
+         
+         selectAllButton.addEventListener('mousedown', () => {
+           selectAllButton.classList.add('bg-primary', 'text-white');
+         });
+         
+         selectAllButton.addEventListener('mouseup', () => {
+           selectAllButton.classList.remove('bg-primary', 'text-white');
+           document.querySelectorAll('.card-checkbox').forEach(checkbox => {
+             checkbox.checked = true;
+             selectedCards.add(checkbox.dataset.id);
+           });
+         });
+         
+         selectAllButton.addEventListener('mouseleave', () => {
+           selectAllButton.classList.remove('bg-primary', 'text-white');
+         });
+         
+         deselectAllButton.addEventListener('mousedown', () => {
+           deselectAllButton.classList.add('bg-primary', 'text-white');
+         });
+         
+         deselectAllButton.addEventListener('mouseup', () => {
+           deselectAllButton.classList.remove('bg-primary', 'text-white');
+           document.querySelectorAll('.card-checkbox').forEach(checkbox => {
+             checkbox.checked = false;
+             selectedCards.delete(checkbox.dataset.id);
+           });
+         });
+         
+         deselectAllButton.addEventListener('mouseleave', () => {
+           deselectAllButton.classList.remove('bg-primary', 'text-white');
+         });
+         
+         // ==================================================================================
+         // Search field related
+         // ==================================================================================
+         
+         // Type suggestions button
+         typeSuggestionsBtn.addEventListener('click', () => {
+           // Clear any existing type: prefix if it's the only content
+           if (searchInput.value === 'type:') {
+             searchInput.value = '';
+           }
+           
+           // Only add 'type:' if it's not already there and not part of a tag
+           if (!searchInput.value.includes('type:')) {
+             searchInput.value = 'type:';
+             // Force update the input padding
+             updateSearchTags();
+           }
+           
+           searchInput.focus();
+           // Show suggestions immediately after focus
+           setTimeout(() => {
+             typeSuggestions.classList.remove('hidden');
+           }, 10);
+         });
+         
+         // Search input event listeners
+         searchInput.addEventListener('input', (e) => {
+           if (e.target.value.includes('type:')) {
+             typeSuggestions.classList.remove('hidden');
+             activeSuggestionIndex = -1;
+             highlightSuggestion(-1);
+           } else {
+             typeSuggestions.classList.add('hidden');
+           }
+         
+           // Always hide placeholder when typing
+           if (e.target.value.length > 0) {
+             searchPlaceholder.classList.add('hidden');
+           } else if (activeSearchTags.length === 0) {
+             searchPlaceholder.classList.remove('hidden');
+           }
+         
+           renderGallery(globalData);
+         });
+         
+         searchInput.addEventListener('focus', () => {
+           if (searchInput.value.includes('type:')) {
+             typeSuggestions.classList.remove('hidden');
+           }
+           // Hide placeholder on focus regardless of content
+           searchPlaceholder.classList.add('hidden');
+         });
+         
+         searchInput.addEventListener('blur', () => {
+           // Only show placeholder if empty and no tags
+           if (searchInput.value.length === 0 && activeSearchTags.length === 0) {
+             searchPlaceholder.classList.remove('hidden');
+           }
+         });
+         
+         // Keyboard navigation for suggestions (Up and Down)
+         searchInput.addEventListener('keydown', (e) => {
+           if (e.key === 'Backspace' && searchInput.value === '' && activeSearchTags.length > 0) {
+             activeSearchTags.pop();
+             updateSearchTags();
+             renderGallery(globalData);
+             return;
+           }
+         
+           if (!typeSuggestions.classList.contains('hidden')) {
+             const suggestions = typeSuggestions.querySelectorAll('.type-suggestion');
+             if (suggestions.length === 0) return;
+         
+             if (e.key === 'ArrowDown') {
+               e.preventDefault();
+               activeSuggestionIndex = (activeSuggestionIndex + 1) % suggestions.length;
+               highlightSuggestion(activeSuggestionIndex);
+             } else if (e.key === 'ArrowUp') {
+               e.preventDefault();
+               activeSuggestionIndex = (activeSuggestionIndex - 1 + suggestions.length) % suggestions.length;
+               highlightSuggestion(activeSuggestionIndex);
+             } else if (e.key === 'Enter' && activeSuggestionIndex >= 0) {
+               e.preventDefault();
+               const suggestion = suggestions[activeSuggestionIndex];
+               const type = suggestion.dataset.type;
+               addTypeFilter(type);
+             }
+           }
+         });
+         
+         // Type suggestions handling
+         typeSuggestions.querySelectorAll('.type-suggestion').forEach(suggestion => {
+           suggestion.addEventListener('click', () => {
+             const type = suggestion.dataset.type;
+             addTypeFilter(type);
+           });
+         });
+         
+         // Close suggestions when clicking elsewhere
+         document.addEventListener('click', (e) => {
+           if (!searchInput.contains(e.target) && !typeSuggestions.contains(e.target)) {
+             typeSuggestions.classList.add('hidden');
+           }
+         });
+         
+         function toggleDarkMode() {
+           document.documentElement.classList.toggle('dark');
+           lucide.createIcons(); // Refresh icons after theme change
+         }
+         
+         // Status and type colours
+         function getStatusClass(status) {
+           status = status?.toLowerCase() || '';
+           if (status.includes('done')) return 'bg-green-500 text-white';
+           if (status.includes('progress')) return 'bg-red-600 text-white';
+           return 'bg-gray-500 text-white';
+         }
+         
+         function getTypeInfo(type, status) {
+           type = type?.toLowerCase() || '';
+           status = status?.toLowerCase() || '';
+           
+           if (type.includes('todo') || type.includes('to do')) {
+             if (status.includes('done')) {
+               return {
+                 display: 'To Do (Complete)',
+                 class: 'bg-green-500 text-white'
+               };
+             }
+             return {
+               display: 'To Do',
+               class: 'bg-red-600 text-white'
+             };
+           }
+           
+           if (type.includes('chapter')) {
+             return {
+               display: 'Chapter',
+               class: 'bg-orange-500 text-white'
+             };
+           }
+           if (type.includes('caption')) {
+             return {
+               display: 'Caption',
+               class: 'bg-indigo-400 text-white'
+             };
+           }
+           
+           return {
+             display: type === 'standard' ? 'Standard' : type.charAt(0).toUpperCase() + type.slice(1),
+             class: 'bg-indigo-500 text-white'
+           };
+         }
+         
+         function formatNotes(text) {
+           const urlRegex = /(https?:\/\/[^\s]+)/g;
+           return text?.replace(urlRegex, url => `<a href="${url}" class="text-blue-600 dark:text-blue-400 underline" target="_blank">${url}</a>`) || '';
+         }
+         
+         // ==================================================================================
+         // Render gallery function with correct image path resolution
+         // ==================================================================================
+         
+         async function renderGallery(data) {
+            if (!data || !data.length) {
+                galleryContainer.innerHTML = '<p class="bg-red-500 text-white rounded-md px-3 py-2">No matching items found.</p>';
+                return;
+            }
+            
+            // Clean up any previous blob URLs
+            cleanupBlobUrls();
+         
+            // Initialise Fuse JS library for fuzzy search
+            const fuseOptions = {
+                keys: ['Marker Name', 'Notes', 'Marker Type'],
+                threshold: 0.4,
+                includeScore: true
+            };
+            const fuse = new Fuse(data, fuseOptions);
+         
+            let filtered = [...data];
+         
+            // Apply search query if present (excluding type: prefix)
+            const query = searchInput.value.toLowerCase();
+            if (query && !query.startsWith('type:')) {
+                const results = fuse.search(query);
+                filtered = results.map(result => result.item);
+            }
+         
+            // Apply type filters
+            const typeFilters = activeSearchTags
+                .filter(tag => tag.startsWith('type:'))
+                .map(tag => tag.replace('type:', ''));
+         
+            if (typeFilters.length > 0) {
+                filtered = filtered.filter(item => {
+                    return typeFilters.some(type => 
+                        item['Marker Type']?.toLowerCase().includes(type.toLowerCase())
+                    );
+                });
+            }
+         
+            // Apply status filter
+            if (currentStatus) {
+                filtered = filtered.filter(item => 
+                    item['Status']?.toLowerCase().includes(currentStatus.toLowerCase())
+                );
+            }
+         
+            // Store filtered data for PDF export
+            filteredDataForPDF = [...filtered];
+         
+            if (!filtered.length) {
+                galleryContainer.innerHTML = '<p class="bg-red-500 text-white rounded-md px-3 py-2">No matching items found.</p>';
+                return;
+            }
+            
+            // Show loading indicator
+            galleryContainer.innerHTML = `
+                <div class="flex justify-center items-center p-8">
+                  <div class="bg-white dark:bg-dark-surface shadow-md rounded-lg px-6 py-4 flex items-center space-x-3">
+                    <div class="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+                    <span class="text-gray-700 dark:text-dark-text font-medium">Loading images...</span>
+                  </div>
+                </div>
+            `;
+            
+            // Process all images first to avoid layout shifts
+            const processedItems = await Promise.all(filtered.map(async (item) => {
+                const imageSrc = await resolveImagePath(item['Image Filename']);
+                const paletteSrc = item['Palette Filename'] ? await resolveImagePath(item['Palette Filename']) : null;
+                
+                return {
+                    ...item,
+                    resolvedImageSrc: imageSrc,
+                    resolvedPaletteSrc: paletteSrc
+                };
+            }));
+            
+            // ==================================================================================
+            // Generate and render individual gallery card
+            // ==================================================================================
+         
+            let html = `<div class="grid ${currentColumns} gap-6">`;
+         
+            for (const item of processedItems) {
+                const image = item.resolvedImageSrc || placeholderSVG;
+                const palette = item.resolvedPaletteSrc || '';
+                const name = item['Marker Name'] || 'Unnamed';
+                const type = item['Marker Type'] || 'Standard';
+                const status = item['Status'] || 'Unknown';
+                const notes = formatNotes(item['Notes']);
+                const position = item['Marker Position'] || '';
+                const markerId = item['Marker ID'] || '';
+                const cardId = markerId || Math.random().toString(36).substr(2, 9);
+         
+                const typeInfo = getTypeInfo(type, status);
+         
+                html += `
+                <div class="card bg-white dark:bg-dark-surface rounded-xl shadow-sm border border-gray-200 dark:border-dark-border overflow-hidden relative">
+                    <div class="absolute top-2 right-2 z-10">
+                        <input type="checkbox" class="w-4 h-4 cursor-pointer accent-primary card-checkbox" data-id="${cardId}" ${selectedCards.has(cardId) ? 'checked' : ''}>
+                    </div>
+                    <div class="aspect-video bg-gray-100 dark:bg-gray-700 flex items-center justify-center overflow-hidden">
+                        <img src="${image}" alt="${name}" class="object-contain w-full h-full" onerror="this.src='${placeholderSVG}'">
+                    </div>
+                    ${palette && palette.trim() ? `
+                        <div class="w-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center overflow-hidden">
+                            <img src="${palette}" alt="Palette for ${name}" class="object-contain w-full h-auto" onerror="this.style.display='none'">
+                        </div>
+                    ` : ''}
+                    <div class="p-4 space-y-3">
+                        <div class="text-center">
+                            <h3 class="text-sm font-semibold">${name}</h3>
+                            <div class="text-xs text-gray-500 dark:text-dark-secondary">${markerId}</div>
+                        </div>
+                    
+                        <div class="space-y-2">
+                            <div class="flex items-center gap-2 text-xs">
+                                <span class="text-gray-600 dark:text-dark-secondary">Position</span>
+                                <span class="text-gray-800 dark:text-dark-text">${position}</span>
+                            </div>
+                            
+                            <div class="flex items-center gap-2 text-xs">
+                                <span class="text-gray-600 dark:text-dark-secondary">Type</span>
+                                <span class="px-1.5 py-0.5 rounded-full font-medium ${typeInfo.class}">${typeInfo.display}</span>
+                            </div>
+                            
+                            <div class="flex items-center gap-2 text-xs">
+                                <span class="text-gray-600 dark:text-dark-secondary">Status</span>
+                                <span class="px-1.5 py-0.5 rounded-full font-medium ${getStatusClass(status)}">${status}</span>
+                            </div>
+                        </div>
+                        ${notes ? `
+                            <div class="bg-gray-50 dark:bg-gray-700 rounded-md p-2 mt-1">
+                                <div class="text-gray-600 dark:text-dark-secondary text-xs mb-0.5">Notes</div>
+                                <div class="text-gray-800 dark:text-dark-text text-xs leading-relaxed">${notes}</div>
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>`;
+            }
+         
+            html += `</div>`;
+            galleryContainer.innerHTML = html;
+            lucide.createIcons();
+         
+            // Add event listeners to checkboxes selection
+            document.querySelectorAll('.card-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', (e) => {
+                    const cardId = e.target.dataset.id;
+                    if (e.target.checked) {
+                        selectedCards.add(cardId);
+                    } else {
+                        selectedCards.delete(cardId);
+                    }
+                });
+            });
+         }
+         
+         // ==================================================================================
+         // Helper function to load image for PDF
+         // ==================================================================================
+         
+         async function loadImageAsBase64(url) {
+           return new Promise((resolve, reject) => {
+             // If already a data URL, return as is
+             if (url.startsWith('data:')) {
+               resolve(url);
+               return;
+             }
+             
+             // Create a new image element to load the image
+             const img = new Image();
+             
+             // Handle successful load
+             img.onload = () => {
+               try {
+                 // Create canvas to convert to base64
+                 const canvas = document.createElement('canvas');
+                 canvas.width = img.naturalWidth || img.width;
+                 canvas.height = img.naturalHeight || img.height;
+                 
+                 // Make sure we have valid dimensions
+                 if (canvas.width === 0 || canvas.height === 0) {
+                   console.warn("Image has invalid dimensions, using placeholder");
+                   resolve(placeholderSVG);
+                   return;
+                 }
+                 
+                 const ctx = canvas.getContext('2d');
+                 ctx.drawImage(img, 0, 0);
+                 
+                 // Get as base64 - force JPEG format with high quality
+                 const dataURL = canvas.toDataURL('image/jpeg', 0.95);
+                 resolve(dataURL);
+               } catch (error) {
+                 console.error("Error converting image:", error);
+                 resolve(placeholderSVG); // Fall back to placeholder
+               }
+             };
+             
+             // Handle load errors
+             img.onerror = () => {
+               console.warn(`Failed to load image: ${url}`);
+               resolve(placeholderSVG); // Fall back to placeholder
+             };
+             
+             // Important: Set cross-origin to handle potential CORS issues
+             img.crossOrigin = "Anonymous";
+             
+             // Set the source to start loading - use cache-busting for local files
+             img.src = url + (url.includes('?') ? '&' : '?') + 'cachebust=' + Date.now();
+           });
+         }
+         
+         // ==================================================================================
+         // Export PDF button event listener
+         // ==================================================================================
+
+         async function showPDFExportDialog() {
+            if (!globalData || globalData.length === 0) {
+                 alert('Please load JSON data first');
+                 return;
+             }
+             
+             // Check if jsPDF library is loaded properly
+             if (!window.jspdf || !window.jspdf.jsPDF) {
+                 alert('PDF library not loaded. Please refresh the page and try again.');
+                 console.error('jsPDF not found in window object:', window.jspdf);
+                 return;
+             }
+             
+             // Add confirmation dialog for Safari
+             if (isMacOSSafari()) {
+                 const confirmed = confirm("Have you Disabled Local File Restrictions in Safari?\n\nSafari Settings → Develop → Disable Local File Restrictions");
+                 if (!confirmed) return;
+             }
+             
+             try {
+                 await generatePDF();
+             } catch (error) {
+                 console.error('PDF generation failed:', error);
+                 alert(`PDF generation failed: ${error.message || 'Unknown error'}`);
+                 pdfLoader.classList.add('hidden');
+             }
+         }
+         
+         // Add event listener for PDF export
+         exportPdfButton.addEventListener('click', async () => {
+            showPDFExportDialog();
+         });
+         
+         // ==================================================================================
+         // Image format detection for PDF
+         // ==================================================================================
+         
+         // This will help determine the correct image format for jsPDF
+         function getImageFormat(dataUrl) {
+             // In Safari, using JPEG format is more reliable
+             if (isMacOSSafari()) {
+                 return 'JPEG';
+             }
+             
+             // Default to JPEG if format can't be determined
+             if (!dataUrl || typeof dataUrl !== 'string') {
+                 return 'JPEG';
+             }
+             
+             // Handle SVG placeholder
+             if (dataUrl.includes('svg+xml')) {
+                 return 'PNG';
+             }
+             
+             // Common data URL formats
+             if (dataUrl.startsWith('data:image/jpeg')) {
+                 return 'JPEG';
+             }
+             if (dataUrl.startsWith('data:image/png')) {
+                 return 'PNG';
+             }
+             
+             // Final fallback
+             return 'JPEG';
+         }
+         
+         // ==================================================================================
+         // PDF build function
+         // ==================================================================================
+         
+         async function generatePDF() {
+             try {
+                 if (!window.jspdf || !window.jspdf.jsPDF) {
+                     throw new Error("jsPDF library not loaded properly");
+                 }
+                 
+                 const { jsPDF } = window.jspdf;
+                 
+                 // Show loading indicator
+                 pdfLoader.classList.remove('hidden');
+                 progressBar.style.width = '0%';
+                 
+                 // Get current column setting
+                 const columns = parseInt(currentColumns.replace('grid-cols-', '')) || 2;
+                 
+                 // Determine orientation based on columns
+                 const orientation = columns >= 4 ? 'landscape' : 'portrait';
+                 const isSingleColumn = columns === 1;
+                 
+                 // Get project name from first data item
+                 const projectName = globalData[0]?.['Project Name'] || 'Untitled Project';
+                 
+                 // Initialize PDF with A4 size
+                 const pdf = new jsPDF({
+                     orientation: orientation,
+                     unit: 'mm',
+                     format: 'a4',
+                     compress: true
+                 });
+                 
+                 // A4 size in mm (adjusted for orientation)
+                 const pageWidth = orientation === 'landscape' ? 297 : 210;
+                 const pageHeight = orientation === 'landscape' ? 210 : 297;
+                 const margin = 10;
+                 const headerHeight = 10;
+                 const footerHeight = 10;
+                 const contentWidth = pageWidth - (margin * 2);
+                 const contentHeight = pageHeight - (margin * 2) - headerHeight - footerHeight;
+                 
+                 // Layout configuration
+                 const rowsPerPage = isSingleColumn ? 1 : 2;
+                 const cardsPerPage = isSingleColumn ? 1 : columns * rowsPerPage;
+                 const cardSpacing = columns >= 4 ? 3 : 5;
+                 
+                 // Use the filtered data stored during render
+                 let filteredData = filteredDataForPDF || [];
+                 
+                 // Apply checkbox selection filter
+                 filteredData = filteredData.filter(item => {
+                     const cardId = item['Marker ID'] || '';
+                     return selectedCards.has(cardId);
+                 });
+                 
+                 if (filteredData.length === 0) {
+                     throw new Error("No data to export - please ensure items are selected and match your filters");
+                 }
+                 
+                 // Add title page
+                 pdf.setFont("Helvetica", "bold");
+                 pdf.setFontSize(24);
+                 pdf.text('Marker Data', pageWidth / 2, 40, { align: 'center' });
+                 
+                 // Info lines (label + value)
+                 const lines = [
+                     { label: "Generated On", value: formatDate(new Date(), false) },
+                     { label: "Project", value: projectName },
+                     { label: "Total Exported Markers", value: filteredData.length },
+                     { label: "Status Filter", value: currentStatus || 'None' },
+                     {
+                         label: "Marker Type Filters",
+                         value: activeSearchTags
+                             .filter(tag => tag.startsWith('type:'))
+                             .map(tag => tag.replace('type:', ''))
+                             .join(', ') || 'None'
+                     },
+                     { label: "Filtered by", value: `"${searchInput.value || ''}"` }
+                 ];
+                 
+                 // Layout settings
+                 const boxMargin = margin + 10;
+                 const boxWidth = pageWidth - (boxMargin * 2);
+                 const boxX = boxMargin;
+                 const lineHeight = 7;
+                 const paddingTop = 16;
+                 const rowSpacing = 6;
+                 const boxY = 55;
+                 const boxHeight = (lines.length * (lineHeight + 2)) + paddingTop + rowSpacing + 4;
+                 
+                 // Draw summary box with rounded corners
+                 pdf.setDrawColor(210, 210, 210);
+                 pdf.setFillColor(250, 250, 250); // light background
+                 pdf.roundedRect(boxX, boxY, boxWidth, boxHeight, 5, 5, 'FD');
+                 
+                 // Box header title
+                 pdf.setFont("Helvetica", "bold");
+                 pdf.setFontSize(14);
+                 pdf.text('Summary', boxX + 12, boxY + paddingTop - 6);
+                 
+                 // Divider under header
+                 pdf.setDrawColor(225, 225, 225);
+                 pdf.line(boxX + 10, boxY + paddingTop - 2, boxX + boxWidth - 10, boxY + paddingTop - 2);
+                 
+                 // Write each information row
+                 let infoY = boxY + paddingTop + rowSpacing;
+                 pdf.setFontSize(11);
+                 
+                 lines.forEach((item, index) => {
+                     // Label (left side)
+                     pdf.setFont("Helvetica", "normal");
+                     pdf.text(item.label + ':', boxX + 12, infoY);
+                     
+                     // Value (right side, align right within box)
+                     pdf.setFont("Helvetica", "bold");
+                     const valueX = boxX + boxWidth - 12;
+                     pdf.text(item.value.toString(), valueX, infoY, { align: 'right' });
+                     
+                     // Divider between rows
+                     if (index < lines.length - 1) {
+                         pdf.setDrawColor(240, 240, 240);
+                         pdf.line(boxX + 10, infoY + 3, boxX + boxWidth - 10, infoY + 3);
+                     }
+                     
+                     infoY += lineHeight + 2;
+                 });
+                 
+                 // Add a new page after title page
+                 pdf.addPage();
+                 
+                 // Process cards in batches
+                 const totalBatches = filteredData.length > 0 ? Math.ceil(filteredData.length / cardsPerPage) : 1;
+                 
+                 for (let batchIndex = 0; batchIndex < totalBatches; batchIndex++) {
+                     // Update progress
+                     progressBar.style.width = `${Math.min((batchIndex / totalBatches) * 100, 95)}%`;
+                     
+                     // Add a new page for each batch after the first
+                     if (batchIndex > 0) {
+                         pdf.addPage();
+                     }
+                     
+                     // Add header
+                     pdf.setFont("Helvetica", "normal");
+                     pdf.setFontSize(10);
+                     pdf.text(projectName, margin, margin + 5);
+                     pdf.text(formatDate(new Date(), false), pageWidth - margin - 20, margin + 5);
+                     
+                     // Process this batch of cards
+                     const startIdx = batchIndex * cardsPerPage;
+                     const endIdx = Math.min(startIdx + cardsPerPage, filteredData.length);
+                     
+                     // Pre-load images for this batch
+                     const batchItems = [];
+                     for (let i = startIdx; i < endIdx; i++) {
+                         const item = { ...filteredData[i] };
+                         
+                         try {
+                             // Resolve image paths
+                             if (item['Image Filename']) {
+                                 try {
+                                     const resolvedImagePath = await resolveImagePath(item['Image Filename']);
+                                     // Using the Safari-optimized loadImageAsBase64 function
+                                     item.imageDataUrl = await loadImageAsBase64ForPDF(resolvedImagePath);
+                                 } catch (imgErr) {
+                                     console.error("Error processing main image:", imgErr);
+                                     item.imageDataUrl = placeholderSVG;
+                                 }
+                             } else {
+                                 item.imageDataUrl = placeholderSVG;
+                             }
+                             
+                             if (item['Palette Filename']?.trim()) {
+                                 try {
+                                     const resolvedPalettePath = await resolveImagePath(item['Palette Filename']);
+                                     // Using the Safari-optimized loadImageAsBase64 function
+                                     item.paletteDataUrl = await loadImageAsBase64ForPDF(resolvedPalettePath);
+                                 } catch (paletteErr) {
+                                     console.error("Error processing palette image:", paletteErr);
+                                     // No fallback needed for palette, just skip it
+                                 }
+                             }
+                         } catch (err) {
+                             console.error("Error in overall image processing:", err);
+                             item.imageDataUrl = placeholderSVG;
+                         }
+                         
+                         batchItems.push(item);
+                     }
+                     
+                     // Calculate card dimensions based on columns
+                     let cardWidth, cardHeight;
+                     if (columns >= 4) {
+                         cardWidth = (contentWidth - (cardSpacing * (columns - 1))) / columns;
+                         cardHeight = (contentHeight - 5) / rowsPerPage;
+                     } else {
+                         cardWidth = isSingleColumn ? contentWidth : (contentWidth / columns) - cardSpacing;
+                         cardHeight = isSingleColumn ? contentHeight - 5 : (contentHeight / rowsPerPage) - 5;
+                     }
+                     
+                     // Process each item
+                     for (let idx = 0; idx < batchItems.length; idx++) {
+                         const item = batchItems[idx];
+                         
+                         // Calculate position
+                         const col = isSingleColumn ? 0 : idx % columns;
+                         const row = isSingleColumn ? 0 : Math.floor(idx / columns);
+                         
+                         // Coordinates with proper spacing
+                         const x = margin + (col * (cardWidth + cardSpacing));
+                         const y = margin + headerHeight + (row * (cardHeight + 5));
+                         
+                         // Draw card outline
+                         pdf.setDrawColor(200, 200, 200);
+                         pdf.setFillColor(255, 255, 255);
+                         pdf.roundedRect(x, y, cardWidth, cardHeight, 3, 3, 'FD');
+                         
+                         // Standardised vertical spacing values
+                         const lineHeight = 5;
+                         const initialOffset = 5; // Space after card top border
+                         const elementSpacing = isSingleColumn ? 5 : 4; // Consistent spacing for ALL elements
+                         
+                         let currentY = y + initialOffset;
+                         
+                         // Add image with proper aspect ratio
+                         if (item.imageDataUrl) {
+                             try {
+                                 const img = new Image();
+                                 img.src = item.imageDataUrl;
+                                 
+                                 // Safari-friendly approach: wait for image to load
+                                 await new Promise((resolve) => {
+                                     img.onload = resolve;
+                                     // Set a short timeout to avoid hanging
+                                     setTimeout(resolve, 1000);
+                                     img.onerror = resolve;
+                                 });
+                                 
+                                 if (img.width > 0 && img.height > 0) {
+                                     const aspectRatio = img.width / img.height;
+                                     const imageWidth = cardWidth - 10;
+                                     let imageHeight = imageWidth / aspectRatio;
+                                     
+                                     // Adjust height to fit within card
+                                     const maxImageHeight = isSingleColumn ? cardHeight * 0.6 : cardHeight * 0.5;
+                                     imageHeight = Math.min(imageHeight, maxImageHeight);
+                                     
+                                     // For Safari, ensure we explicitly use JPEG format for data URLs
+                                                 let format = 'JPEG';
+                                                 if (item.imageDataUrl.startsWith('data:image/png')) {
+                                                     format = 'PNG';
+                                                 } else if (item.imageDataUrl.includes('svg+xml')) {
+                                                     // Skip SVG images completely as they cause PNG corruption errors
+                                                     throw new Error("SVG format not supported in PDF");
+                                                 }
+                                                 
+                                                 try {
+                                                     pdf.addImage({
+                                                         imageData: item.imageDataUrl,
+                                                         x: x + 5,
+                                                         y: currentY,
+                                                         width: imageWidth,
+                                                         height: imageHeight,
+                                                         compression: 'MEDIUM',
+                                                         format: format
+                                                     });
+                                                     
+                                                     currentY += imageHeight + initialOffset;
+                                                 } catch (addImageError) {
+                                                     console.warn('Failed to add image to PDF, skipping:', addImageError);
+                                                     // Just add text placeholder instead
+                                                     pdf.setFont("Helvetica", "italic");
+                                                     pdf.setFontSize(10);
+                                                     pdf.setTextColor(150, 150, 150);
+                                                     pdf.text("Image not available", x + cardWidth/2, currentY + 10, { align: 'center' });
+                                                     currentY += 20 + initialOffset;
+                                                     pdf.setTextColor(0, 0, 0);
+                                                     pdf.setFont("Helvetica", "normal");
+                                                 }
+                                             } else {
+                                                 // Invalid image dimensions - add text placeholder
+                                                 pdf.setFont("Helvetica", "italic");
+                                                 pdf.setFontSize(10);
+                                                 pdf.setTextColor(150, 150, 150);
+                                                 pdf.text("Image not available", x + cardWidth/2, currentY + 10, { align: 'center' });
+                                                 currentY += 20 + initialOffset;
+                                                 pdf.setTextColor(0, 0, 0);
+                                                 pdf.setFont("Helvetica", "normal");
+                                             }
+                                         } catch (imgError) {
+                                             console.warn('Error processing image:', imgError);
+                                             // Add text placeholder instead of trying to add a corrupt image
+                                             pdf.setFont("Helvetica", "italic");
+                                             pdf.setFontSize(10);
+                                             pdf.setTextColor(150, 150, 150);
+                                             pdf.text("Image not available", x + cardWidth/2, currentY + 10, { align: 'center' });
+                                             currentY += 20 + initialOffset;
+                                             pdf.setTextColor(0, 0, 0);
+                                             pdf.setFont("Helvetica", "normal");
+                                         }
+                                     }
+                         
+                         // Add palette if available
+                         if (item.paletteDataUrl) {
+                             // Increased palette height for better visibility
+                             const paletteHeight = isSingleColumn ? 10 : 5;
+                             
+                             try {
+                                 // For Safari, ensure we explicitly use JPEG format for data URLs
+                                 let format = 'JPEG';
+                                 if (item.paletteDataUrl.startsWith('data:image/png')) {
+                                     format = 'PNG';
+                                 } else if (item.paletteDataUrl.includes('svg+xml')) {
+                                     format = 'PNG';
+                                 }
+                                 
+                                 // Add palette image with proper height
+                                 pdf.addImage({
+                                     imageData: item.paletteDataUrl,
+                                     x: x + 5,
+                                     y: currentY,
+                                     width: cardWidth - 10,
+                                     height: paletteHeight,
+                                     compression: 'MEDIUM',
+                                     format: format
+                                 });
+                                 
+                                 // Update vertical position correctly
+                                 currentY += paletteHeight + elementSpacing;
+                             } catch (paletteError) {
+                                 console.error('Error adding palette:', paletteError);
+                                 // No additional vertical space if palette fails
+                             }
+                         }
+                         
+                         // Marker Name (Title)
+                         pdf.setFont("Helvetica", "bold");
+                         pdf.setFontSize(isSingleColumn ? 12 : 10);
+                         pdf.text(item['Marker Name'] || 'Unnamed', x + cardWidth/2, currentY, { align: 'center' });
+                         currentY += elementSpacing; // Space after title
+                         
+                         // Marker ID
+                         pdf.setFont("Helvetica", "normal");
+                         pdf.setFontSize(isSingleColumn ? 9 : 7);
+                         pdf.text(item['Marker ID'] || '', x + cardWidth/2, currentY, { align: 'center' });
+                         currentY += elementSpacing; // Space after ID (now matches Position/Type/Status spacing)
+                         
+                         // Marker Position
+                         pdf.setFontSize(isSingleColumn ? 10 : 8);
+                         pdf.text(`Position: ${item['Marker Position'] || ''}`, x + 5, currentY);
+                         currentY += elementSpacing; // Space after Position
+                         
+                         // Marker Type
+                         pdf.text(`Type: ${item['Marker Type'] || 'Standard'}`, x + 5, currentY);
+                         currentY += elementSpacing; // Space after Type
+                         
+                         // Status
+                         pdf.text(`Status: ${item['Status'] || 'Unknown'}`, x + 5, currentY);
+                         currentY += elementSpacing; // Space after Status
+                         
+                         // Notes (if available)
+                         if (item['Notes']) {
+                             const notesText = "Notes: " + item['Notes'];
+                             const splitNotes = pdf.splitTextToSize(notesText, cardWidth - 10);
+                             
+                             // Calculate available space
+                             const availableSpace = cardHeight - (currentY - y) - 5;
+                             const maxLines = Math.floor(availableSpace / lineHeight);
+                             
+                             if (maxLines > 0) {
+                                 const limitedNotes = splitNotes.slice(0, maxLines);
+                                 pdf.text(limitedNotes, x + 5, currentY, { maxWidth: cardWidth - 10 });
+                                 
+                                 if (splitNotes.length > maxLines) {
+                                     pdf.text("...", x + 5, currentY + (maxLines * lineHeight));
+                                 }
+                             }
+                         }
+                     }
+                     
+                     // Add left and right footer
+                     pdf.setFont("Helvetica", "normal");
+                     pdf.setFontSize(8);
+                     pdf.text('Generated By Marker Data Pagemaker', margin + 5, pageHeight - 5);
+                     pdf.text(`Page ${pdf.internal.getNumberOfPages()} of ${totalBatches + 1}`, 
+                         pageWidth - margin - 10, pageHeight - 5, { align: 'right' });
+                     
+                     // Add a small delay to prevent Safari from getting overwhelmed
+                     await new Promise(resolve => setTimeout(resolve, 200));
+                 }
+                 
+                 // ==================================================================================
+                 // PDF export function with Swift WebKit interception
+                 // ==================================================================================
+                 
+                 if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.exportPDF) {
+                     // Running in macOS wrapper app - send to Swift handler
+                     const pdfDataUri = pdf.output('datauristring');
+                     const fullFilename = `${fileName}-${dateStr}-${timeStr}.pdf`;
+                     window.webkit.messageHandlers.exportPDF.postMessage({
+                         pdfData: pdfDataUri,
+                         filename: fullFilename
+                     });
+                     console.log("PDF sent to native app handler");
+                 } else {
+                     // Regular browser - use standard save
+                     pdf.save(`${fileName}-${dateStr}-${timeStr}.pdf`);
+                 }
+                 
+                 // Hide loading indicator
+                 pdfLoader.classList.add('hidden');
+                 progressBar.style.width = '100%';
+                 
+             } catch (error) {
+                 console.error('PDF generation error:', error);
+                 
+                 // Provide a more user-friendly error message
+                 let errorMsg = "There was a problem generating the PDF.";
+                 
+                 if (error.message && error.message.includes("PNG")) {
+                     errorMsg = "Some images couldn't be included in the PDF. The export completed but may be missing some visuals.";
+                 } else if (error.message && error.message.includes("SVG")) {
+                     errorMsg = "SVG images aren't supported in PDF export. The export completed but some images may be missing.";
+                 }
+                 
+                 alert(errorMsg);
+                 pdfLoader.classList.add('hidden');
+             } finally {
+                 cleanupBlobUrls();
+             }
+         }
+      </script>
+   </body>
+</html>

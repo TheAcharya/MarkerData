@@ -132,5 +132,11 @@ struct Marker_DataApp: App {
             FailedExtractionsView(failedExtractions: failedExtractions ?? [])
                 .preferredColorScheme(.dark)
         }
+
+        Window("Pagemaker", id: "pagemaker") {
+            PagemakerView()
+                .frame(minWidth: 1000, minHeight: 500)
+                .preferredColorScheme(.dark)
+        }
     }
 }

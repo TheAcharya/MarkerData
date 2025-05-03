@@ -10,6 +10,10 @@
 		4100D5DE2AD052010081F0EC /* OverlaySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4100D5DD2AD052010081F0EC /* OverlaySettingsView.swift */; };
 		4100D5E42AD1616D0081F0EC /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4100D5E32AD1616D0081F0EC /* ColorExtension.swift */; };
 		4100D5E72AD19C980081F0EC /* FilePicker in Frameworks */ = {isa = PBXBuildFile; productRef = 4100D5E62AD19C980081F0EC /* FilePicker */; };
+		4102133D2DC4D5A300955DC6 /* WebViewKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4102133C2DC4D5A300955DC6 /* WebViewKit */; };
+		410213402DC4D5EE00955DC6 /* PagemakerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4102133F2DC4D5EE00955DC6 /* PagemakerView.swift */; };
+		410213442DC4D68A00955DC6 /* PagemakerPDFExportHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 410213432DC4D68A00955DC6 /* PagemakerPDFExportHandler.swift */; };
+		410213462DC4D74500955DC6 /* Pagemaker.html in Resources */ = {isa = PBXBuildFile; fileRef = 410213452DC4D74500955DC6 /* Pagemaker.html */; };
 		41083FEB2BC45944008B7B03 /* ImageMergeOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41083FEA2BC45944008B7B03 /* ImageMergeOperation.swift */; };
 		41083FF02BC45D05008B7B03 /* ColorMood.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41083FEF2BC45D05008B7B03 /* ColorMood.swift */; };
 		41083FF22BC45D3D008B7B03 /* ColorExtractMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41083FF12BC45D3D008B7B03 /* ColorExtractMethod.swift */; };
@@ -166,6 +170,8 @@
 		41F88AFA2B0FF62A004A3B58 /* DatabaseErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F88AF92B0FF62A004A3B58 /* DatabaseErrors.swift */; };
 		41F88AFE2B126439004A3B58 /* ExtractionResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F88AFD2B126439004A3B58 /* ExtractionResult.swift */; };
 		41FAC46A2CD564520034FC09 /* UserDefaultsArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41FAC4692CD564520034FC09 /* UserDefaultsArray.swift */; };
+		41FB26FE2DC50937005F8303 /* WebViewStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41FB26FD2DC50937005F8303 /* WebViewStateManager.swift */; };
+		41FB27002DC60D09005F8303 /* PagemakerUIDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41FB26FF2DC60D09005F8303 /* PagemakerUIDelegate.swift */; };
 		47411FDA2A3EA121005890FE /* HelpButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47411FD92A3EA121005890FE /* HelpButton.swift */; };
 		47411FDC2A3EA140005890FE /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47411FDB2A3EA140005890FE /* ViewExtensions.swift */; };
 		47411FDE2A3EA1BA005890FE /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47411FDD2A3EA1BA005890FE /* AboutView.swift */; };
@@ -228,6 +234,9 @@
 /* Begin PBXFileReference section */
 		4100D5DD2AD052010081F0EC /* OverlaySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlaySettingsView.swift; sourceTree = "<group>"; };
 		4100D5E32AD1616D0081F0EC /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
+		4102133F2DC4D5EE00955DC6 /* PagemakerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagemakerView.swift; sourceTree = "<group>"; };
+		410213432DC4D68A00955DC6 /* PagemakerPDFExportHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagemakerPDFExportHandler.swift; sourceTree = "<group>"; };
+		410213452DC4D74500955DC6 /* Pagemaker.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = Pagemaker.html; sourceTree = "<group>"; };
 		41083FEA2BC45944008B7B03 /* ImageMergeOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageMergeOperation.swift; sourceTree = "<group>"; };
 		41083FEF2BC45D05008B7B03 /* ColorMood.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorMood.swift; sourceTree = "<group>"; };
 		41083FF12BC45D3D008B7B03 /* ColorExtractMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtractMethod.swift; sourceTree = "<group>"; };
@@ -363,6 +372,8 @@
 		41F88AF92B0FF62A004A3B58 /* DatabaseErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseErrors.swift; sourceTree = "<group>"; };
 		41F88AFD2B126439004A3B58 /* ExtractionResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractionResult.swift; sourceTree = "<group>"; };
 		41FAC4692CD564520034FC09 /* UserDefaultsArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsArray.swift; sourceTree = "<group>"; };
+		41FB26FD2DC50937005F8303 /* WebViewStateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewStateManager.swift; sourceTree = "<group>"; };
+		41FB26FF2DC60D09005F8303 /* PagemakerUIDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagemakerUIDelegate.swift; sourceTree = "<group>"; };
 		47411FD92A3EA121005890FE /* HelpButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpButton.swift; sourceTree = "<group>"; };
 		47411FDB2A3EA140005890FE /* ViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
 		47411FDD2A3EA1BA005890FE /* AboutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
@@ -409,6 +420,7 @@
 				4186A74B2BA44EF300FFD75B /* DominantColors in Frameworks */,
 				4100D5E72AD19C980081F0EC /* FilePicker in Frameworks */,
 				41C8399B2B52D78900C6B133 /* AVFoundation.framework in Frameworks */,
+				4102133D2DC4D5A300955DC6 /* WebViewKit in Frameworks */,
 				4155B71E2B62E29A008D3505 /* MarkersExtractor in Frameworks */,
 				4155B72C2B668D29008D3505 /* LoggingOSLog in Frameworks */,
 				9B61B44229F03866003EC14A /* libswiftCoreGraphics.tbd in Frameworks */,
@@ -457,6 +469,17 @@
 				411D9CC82D5DFDB800465CBC /* StringExtension.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		4102133E2DC4D5B600955DC6 /* Pagemaker */ = {
+			isa = PBXGroup;
+			children = (
+				4102133F2DC4D5EE00955DC6 /* PagemakerView.swift */,
+				410213432DC4D68A00955DC6 /* PagemakerPDFExportHandler.swift */,
+				41FB26FD2DC50937005F8303 /* WebViewStateManager.swift */,
+				41FB26FF2DC60D09005F8303 /* PagemakerUIDelegate.swift */,
+			);
+			path = Pagemaker;
 			sourceTree = "<group>";
 		};
 		41083FEE2BC45CEA008B7B03 /* Other */ = {
@@ -547,6 +570,7 @@
 				411F37562B59011300CC05E6 /* Marker Data H.264.fcpxdest */,
 				41D1E4EE2B742CEC00AE2E55 /* csv2notion_neo */,
 				41176ACC2B7807640093F4C8 /* airlift */,
+				410213452DC4D74500955DC6 /* Pagemaker.html */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -963,6 +987,7 @@
 				9B35FE6629F94BF30035B760 /* Views */,
 				9B51D21429E9B10500DF7836 /* Models */,
 				9B51D20F29E99FFD00DF7836 /* Utilities */,
+				4102133E2DC4D5B600955DC6 /* Pagemaker */,
 				414262C32ADAC6B100FC6CFC /* Resources */,
 				41C839322B52C91600C6B133 /* FCP Share Destination */,
 				D5F74A3F2972DFD800EEE2FE /* Marker-Data-Info.plist */,
@@ -1036,6 +1061,7 @@
 				418D5DB52B910F4900589E17 /* Sparkle */,
 				4186A74A2BA44EF300FFD75B /* DominantColors */,
 				411D9CC22D5DFB8200465CBC /* ButtonKit */,
+				4102133C2DC4D5A300955DC6 /* WebViewKit */,
 			);
 			productName = "Marker Data";
 			productReference = D5F74A2D2972D31C00EEE2FE /* Marker Data.app */;
@@ -1049,7 +1075,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1520;
-				LastUpgradeCheck = 1600;
+				LastUpgradeCheck = 1630;
 				TargetAttributes = {
 					4155B6D52B602694008D3505 = {
 						CreatedOnToolsVersion = 15.2;
@@ -1080,6 +1106,7 @@
 				418D5DB42B910F4900589E17 /* XCRemoteSwiftPackageReference "Sparkle" */,
 				4186A7492BA44EF300FFD75B /* XCRemoteSwiftPackageReference "DominantColors" */,
 				411D9CC12D5DFB8200465CBC /* XCRemoteSwiftPackageReference "ButtonKit" */,
+				4102133B2DC4D5A300955DC6 /* XCRemoteSwiftPackageReference "WebViewKit" */,
 			);
 			productRefGroup = D5F74A2E2972D31C00EEE2FE /* Products */;
 			projectDirPath = "";
@@ -1106,6 +1133,7 @@
 			files = (
 				D5F74A382972D32100EEE2FE /* Preview Assets.xcassets in Resources */,
 				D5F74A352972D32100EEE2FE /* Assets.xcassets in Resources */,
+				410213462DC4D74500955DC6 /* Pagemaker.html in Resources */,
 				41176ACD2B7807640093F4C8 /* airlift in Resources */,
 				411F37572B59011300CC05E6 /* Marker Data H.264.fcpxdest in Resources */,
 				414262C52ADAC6EC00FC6CFC /* DefaultConfiguration.json in Resources */,
@@ -1175,9 +1203,11 @@
 				41083FF92BC45EBC008B7B03 /* ColorPaletteFileFormat.swift in Sources */,
 				41F88AFE2B126439004A3B58 /* ExtractionResult.swift in Sources */,
 				9B51D21629E9B13400DF7836 /* SettingsModels.swift in Sources */,
+				410213442DC4D68A00955DC6 /* PagemakerPDFExportHandler.swift in Sources */,
 				4108400F2BD3E5F6008B7B03 /* ColorPaletteRenderer.swift in Sources */,
 				414262BD2AD2E24A00FC6CFC /* BundleExtension.swift in Sources */,
 				419EC4AB2C147835003DB6E8 /* OnboardingView.swift in Sources */,
+				41FB26FE2DC50937005F8303 /* WebViewStateManager.swift in Sources */,
 				4100D5DE2AD052010081F0EC /* OverlaySettingsView.swift in Sources */,
 				41C839872B52C9E300C6B133 /* FCPXMetadataKeys.m in Sources */,
 				9B4D90D82A0BAE3900FE7603 /* ImageSettingsView.swift in Sources */,
@@ -1197,6 +1227,7 @@
 				4155B70F2B62D350008D3505 /* FileSettingsView.swift in Sources */,
 				41F88AF12B0E9367004A3B58 /* DatabaseManager.swift in Sources */,
 				419EC4B32C14803C003DB6E8 /* OnboardingPages.swift in Sources */,
+				41FB27002DC60D09005F8303 /* PagemakerUIDelegate.swift in Sources */,
 				4100D5E42AD1616D0081F0EC /* ColorExtension.swift in Sources */,
 				9B4D90DE2A0BB11000FE7603 /* DatabaseSettingsView.swift in Sources */,
 				417914FF2B7547CE00215688 /* DropboxSetupView.swift in Sources */,
@@ -1226,6 +1257,7 @@
 				41D1E4ED2B742BC600AE2E55 /* AirtableFormView.swift in Sources */,
 				411F374A2B56F22300CC05E6 /* ShareDestinationInstaller.swift in Sources */,
 				4155B7192B62E179008D3505 /* UTTypeExtension.swift in Sources */,
+				410213402DC4D5EE00955DC6 /* PagemakerView.swift in Sources */,
 				47F5CDF82A60CA43005D9A98 /* ExtractionModel.swift in Sources */,
 				411F374E2B56FB5B00CC05E6 /* AppCommands.swift in Sources */,
 				4155B6CF2B5D929A008D3505 /* NSImageExtension.swift in Sources */,
@@ -1309,7 +1341,6 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 6;
-				DEVELOPMENT_TEAM = 99HS259QDZ;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					/Library/Frameworks,
@@ -1365,7 +1396,6 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 6;
-				DEVELOPMENT_TEAM = 99HS259QDZ;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					/Library/Frameworks,
@@ -1444,6 +1474,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 99HS259QDZ;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -1508,6 +1539,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 99HS259QDZ;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -1542,7 +1574,6 @@
 				CURRENT_PROJECT_VERSION = 6;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Marker Data/Preview Content\"";
-				DEVELOPMENT_TEAM = 99HS259QDZ;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
@@ -1590,7 +1621,6 @@
 				CURRENT_PROJECT_VERSION = 6;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Marker Data/Preview Content\"";
-				DEVELOPMENT_TEAM = 99HS259QDZ;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
@@ -1664,6 +1694,14 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 1.0.1;
+			};
+		};
+		4102133B2DC4D5A300955DC6 /* XCRemoteSwiftPackageReference "WebViewKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/danielsaidi/WebViewKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
 			};
 		};
 		41176ACE2B780C090093F4C8 /* XCRemoteSwiftPackageReference "FSEvents" */ = {
@@ -1753,6 +1791,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4100D5E52AD19C980081F0EC /* XCRemoteSwiftPackageReference "FilePicker" */;
 			productName = FilePicker;
+		};
+		4102133C2DC4D5A300955DC6 /* WebViewKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4102133B2DC4D5A300955DC6 /* XCRemoteSwiftPackageReference "WebViewKit" */;
+			productName = WebViewKit;
 		};
 		410840062BD3C76F008B7B03 /* DominantColors */ = {
 			isa = XCSwiftPackageProductDependency;
