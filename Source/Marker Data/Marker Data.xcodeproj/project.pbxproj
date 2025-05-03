@@ -172,7 +172,6 @@
 		41FAC46A2CD564520034FC09 /* UserDefaultsArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41FAC4692CD564520034FC09 /* UserDefaultsArray.swift */; };
 		41FB26FE2DC50937005F8303 /* WebViewStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41FB26FD2DC50937005F8303 /* WebViewStateManager.swift */; };
 		41FB27002DC60D09005F8303 /* PagemakerUIDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41FB26FF2DC60D09005F8303 /* PagemakerUIDelegate.swift */; };
-		41FB27022DC6124E005F8303 /* PagemakerCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41FB27012DC6124E005F8303 /* PagemakerCoordinator.swift */; };
 		47411FDA2A3EA121005890FE /* HelpButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47411FD92A3EA121005890FE /* HelpButton.swift */; };
 		47411FDC2A3EA140005890FE /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47411FDB2A3EA140005890FE /* ViewExtensions.swift */; };
 		47411FDE2A3EA1BA005890FE /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47411FDD2A3EA1BA005890FE /* AboutView.swift */; };
@@ -375,7 +374,6 @@
 		41FAC4692CD564520034FC09 /* UserDefaultsArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsArray.swift; sourceTree = "<group>"; };
 		41FB26FD2DC50937005F8303 /* WebViewStateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewStateManager.swift; sourceTree = "<group>"; };
 		41FB26FF2DC60D09005F8303 /* PagemakerUIDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagemakerUIDelegate.swift; sourceTree = "<group>"; };
-		41FB27012DC6124E005F8303 /* PagemakerCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagemakerCoordinator.swift; sourceTree = "<group>"; };
 		47411FD92A3EA121005890FE /* HelpButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpButton.swift; sourceTree = "<group>"; };
 		47411FDB2A3EA140005890FE /* ViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
 		47411FDD2A3EA1BA005890FE /* AboutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
@@ -480,7 +478,6 @@
 				410213432DC4D68A00955DC6 /* PagemakerPDFExportHandler.swift */,
 				41FB26FD2DC50937005F8303 /* WebViewStateManager.swift */,
 				41FB26FF2DC60D09005F8303 /* PagemakerUIDelegate.swift */,
-				41FB27012DC6124E005F8303 /* PagemakerCoordinator.swift */,
 			);
 			path = Pagemaker;
 			sourceTree = "<group>";
@@ -1277,7 +1274,6 @@
 				41C538942AE1AFF200E8A8A1 /* SettingsContainer.swift in Sources */,
 				41176AE02B7BF0420093F4C8 /* QueueView.swift in Sources */,
 				41FAC46A2CD564520034FC09 /* UserDefaultsArray.swift in Sources */,
-				41FB27022DC6124E005F8303 /* PagemakerCoordinator.swift in Sources */,
 				419EC4A82C07D237003DB6E8 /* DeminiaturizeAllWindows.swift in Sources */,
 				411F37632B5C5F5D00CC05E6 /* FileCommands.swift in Sources */,
 				41176ADC2B7BE3EF0093F4C8 /* QueueError.swift in Sources */,

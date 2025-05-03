@@ -11,7 +11,7 @@ import WebKit
 
 struct PagemakerView: View {
     @StateObject private var webViewState = WebViewStateManager()
-    @StateObject private var coordinator = PagemakerCoordinator()
+    @State private var webViewRef: WKWebView?
 
     var body: some View {
         ZStack {
@@ -34,14 +34,26 @@ struct PagemakerView: View {
                     // Set navigation delegate to handle both loading state and external links
                     webView.navigationDelegate = self.webViewState
 
-                    coordinator.setWebView(webView)
+                    // Save web view reference in task so we don't interfere with the view update
+                    Task { @MainActor in
+                        self.webViewRef = webView
+                    }
                 }
             )
-            .onAppear {
-                coordinator.setupKeyboardMonitoring()
-            }
-            .onDisappear {
-                coordinator.cleanupKeyboardMonitoring()
+            // Keyboard shortcuts
+            .background {
+                VStack {
+                    Button("") {
+                        webViewRef?.evaluateJavaScript("window.location.reload()")
+                    }
+                    .keyboardShortcut("r", modifiers: .command)
+
+                    Button("") {
+                        webViewRef?.evaluateJavaScript("if(typeof webkitFileDialog === 'function') { webkitFileDialog(); }")
+                    }
+                    .keyboardShortcut("o", modifiers: .command)
+                }
+                .opacity(0)
             }
 
             // Loading overlay
