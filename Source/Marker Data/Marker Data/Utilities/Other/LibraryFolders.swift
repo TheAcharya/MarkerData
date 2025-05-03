@@ -42,8 +42,8 @@ struct LibraryFolders {
     public static func deleteCache() {
         let fileManager = FileManager.default
         
-        Self.logger.info("Deleting cache")
-        
+        Self.logger.info("Cleaning FCP export cache")
+
         do {
             let contents = try fileManager.contentsOfDirectory(at: URL.FCPExportCacheFolder, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles])
             
@@ -51,7 +51,15 @@ struct LibraryFolders {
                 try fileManager.removeItem(at: url)
             }
         } catch {
-            Self.logger.error("Failed to delete cache: \(error.localizedDescription, privacy: .public)")
+            Self.logger.error("Failed to delete FCP export cache: \(error.localizedDescription, privacy: .public)")
+        }
+
+        Self.logger.info("Cleaning WebKit cache")
+
+        do {
+            try fileManager.removeItem(at: URL.WebKitCache)
+        } catch {
+            Self.logger.error("Failed to delete WebKit cache: \(error.localizedDescription, privacy: .public)")
         }
     }
     

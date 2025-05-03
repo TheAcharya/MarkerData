@@ -135,7 +135,7 @@ struct Marker_DataApp: App {
 
         Window("Pagemaker", id: "pagemaker") {
             PagemakerView()
-                .frame(minWidth: 800, minHeight: 500)
+                .frame(minWidth: 1000, minHeight: 500)
                 .preferredColorScheme(.dark)
         }
     }
