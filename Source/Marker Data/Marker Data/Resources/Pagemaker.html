@@ -2,7 +2,7 @@
 <!--
    //
    //  Pagemaker.html
-   //  Marker Data Pagemaker • https://github.com/TheAcharya/MarkerData-Pagemaker
+   //  Pagemaker • https://github.com/TheAcharya/MarkerData-Pagemaker
    //  Created by Vigneswaran Rajkumar on May 2, 2025
    //  Licensed under MIT License
    //
@@ -11,7 +11,7 @@
    <head>
       <meta charset="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>Marker Data Pagemaker</title>
+      <title>Pagemaker</title>
       <!-- External scripts -->
       <script src="https://cdn.tailwindcss.com"></script>
       <script src="https://unpkg.com/lucide@latest"></script>
@@ -44,6 +44,18 @@
          };
       </script>
       <style>
+         /* Tooltip */
+         .tooltip-arrow::before {
+         content: '';
+         position: absolute;
+         width: 8px;
+         height: 8px;
+         transform: rotate(45deg);
+         background-color: inherit;
+         }
+         .tooltip-transition {
+         transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s;
+         }
          @media print {
          .no-print { display: none !important; }
          .card {
@@ -97,21 +109,36 @@
       <div class="container mx-auto p-6 max-w-7xl">
          <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 gap-4">
             <div>
-               <h1 class="text-3xl font-bold">Marker Data Pagemaker</h1>
-               <p class="text-gray-500 dark:text-dark-secondary text-sm">From Timeline to PDF, Effortlessly Built.</p>
+               <h1 class="text-3xl font-bold">Pagemaker</h1>
+               <p class="text-gray-500 dark:text-dark-secondary text-sm">From Timeline to PDF, Effortlessly Made.</p>
             </div>
             <!-- Top Navigation -->
             <div class="flex items-center gap-4">
                <input type="file" id="file-input" accept=".json" class="hidden" />
-               <button id="export-pdf" class="rounded-full p-2 bg-primary text-white hover:bg-primary-hover" title="Export PDF">
-               <i data-lucide="save"></i>
-               </button>
-               <button onclick="window.location.reload()" class="rounded-full p-2 bg-primary text-white hover:bg-primary-hover" title="Reload">
-               <i data-lucide="refresh-cw"></i>
-               </button>
-               <a href="https://markerdata.theacharya.co/user-guide/pagemaker/" target="_blank" class="rounded-full p-2 bg-primary text-white hover:bg-primary-hover inline-flex items-center justify-center" role="button" title="Help">
-               <i data-lucide="help-circle"></i>
-               </a>
+               <div class="relative group">
+                  <button id="export-pdf" class="rounded-full p-2 bg-primary text-white hover:bg-primary-hover">
+                  <i data-lucide="save"></i>
+                  </button>
+                  <div class="invisible absolute z-50 opacity-0 group-hover:visible group-hover:opacity-100 group-hover:delay-300 left-1/2 -translate-x-1/2 top-full mt-2 px-2.5 py-1.5 bg-gray-800/90 backdrop-blur-sm text-white text-xs rounded-md whitespace-nowrap shadow-md">
+                     Export PDF - ⇧⌘S
+                  </div>
+               </div>
+               <div class="relative group">
+                  <button onclick="window.location.reload()" class="rounded-full p-2 bg-primary text-white hover:bg-primary-hover">
+                  <i data-lucide="refresh-cw"></i>
+                  </button>
+                  <div class="invisible absolute z-50 opacity-0 group-hover:visible group-hover:opacity-100 group-hover:delay-300 left-1/2 -translate-x-1/2 top-full mt-2 px-2.5 py-1.5 bg-gray-800/90 backdrop-blur-sm text-white text-xs rounded-md whitespace-nowrap shadow-md">
+                     Reload - ⌘R
+                  </div>
+               </div>
+               <div class="relative group">
+                  <a href="https://markerdata.theacharya.co/user-guide/pagemaker/" target="_blank" class="rounded-full p-2 bg-primary text-white hover:bg-primary-hover inline-flex items-center justify-center" role="button">
+                  <i data-lucide="help-circle"></i>
+                  </a>
+                  <div class="invisible absolute z-50 opacity-0 group-hover:visible group-hover:opacity-100 group-hover:delay-300 left-1/2 -translate-x-1/2 top-full mt-2 px-2.5 py-1.5 bg-gray-800/90 backdrop-blur-sm text-white text-xs rounded-md whitespace-nowrap shadow-md">
+                     Help
+                  </div>
+               </div>
             </div>
          </div>
          <div class="mb-4 no-print">
@@ -119,31 +146,66 @@
             <div class="flex items-center justify-between gap-4">
                <div class="flex items-center gap-1">
                   <div class="flex rounded-lg bg-white dark:bg-dark-surface p-1 gap-px">
-                     <button data-status="" class="status-btn p-2 rounded-md flex items-center justify-center bg-primary text-white hover:bg-primary-hover" title="All Statuses">
-                     <i data-lucide="grid" class="w-4 h-4"></i>
-                     </button>
-                     <button data-status="done" class="status-btn p-2 rounded-md flex items-center justify-center text-gray-700 dark:text-gray-300 hover:bg-primary hover:text-white dark:hover:bg-primary" title="Done">
-                     <i data-lucide="check" class="w-4 h-4"></i>
-                     </button>
-                     <button data-status="progress" class="status-btn p-2 rounded-md flex items-center justify-center text-gray-700 dark:text-gray-300 hover:bg-primary hover:text-white dark:hover:bg-primary" title="In Progress">
-                     <i data-lucide="circle-dot-dashed" class="w-4 h-4"></i>
-                     </button>
-                     <button data-status="not started" class="status-btn p-2 rounded-md flex items-center justify-center text-gray-700 dark:text-gray-300 hover:bg-primary hover:text-white dark:hover:bg-primary" title="Not Started">
-                     <i data-lucide="circle" class="w-4 h-4"></i>
-                     </button>
+                     <div class="relative group">
+                        <button data-status="" class="status-btn p-2 rounded-md flex items-center justify-center bg-primary text-white hover:bg-primary-hover">
+                        <i data-lucide="grid" class="w-4 h-4"></i>
+                        </button>
+                        <div class="invisible absolute z-50 opacity-0 group-hover:visible group-hover:opacity-100 group-hover:delay-300 left-1/2 -translate-x-1/2 top-full mt-2 px-2.5 py-1.5 bg-gray-800/90 backdrop-blur-sm text-white text-xs rounded-md whitespace-nowrap shadow-md">
+                           All Statuses
+                        </div>
+                     </div>
+                     <div class="relative group">
+                        <button data-status="done" class="status-btn p-2 rounded-md flex items-center justify-center text-gray-700 dark:text-gray-300 hover:bg-primary hover:text-white dark:hover:bg-primary">
+                        <i data-lucide="check" class="w-4 h-4"></i>
+                        </button>
+                        <div class="invisible absolute z-50 opacity-0 group-hover:visible group-hover:opacity-100 group-hover:delay-300 left-1/2 -translate-x-1/2 top-full mt-2 px-2.5 py-1.5 bg-gray-800/90 backdrop-blur-sm text-white text-xs rounded-md whitespace-nowrap shadow-md">
+                           Done
+                        </div>
+                     </div>
+                     <div class="relative group">
+                        <button data-status="progress" class="status-btn p-2 rounded-md flex items-center justify-center text-gray-700 dark:text-gray-300 hover:bg-primary hover:text-white dark:hover:bg-primary">
+                        <i data-lucide="circle-dot-dashed" class="w-4 h-4"></i>
+                        </button>
+                        <div class="invisible absolute z-50 opacity-0 group-hover:visible group-hover:opacity-100 group-hover:delay-300 left-1/2 -translate-x-1/2 top-full mt-2 px-2.5 py-1.5 bg-gray-800/90 backdrop-blur-sm text-white text-xs rounded-md whitespace-nowrap shadow-md">
+                           In Progress
+                        </div>
+                     </div>
+                     <div class="relative group">
+                        <button data-status="not started" class="status-btn p-2 rounded-md flex items-center justify-center text-gray-700 dark:text-gray-300 hover:bg-primary hover:text-white dark:hover:bg-primary">
+                        <i data-lucide="circle" class="w-4 h-4"></i>
+                        </button>
+                        <div class="invisible absolute z-50 opacity-0 group-hover:visible group-hover:opacity-100 group-hover:delay-300 left-1/2 -translate-x-1/2 top-full mt-2 px-2.5 py-1.5 bg-gray-800/90 backdrop-blur-sm text-white text-xs rounded-md whitespace-nowrap shadow-md">
+                           Not Started
+                        </div>
+                     </div>
                   </div>
                   <!-- Checkbox selection -->
                   <div class="flex rounded-lg bg-white dark:bg-dark-surface p-1 gap-px">
-                     <button id="select-all" class="p-2 rounded-md flex items-center justify-center text-gray-700 dark:text-gray-300 hover:bg-primary hover:text-white dark:hover:bg-primary" title="Select All">
-                     <i data-lucide="check-square" class="w-4 h-4"></i>
-                     </button>
-                     <button id="deselect-all" class="p-2 rounded-md flex items-center justify-center text-gray-700 dark:text-gray-300 hover:bg-primary hover:text-white dark:hover:bg-primary" title="Deselect All">
-                     <i data-lucide="square" class="w-4 h-4"></i>
-                     </button>
+                     <div class="relative group">
+                        <button id="select-all" class="p-2 rounded-md flex items-center justify-center text-gray-700 dark:text-gray-300 hover:bg-primary hover:text-white dark:hover:bg-primary">
+                        <i data-lucide="check-square" class="w-4 h-4"></i>
+                        </button>
+                        <div class="invisible absolute z-50 opacity-0 group-hover:visible group-hover:opacity-100 group-hover:delay-300 left-1/2 -translate-x-1/2 top-full mt-2 px-2.5 py-1.5 bg-gray-800/90 backdrop-blur-sm text-white text-xs rounded-md whitespace-nowrap shadow-md">
+                           Select All
+                        </div>
+                     </div>
+                     <div class="relative group">
+                        <button id="deselect-all" class="p-2 rounded-md flex items-center justify-center text-gray-700 dark:text-gray-300 hover:bg-primary hover:text-white dark:hover:bg-primary">
+                        <i data-lucide="square" class="w-4 h-4"></i>
+                        </button>
+                        <div class="invisible absolute z-50 opacity-0 group-hover:visible group-hover:opacity-100 group-hover:delay-300 left-1/2 -translate-x-1/2 top-full mt-2 px-2.5 py-1.5 bg-gray-800/90 backdrop-blur-sm text-white text-xs rounded-md whitespace-nowrap shadow-md">
+                           Deselect All
+                        </div>
+                     </div>
                      <!-- Type suggestions button -->
-                     <button id="type-suggestions-btn" class="p-2 rounded-md flex items-center justify-center text-gray-700 dark:text-gray-300 hover:bg-primary hover:text-white dark:hover:bg-primary" title="Type Suggestions">
-                     <i data-lucide="search-code" class="w-4 h-4"></i>
-                     </button>
+                     <div class="relative group">
+                        <button id="type-suggestions-btn" class="p-2 rounded-md flex items-center justify-center text-gray-700 dark:text-gray-300 hover:bg-primary hover:text-white dark:hover:bg-primary">
+                        <i data-lucide="search-code" class="w-4 h-4"></i>
+                        </button>
+                        <div class="invisible absolute z-50 opacity-0 group-hover:visible group-hover:opacity-100 group-hover:delay-300 left-1/2 -translate-x-1/2 top-full mt-2 px-2.5 py-1.5 bg-gray-800/90 backdrop-blur-sm text-white text-xs rounded-md whitespace-nowrap shadow-md">
+                           Type Suggestions
+                        </div>
+                     </div>
                   </div>
                </div>
                <!-- Search field -->
@@ -166,11 +228,36 @@
                </div>
                <!-- Column selection -->
                <div class="flex rounded-lg bg-white dark:bg-dark-surface p-1 gap-px">
-                  <button data-columns="1" class="column-btn px-3 py-1 rounded-md text-sm text-gray-700 dark:text-gray-300 hover:bg-primary hover:text-white dark:hover:bg-primary">1</button>
-                  <button data-columns="2" class="column-btn px-3 py-1 rounded-md text-sm bg-primary text-white hover:bg-primary-hover">2</button>
-                  <button data-columns="3" class="column-btn px-3 py-1 rounded-md text-sm text-gray-700 dark:text-gray-300 hover:bg-primary hover:text-white dark:hover:bg-primary">3</button>
-                  <button data-columns="4" class="column-btn px-3 py-1 rounded-md text-sm text-gray-700 dark:text-gray-300 hover:bg-primary hover:text-white dark:hover:bg-primary">4</button>
-                  <button data-columns="5" class="column-btn px-3 py-1 rounded-md text-sm text-gray-700 dark:text-gray-300 hover:bg-primary hover:text-white dark:hover:bg-primary">5</button>
+                  <div class="relative group">
+                     <button data-columns="1" class="column-btn px-3 py-1 rounded-md text-sm text-gray-700 dark:text-gray-300 hover:bg-primary hover:text-white dark:hover:bg-primary">1</button>
+                     <div class="invisible absolute z-50 opacity-0 group-hover:visible group-hover:opacity-100 group-hover:delay-300 left-1/2 -translate-x-1/2 top-full mt-2 px-2.5 py-1.5 bg-gray-800/90 backdrop-blur-sm text-white text-xs rounded-md whitespace-nowrap shadow-md">
+                        1 Column
+                     </div>
+                  </div>
+                  <div class="relative group">
+                     <button data-columns="2" class="column-btn px-3 py-1 rounded-md text-sm bg-primary text-white hover:bg-primary-hover">2</button>
+                     <div class="invisible absolute z-50 opacity-0 group-hover:visible group-hover:opacity-100 group-hover:delay-300 left-1/2 -translate-x-1/2 top-full mt-2 px-2.5 py-1.5 bg-gray-800/90 backdrop-blur-sm text-white text-xs rounded-md whitespace-nowrap shadow-md">
+                        2 Columns
+                     </div>
+                  </div>
+                  <div class="relative group">
+                     <button data-columns="3" class="column-btn px-3 py-1 rounded-md text-sm text-gray-700 dark:text-gray-300 hover:bg-primary hover:text-white dark:hover:bg-primary">3</button>
+                     <div class="invisible absolute z-50 opacity-0 group-hover:visible group-hover:opacity-100 group-hover:delay-300 left-1/2 -translate-x-1/2 top-full mt-2 px-2.5 py-1.5 bg-gray-800/90 backdrop-blur-sm text-white text-xs rounded-md whitespace-nowrap shadow-md">
+                        3 Columns
+                     </div>
+                  </div>
+                  <div class="relative group">
+                     <button data-columns="4" class="column-btn px-3 py-1 rounded-md text-sm text-gray-700 dark:text-gray-300 hover:bg-primary hover:text-white dark:hover:bg-primary">4</button>
+                     <div class="invisible absolute z-50 opacity-0 group-hover:visible group-hover:opacity-100 group-hover:delay-300 left-1/2 -translate-x-1/2 top-full mt-2 px-2.5 py-1.5 bg-gray-800/90 backdrop-blur-sm text-white text-xs rounded-md whitespace-nowrap shadow-md">
+                        4 Columns
+                     </div>
+                  </div>
+                  <div class="relative group">
+                     <button data-columns="5" class="column-btn px-3 py-1 rounded-md text-sm text-gray-700 dark:text-gray-300 hover:bg-primary hover:text-white dark:hover:bg-primary">5</button>
+                     <div class="invisible absolute z-50 opacity-0 group-hover:visible group-hover:opacity-100 group-hover:delay-300 left-1/2 -translate-x-1/2 top-full mt-2 px-2.5 py-1.5 bg-gray-800/90 backdrop-blur-sm text-white text-xs rounded-md whitespace-nowrap shadow-md">
+                        5 Columns
+                     </div>
+                  </div>
                </div>
             </div>
          </div>
@@ -184,7 +271,7 @@
                   </div>
                   <div>
                      <p class="text-lg font-medium text-gray-700 dark:text-dark-text mb-1">Drop your Marker Data's Extracted Data Set</p>
-                     <p class="text-sm text-gray-500 dark:text-dark-secondary">or click to open folder</p>
+                     <p class="text-sm text-gray-500 dark:text-dark-secondary">or click to open folder - ⌘O</p>
                   </div>
                </div>
             </div>
@@ -193,7 +280,7 @@
          <!-- Footer -->
          <div class="flex justify-between text-xs text-gray-500 dark:text-dark-secondary mt-8 mb-4 no-print">
             <div>© 2025 <a href="https://tech.theacharya.co" target="_blank" class="hover:text-primary">The Acharya Technology</a></div>
-            <div><a href="https://github.com/TheAcharya/MarkerData-Pagemaker" target="_blank" class="hover:text-primary">Pagemaker v1.0.1</a></div>
+            <div><a href="https://github.com/TheAcharya/MarkerData-Pagemaker" target="_blank" class="hover:text-primary">Pagemaker v1.0.2</a></div>
          </div>
       </div>
       <!-- PDF export progress loading overlay -->
@@ -547,7 +634,7 @@
                  });
              } catch (error) {
                  console.error("Error opening folder selector:", error);
-                 alert("There was a problem opening the folder selector. Please try dropping a folder instead.");
+                 alert("There was a problem opening the folder selector. Please drop or open a folder extracted from Marker Data.");
              }
          }
          
@@ -564,7 +651,7 @@
              const paragraphs = dropZoneContent.querySelectorAll('p');
              if (paragraphs && paragraphs.length >= 2) {
                  paragraphs[0].textContent = 'Drop your Marker Data\'s Extracted Data Set';
-                 paragraphs[1].textContent = 'or click to open folder';
+                 paragraphs[1].textContent = 'or click to open folder - ⌘O';
              }
          }
          
