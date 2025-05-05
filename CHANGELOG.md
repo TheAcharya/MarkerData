@@ -9,6 +9,7 @@
 - Introducing [Pagemaker](https://markerdata.theacharya.co/user-guide/pagemaker/)
 - Swatch analysis now provides percentage progress, including completion status for each processed image. (#122)
 - Updated Notion Module CSV2Notion Neo to version 1.3.5
+- Increased Notion Module's upload threads
 
 ---
 
