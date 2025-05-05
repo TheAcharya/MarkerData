@@ -20,6 +20,7 @@ Marker Data allows users to extract, convert & create databases from <a href="ht
 - Comprehensive timeline functionality, encompassing support for timelines such as Projects and Compound Clips.
 - Allows the creation of multiple configurations tailored to diverse project requirements.
 - Harnesses the potential to utilise Captions as Markers, adding a layer of flexibility.
+- Convert Markers into shareable, professional PDFs via Pagemaker.
 - Written in Apple Swift language and SwiftUI framework.
 - Application is Notarised by Apple.
 
@@ -113,6 +114,8 @@ Marker Data allows users to extract, convert & create databases from <a href="ht
 
 <p align="center"> <img src="https://github.com/TheAcharya/MarkerData-Website/blob/main/docs/assets/md-workflow-extension-roles.png?raw=true"> </p>
 
+<p align="center"> <img src="https://raw.githubusercontent.com/TheAcharya/MarkerData-Website/refs/heads/main/docs/assets/md-pagemaker.png?raw=true"> </p>
+
 ## System Requirements
 
 macOS Ventura 13.6.7 or later <br> Final Cut Pro 10.7.1 or later <br> Runs only on Apple silicon Macs
@@ -144,6 +147,7 @@ macOS Ventura 13.6.7 or later <br> Final Cut Pro 10.7.1 or later <br> Runs only 
 - Offline & Online Notes Database
 - Send Final Cut Pro's Markers to DAWs
 - Create YouTube Chapters
+- Create PDFs via Pagemaker
 
 ## Featured
 
