@@ -118,7 +118,7 @@ Marker Data allows users to extract, convert & create databases from <a href="ht
 
 ## System Requirements
 
-macOS Ventura 13.6.7 or later <br> Final Cut Pro 10.7.1 or later <br> Runs only on Apple silicon Macs
+macOS Sonoma 14.7 or later <br> Final Cut Pro 11.0 or later <br> Runs only on Apple silicon Macs <br> Internet connection is necessary for some modules and functionality
 
 ## Installation
 
