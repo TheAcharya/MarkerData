@@ -280,7 +280,7 @@
          <!-- Footer -->
          <div class="flex justify-between text-xs text-gray-500 dark:text-dark-secondary mt-8 mb-4 no-print">
             <div>© 2025 <a href="https://tech.theacharya.co" target="_blank" class="hover:text-primary">The Acharya Technology</a></div>
-            <div><a href="https://github.com/TheAcharya/MarkerData-Pagemaker" target="_blank" class="hover:text-primary">Pagemaker v1.0.3</a></div>
+            <div><a href="https://github.com/TheAcharya/MarkerData-Pagemaker" target="_blank" class="hover:text-primary">Pagemaker v1.0.4</a></div>
          </div>
       </div>
       <!-- PDF export progress loading overlay -->
@@ -428,7 +428,10 @@
              projectNameDisplay.classList.add('hidden');
          }
          
+         // ==================================================================================
          // Process the dropped folder
+         // ==================================================================================
+         
          async function processFolder(folderEntry) {
              try {
                  // Reset the folder files cache
@@ -451,9 +454,18 @@
                  await readFolderContents(folderEntry);
                  
                  // Find JSON files (excluding extract_info.json)
-                 const jsonFiles = Object.keys(folderFiles).filter(
-                     filename => filename.endsWith('.json') && filename !== 'extract_info.json'
-                 );
+                 const jsonFiles = Object.keys(folderFiles).filter(filename => {
+                     // Check if filename ends with .json
+                     const isJsonFile = filename.endsWith('.json');
+                     
+                     // Get just the filename without the path
+                     const baseName = filename.split(/[\/\\]/).pop();
+                     
+                     // Check if the filename is NOT extract_info.json
+                     const isNotExtractInfo = baseName !== 'extract_info.json';
+                     
+                     return isJsonFile && isNotExtractInfo;
+                 });
                  
                  if (jsonFiles.length === 0) {
                      showError("Compatible JSON file not found. Only Notion or Airtable profiles are supported.");
@@ -518,7 +530,10 @@
              });
          }
          
+         // ==================================================================================
          // Process the JSON content
+         // ==================================================================================
+         
          function processJsonContent(jsonContent, jsonFileName) {
              try {
                  const data = JSON.parse(jsonContent);
@@ -611,9 +626,18 @@
                          }
                          
                          // Find JSON files (excluding extract_info.json)
-                         const jsonFiles = Object.keys(folderFiles).filter(
-                             filename => filename.endsWith('.json') && filename !== 'extract_info.json'
-                         );
+                         const jsonFiles = Object.keys(folderFiles).filter(filename => {
+                             // Check if filename ends with .json
+                             const isJsonFile = filename.endsWith('.json');
+                             
+                             // Get just the filename without the path
+                             const baseName = filename.split(/[\/\\]/).pop();
+                             
+                             // Check if the filename is NOT extract_info.json
+                             const isNotExtractInfo = baseName !== 'extract_info.json';
+                             
+                             return isJsonFile && isNotExtractInfo;
+                         });
                          
                          if (jsonFiles.length === 0) {
                              showError("Compatible JSON file not found. Only Notion or Airtable profiles are supported.");
