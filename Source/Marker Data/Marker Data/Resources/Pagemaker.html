@@ -280,7 +280,7 @@
          <!-- Footer -->
          <div class="flex justify-between text-xs text-gray-500 dark:text-dark-secondary mt-8 mb-4 no-print">
             <div>© 2025 <a href="https://tech.theacharya.co" target="_blank" class="hover:text-primary">The Acharya Technology</a></div>
-            <div><a href="https://github.com/TheAcharya/MarkerData-Pagemaker" target="_blank" class="hover:text-primary">Pagemaker v1.0.4</a></div>
+            <div><a href="https://github.com/TheAcharya/MarkerData-Pagemaker" target="_blank" class="hover:text-primary">Pagemaker v1.0.5</a></div>
          </div>
       </div>
       <!-- PDF export progress loading overlay -->
@@ -1213,7 +1213,7 @@
             // Initialise Fuse JS library for fuzzy search
             const fuseOptions = {
                 keys: ['Marker Name', 'Notes', 'Marker Type'],
-                threshold: 0.4,
+                threshold: 0.4, // Moderate fuzziness
                 includeScore: true
             };
             const fuse = new Fuse(data, fuseOptions);
@@ -1509,6 +1509,8 @@
                  
                  // Get project name from first data item
                  const projectName = globalData[0]?.['Project Name'] || 'Untitled Project';
+                 // Get library name from first data item
+                 const libraryName = globalData[0]?.['Library Name'] || '';
                  
                  // Initialise PDF with A4 size
                  const pdf = new jsPDF({
@@ -1554,6 +1556,7 @@
                  const lines = [
                      { label: "Generated On", value: formatDate(new Date(), false) },
                      { label: "Project", value: projectName },
+                     { label: "Library Name", value: libraryName },
                      { label: "Total Exported Markers", value: filteredData.length },
                      { label: "Status Filter", value: currentStatus || 'None' },
                      {
@@ -1716,7 +1719,7 @@
                                  const img = new Image();
                                  img.src = item.imageDataUrl;
                                  
-                                 // Safari-friendly approach: wait for image to load
+                                 // Safari friendly approach: wait for image to load
                                  await new Promise((resolve) => {
                                      img.onload = resolve;
                                      // Set a short timeout to avoid hanging
@@ -1729,64 +1732,64 @@
                                      const imageWidth = cardWidth - 10;
                                      let imageHeight = imageWidth / aspectRatio;
                                      
-                                     // Adjust height to fit within card
+                                     // Adjust height to fit within card - KEEPING ORIGINAL HEIGHT VALUES
                                      const maxImageHeight = isSingleColumn ? cardHeight * 0.6 : cardHeight * 0.5;
                                      imageHeight = Math.min(imageHeight, maxImageHeight);
                                      
                                      // For Safari, ensure we explicitly use JPEG format for data URLs
-                                                 let format = 'JPEG';
-                                                 if (item.imageDataUrl.startsWith('data:image/png')) {
-                                                     format = 'PNG';
-                                                 } else if (item.imageDataUrl.includes('svg+xml')) {
-                                                     // Skip SVG images completely as they cause PNG corruption errors
-                                                     throw new Error("SVG format not supported in PDF");
-                                                 }
-                                                 
-                                                 try {
-                                                     pdf.addImage({
-                                                         imageData: item.imageDataUrl,
-                                                         x: x + 5,
-                                                         y: currentY,
-                                                         width: imageWidth,
-                                                         height: imageHeight,
-                                                         compression: 'MEDIUM',
-                                                         format: format
-                                                     });
-                                                     
-                                                     currentY += imageHeight + initialOffset;
-                                                 } catch (addImageError) {
-                                                     console.warn('Failed to add image to PDF, skipping:', addImageError);
-                                                     // Just add text placeholder instead
-                                                     pdf.setFont("Helvetica", "italic");
-                                                     pdf.setFontSize(10);
-                                                     pdf.setTextColor(150, 150, 150);
-                                                     pdf.text("Image not available", x + cardWidth/2, currentY + 10, { align: 'center' });
-                                                     currentY += 20 + initialOffset;
-                                                     pdf.setTextColor(0, 0, 0);
-                                                     pdf.setFont("Helvetica", "normal");
-                                                 }
-                                             } else {
-                                                 // Invalid image dimensions - add text placeholder
-                                                 pdf.setFont("Helvetica", "italic");
-                                                 pdf.setFontSize(10);
-                                                 pdf.setTextColor(150, 150, 150);
-                                                 pdf.text("Image not available", x + cardWidth/2, currentY + 10, { align: 'center' });
-                                                 currentY += 20 + initialOffset;
-                                                 pdf.setTextColor(0, 0, 0);
-                                                 pdf.setFont("Helvetica", "normal");
-                                             }
-                                         } catch (imgError) {
-                                             console.warn('Error processing image:', imgError);
-                                             // Add text placeholder instead of trying to add a corrupt image
-                                             pdf.setFont("Helvetica", "italic");
-                                             pdf.setFontSize(10);
-                                             pdf.setTextColor(150, 150, 150);
-                                             pdf.text("Image not available", x + cardWidth/2, currentY + 10, { align: 'center' });
-                                             currentY += 20 + initialOffset;
-                                             pdf.setTextColor(0, 0, 0);
-                                             pdf.setFont("Helvetica", "normal");
-                                         }
+                                     let format = 'JPEG';
+                                     if (item.imageDataUrl.startsWith('data:image/png')) {
+                                         format = 'PNG';
+                                     } else if (item.imageDataUrl.includes('svg+xml')) {
+                                         // Skip SVG images completely as they cause PNG corruption errors
+                                         throw new Error("SVG format not supported in PDF");
                                      }
+                                     
+                                     try {
+                                         pdf.addImage({
+                                             imageData: item.imageDataUrl,
+                                             x: x + 5,
+                                             y: currentY,
+                                             width: imageWidth,
+                                             height: imageHeight,
+                                             compression: 'MEDIUM',
+                                             format: format
+                                         });
+                                         
+                                         currentY += imageHeight + initialOffset;
+                                     } catch (addImageError) {
+                                         console.warn('Failed to add image to PDF, skipping:', addImageError);
+                                         // Just add text placeholder instead
+                                         pdf.setFont("Helvetica", "italic");
+                                         pdf.setFontSize(10);
+                                         pdf.setTextColor(150, 150, 150);
+                                         pdf.text("Image not available", x + cardWidth/2, currentY + 10, { align: 'center' });
+                                         currentY += 20 + initialOffset;
+                                         pdf.setTextColor(0, 0, 0);
+                                         pdf.setFont("Helvetica", "normal");
+                                     }
+                                 } else {
+                                     // Invalid image dimensions - add text placeholder
+                                     pdf.setFont("Helvetica", "italic");
+                                     pdf.setFontSize(10);
+                                     pdf.setTextColor(150, 150, 150);
+                                     pdf.text("Image not available", x + cardWidth/2, currentY + 10, { align: 'center' });
+                                     currentY += 20 + initialOffset;
+                                     pdf.setTextColor(0, 0, 0);
+                                     pdf.setFont("Helvetica", "normal");
+                                 }
+                             } catch (imgError) {
+                                 console.warn('Error processing image:', imgError);
+                                 // Add text placeholder instead of trying to add a corrupt image
+                                 pdf.setFont("Helvetica", "italic");
+                                 pdf.setFontSize(10);
+                                 pdf.setTextColor(150, 150, 150);
+                                 pdf.text("Image not available", x + cardWidth/2, currentY + 10, { align: 'center' });
+                                 currentY += 20 + initialOffset;
+                                 pdf.setTextColor(0, 0, 0);
+                                 pdf.setFont("Helvetica", "normal");
+                             }
+                         }
                          
                          // Add palette if available
                          if (item.paletteDataUrl) {
@@ -1851,17 +1854,187 @@
                              const notesText = "Notes: " + item['Notes'];
                              const splitNotes = pdf.splitTextToSize(notesText, cardWidth - 10);
                              
-                             // Calculate available space
-                             const availableSpace = cardHeight - (currentY - y) - 5;
-                             const maxLines = Math.floor(availableSpace / lineHeight);
+                             // If in single column mode, limit notes to make space for metadata
+                             const maxNotesLines = isSingleColumn ? 3 : Math.floor((cardHeight - (currentY - y) - 5) / lineHeight);
                              
-                             if (maxLines > 0) {
-                                 const limitedNotes = splitNotes.slice(0, maxLines);
+                             if (maxNotesLines > 0) {
+                                 const limitedNotes = splitNotes.slice(0, maxNotesLines);
                                  pdf.text(limitedNotes, x + 5, currentY, { maxWidth: cardWidth - 10 });
                                  
-                                 if (splitNotes.length > maxLines) {
-                                     pdf.text("...", x + 5, currentY + (maxLines * lineHeight));
+                                 // Update current Y position based on actual notes height
+                                 currentY += (limitedNotes.length * lineHeight);
+                                 
+                                 if (splitNotes.length > maxNotesLines) {
+                                     pdf.text("...", x + 5, currentY);
+                                     currentY += lineHeight;
                                  }
+                                 
+                                 // Add extra spacing after notes
+                                 currentY += elementSpacing;
+                             }
+                         }
+                         
+                         // Add additional metadata only for Column 1 (isSingleColumn)
+                         if (isSingleColumn) {
+                             // Always add metadata box in single column mode, after Notes
+                             
+                             // Create metadata box
+                             const metadataBoxX = x + 5;
+                             const metadataBoxY = currentY;
+                             const metadataBoxWidth = cardWidth - 10;
+                             
+                             // Prepare additional metadata fields
+                             const metadataFields = [
+                                 { label: "Reel", value: item['Reel'] },
+                                 { label: "Scene", value: item['Scene'] },
+                                 { label: "Take", value: item['Take'] },
+                                 { label: "Clip Name", value: item['Clip Name'] },
+                                 { label: "Clip In", value: item['Clip In'] },
+                                 { label: "Clip Out", value: item['Clip Out'] },
+                                 { label: "Clip Type", value: item['Clip Type'] },
+                                 { label: "Clip Duration", value: item['Clip Duration'] },
+                                 { label: "Clip Keywords", value: Array.isArray(item['Clip Keywords']) && item['Clip Keywords'].length > 0 
+                                     ? item['Clip Keywords'].join(', ') 
+                                     : item['Clip Keywords'] },
+                                 { label: "Video Role & Subrole", value: item['Video Role & Subrole'] },
+                                 { label: "Audio Role & Subrole", value: Array.isArray(item['Audio Role & Subrole']) && item['Audio Role & Subrole'].length > 0
+                                     ? item['Audio Role & Subrole'].join(', ') 
+                                     : item['Audio Role & Subrole'] },
+                                 { label: "Event Name", value: item['Event Name'] }
+                             ].filter(field => {
+                                 // Only include fields with non-empty values
+                                 if (Array.isArray(field.value)) {
+                                     return field.value.length > 0;
+                                 }
+                                 return field.value && String(field.value).trim() !== '';
+                             });
+                             
+                             // If we have metadata to display
+                             if (metadataFields.length > 0) {
+                                 // Calculate metadata box dimensions and layout
+                                 const metadataLineHeight = 4.5; // Slightly increased for better readability
+                                 const metadataHeaderHeight = 8;
+                                 const metadataPadding = 8;
+                                 
+                                 // Display metadata in 2 columns if there are enough fields
+                                 const useColumns = metadataFields.length > 4;
+                                 const metadataPerColumn = useColumns ? Math.ceil(metadataFields.length / 2) : metadataFields.length;
+                                 
+                                 // Pre-process fields to calculate actual height needed
+                                 let totalMetadataHeight = 0;
+                                 const maxWidthPerCol = useColumns 
+                                     ? (metadataBoxWidth / 2) - 15 
+                                     : metadataBoxWidth - 15;
+                                     
+                                 // Calculate height for each field accounting for possible multi-line values
+                                 const processedFields = metadataFields.map(field => {
+                                     const labelText = `${field.label}: `; // Include the colon and space in the label text
+                                     const labelWidth = pdf.getTextWidth(labelText);
+                                     const valueMaxWidth = maxWidthPerCol - labelWidth;
+                                     
+                                     // Convert value to string safely and prevent breaking technical strings
+                                     let valueStr = field.value ? String(field.value) : '';
+                                     
+                                     // Check if this looks like a technical string (contains periods or hyphens)
+                                     if (valueStr.includes('.') || valueStr.includes('-')) {
+                                         // Calculate if the string would fit on one line
+                                         const fullWidth = pdf.getTextWidth(valueStr);
+                                         if (fullWidth > valueMaxWidth) {
+                                             // If it doesn't fit, we'll handle it specially later
+                                             field.isTechnicalString = true;
+                                         } else {
+                                             // If it fits, no need to split
+                                             field.isTechnicalString = false;
+                                         }
+                                     }
+                                     
+                                     // Split long values into multiple lines if needed
+                                     const splitValue = field.isTechnicalString 
+                                         ? [valueStr] // Don't split technical strings
+                                         : pdf.splitTextToSize(valueStr, valueMaxWidth);
+                                     
+                                     return {
+                                         ...field,
+                                         labelText,
+                                         labelWidth,
+                                         lines: splitValue.length,
+                                         splitValue,
+                                         isTechnicalString: field.isTechnicalString || false
+                                     };
+                                 });
+                                 
+                                 // Calculate total height needed for each column
+                                 let column1Height = 0;
+                                 let column2Height = 0;
+                                 
+                                 processedFields.forEach((field, index) => {
+                                     // Multi-line values need extra space
+                                     const fieldHeight = field.lines * metadataLineHeight;
+                                     
+                                     if (index < metadataPerColumn || !useColumns) {
+                                         column1Height += fieldHeight;
+                                     } else {
+                                         column2Height += fieldHeight;
+                                     }
+                                 });
+                                 
+                                 // Use the taller column to determine box height
+                                 const columnsHeight = Math.max(column1Height, column2Height);
+                                 const metadataBoxHeight = metadataPadding + metadataHeaderHeight + columnsHeight + 4;
+                                 
+                                 // Draw metadata box with rounded corners
+                                 pdf.setDrawColor(210, 210, 210);
+                                 pdf.setFillColor(247, 247, 247); // Slightly darker than the main summary box
+                                 pdf.roundedRect(metadataBoxX, metadataBoxY, metadataBoxWidth, metadataBoxHeight, 3, 3, 'FD');
+                                 
+                                 // Add header
+                                 pdf.setFont("Helvetica", "bold");
+                                 pdf.setFontSize(9);
+                                 pdf.text("Additional Metadata", metadataBoxX + 5, metadataBoxY + 6);
+                                 
+                                 // Add divider
+                                 pdf.setDrawColor(225, 225, 225);
+                                 pdf.line(metadataBoxX + 5, metadataBoxY + 8, metadataBoxX + metadataBoxWidth - 5, metadataBoxY + 8);
+                                 
+                                 // Add metadata fields
+                                 pdf.setFont("Helvetica", "normal");
+                                 pdf.setFontSize(7);
+                                 
+                                 let metadataX1 = metadataBoxX + 5;
+                                 let metadataX2 = useColumns ? metadataBoxX + (metadataBoxWidth / 2) + 5 : metadataBoxX + 5;
+                                 let metadataY1 = metadataBoxY + metadataHeaderHeight + 4;
+                                 let metadataY2 = metadataBoxY + metadataHeaderHeight + 4;
+                                 
+                                 // Position to track current vertical position for each column
+                                 let currentColY = [metadataY1, metadataY2];
+                                 
+                                 processedFields.forEach((field, index) => {
+                                     const colIndex = index < metadataPerColumn || !useColumns ? 0 : 1;
+                                     const currentX = colIndex === 0 ? metadataX1 : metadataX2;
+                                     const currentY = currentColY[colIndex];
+                                     
+                                     // Write label and first value on same line with minimal gap
+                                     // Combine label and first line of value on the same rendering to avoid spacing issues
+                                     if (field.splitValue.length > 0) {
+                                         // Combine the label and first value with no extra spacing
+                                         const combinedText = `${field.label}: ${field.splitValue[0]}`;
+                                         pdf.text(combinedText, currentX, currentY);
+                                         
+                                         // For multi-line values, add subsequent lines with proper indentation
+                                         for (let i = 1; i < field.splitValue.length; i++) {
+                                             const lineY = currentY + (i * metadataLineHeight);
+                                             // Indent subsequent lines to align with first value
+                                             const lineX = currentX + field.labelWidth;
+                                             pdf.text(field.splitValue[i], lineX, lineY);
+                                         }
+                                     } else {
+                                         // Just in case there's a label with no value
+                                         pdf.text(`${field.label}:`, currentX, currentY);
+                                     }
+                                     
+                                     // Update the column's current Y position
+                                     currentColY[colIndex] += field.lines * metadataLineHeight;
+                                 });
                              }
                          }
                      }
@@ -1909,7 +2082,7 @@
              } catch (error) {
                  console.error('PDF generation error:', error);
                  
-                 // Provide a more user-friendly error message
+                 // Provide a more user friendly error message
                  let errorMsg = "There was a problem generating the PDF.";
                  
                  if (error.message && error.message.includes("PNG")) {
