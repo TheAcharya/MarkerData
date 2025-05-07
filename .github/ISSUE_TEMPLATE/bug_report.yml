@@ -7,22 +7,21 @@ body:
   attributes:
     label: Marker Data Version?
     description: Which version of Marker Data are you using?
-    placeholder: "1.0.0"
-  validations:
-    required: true
-- type: dropdown
-  attributes:
-    label: Architecture
-    options:
-      - Apple Silicon
-      - Intel
+    placeholder: "1.2.0"
   validations:
     required: true
 - type: input
   attributes:
     label: macOS Version
     description: Which macOS version are you using?
-    placeholder: "e.g. macOS Sonoma 14.5"
+    placeholder: "e.g. macOS Sonoma 14.7"
+  validations:
+    required: true
+- type: input
+  attributes:
+    label: Final Cut Pro Version
+    description: Which Final Cut Pro version are you using?
+    placeholder: "e.g. 11.0"
   validations:
     required: true
 - type: textarea
