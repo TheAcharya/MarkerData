@@ -14,32 +14,47 @@ jobs:
       - name: Get latest release info
         id: get_release
         run: |
-            latest_release_tag=$(curl -sSL https://api.github.com/repos/TheAcharya/MarkerData-Pagemaker/releases/latest | jq -r '.tag_name | ltrimstr("v")')
-            latest_release_url=$(curl -sSL https://api.github.com/repos/TheAcharya/MarkerData-Pagemaker/releases/latest | jq -r '.assets[] | select(.name | contains("Source code")) | .browser_download_url')
+            # Get full release information
+            release_info=$(curl -sSL https://api.github.com/repos/TheAcharya/MarkerData-Pagemaker/releases/latest)
             
-            echo "Latest release tag: $latest_release_tag"
-            echo "Latest release URL: $latest_release_url"
+            # Extract tag name and remove 'v' prefix for version number
+            latest_tag=$(echo "$release_info" | jq -r '.tag_name')
+            version_number=$(echo "$latest_tag" | sed 's/^v//')
             
-            echo "TAG=$latest_release_tag" >> $GITHUB_ENV
-            echo "URL=$latest_release_url" >> $GITHUB_ENV
+            # Get the zipball_url directly - this is always available for any release
+            zipball_url=$(echo "$release_info" | jq -r '.zipball_url')
+            
+            echo "Latest release tag: $latest_tag"
+            echo "Version number: $version_number"
+            echo "Zipball URL: $zipball_url"
+            
+            # Save to environment variables for later steps
+            echo "VERSION=$version_number" >> $GITHUB_ENV
+            echo "ZIPBALL_URL=$zipball_url" >> $GITHUB_ENV
 
       - name: Download and extract latest release
         run: |
-            curl -L -o pagemaker_source.zip "${{ env.URL }}"
+            echo "Downloading source code from ${{ env.ZIPBALL_URL }}"
+            
+            # Download the zipball
+            curl -L -o pagemaker_source.zip "${{ env.ZIPBALL_URL }}"
             
             # Create temp directory and extract
             mkdir -p temp_extract
             unzip -q pagemaker_source.zip -d temp_extract
             
-            # Find the main directory in the extracted content
+            # Find the extracted directory (GitHub creates a directory with format username-repo-SHA)
             extract_dir=$(find temp_extract -type d -depth 1 | head -n 1)
             
-            # Copy the Pagemaker.html file to destination
+            # Make sure the destination directory exists
+            mkdir -p "./Source/Marker Data/Marker Data/Resources"
+            
+            # Copy the Pagemaker.html file to destination (will overwrite if exists)
             cp "$extract_dir/Pagemaker.html" "./Source/Marker Data/Marker Data/Resources/Pagemaker.html"
             
-            echo "Copied Pagemaker.html from version ${{ env.TAG }}"
+            echo "Successfully copied Pagemaker.html from version ${{ env.VERSION }}"
             
-            # Clean up
+            # Clean up temporary files
             rm -rf temp_extract pagemaker_source.zip
 
       - name: Commit and push changes
@@ -48,5 +63,5 @@ jobs:
             git config user.name "GitHub Actions"
             git config user.email "actions@github.com"
             git add "./Source/Marker Data/Marker Data/Resources/Pagemaker.html"
-            git commit -m "Updated Pagemaker Version ${{ env.TAG }}"
+            git commit -m "Updated Pagemaker Version ${{ env.VERSION }}"
             git push
