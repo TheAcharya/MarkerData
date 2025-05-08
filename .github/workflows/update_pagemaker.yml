@@ -14,52 +14,97 @@ jobs:
       - name: Get latest release info
         id: get_release
         run: |
-            # Get full release information
-            release_info=$(curl -sSL https://api.github.com/repos/TheAcharya/MarkerData-Pagemaker/releases/latest)
+            # Debug API response
+            echo "Checking API response..."
+            API_RESPONSE=$(curl -sSL -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ github.token }}" https://api.github.com/repos/TheAcharya/MarkerData-Pagemaker/releases/latest)
+            echo "API Response length: $(echo "$API_RESPONSE" | wc -c) bytes"
             
-            # Extract tag name and remove 'v' prefix for version number
-            latest_tag=$(echo "$release_info" | jq -r '.tag_name')
-            version_number=$(echo "$latest_tag" | sed 's/^v//')
+            # Check if response contains error
+            ERROR_MESSAGE=$(echo "$API_RESPONSE" | jq -r '.message')
+            if [[ "$ERROR_MESSAGE" != "null" && "$ERROR_MESSAGE" != "" ]]; then
+              echo "::error::GitHub API error: $ERROR_MESSAGE"
+              exit 1
+            fi
             
-            # Get the zipball_url directly - this is always available for any release
-            zipball_url=$(echo "$release_info" | jq -r '.zipball_url')
+            # Extract tag name and zipball URL
+            LATEST_TAG=$(echo "$API_RESPONSE" | jq -r '.tag_name')
+            ZIPBALL_URL=$(echo "$API_RESPONSE" | jq -r '.zipball_url')
             
-            echo "Latest release tag: $latest_tag"
-            echo "Version number: $version_number"
-            echo "Zipball URL: $zipball_url"
+            # Debug output
+            echo "Latest release tag: $LATEST_TAG"
+            echo "Zipball URL: $ZIPBALL_URL"
             
-            # Save to environment variables for later steps
-            echo "VERSION=$version_number" >> $GITHUB_ENV
-            echo "ZIPBALL_URL=$zipball_url" >> $GITHUB_ENV
+            # Verify we have valid data
+            if [[ "$LATEST_TAG" == "null" || "$ZIPBALL_URL" == "null" ]]; then
+              echo "::warning::Failed to get release info from API. Using direct GitHub URL."
+              # Fallback to a direct URL for the v1.0.5 release
+              LATEST_TAG="v1.0.5"
+              ZIPBALL_URL="https://github.com/TheAcharya/MarkerData-Pagemaker/archive/refs/tags/v1.0.5.zip"
+            fi
+            
+            # Clean version number (remove v prefix)
+            VERSION_NUMBER=$(echo "$LATEST_TAG" | sed 's/^v//')
+            
+            echo "VERSION=$VERSION_NUMBER" >> $GITHUB_ENV
+            echo "ZIPBALL_URL=$ZIPBALL_URL" >> $GITHUB_ENV
 
       - name: Download and extract latest release
         run: |
             echo "Downloading source code from ${{ env.ZIPBALL_URL }}"
             
-            # Download the zipball
-            curl -L -o pagemaker_source.zip "${{ env.ZIPBALL_URL }}"
-            
-            # Create temp directory and extract
+            # Create directories
+            mkdir -p "./Source/Marker Data/Marker Data/Resources"
             mkdir -p temp_extract
-            unzip -q pagemaker_source.zip -d temp_extract
             
-            # Find the extracted directory (GitHub creates a directory with format username-repo-SHA)
+            # Download the zipball with retry logic
+            for i in 1 2 3; do
+              if curl -L --fail -o pagemaker_source.zip "${{ env.ZIPBALL_URL }}"; then
+                break
+              fi
+              echo "Download attempt $i failed, retrying in 5 seconds..."
+              sleep 5
+            done
+            
+            # Check if download succeeded
+            if [ ! -f pagemaker_source.zip ]; then
+              echo "::error::Failed to download source code after 3 attempts"
+              exit 1
+            fi
+            
+            # Extract the zip file
+            if ! unzip -q pagemaker_source.zip -d temp_extract; then
+              echo "::error::Failed to extract zip file"
+              exit 1
+            fi
+            
+            # Find the extracted directory
             extract_dir=$(find temp_extract -type d -depth 1 | head -n 1)
             
-            # Make sure the destination directory exists
-            mkdir -p "./Source/Marker Data/Marker Data/Resources"
+            # Verify source file exists
+            if [ ! -f "$extract_dir/Pagemaker.html" ]; then
+              echo "::error::Pagemaker.html not found in extracted directory: $extract_dir"
+              ls -la $extract_dir
+              exit 1
+            fi
             
-            # Copy the Pagemaker.html file to destination (will overwrite if exists)
+            # Copy the file
             cp "$extract_dir/Pagemaker.html" "./Source/Marker Data/Marker Data/Resources/Pagemaker.html"
             
             echo "Successfully copied Pagemaker.html from version ${{ env.VERSION }}"
             
-            # Clean up temporary files
+            # Clean up
             rm -rf temp_extract pagemaker_source.zip
 
       - name: Commit and push changes
         run: |
             git status
+            
+            # Check if there are changes to commit
+            if git diff --quiet "./Source/Marker Data/Marker Data/Resources/Pagemaker.html"; then
+              echo "No changes to Pagemaker.html, skipping commit"
+              exit 0
+            fi
+            
             git config user.name "GitHub Actions"
             git config user.email "actions@github.com"
             git add "./Source/Marker Data/Marker Data/Resources/Pagemaker.html"
