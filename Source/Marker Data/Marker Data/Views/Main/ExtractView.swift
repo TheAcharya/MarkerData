@@ -8,6 +8,7 @@
 import SwiftUI
 import FilePicker
 import UniformTypeIdentifiers
+import MarkersExtractor
 
 public struct ExtractView: View {
     @ObservedObject var extractionModel: ExtractionModel
@@ -229,7 +230,13 @@ public struct ExtractView: View {
                     }
                     
                     Spacer()
-                    
+
+                    if showPagemakerOpenButton {
+                        Button("Open Pagemaker", systemImage: "book.pages") {
+                            openWindow(id: "pagemaker")
+                        }
+                    }
+
                     // Open in Finder button
                     Button {
                         if let url = extractionModel.completedOutputFolder {
@@ -264,6 +271,14 @@ public struct ExtractView: View {
                     }
                 }
             }
+        }
+
+        var showPagemakerOpenButton: Bool {
+            let allowedExtractProfiles: [ExportProfileFormat] = [.airtable, .notion]
+            let extractOnlyProfile = settings.store.unifiedExportProfile.exportProfileType == .extractOnly
+            let notionOrAirtable = allowedExtractProfiles.contains(settings.store.unifiedExportProfile.extractProfile)
+
+            return extractOnlyProfile && notionOrAirtable
         }
     }
     
