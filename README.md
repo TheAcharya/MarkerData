@@ -78,7 +78,7 @@ Marker Data allows users to extract, convert & create databases from <a href="ht
 </p>
 </details>
 
-<details><summary>Creating Shot PDF</summary>
+<details><summary>Creating PDF</summary>
 <p>
 <p align="center"> <img src="https://github.com/TheAcharya/MarkerData-Website/blob/main/docs/assets/md-pagemaker-creating-pdf-02.gif?raw=true"> </p>
 </p>
