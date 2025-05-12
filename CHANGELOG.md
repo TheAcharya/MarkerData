@@ -9,7 +9,7 @@
 
 **🔨 Improvements:**
 - Introducing [Pagemaker](https://markerdata.theacharya.co/user-guide/pagemaker/) – a new feature that allows users to create PDFs directly within Marker Data
-- Swatch analysis now provides percentage progress, including completion status for each processed image. (#122)
+- Swatch analysis now provides percentage progress, including completion status for each processed image (#122)
 - Updated Notion Module CSV2Notion Neo to version 1.3.5
 - Increased Notion Module's upload threads
 
