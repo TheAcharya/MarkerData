@@ -280,7 +280,7 @@
          <!-- Footer -->
          <div class="flex justify-between text-xs text-gray-500 dark:text-dark-secondary mt-8 mb-4 no-print">
             <div>© 2025 <a href="https://tech.theacharya.co" target="_blank" class="hover:text-primary">The Acharya Technology</a></div>
-            <div><a href="https://github.com/TheAcharya/MarkerData-Pagemaker" target="_blank" class="hover:text-primary">Pagemaker v1.0.6</a></div>
+            <div><a href="https://github.com/TheAcharya/MarkerData-Pagemaker" target="_blank" class="hover:text-primary">Pagemaker v1.0.7</a></div>
          </div>
       </div>
       <!-- PDF export progress loading overlay -->
@@ -1681,9 +1681,11 @@
                      // Calculate card dimensions based on columns
                      let cardWidth, cardHeight;
                      if (columns >= 4) {
+                         // For 4+ columns (landscape), fixed dimensions is used
                          cardWidth = (contentWidth - (cardSpacing * (columns - 1))) / columns;
                          cardHeight = (contentHeight - 5) / rowsPerPage;
                      } else {
+                         // For 1-3 columns (portrait), calculation based on aspect ratio
                          cardWidth = isSingleColumn ? contentWidth : (contentWidth / columns) - cardSpacing;
                          cardHeight = isSingleColumn ? contentHeight - 5 : (contentHeight / rowsPerPage) - 5;
                      }
@@ -1728,12 +1730,38 @@
                                  
                                  if (img.width > 0 && img.height > 0) {
                                      const aspectRatio = img.width / img.height;
-                                     const imageWidth = cardWidth - 10;
-                                     let imageHeight = imageWidth / aspectRatio;
+                                     let imageWidth, imageHeight;
                                      
-                                     // Adjust height to fit within card - KEEPING ORIGINAL HEIGHT VALUES
-                                     const maxImageHeight = isSingleColumn ? cardHeight * 0.6 : cardHeight * 0.5;
-                                     imageHeight = Math.min(imageHeight, maxImageHeight);
+                                     // Calculate dimensions based on orientation and columns
+                                     if (columns >= 4) {
+                                         // For landscape layouts (4+ columns), use fixed width
+                                         imageWidth = cardWidth - 10;
+                                         imageHeight = imageWidth / aspectRatio;
+                                         
+                                         // Adjust height if too tall for card
+                                         const maxImageHeight = cardHeight * 0.5;
+                                         if (imageHeight > maxImageHeight) {
+                                             imageHeight = maxImageHeight;
+                                             imageWidth = imageHeight * aspectRatio;
+                                         }
+                                     } else {
+                                         // For portrait layouts (1-3 columns), adjust based on orientation
+                                         if (aspectRatio < 1) {
+                                             // Vertical image - use height as primary dimension
+                                             imageHeight = cardHeight * 0.5;
+                                             imageWidth = imageHeight * aspectRatio;
+                                             
+                                             // Ensure width doesn't exceed card width
+                                             if (imageWidth > cardWidth - 10) {
+                                                 imageWidth = cardWidth - 10;
+                                                 imageHeight = imageWidth / aspectRatio;
+                                             }
+                                         } else {
+                                             // Horizontal image - use width as primary dimension
+                                             imageWidth = cardWidth - 10;
+                                             imageHeight = imageWidth / aspectRatio;
+                                         }
+                                     }
                                      
                                      // For Safari, ensure we explicitly use JPEG format for data URLs
                                      let format = 'JPEG';
@@ -1745,9 +1773,12 @@
                                      }
                                      
                                      try {
+                                         // Center the image horizontally
+                                         const imageX = x + (cardWidth - imageWidth) / 2;
+                                         
                                          pdf.addImage({
                                              imageData: item.imageDataUrl,
-                                             x: x + 5,
+                                             x: imageX,
                                              y: currentY,
                                              width: imageWidth,
                                              height: imageHeight,
