@@ -14,53 +14,40 @@ jobs:
       - name: Get latest release info
         id: get_release
         run: |
-            # Get latest release info
-            API_RESPONSE=$(curl -sSL -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/TheAcharya/MarkerData-Pagemaker/releases/latest)
-            
-            # Extract tag name and zipball URL
-            LATEST_TAG=$(echo "$API_RESPONSE" | jq -r '.tag_name')
-            ZIPBALL_URL=$(echo "$API_RESPONSE" | jq -r '.zipball_url')
-            
-            # Fallback to direct URL if API fails
-            if [[ "$LATEST_TAG" == "null" || "$ZIPBALL_URL" == "null" ]]; then
-              LATEST_TAG="v1.0.5"
-              ZIPBALL_URL="https://github.com/TheAcharya/MarkerData-Pagemaker/archive/refs/tags/v1.0.5.zip"
-            fi
-            
-            # Clean version number (remove v prefix)
-            VERSION_NUMBER=$(echo "$LATEST_TAG" | sed 's/^v//')
-            
-            echo "VERSION=$VERSION_NUMBER" >> $GITHUB_ENV
-            echo "ZIPBALL_URL=$ZIPBALL_URL" >> $GITHUB_ENV
+          # Fetch all releases, filter out drafts and prereleases, get the most recent one
+          API_RESPONSE=$(curl -sSL \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/TheAcharya/MarkerData-Pagemaker/releases)
+
+          LATEST_RELEASE=$(echo "$API_RESPONSE" | jq 'map(select(.draft == false and .prerelease == false)) | sort_by(.created_at) | reverse | .[0]')
+
+          LATEST_TAG=$(echo "$LATEST_RELEASE" | jq -r '.tag_name')
+          ZIPBALL_URL=$(echo "$LATEST_RELEASE" | jq -r '.zipball_url')
+          VERSION_NUMBER=$(echo "$LATEST_TAG" | sed 's/^v//')
+
+          echo "VERSION=$VERSION_NUMBER" >> $GITHUB_ENV
+          echo "ZIPBALL_URL=$ZIPBALL_URL" >> $GITHUB_ENV
 
       - name: Download and extract latest release
         run: |
-            # Create temp directory for extraction
-            mkdir -p temp_extract
-            
-            # Download the zipball
-            curl -L -o pagemaker_source.zip "${{ env.ZIPBALL_URL }}"
-            
-            # Extract the zip file
-            unzip -q pagemaker_source.zip -d temp_extract
-            
-            # Find the extracted directory and copy the file
-            extract_dir=$(find temp_extract -type d -depth 1 | head -n 1)
-            cp "$extract_dir/Pagemaker.html" "./Source/Marker Data/Marker Data/Resources/Pagemaker.html"
-            
-            # Clean up
-            rm -rf temp_extract pagemaker_source.zip
+          mkdir -p temp_extract
+          curl -L -o pagemaker_source.zip "${{ env.ZIPBALL_URL }}"
+          unzip -q pagemaker_source.zip -d temp_extract
+
+          extract_dir=$(find temp_extract -type d -depth 1 | head -n 1)
+          cp "$extract_dir/Pagemaker.html" "./Source/Marker Data/Marker Data/Resources/Pagemaker.html"
+
+          rm -rf temp_extract pagemaker_source.zip
 
       - name: Commit and push changes
         run: |
-            # Check if there are changes to commit
-            if git diff --quiet "./Source/Marker Data/Marker Data/Resources/Pagemaker.html"; then
-              echo "No changes to Pagemaker.html, skipping commit"
-              exit 0
-            fi
-            
-            git config user.name "GitHub Actions"
-            git config user.email "actions@github.com"
-            git add "./Source/Marker Data/Marker Data/Resources/Pagemaker.html"
-            git commit -m "Updated Pagemaker Version ${{ env.VERSION }}"
-            git push
+          if git diff --quiet "./Source/Marker Data/Marker Data/Resources/Pagemaker.html"; then
+            echo "No changes to Pagemaker.html, skipping commit"
+            exit 0
+          fi
+
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add "./Source/Marker Data/Marker Data/Resources/Pagemaker.html"
+          git commit -m "Updated Pagemaker Version ${{ env.VERSION }}"
+          git push
