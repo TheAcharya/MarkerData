@@ -1,5 +1,20 @@
 # Changelog
 
+### 1.2.2 (9)
+
+**🎉 Released:**
+- 21st June 2025
+
+**🔨 Improvements:**
+- Updated Pagemaker Module to version 1.1.0
+- Pagemaker module now includes a new `PDF Compression` dialog box - Click the `Gear` icon to reveal a compression slider with four levels – `None`, `Low`, `Medium`, and `High`
+- Pagemaker module now features a significantly enhanced the image compression algorithm for `Export PDF`
+- Pagemaker module now supports emojis in Marker Data’s extracted data sets, leveraging the [Unicode Emoji JSON](https://github.com/muan/unicode-emoji-json) database
+- Pagemaker module now automatically converts emojis to descriptive text during PDF export – For example, `🔥 Metaburner` becomes `[fire] Metaburner`
+- Pagemaker module now displays gallery cards with a black background for improved visual clarity and contrast
+
+---
+
 ### 1.2.1 (8)
 
 **🎉 Released:**
