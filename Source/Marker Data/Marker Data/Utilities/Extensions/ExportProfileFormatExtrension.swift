@@ -10,7 +10,7 @@ import MarkersExtractor
 
 extension ExportProfileFormat: Codable {
     static var allCasesInUIOrder: [ExportProfileFormat] {
-        let inUIOrder = [Self.csv, Self.tsv, Self.xlsx, Self.midi, Self.youtube, Self.notion, Self.airtable]
+        let inUIOrder = [Self.csv, Self.tsv, Self.xlsx, Self.midi, Self.markdown, Self.youtube, Self.compressor, Self.notion, Self.airtable]
         assert(inUIOrder.count == Self.allCases.count - 1, "ExportProfileFormat.allCasesInUIOrder has invalid number of elements")
         return inUIOrder
     }
@@ -31,6 +31,10 @@ extension ExportProfileFormat: Codable {
             return "YouTube Chapters"
         case .xlsx:
             return "Excel"
+        case .compressor:
+            return "Compressor Chapters"
+        case .markdown:
+            return "Markdown List"
         case .json:
             return "JSON"
         }
