@@ -32,6 +32,8 @@ Marker Data allows users to extract, convert & create databases from <a href="ht
 - Tab-separated values (TSV) - Compatible with spreadsheet application
 - Microsoft Excel (XLSX)
 - YouTube Chapters (TXT)
+- Compressor Chapters (TXT)
+- Markdown List (MD)
 - Standard MIDI File - Compatible with most audio DAWs
 
 ## Table of contents
