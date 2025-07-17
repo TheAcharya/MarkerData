@@ -22,8 +22,7 @@ on:
       - '**/*.pdf'          # .pdf files anywhere in the repo
       - '**/*.cursorrules'  # .cursorrules files anywhere in the repo
       - '**/*.xml'          # .xml files anywhere in the repo
-
-on:
+      
   workflow_dispatch:
 
 jobs:
