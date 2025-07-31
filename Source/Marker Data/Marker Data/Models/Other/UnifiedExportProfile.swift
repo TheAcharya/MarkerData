@@ -56,6 +56,8 @@ struct UnifiedExportProfile: Codable, Hashable, Identifiable, Equatable {
             return "CompressorLogo"
         case .markdown:
             return "MarkdownLogo"
+        case .srt:
+            return "SubRipLogo"
         case .json:
             return ""
         }
