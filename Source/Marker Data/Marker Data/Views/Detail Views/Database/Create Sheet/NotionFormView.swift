@@ -22,7 +22,7 @@ struct NotionFormView: View {
             )
             
             PlatformInfoTextField(
-                title: "Notion V2 Token",
+                title: "Notion Integration Token",
                 prompt: "Token",
                 text: $profileModel.token,
                 isRequired: true,
@@ -33,7 +33,7 @@ struct NotionFormView: View {
                 title: "Notion Database URL",
                 prompt: "Database URL",
                 text: $profileModel.databaseURL,
-                isRequired: false,
+                isRequired: true,
                 secureField: true
             )
             
