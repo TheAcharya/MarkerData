@@ -6,10 +6,9 @@
 - 8th July 2025
 
 **🔨 Improvements:**
-- Added Notion Database Profile
+- Update Notion Database Profile validation
 - Updated Notion Module CSV2Notion Neo to version 2.0.0
-- Migrated from unofficial Notion private API to official [Notion API](https://developers.notion.com/)
-- Changed authentication from Notion V2 token to official Notion integration token
+- Migrated from unofficial Notion private API to official [Notion API](https://www.notion.so/my-integrations) 
 - Notion Database URL is now a required field
 - Automatic database creation is no longer supported
 
