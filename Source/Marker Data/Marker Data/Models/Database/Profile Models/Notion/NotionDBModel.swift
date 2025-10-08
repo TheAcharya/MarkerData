@@ -35,6 +35,9 @@ final class NotionDBModel: DatabaseProfileModel {
         if self.token.isEmpty {
             throw NotionValidationError.noToken
         }
+        if self.databaseURL.isEmpty {
+            throw NotionValidationError.noURL
+        }
         if self.renameKeyColumn == "Marker ID" {
             throw NotionValidationError.illegalRenameKeyColumn
         }
