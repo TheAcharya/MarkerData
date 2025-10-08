@@ -13,6 +13,8 @@
 - Automatic database creation is no longer supported
 - Updated [Database Settings](https://markerdata.theacharya.co/user-guide/databases/) guide
 
+---
+
 ### 1.4.0 (12)
 
 **🎉 Released:**
