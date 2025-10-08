@@ -1,5 +1,18 @@
 # Changelog
 
+### 1.4.1 (13)
+
+**🎉 Released:**
+- 8th July 2025
+
+**🔨 Improvements:**
+- Added Notion Database Profile
+- Updated Notion Module CSV2Notion Neo to version 2.0.0
+- Migrated from unofficial Notion private API to official [Notion API](https://developers.notion.com/)
+- Changed authentication from Notion V2 token to official Notion integration token
+- Notion Database URL is now a required field
+- Automatic database creation is no longer supported
+
 ### 1.4.0 (12)
 
 **🎉 Released:**
