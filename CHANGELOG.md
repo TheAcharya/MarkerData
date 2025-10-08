@@ -3,7 +3,7 @@
 ### 1.4.1 (13)
 
 **🎉 Released:**
-- 8th July 2025
+- 8th October 2025
 
 **🔨 Improvements:**
 - Update Notion Database Profile validation
