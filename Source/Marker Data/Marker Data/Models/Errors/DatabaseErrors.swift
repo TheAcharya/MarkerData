@@ -44,7 +44,7 @@ extension NotionValidationError: LocalizedError {
         case .noToken:
             "No token provided"
         case .noURL:
-        "No URL provided"
+            "No URL provided"
         case .illegalRenameKeyColumn:
             "'Marker ID' is the default key column and cannot be used in the 'Rename Key Column' field. Please enter a different key column name if you wish to use this field."
         }
