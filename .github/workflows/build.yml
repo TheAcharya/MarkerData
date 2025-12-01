@@ -2,7 +2,7 @@ name: build
 
 on:
   push:
-    branches: [main]
+    branches: [main, dev]
     paths-ignore:
       - '**/*.md'           # .md files anywhere in the repo
       - '**/LICENSE'        # LICENSE files anywhere in the repo
@@ -13,7 +13,7 @@ on:
       - '**/*.xml'          # .xml files anywhere in the repo
       
   pull_request:
-    branches: [main]
+    branches: [main, dev]
     paths-ignore:
       - '**/*.md'           # .md files anywhere in the repo
       - '**/LICENSE'        # LICENSE files anywhere in the repo

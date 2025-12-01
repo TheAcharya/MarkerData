@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import DAWFileKit
+import DAWFileTools
 
 struct RoleModel: Identifiable, Codable, Hashable, Equatable {
     let role: FinalCutPro.FCPXML.AnyRole
