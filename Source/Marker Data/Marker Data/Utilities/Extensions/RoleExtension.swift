@@ -6,6 +6,6 @@
 //
 
 import Foundation
-import DAWFileKit
+import DAWFileTools
 
 extension FinalCutPro.FCPXML.AnyRole: Codable {}
