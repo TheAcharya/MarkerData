@@ -8,6 +8,7 @@
 **🔨 Improvements:**
 - Updated core dependencies
 - Updated Airtable Module Airlift to version 1.3.0
+- Updated Notion Module CSV2Notion Neo to version 2.0.3
 
 ---
 
