@@ -3,7 +3,7 @@
 ### 1.4.4 (16)
 
 **🎉 Released:**
-- TBD
+- 1st December 2025
 
 **🔨 Improvements:**
 - Updated core dependencies
