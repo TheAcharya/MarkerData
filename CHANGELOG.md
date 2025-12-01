@@ -1,5 +1,16 @@
 # Changelog
 
+### 1.4.4 (16)
+
+**🎉 Released:**
+- TBD
+
+**🔨 Improvements:**
+- Updated core dependencies
+- Updated Airtable Module Airlift to version 1.3.0
+
+---
+
 ### 1.4.3 (15)
 
 **🎉 Released:**
