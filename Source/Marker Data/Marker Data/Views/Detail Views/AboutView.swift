@@ -19,7 +19,7 @@ struct AboutView: View {
                 .bold()
             
             Text("Version \(Bundle.main.version) (\(Bundle.main.buildNumber))")
-            Text("Copyright © 2025 The Acharya. All rights reserved.")
+            Text("Copyright © 2026 The Acharya. All rights reserved.")
             Link("Acknowledgments & Credits", destination: URL(string: "https://markerdata.theacharya.co/credits/")!)
             Link("The Acharya Technology", destination: URL(string: "https://tech.theacharya.co")!)
         }
