@@ -1,5 +1,16 @@
 # Changelog
 
+### 2.0.0 (17)
+
+**🎉 Released:**
+- TBC
+
+**🔨 Improvements:**
+- Updated Airtable Module Airlift to version 1.3.2
+- Updated Notion Module CSV2Notion Neo to version 2.0.6
+
+---
+
 ### 1.4.4 (16)
 
 **🎉 Released:**
