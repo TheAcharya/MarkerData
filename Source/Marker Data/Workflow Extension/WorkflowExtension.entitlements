@@ -20,6 +20,10 @@
 		<array>
 			<string>com.apple.FinalCut.library.inspection</string>
 		</array>
+		<key>com.apple.FinalCutApp</key>
+		<array>
+			<string>com.apple.FinalCut.library.inspection</string>
+		</array>
 		<key>com.apple.FinalCutTrial</key>
 		<array>
 			<string>com.apple.FinalCut.library.inspection</string>
