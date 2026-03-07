@@ -7,7 +7,8 @@
 
 **🔨 Improvements:**
 - Updated Airtable Module Airlift to version 1.3.2
-- Updated Notion Module CSV2Notion Neo to version 2.0.6
+- Updated Notion Module CSV2Notion Neo to version 2.1.0
+- Updated Pagemaker Module to version 1.1.1
 
 ---
 
