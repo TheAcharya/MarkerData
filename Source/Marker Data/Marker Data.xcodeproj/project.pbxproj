@@ -171,6 +171,8 @@
 		41FB26FE2DC50937005F8303 /* WebViewStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41FB26FD2DC50937005F8303 /* WebViewStateManager.swift */; };
 		41FB27002DC60D09005F8303 /* PagemakerUIDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41FB26FF2DC60D09005F8303 /* PagemakerUIDelegate.swift */; };
 		41FBE7132F5C8C35007781ED /* FileWatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41FBE7122F5C8C35007781ED /* FileWatcher.swift */; };
+		41FBE8592F5CAF9D007781ED /* Marker-Data.icon in Resources */ = {isa = PBXBuildFile; fileRef = 41FBE8582F5CAF9D007781ED /* Marker-Data.icon */; };
+		41FBE85A2F5CAF9D007781ED /* Marker-Data.icon in Resources */ = {isa = PBXBuildFile; fileRef = 41FBE8582F5CAF9D007781ED /* Marker-Data.icon */; };
 		47411FDA2A3EA121005890FE /* HelpButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47411FD92A3EA121005890FE /* HelpButton.swift */; };
 		47411FDC2A3EA140005890FE /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47411FDB2A3EA140005890FE /* ViewExtensions.swift */; };
 		47411FDE2A3EA1BA005890FE /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47411FDD2A3EA1BA005890FE /* AboutView.swift */; };
@@ -374,6 +376,7 @@
 		41FB26FD2DC50937005F8303 /* WebViewStateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewStateManager.swift; sourceTree = "<group>"; };
 		41FB26FF2DC60D09005F8303 /* PagemakerUIDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagemakerUIDelegate.swift; sourceTree = "<group>"; };
 		41FBE7122F5C8C35007781ED /* FileWatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileWatcher.swift; sourceTree = "<group>"; };
+		41FBE8582F5CAF9D007781ED /* Marker-Data.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = "Marker-Data.icon"; sourceTree = "<group>"; };
 		47411FD92A3EA121005890FE /* HelpButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpButton.swift; sourceTree = "<group>"; };
 		47411FDB2A3EA140005890FE /* ViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
 		47411FDD2A3EA1BA005890FE /* AboutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
@@ -990,6 +993,7 @@
 				414262C32ADAC6B100FC6CFC /* Resources */,
 				41C839322B52C91600C6B133 /* FCP Share Destination */,
 				D5F74A3F2972DFD800EEE2FE /* Marker-Data-Info.plist */,
+				41FBE8582F5CAF9D007781ED /* Marker-Data.icon */,
 				D5F74A342972D32100EEE2FE /* Assets.xcassets */,
 				D5F74A392972D32100EEE2FE /* Marker_Data.entitlements */,
 				D5F74A362972D32100EEE2FE /* Preview Content */,
@@ -1119,6 +1123,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				41FBE85A2F5CAF9D007781ED /* Marker-Data.icon in Resources */,
 				4155B6D92B602694008D3505 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1133,6 +1138,7 @@
 				41176ACD2B7807640093F4C8 /* airlift in Resources */,
 				411F37572B59011300CC05E6 /* Marker Data H.264.fcpxdest in Resources */,
 				414262C52ADAC6EC00FC6CFC /* DefaultConfiguration.json in Resources */,
+				41FBE8592F5CAF9D007781ED /* Marker-Data.icon in Resources */,
 				41C839312B52C82A00C6B133 /* OSAScriptingDefinition.sdef in Resources */,
 				411F37552B59010B00CC05E6 /* Marker Data Source.fcpxdest in Resources */,
 				41D1E4EF2B742CEC00AE2E55 /* csv2notion_neo in Resources */,
@@ -1561,7 +1567,7 @@
 		D5F74A3D2972D32100EEE2FE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "Marker-Data";
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Marker Data/Marker_Data.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
@@ -1608,7 +1614,7 @@
 		D5F74A3E2972D32100EEE2FE /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "Marker-Data";
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Marker Data/Marker_Data.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
