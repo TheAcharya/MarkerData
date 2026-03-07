@@ -36,7 +36,6 @@ struct DatabaseSettingsView: View {
         }
         .padding()
         .overlayHelpButton(url: Links.databaseSettingsURL)
-        .navigationTitle("Database Settings")
         .sheet(isPresented: $showCreateProfileSheet) {
             CreateDBProfileSheet(
                 editProfile: $editProfile,

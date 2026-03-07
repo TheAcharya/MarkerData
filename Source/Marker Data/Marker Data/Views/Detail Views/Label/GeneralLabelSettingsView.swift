@@ -49,7 +49,6 @@ struct GeneralLabelSettingsView: View {
 
             alignmentSettingsView
         }
-        .navigationTitle("Label Settings")
     }
 
     var fontSettingsView: some View {

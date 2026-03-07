@@ -361,11 +361,17 @@ const NSString* kMetadataKeyExpirationDate   = @"com.latenitefilms.ShareDestinat
 - (CGSize) frameSize
 {
     if ( ! [self hasRoles] ) {
-        NSArray* videoTracks = [internalAsset tracksWithMediaType:AVMediaTypeVideo];
+        __block NSArray* videoTracks = nil;
+        dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+        [internalAsset loadTracksWithMediaType:AVMediaTypeVideo completionHandler:^(NSArray<AVAssetTrack *> *tracks, NSError *error) {
+            videoTracks = tracks;
+            dispatch_semaphore_signal(semaphore);
+        }];
+        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
 
         if ( videoTracks != nil && [videoTracks count] > 0 ) {
             AVAssetTrack* videoTrack = [videoTracks objectAtIndex:0];
-            
+
             return [videoTrack naturalSize];
         }
         else
@@ -380,8 +386,14 @@ const NSString* kMetadataKeyExpirationDate   = @"com.latenitefilms.ShareDestinat
 - (NSString*) frameDuration
 {
     if ( ! [self hasRoles] ) {
-        NSArray* videoTracks = [internalAsset tracksWithMediaType:AVMediaTypeVideo];
-        
+        __block NSArray* videoTracks = nil;
+        dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+        [internalAsset loadTracksWithMediaType:AVMediaTypeVideo completionHandler:^(NSArray<AVAssetTrack *> *tracks, NSError *error) {
+            videoTracks = tracks;
+            dispatch_semaphore_signal(semaphore);
+        }];
+        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+
         if ( videoTracks != nil && [videoTracks count] > 0 ) {
             AVAssetTrack* videoTrack = [videoTracks objectAtIndex:0];
             float frameRate = [videoTrack nominalFrameRate];

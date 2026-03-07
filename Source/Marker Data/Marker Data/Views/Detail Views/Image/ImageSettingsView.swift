@@ -20,7 +20,6 @@ struct ImageSettingsView: View {
         }
         .padding(.top)
         .overlayHelpButton(url: Links.imageSettingsURL)
-        .navigationTitle("Image Settings")
     }
 }
 

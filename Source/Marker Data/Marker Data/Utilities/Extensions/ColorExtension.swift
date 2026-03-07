@@ -8,7 +8,7 @@
 import SwiftUI
 import AppKit
 
-extension Color: Codable {
+extension Color: @retroactive Codable {
     /// Init from a hex string. I.e #FFFFFF for white
     init(hex: String) {
         let hex = hex.trimmingCharacters(in: CharacterSet(charactersIn: "#"))

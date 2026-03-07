@@ -36,8 +36,6 @@ struct GeneralSettingsView: View {
         }
         .padding(.top)
         .overlayHelpButton(url: Links.generalSettingsURL)
-        .navigationTitle("General Settings")
-        
     }
 }
 

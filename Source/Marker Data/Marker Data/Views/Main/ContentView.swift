@@ -31,20 +31,20 @@ struct ContentView: View {
             List(selection: $sidebarSelection) {
                 Label("Extract", systemImage: "house")
                     .tag(MainViews.extract)
-                
+
                 Label("Queue", systemImage: "tray.and.arrow.up")
                     .tag(MainViews.queue)
-                
+
                 Section("Export Settings") {
                     Label("General", systemImage: "gearshape")
                         .tag(MainViews.general)
-                    
+
                     Label("Image", systemImage: "photo")
                         .tag(MainViews.image)
-                    
+
                     Label("Label", systemImage: "tag")
                         .tag(MainViews.label)
-                    
+
                     Label("Configurations", systemImage: "briefcase")
                         .if({
                             return settings.unsavedChanges
@@ -57,10 +57,10 @@ struct ContentView: View {
                             )
                         }
                         .tag(MainViews.configurations)
-                    
+
                     Label("Databases", systemImage: "server.rack")
                         .tag(MainViews.databases)
-                    
+
                     Label("About", systemImage: "info.circle")
                         .tag(MainViews.about)
                 }
@@ -71,27 +71,35 @@ struct ContentView: View {
                 switch sidebarSelection {
                 case .extract:
                     ExtractView(extractionModel: extractionModel)
+                        .navigationTitle("Extract")
                 case .queue:
                     QueueView(queueModel: queueModel)
+                        .navigationTitle("Queue")
                 case .general:
                     GeneralSettingsView(updater: updater)
+                        .navigationTitle("General Settings")
                 case .image:
                     ImageSettingsView()
+                        .navigationTitle("Image Settings")
                 case .label:
                     LabelSettingsView()
+                        .navigationTitle("Label Settings")
                 case .configurations:
                     ConfigurationSettingsView()
+                        .navigationTitle("Configuration Settings")
                 case .databases:
                     DatabaseSettingsView()
+                        .navigationTitle("Database Settings")
                 case .about:
                     AboutView()
+                        .navigationTitle("About")
                 }
             }
             .frame(width: WindowSize.detailWidth)
         }
         // Configuration picker
         .toolbar {
-            ToolbarItem(placement: .automatic) {
+            ToolbarItem(placement: .navigation) {
                 Picker("Configuration", selection: $selectedConfigurationName) {
                     ForEach(settings.configurations) { store in
                         Text(store.name)

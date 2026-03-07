@@ -23,7 +23,6 @@ struct AboutView: View {
             Link("Acknowledgments & Credits", destination: URL(string: "https://markerdata.theacharya.co/credits/")!)
             Link("The Acharya Technology", destination: URL(string: "https://tech.theacharya.co")!)
         }
-        .navigationTitle("About")
     }
 }
 

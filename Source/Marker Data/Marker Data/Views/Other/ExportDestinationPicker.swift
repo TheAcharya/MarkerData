@@ -58,7 +58,6 @@ struct ExportDestinationPicker: View {
                 let dialog = NSOpenPanel();
                 
                 dialog.title = "Choose a folder";
-                dialog.showsResizeIndicator = true;
                 dialog.showsHiddenFiles = false;
                 dialog.canChooseFiles = false;
                 dialog.canChooseDirectories = true;

@@ -43,7 +43,6 @@ struct ConfigurationSettingsView: View {
         }
         .padding()
         .overlayHelpButton(url: Links.configurationSettingsURL)
-        .navigationTitle("Configuration Settings")
         .onAppear {
             // Set view models settings
             confModel.settings = self.settings
