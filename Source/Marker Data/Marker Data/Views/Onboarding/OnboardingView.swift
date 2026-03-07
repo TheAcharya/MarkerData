@@ -69,7 +69,7 @@ struct OnboardingView: View {
         HStack(spacing: 8) {
             ForEach(0..<totalPages, id: \.self) { index in
                 Circle()
-                    .fill(index == currentPage ? Color.accentColor : Color.gray)
+                    .fill(index == currentPage ? Color.accent : Color.gray)
                     .frame(width: 10, height: 10)
             }
         }

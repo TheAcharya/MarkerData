@@ -112,7 +112,7 @@ public struct ExtractView: View {
                         .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
-                .background(Color.accentColor)
+                .background(Color.accent)
                 .clipShape(RoundedRectangle(cornerRadius: 6))
                 .keyboardShortcut("o", modifiers: .command)
 
@@ -161,7 +161,7 @@ public struct ExtractView: View {
                     exportComplete = true
                 }
             }
-            .onChange(of: extractionModel.exportResult) { result in
+            .onChange(of: extractionModel.exportResult) { oldValue, result in
                 withAnimation(.easeOut(duration: 1)) {
                     exportComplete = result != .none
                 }
@@ -180,7 +180,7 @@ public struct ExtractView: View {
                         .font(.title2)
                     
                     Text("Select Export Folder to contiue.")
-                        .foregroundColor(.red)
+                        .foregroundStyle(.red)
                 }
                 
                 Spacer()
@@ -267,7 +267,7 @@ public struct ExtractView: View {
                         self.extractionModel.cancelAll()
                     } label: {
                         Label("Stop", systemImage: "stop.circle")
-                            .foregroundColor(Color.red)
+                            .foregroundStyle(.red)
                     }
                 }
             }

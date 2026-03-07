@@ -53,7 +53,7 @@ struct ContentView: View {
                                 .badge(
                                 Text("Changed")
                                     .font(.system(size: 7, weight: .black))
-                                    .foregroundColor(.orange)
+                                    .foregroundStyle(.orange)
                             )
                         }
                         .tag(MainViews.configurations)
@@ -91,27 +91,29 @@ struct ContentView: View {
         }
         // Configuration picker
         .toolbar {
-            Picker("Configuration", selection: $selectedConfigurationName) {
-                ForEach(settings.configurations) { store in
-                    Text(store.name)
-                        .tag(store.name)
-                }
-            }
-            .onAppear {
-                selectedConfigurationName = settings.store.name
-            }
-            // React to changes
-            .onReceive(settings.objectWillChange) { _ in
-                selectedConfigurationName = settings.store.name
-            }
-            // Load configuration
-            .onChange(of: selectedConfigurationName) { newStoreName in
-                do {
-                    if let store = settings.findByName(newStoreName) {
-                        try settings.load(store)
+            ToolbarItem(placement: .automatic) {
+                Picker("Configuration", selection: $selectedConfigurationName) {
+                    ForEach(settings.configurations) { store in
+                        Text(store.name)
+                            .tag(store.name)
                     }
-                } catch {
-                    print("Failed to load config from menu bar")
+                }
+                .onAppear {
+                    selectedConfigurationName = settings.store.name
+                }
+                // React to changes
+                .onReceive(settings.objectWillChange) { _ in
+                    selectedConfigurationName = settings.store.name
+                }
+                // Load configuration
+                .onChange(of: selectedConfigurationName) { oldValue, newStoreName in
+                    do {
+                        if let store = settings.findByName(newStoreName) {
+                            try settings.load(store)
+                        }
+                    } catch {
+                        print("Failed to load config from menu bar")
+                    }
                 }
             }
         }

@@ -10,15 +10,13 @@ import SwiftUI
 struct ImageSettingsView: View {
     var body: some View {
         TabView {
-            ImageExtractionSettingsView()
-                .tabItem {
-                    Text("Extraction")
-                }
+            Tab("Extraction", systemImage: "photo") {
+                ImageExtractionSettingsView()
+            }
 
-            SwatchSettingsView()
-                .tabItem {
-                    Text("Swatch")
-                }
+            Tab("Swatch", systemImage: "paintpalette") {
+                SwatchSettingsView()
+            }
         }
         .padding(.top)
         .overlayHelpButton(url: Links.imageSettingsURL)

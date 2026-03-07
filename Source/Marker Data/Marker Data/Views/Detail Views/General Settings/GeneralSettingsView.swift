@@ -16,19 +16,23 @@ struct GeneralSettingsView: View {
     
     var body: some View {
         TabView {
-            FileSettingsView()
-                .tabItem { Label("File", systemImage: "folder") }
+            Tab("File", systemImage: "folder") {
+                FileSettingsView()
+            }
 
-            RolesSettingsView()
-                .padding()
-                .padding(.bottom)
-                .tabItem { Label("Roles", systemImage: "movieclapper") }
+            Tab("Roles", systemImage: "movieclapper") {
+                RolesSettingsView()
+                    .padding()
+                    .padding(.bottom)
+            }
 
-            NotificationSettingsView()
-                .tabItem { Label("Notifications", systemImage: "bell.badge") }
-            
-            UpdateSettingsView(updater: updater)
-                .tabItem { Label("Updates", systemImage: "arrow.clockwise") }
+            Tab("Notifications", systemImage: "bell.badge") {
+                NotificationSettingsView()
+            }
+
+            Tab("Updates", systemImage: "arrow.clockwise") {
+                UpdateSettingsView(updater: updater)
+            }
         }
         .padding(.top)
         .overlayHelpButton(url: Links.generalSettingsURL)

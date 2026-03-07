@@ -54,7 +54,7 @@ struct DropboxSetupView: View {
                     }
                 case .success:
                     Label("Success", systemImage: "checkmark.circle")
-                        .foregroundColor(.green)
+                        .foregroundStyle(.green)
                 }
             }
             .alert("Failed to save app key", isPresented: $showAppKeyError) {}
@@ -68,7 +68,7 @@ struct DropboxSetupView: View {
             .padding(.bottom)
             
             Text(dropboxSetupModel.setupComplete ? "Dropbox configured" : "Dropbox setup incomplete")
-                .foregroundColor(dropboxSetupModel.setupComplete ? .green : .red)
+                .foregroundStyle(dropboxSetupModel.setupComplete ? .green : .red)
         }
     }
 }

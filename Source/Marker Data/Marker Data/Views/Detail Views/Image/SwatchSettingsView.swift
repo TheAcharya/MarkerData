@@ -81,7 +81,7 @@ struct SwatchSettingsView: View {
                 }
                 .padding(8)
                 .background(.black)
-                .cornerRadius(8)
+                .clipShape(.rect(cornerRadius: 8))
                 .frame(maxWidth: 520)
                 .padding(.top)
 			}

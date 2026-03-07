@@ -20,16 +20,14 @@ struct WorkflowExtensionView: View {
             Divider()
             
             TabView {
-                extractTabView
-                    .tabItem {
-                        Label("Extract", systemImage: "gearshape.2")
-                    }
-                
-                RolesSettingsView()
-                    .padding(8)
-                    .tabItem {
-                        Label("Roles", systemImage: "movieclapper")
-                    }
+                Tab("Extract", systemImage: "gearshape.2") {
+                    extractTabView
+                }
+
+                Tab("Roles", systemImage: "movieclapper") {
+                    RolesSettingsView()
+                        .padding(8)
+                }
             }
             .padding(.bottom)
             
@@ -71,7 +69,7 @@ struct WorkflowExtensionView: View {
             
             if !self.errorMessage.isEmpty {
                 Text("Failed to receive file: \(self.errorMessage)")
-                    .foregroundColor(Color.red)
+                    .foregroundStyle(.red)
             }
             
             Spacer()

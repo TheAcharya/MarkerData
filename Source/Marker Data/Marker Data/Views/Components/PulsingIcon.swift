@@ -18,7 +18,7 @@ struct PulsingIcon: View {
     init(
         icon: String,
         iconSize: CGFloat = 32,
-        tint: Color = .accentColor,
+        tint: Color = .accent,
         duration: TimeInterval = 2,
         ringDiameter: CGFloat = 20,
         ringMaxScale: CGFloat = 4) {
@@ -40,7 +40,7 @@ struct PulsingIcon: View {
             tint
                 .opacity(opacity)
                 .frame(width: self.ringDiameter, height: self.ringDiameter)
-                .cornerRadius(100)
+                .clipShape(.circle)
                 .scaleEffect(shadowScale)
                 .onAppear {
                     withAnimation(

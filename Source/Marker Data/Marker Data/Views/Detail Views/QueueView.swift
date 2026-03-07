@@ -103,7 +103,7 @@ struct QueueView: View {
                 queueModel.cancelUpload()
             } label: {
                 Label("Stop", systemImage: "stop.circle")
-                    .foregroundColor(queueModel.uploadInProgress ? Color.red : .secondary)
+                    .foregroundStyle(queueModel.uploadInProgress ? Color.red : .secondary)
             }
             .disabled(!queueModel.uploadInProgress)
 

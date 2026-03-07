@@ -104,7 +104,7 @@ struct ImageExtractionSettingsView: View {
                         format: .number
                     )
                     .frame(width: 50)
-                    .onChange(of: settings.store.imageSizePercent) { newValue in
+                    .onChange(of: settings.store.imageSizePercent) { oldValue, newValue in
                         settings.store.imageSizePercent = newValue.clamped(to: 1...100)
                     }
 

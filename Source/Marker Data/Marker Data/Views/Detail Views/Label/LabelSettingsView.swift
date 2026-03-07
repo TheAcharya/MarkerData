@@ -21,15 +21,13 @@ struct LabelSettingsView: View {
 
     var body: some View {
          TabView {
-             GeneralLabelSettingsView()
-                 .tabItem {
-                     Text("Appearance")
-                 }
-        
-             OverlaySettingsView()
-                 .tabItem {
-                     Text("Overlays")
-                 }
+             Tab("Appearance", systemImage: "textformat") {
+                 GeneralLabelSettingsView()
+             }
+
+             Tab("Overlays", systemImage: "square.on.square") {
+                 OverlaySettingsView()
+             }
          }
          .padding(.top)
          .overlayHelpButton(url: Links.labelSettingsURL)

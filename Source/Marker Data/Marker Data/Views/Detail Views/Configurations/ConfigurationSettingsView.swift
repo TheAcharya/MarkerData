@@ -125,7 +125,7 @@ struct ConfigurationSettingsView: View {
                     Color.green
                 }
             } else {
-                Color.accentColor
+                Color.accent
             }
             
             Label(

@@ -68,7 +68,7 @@ struct DatabaseSettingsView: View {
             TableColumn("Platform", value: \.plaform.rawValue)
         }
         .clipShape(RoundedRectangle(cornerRadius: 10))
-        .onChange(of: sortOrder) { newOrder in
+        .onChange(of: sortOrder) { oldValue, newOrder in
             databaseManager.profiles.sort(using: newOrder)
         }
     }

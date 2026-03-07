@@ -29,7 +29,7 @@ extension ConfigurationSettingsView {
                 Text("Configuration Name:")
 
                 TextField("Configuration Name", text: $configurationNameText)
-                    .onChange(of: configurationNameText) { newName in
+                    .onChange(of: configurationNameText) { oldValue, newName in
                         // Limit characters to 50
                         configurationNameText = String(newName.prefix(50))
                     }
