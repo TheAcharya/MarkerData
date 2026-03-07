@@ -36,7 +36,6 @@
 		41086A132BD567EF00E0CE09 /* DicitionaryEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41086A122BD567EF00E0CE09 /* DicitionaryEncoder.swift */; };
 		410E3B812B4B0FF8005280FD /* LogManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 410E3B802B4B0FF8005280FD /* LogManager.swift */; };
 		41176ACD2B7807640093F4C8 /* airlift in Resources */ = {isa = PBXBuildFile; fileRef = 41176ACC2B7807640093F4C8 /* airlift */; };
-		41176AD02B780C090093F4C8 /* EonilFSEvents in Frameworks */ = {isa = PBXBuildFile; productRef = 41176ACF2B780C090093F4C8 /* EonilFSEvents */; };
 		41176AD72B7BCF140093F4C8 /* EditCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41176AD62B7BCF140093F4C8 /* EditCommands.swift */; };
 		41176ADA2B7BDA9D0093F4C8 /* QueueModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41176AD92B7BDA9D0093F4C8 /* QueueModel.swift */; };
 		41176ADC2B7BE3EF0093F4C8 /* QueueError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41176ADB2B7BE3EF0093F4C8 /* QueueError.swift */; };
@@ -124,7 +123,6 @@
 		41A055742B8B772C006AC0E4 /* ExportProfileFormatExtrension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BFEB762B1E63EA00C8B551 /* ExportProfileFormatExtrension.swift */; };
 		41A055752B8B776F006AC0E4 /* RolesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B7252B6574A8008D3505 /* RolesManager.swift */; };
 		41A055762B8B8442006AC0E4 /* URLExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414262BA2AD2E1AC00FC6CFC /* URLExtension.swift */; };
-		41A055782B8B858C006AC0E4 /* EonilFSEvents in Frameworks */ = {isa = PBXBuildFile; productRef = 41A055772B8B858C006AC0E4 /* EonilFSEvents */; };
 		41A32EF02D5E2D740015A0C5 /* ShellArgumentList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41A32EEF2D5E2D740015A0C5 /* ShellArgumentList.swift */; };
 		41BFEB6D2B1B9B6400C8B551 /* Links.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BFEB6C2B1B9B6400C8B551 /* Links.swift */; };
 		41BFEB702B1BA4CC00C8B551 /* PasswordField in Frameworks */ = {isa = PBXBuildFile; productRef = 41BFEB6F2B1BA4CC00C8B551 /* PasswordField */; };
@@ -408,7 +406,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				410840072BD3C76F008B7B03 /* DominantColors in Frameworks */,
-				41A055782B8B858C006AC0E4 /* EonilFSEvents in Frameworks */,
 				4155B7202B62E2A3008D3505 /* MarkersExtractor in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -428,7 +425,6 @@
 				41C538A22AE420EA00E8A8A1 /* ColorWellKit in Frameworks */,
 				418D5DB62B910F4900589E17 /* Sparkle in Frameworks */,
 				D5F74A512973019000EEE2FE /* OrderedCollections in Frameworks */,
-				41176AD02B780C090093F4C8 /* EonilFSEvents in Frameworks */,
 				D5F74A4F2973019000EEE2FE /* DequeModule in Frameworks */,
 				41C839992B52D77200C6B133 /* Cocoa.framework in Frameworks */,
 				411D9CC32D5DFB8200465CBC /* ButtonKit in Frameworks */,
@@ -1024,7 +1020,6 @@
 			name = "Workflow Extension";
 			packageProductDependencies = (
 				4155B71F2B62E2A3008D3505 /* MarkersExtractor */,
-				41A055772B8B858C006AC0E4 /* EonilFSEvents */,
 				410840062BD3C76F008B7B03 /* DominantColors */,
 			);
 			productName = WorkflowExtension;
@@ -1057,7 +1052,6 @@
 				4155B6C42B5D3709008D3505 /* DockProgress */,
 				4155B71D2B62E29A008D3505 /* MarkersExtractor */,
 				4155B72B2B668D29008D3505 /* LoggingOSLog */,
-				41176ACF2B780C090093F4C8 /* EonilFSEvents */,
 				418D5DB52B910F4900589E17 /* Sparkle */,
 				4186A74A2BA44EF300FFD75B /* DominantColors */,
 				411D9CC22D5DFB8200465CBC /* ButtonKit */,
@@ -1102,7 +1096,6 @@
 				4155B6C32B5D3709008D3505 /* XCRemoteSwiftPackageReference "DockProgress" */,
 				4155B71C2B62E29A008D3505 /* XCRemoteSwiftPackageReference "MarkersExtractor" */,
 				4155B72A2B668C0D008D3505 /* XCRemoteSwiftPackageReference "swift-log-oslog" */,
-				41176ACE2B780C090093F4C8 /* XCRemoteSwiftPackageReference "FSEvents" */,
 				418D5DB42B910F4900589E17 /* XCRemoteSwiftPackageReference "Sparkle" */,
 				4186A7492BA44EF300FFD75B /* XCRemoteSwiftPackageReference "DominantColors" */,
 				411D9CC12D5DFB8200465CBC /* XCRemoteSwiftPackageReference "ButtonKit" */,
@@ -1704,20 +1697,12 @@
 				minimumVersion = 1.0.0;
 			};
 		};
-		41176ACE2B780C090093F4C8 /* XCRemoteSwiftPackageReference "FSEvents" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/eonil/FSEvents";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.1.7;
-			};
-		};
 		411D9CC12D5DFB8200465CBC /* XCRemoteSwiftPackageReference "ButtonKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Dean151/ButtonKit";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.6.1;
+				minimumVersion = 0.7.0;
 			};
 		};
 		4155B6C32B5D3709008D3505 /* XCRemoteSwiftPackageReference "DockProgress" */ = {
@@ -1725,7 +1710,7 @@
 			repositoryURL = "https://github.com/sindresorhus/DockProgress";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 4.2.2;
+				minimumVersion = 5.1.0;
 			};
 		};
 		4155B71C2B62E29A008D3505 /* XCRemoteSwiftPackageReference "MarkersExtractor" */ = {
@@ -1733,7 +1718,7 @@
 			repositoryURL = "https://github.com/TheAcharya/MarkersExtractor";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.3.19;
+				minimumVersion = 0.3.20;
 			};
 		};
 		4155B72A2B668C0D008D3505 /* XCRemoteSwiftPackageReference "swift-log-oslog" */ = {
@@ -1757,15 +1742,15 @@
 			repositoryURL = "https://github.com/sparkle-project/Sparkle";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 2.5.2;
+				minimumVersion = 2.9.0;
 			};
 		};
 		41BFEB6E2B1BA4CC00C8B551 /* XCRemoteSwiftPackageReference "PasswordField" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/MrAsterisco/PasswordField";
 			requirement = {
-				branch = main;
-				kind = branch;
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
 			};
 		};
 		41C538A02AE420EA00E8A8A1 /* XCRemoteSwiftPackageReference "ColorWellKit" */ = {
@@ -1781,7 +1766,7 @@
 			repositoryURL = "https://github.com/apple/swift-collections.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
+				minimumVersion = 1.4.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -1801,11 +1786,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4186A7492BA44EF300FFD75B /* XCRemoteSwiftPackageReference "DominantColors" */;
 			productName = DominantColors;
-		};
-		41176ACF2B780C090093F4C8 /* EonilFSEvents */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 41176ACE2B780C090093F4C8 /* XCRemoteSwiftPackageReference "FSEvents" */;
-			productName = EonilFSEvents;
 		};
 		411D9CC22D5DFB8200465CBC /* ButtonKit */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -1841,11 +1821,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 418D5DB42B910F4900589E17 /* XCRemoteSwiftPackageReference "Sparkle" */;
 			productName = Sparkle;
-		};
-		41A055772B8B858C006AC0E4 /* EonilFSEvents */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 41176ACE2B780C090093F4C8 /* XCRemoteSwiftPackageReference "FSEvents" */;
-			productName = EonilFSEvents;
 		};
 		41BFEB6F2B1BA4CC00C8B551 /* PasswordField */ = {
 			isa = XCSwiftPackageProductDependency;
