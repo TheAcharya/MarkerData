@@ -368,6 +368,7 @@ public struct ExtractView: View {
             }
             .padding()
             .background(.black)
+            .clipShape(UnevenRoundedRectangle(topLeadingRadius: 16, topTrailingRadius: 16, style: .continuous))
             .shadow(radius: 10)
         }
     }
