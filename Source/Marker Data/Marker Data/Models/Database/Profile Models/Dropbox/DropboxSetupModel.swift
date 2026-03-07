@@ -7,13 +7,14 @@
 
 import Foundation
 import OSLog
-import EonilFSEvents
 
 @MainActor
 class DropboxSetupModel: ObservableObject {
     @Published var setupComplete: Bool = false
     @Published var authURL: URL? = nil
     @Published var authRequestStatus: AirtableAuthRequestStatus = .notInitiated
+    
+    private let watcher = FileWatcher(url: .dropboxTokenJSON)
     
     static let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "DropboxSetupModel")
     
@@ -31,21 +32,7 @@ class DropboxSetupModel: ObservableObject {
         try launchTerminal()
 
         // Monitor file for changes
-        try EonilFSEvents.startWatching(
-            paths: [URL.dropboxTokenJSON.path(percentEncoded: false)],
-            for: ObjectIdentifier(self),
-            with: { event in
-                guard let flags = event.flag else {
-                    return
-                }
-
-                if flags.contains(.itemModified) {
-                    if self.isRefreshTokenDefined() {
-                        self.authRequestStatus = .success
-                        self.setupComplete = true
-                    }
-                }
-            })
+        await startMonitoring()
     }
     
     private func saveAppKeyToDisk(_ appKey: String) async throws {
@@ -97,6 +84,17 @@ end tell
         } catch {
             Self.logger.error("Failed to decode check JSON: \(error.localizedDescription, privacy: .public)")
             return false
+        }
+    }
+    
+    private func startMonitoring() async {
+        try? await watcher.startWatching {
+            Task { @MainActor in
+                if self.isRefreshTokenDefined() {
+                    self.authRequestStatus = .success
+                    self.setupComplete = true
+                }
+            }
         }
     }
 }

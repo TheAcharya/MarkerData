@@ -170,6 +170,7 @@
 		41FAC46A2CD564520034FC09 /* UserDefaultsArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41FAC4692CD564520034FC09 /* UserDefaultsArray.swift */; };
 		41FB26FE2DC50937005F8303 /* WebViewStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41FB26FD2DC50937005F8303 /* WebViewStateManager.swift */; };
 		41FB27002DC60D09005F8303 /* PagemakerUIDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41FB26FF2DC60D09005F8303 /* PagemakerUIDelegate.swift */; };
+		41FBE7132F5C8C35007781ED /* FileWatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41FBE7122F5C8C35007781ED /* FileWatcher.swift */; };
 		47411FDA2A3EA121005890FE /* HelpButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47411FD92A3EA121005890FE /* HelpButton.swift */; };
 		47411FDC2A3EA140005890FE /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47411FDB2A3EA140005890FE /* ViewExtensions.swift */; };
 		47411FDE2A3EA1BA005890FE /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47411FDD2A3EA1BA005890FE /* AboutView.swift */; };
@@ -372,6 +373,7 @@
 		41FAC4692CD564520034FC09 /* UserDefaultsArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsArray.swift; sourceTree = "<group>"; };
 		41FB26FD2DC50937005F8303 /* WebViewStateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewStateManager.swift; sourceTree = "<group>"; };
 		41FB26FF2DC60D09005F8303 /* PagemakerUIDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagemakerUIDelegate.swift; sourceTree = "<group>"; };
+		41FBE7122F5C8C35007781ED /* FileWatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileWatcher.swift; sourceTree = "<group>"; };
 		47411FD92A3EA121005890FE /* HelpButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpButton.swift; sourceTree = "<group>"; };
 		47411FDB2A3EA140005890FE /* ViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
 		47411FDD2A3EA1BA005890FE /* AboutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
@@ -635,6 +637,7 @@
 				41086A122BD567EF00E0CE09 /* DicitionaryEncoder.swift */,
 				419EC4A72C07D237003DB6E8 /* DeminiaturizeAllWindows.swift */,
 				41FAC4692CD564520034FC09 /* UserDefaultsArray.swift */,
+				41FBE7122F5C8C35007781ED /* FileWatcher.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -1209,6 +1212,7 @@
 				9B25815E2A07A286002CED07 /* GeneralSettingsView.swift in Sources */,
 				41C298F72B84A0EF00AA7517 /* ConfigurationsViewModel.swift in Sources */,
 				9BACA4D129FA9B5100EF6837 /* SettingsStore.swift in Sources */,
+				41FBE7132F5C8C35007781ED /* FileWatcher.swift in Sources */,
 				4155B7312B6E96BE008D3505 /* SidebarSelectionSwitcher.swift in Sources */,
 				4155B7262B6574A8008D3505 /* RolesManager.swift in Sources */,
 				411D9CC92D5DFDB800465CBC /* StringExtension.swift in Sources */,
