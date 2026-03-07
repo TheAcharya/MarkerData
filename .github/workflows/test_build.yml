@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: macos-15
 
     steps:
     - name: Checkout Repository
@@ -76,7 +76,6 @@ jobs:
 
     - name: Build Marker Data
       run: |
-        set -o pipefail
         PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
         PROJECT_PATH="Source/Marker Data/Marker Data.xcodeproj"
         SCHEME="Marker Data"
@@ -86,7 +85,7 @@ jobs:
         echo "PARENT=$PARENT" >> $GITHUB_ENV
         echo "CONFIG=$CONFIGURATION" >> $GITHUB_ENV
 
-        xcodebuild -project "$PROJECT_PATH" -scheme "$SCHEME" -configuration "$CONFIGURATION" -destination "$DESTINATION" -derivedDataPath "$BUILD_FOLDER" clean build ONLY_ACTIVE_ARCH=NO EXCLUDED_ARCHS="x86_64" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO -allowProvisioningUpdates | grep -v "Workflow Extension isn't code signed but requires entitlements" | grep -v "Marker Data isn't code signed but requires entitlements" | xcbeautify && exit ${PIPESTATUS[0]}
+        xcodebuild -project "$PROJECT_PATH" -scheme "$SCHEME" -configuration "$CONFIGURATION" -destination "$DESTINATION" -derivedDataPath "$BUILD_FOLDER" clean build ONLY_ACTIVE_ARCH=NO EXCLUDED_ARCHS="x86_64" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO -allowProvisioningUpdates | grep -v "Workflow Extension isn't code signed but requires entitlements" | grep -v "Marker Data isn't code signed but requires entitlements" | xcbeautify
         
     - name: Prepare VM Directories
       run: |
