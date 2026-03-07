@@ -19,7 +19,7 @@ jobs:
     - name: Set up latest stable Xcode
       uses: maxim-lobanov/setup-xcode@v1
       with:
-        xcode-version: latest-stable
+        xcode-version: '26.3'
 
     - name: Show selected Xcode and Swift versions
       run: |
