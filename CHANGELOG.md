@@ -5,7 +5,10 @@
 **🎉 Released:**
 - TBC
 
+**Marker Data** no longer officially supports macOS Sonoma starting with version 2.0.0.
+
 **🔨 Improvements:**
+- Updated Marker Data's application icon for macOS Tahoe
 - Updated Airtable Module Airlift to version 1.3.3
 - Updated Notion Module CSV2Notion Neo to version 2.1.0
 - Updated Pagemaker Module to version 1.1.1
