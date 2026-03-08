@@ -65,7 +65,7 @@ struct ContentView: View {
                         .tag(MainViews.about)
                 }
             }
-            .frame(minWidth: WindowSize.sidebarWidth)
+            .navigationSplitViewColumnWidth(WindowSize.sidebarWidth)
         } detail: {
             Group {
                 switch sidebarSelection {
