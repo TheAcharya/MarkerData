@@ -79,6 +79,7 @@ struct DatabaseSettingsView: View {
                 showCreateProfileSheet = true
             } label: {
                 Image(systemName: "plus")
+                    .frame(minHeight: 16)
             }
             
             // Remove profile button
@@ -86,6 +87,7 @@ struct DatabaseSettingsView: View {
                showDeleteConfirm = true
             } label: {
                 Image(systemName: "minus")
+                    .frame(minHeight: 16)
             }
             .disabled(selection == nil)
             
