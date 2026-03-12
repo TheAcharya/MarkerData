@@ -55,7 +55,7 @@ struct NotionFormView: View {
             }
             
             ZStack {
-                List(ExportField.allCases) { mergeColumn in
+                List(ExportField.allCases.filter { $0 != .xmlPath }) { mergeColumn in
                     HStack {
                         Toggle("", isOn: Binding<Bool>(
                             get: {
