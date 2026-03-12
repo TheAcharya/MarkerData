@@ -86,7 +86,6 @@
 		4155B7232B653D35008D3505 /* RoleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B7212B653D2C008D3505 /* RoleModel.swift */; };
 		4155B7262B6574A8008D3505 /* RolesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B7252B6574A8008D3505 /* RolesManager.swift */; };
 		4155B72C2B668D29008D3505 /* LoggingOSLog in Frameworks */ = {isa = PBXBuildFile; productRef = 4155B72B2B668D29008D3505 /* LoggingOSLog */; };
-		4155B72E2B66BF9C008D3505 /* HelpButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47411FD92A3EA121005890FE /* HelpButton.swift */; };
 		4155B7312B6E96BE008D3505 /* SidebarSelectionSwitcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4155B7302B6E96BE008D3505 /* SidebarSelectionSwitcher.swift */; };
 		415619672B3A18D60032E82C /* ExtractError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 415619662B3A18D60032E82C /* ExtractError.swift */; };
 		4156196B2B3AE41F0032E82C /* ProgressViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4156196A2B3AE41F0032E82C /* ProgressViewModel.swift */; };
@@ -98,6 +97,9 @@
 		4176E7E42F608D51001547D7 /* ApplyPickerSizing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4176E7E32F608D51001547D7 /* ApplyPickerSizing.swift */; };
 		4176E7E72F609243001547D7 /* OptionalKeyboardShortcut.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4176E7E62F609243001547D7 /* OptionalKeyboardShortcut.swift */; };
 		4176E7E92F61772A001547D7 /* FixedPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4176E7E82F61772A001547D7 /* FixedPicker.swift */; };
+		4176E7EA2F632E7F001547D7 /* OverlayHelpButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47411FDB2A3EA140005890FE /* OverlayHelpButton.swift */; };
+		4176E7EC2F632FA9001547D7 /* HelpButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4176E7EB2F632FA9001547D7 /* HelpButton.swift */; };
+		4176E7ED2F63326A001547D7 /* HelpButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4176E7EB2F632FA9001547D7 /* HelpButton.swift */; };
 		417914FF2B7547CE00215688 /* DropboxSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417914FE2B7547CE00215688 /* DropboxSetupView.swift */; };
 		417915022B754E1500215688 /* DropboxInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417915012B754E1500215688 /* DropboxInfo.swift */; };
 		417915062B75547C00215688 /* DropboxSetupModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417915052B75547C00215688 /* DropboxSetupModel.swift */; };
@@ -175,7 +177,6 @@
 		41FBE7132F5C8C35007781ED /* FileWatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41FBE7122F5C8C35007781ED /* FileWatcher.swift */; };
 		41FBE8592F5CAF9D007781ED /* Marker-Data.icon in Resources */ = {isa = PBXBuildFile; fileRef = 41FBE8582F5CAF9D007781ED /* Marker-Data.icon */; };
 		41FBE85A2F5CAF9D007781ED /* Marker-Data.icon in Resources */ = {isa = PBXBuildFile; fileRef = 41FBE8582F5CAF9D007781ED /* Marker-Data.icon */; };
-		47411FDA2A3EA121005890FE /* HelpButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47411FD92A3EA121005890FE /* HelpButton.swift */; };
 		47411FDC2A3EA140005890FE /* OverlayHelpButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47411FDB2A3EA140005890FE /* OverlayHelpButton.swift */; };
 		47411FDE2A3EA1BA005890FE /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47411FDD2A3EA1BA005890FE /* AboutView.swift */; };
 		4741202E2A3EFC42005890FE /* EmptyOrIntFormatStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4741202D2A3EFC42005890FE /* EmptyOrIntFormatStyle.swift */; };
@@ -184,7 +185,6 @@
 		4779AF592A4FC06C00F1B48B /* LabelSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4779AF582A4FC06C00F1B48B /* LabelSettingsView.swift */; };
 		47F5CDF82A60CA43005D9A98 /* ExtractionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F5CDF72A60CA43005D9A98 /* ExtractionModel.swift */; };
 		9B25815E2A07A286002CED07 /* GeneralSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B25815D2A07A286002CED07 /* GeneralSettingsView.swift */; };
-		9B35FE6829F94C110035B760 /* PickerViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B35FE6729F94C110035B760 /* PickerViews.swift */; };
 		9B4D90D82A0BAE3900FE7603 /* ImageSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B4D90D72A0BAE3900FE7603 /* ImageSettingsView.swift */; };
 		9B4D90DA2A0BAF9E00FE7603 /* GeneralLabelSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B4D90D92A0BAF9E00FE7603 /* GeneralLabelSettingsView.swift */; };
 		9B4D90DC2A0BB07500FE7603 /* ConfigurationSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B4D90DB2A0BB07500FE7603 /* ConfigurationSettingsView.swift */; };
@@ -313,6 +313,7 @@
 		4176E7E32F608D51001547D7 /* ApplyPickerSizing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyPickerSizing.swift; sourceTree = "<group>"; };
 		4176E7E62F609243001547D7 /* OptionalKeyboardShortcut.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalKeyboardShortcut.swift; sourceTree = "<group>"; };
 		4176E7E82F61772A001547D7 /* FixedPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixedPicker.swift; sourceTree = "<group>"; };
+		4176E7EB2F632FA9001547D7 /* HelpButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpButton.swift; sourceTree = "<group>"; };
 		417914FE2B7547CE00215688 /* DropboxSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxSetupView.swift; sourceTree = "<group>"; };
 		417915012B754E1500215688 /* DropboxInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxInfo.swift; sourceTree = "<group>"; };
 		417915052B75547C00215688 /* DropboxSetupModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxSetupModel.swift; sourceTree = "<group>"; };
@@ -381,7 +382,6 @@
 		41FB26FF2DC60D09005F8303 /* PagemakerUIDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagemakerUIDelegate.swift; sourceTree = "<group>"; };
 		41FBE7122F5C8C35007781ED /* FileWatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileWatcher.swift; sourceTree = "<group>"; };
 		41FBE8582F5CAF9D007781ED /* Marker-Data.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = "Marker-Data.icon"; sourceTree = "<group>"; };
-		47411FD92A3EA121005890FE /* HelpButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpButton.swift; sourceTree = "<group>"; };
 		47411FDB2A3EA140005890FE /* OverlayHelpButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OverlayHelpButton.swift; sourceTree = "<group>"; };
 		47411FDD2A3EA1BA005890FE /* AboutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		4741202D2A3EFC42005890FE /* EmptyOrIntFormatStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyOrIntFormatStyle.swift; sourceTree = "<group>"; };
@@ -390,7 +390,6 @@
 		4779AF582A4FC06C00F1B48B /* LabelSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelSettingsView.swift; sourceTree = "<group>"; };
 		47F5CDF72A60CA43005D9A98 /* ExtractionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractionModel.swift; sourceTree = "<group>"; };
 		9B25815D2A07A286002CED07 /* GeneralSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingsView.swift; sourceTree = "<group>"; };
-		9B35FE6729F94C110035B760 /* PickerViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerViews.swift; sourceTree = "<group>"; };
 		9B39B0CB29E19B740055F31E /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		9B4D90D72A0BAE3900FE7603 /* ImageSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSettingsView.swift; sourceTree = "<group>"; };
 		9B4D90D92A0BAF9E00FE7603 /* GeneralLabelSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralLabelSettingsView.swift; sourceTree = "<group>"; };
@@ -892,6 +891,7 @@
 				4155B6D02B5D93BA008D3505 /* ResizedImage.swift */,
 				419EC4B62C148642003DB6E8 /* BigButtonStyle.swift */,
 				4176E7E82F61772A001547D7 /* FixedPicker.swift */,
+				4176E7EB2F632FA9001547D7 /* HelpButton.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -899,8 +899,6 @@
 		47B21A6E2A4DF96D004FECFA /* Other */ = {
 			isa = PBXGroup;
 			children = (
-				47411FD92A3EA121005890FE /* HelpButton.swift */,
-				9B35FE6729F94C110035B760 /* PickerViews.swift */,
 				41BFEB712B1BCE4600C8B551 /* ExportProfilePicker.swift */,
 				417272992B44533D005A04BE /* FailedExtractionsView.swift */,
 				417272A12B484B82005A04BE /* ExportDestinationPicker.swift */,
@@ -1168,6 +1166,8 @@
 			files = (
 				41C78C1F2C03DB2A001F29C4 /* NotificationNameExtension.swift in Sources */,
 				4155B71B2B62E18B008D3505 /* RoleExtension.swift in Sources */,
+				4176E7ED2F63326A001547D7 /* HelpButton.swift in Sources */,
+				4176E7EA2F632E7F001547D7 /* OverlayHelpButton.swift in Sources */,
 				410840052BD3C603008B7B03 /* DeltaEFormulaExtension.swift in Sources */,
 				4155B71A2B62E182008D3505 /* UTTypeExtension.swift in Sources */,
 				41A055732B8B770B006AC0E4 /* MarkersExtractorModelExtensions.swift in Sources */,
@@ -1180,7 +1180,6 @@
 				41A0556E2B8B766C006AC0E4 /* SettingsStore.swift in Sources */,
 				41A055742B8B772C006AC0E4 /* ExportProfileFormatExtrension.swift in Sources */,
 				410840042BD3C5C4008B7B03 /* ColorSwatchSettingsModel.swift in Sources */,
-				4155B72E2B66BF9C008D3505 /* HelpButton.swift in Sources */,
 				41A055702B8B7685006AC0E4 /* NotificationFrequency.swift in Sources */,
 				4155B7172B62E131008D3505 /* RolesSettingsView.swift in Sources */,
 				41A055752B8B776F006AC0E4 /* RolesManager.swift in Sources */,
@@ -1252,7 +1251,6 @@
 				41D1E4E62B72C12300AE2E55 /* DatabaseUploader.swift in Sources */,
 				41F88AF62B0E9DBF004A3B58 /* CreateDBProfileSheet.swift in Sources */,
 				41C298F12B82B0E000AA7517 /* Configurations_AddSheet.swift in Sources */,
-				9B35FE6829F94C110035B760 /* PickerViews.swift in Sources */,
 				41C839842B52C9E300C6B133 /* Document.m in Sources */,
 				41086A0F2BD55AB400E0CE09 /* WalkDirectory.swift in Sources */,
 				41EBAD522AF8172F00E6AF7C /* MainViews.swift in Sources */,
@@ -1317,7 +1315,6 @@
 				41F88AE82B0E9176004A3B58 /* DatabaseProfileModel.swift in Sources */,
 				41D1E4C52B6FCBBA00AE2E55 /* ExtractionModel_EventHandlers.swift in Sources */,
 				41C839342B52C94000C6B133 /* ApplicationDelegate.swift in Sources */,
-				47411FDA2A3EA121005890FE /* HelpButton.swift in Sources */,
 				9B4D90DC2A0BB07500FE7603 /* ConfigurationSettingsView.swift in Sources */,
 				41083FF62BC45E56008B7B03 /* ColorsExtractorService.swift in Sources */,
 				4155B6D12B5D93BA008D3505 /* ResizedImage.swift in Sources */,
@@ -1327,6 +1324,7 @@
 				41BFEB6D2B1B9B6400C8B551 /* Links.swift in Sources */,
 				4108400B2BD3D0A3008B7B03 /* ImageExtractionSettingsView.swift in Sources */,
 				41176AE52B7D5C520093F4C8 /* QueueStatus.swift in Sources */,
+				4176E7EC2F632FA9001547D7 /* HelpButton.swift in Sources */,
 				419EC4AF2C147AB6003DB6E8 /* OnboardingPageView.swift in Sources */,
 				4108400D2BD3D10B008B7B03 /* SwatchSettingsView.swift in Sources */,
 				4172729A2B44533D005A04BE /* FailedExtractionsView.swift in Sources */,

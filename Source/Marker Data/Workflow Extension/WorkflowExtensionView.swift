@@ -35,12 +35,7 @@ struct WorkflowExtensionView: View {
         }
         .frame(width: 600, height: 400)
         .padding()
-        .overlay(alignment: .bottomTrailing) {
-            HelpButton {
-                self.openURL(URL(string: "https://markerdata.theacharya.co/user-guide/workflow-extension/")!)
-            }
-            .padding([.trailing, .bottom], 10)
-        }
+        .overlayHelpButton(url: URL(string: "https://markerdata.theacharya.co/user-guide/workflow-extension/")!)
     }
     
     private var titleHeaderView: some View {

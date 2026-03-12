@@ -353,7 +353,7 @@ public struct ExtractView: View {
                             Text("Save data locally or upload to database")
                                 .fontWeight(.thin)
                             
-                            HelpButton {
+                            HelpActionButton {
                                 showHelp = true
                             }
                             .scaleEffect(0.8)

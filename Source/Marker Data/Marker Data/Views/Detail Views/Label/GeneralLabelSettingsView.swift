@@ -123,6 +123,32 @@ struct GeneralLabelSettingsView: View {
             }
         }
     }
+    
+    struct FontNamePicker: View {
+        @EnvironmentObject var settings: SettingsContainer
+
+        var body: some View {
+            FixedPicker("Typeface", selection: $settings.store.fontNameType) {
+                ForEach(FontNameType.allCases) { fontNameType in
+                    Text(fontNameType.displayName).tag(fontNameType)
+                }
+            }
+        }
+    }
+    
+    struct FontStylePicker: View {
+        @EnvironmentObject var settings: SettingsContainer
+
+        var body: some View {
+            Picker("Style", selection: $settings.store.fontStyleType) {
+                ForEach(FontStyleType.allCases) { fontStyleType in
+                    Text(fontStyleType.displayName).tag(fontStyleType)
+                }
+            }
+            .labelsHidden()
+            .applyPickerSizing()
+        }
+    }
 }
 
 #Preview {

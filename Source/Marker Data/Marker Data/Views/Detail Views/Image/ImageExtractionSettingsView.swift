@@ -208,4 +208,16 @@ struct ImageExtractionSettingsView: View {
             }
         }
     }
+    
+    struct ImageModePicker: View {
+        @EnvironmentObject var settings: SettingsContainer
+
+        var body: some View {
+            FixedPicker("Image Format", selection: $settings.store.imageMode) {
+                ForEach(ImageMode.allCases) { imageMode in
+                    Text(imageMode.displayName).tag(imageMode)
+                }
+            }
+        }
+    }
 }
