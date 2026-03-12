@@ -11,30 +11,31 @@ struct NotificationSettingsView: View {
     @EnvironmentObject var settings: SettingsContainer
     
     var body: some View {
-        VStack(alignment: .formControlAlignment) {
+        VStack {
             Spacer()
             
-            Text("Progress Reporting")
-                .font(.headline)
-            
-            LabeledFormElement("Notification Frequency") {
-                Picker("", selection: $settings.store.notificationFrequency) {
-                    ForEach(NotificationFrequency.allCases) { frequency in
-                        Text(frequency.displayName)
-                            .tag(frequency)
+            Form {
+                Section("Progress Reporting") {
+                    Picker("Notification Frequency", selection: $settings.store.notificationFrequency) {
+                        ForEach(NotificationFrequency.allCases) { frequency in
+                            Text(frequency.displayName)
+                                .tag(frequency)
+                        }
                     }
+
+                    Toggle("Show Progress on Dock Icon", isOn: $settings.store.showDockProgress)
                 }
-                .frame(width: 250)
-            }
-            
-            LabeledFormElement("Show Progress on Dock Icon") {
-                Toggle("", isOn: $settings.store.showDockProgress)
             }
             
             Spacer()
-            
+
+            SettingsLinks()
+        }
+    }
+    
+    private struct SettingsLinks: View {
+        var body: some View {
             HStack {
-                // Open preferences button
                 Button {
                     if let notificationSettingsURL = URL(string: "x-apple.systempreferences:com.apple.Notifications-Settings.extension") {
                         NSWorkspace.shared.open(notificationSettingsURL)
@@ -43,7 +44,7 @@ struct NotificationSettingsView: View {
                     Label("Open macOS Notification Settings", systemImage: "bell.badge")
                 }
                 .buttonStyle(.link)
-                
+
                 Spacer()
             }
             .padding()

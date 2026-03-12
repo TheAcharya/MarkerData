@@ -12,4 +12,5 @@ struct WindowSize {
     static let fullHeight: CGFloat = 500
     static let sidebarWidth: CGFloat = 208
     static var detailWidth: CGFloat { Self.fullWidth - Self.sidebarWidth }
+    static let pickerWidth: CGFloat = 216
 }

@@ -10,205 +10,201 @@ import MarkersExtractor
 
 struct ImageExtractionSettingsView: View {
     @EnvironmentObject var settings: SettingsContainer
-    let pickerWidth: CGFloat = 170
-
-    @State var showNamingModeWarningPopover = false
 
     var body: some View {
-        VStack(alignment: .formControlAlignment) {
-            fileCreationSettingsView
+        Form {
+            FileCreationSettingsView()
 
-            Divider()
+            ImageSizeSettingsView()
 
-            imageSizeSettingsView
-
-            Divider()
-
-            jpegSettingsView
+            JpegSettingsView()
                 .disabled(settings.store.imageMode != .JPG)
 
-            Divider()
-
-            gifSettingsView
+            GifSettingsView()
                 .disabled(settings.store.imageMode != .GIF)
         }
-        // idk why, but whithout this negative padding
-        // there will be a small gap under the view
-        // (probably because of the fixed window size)
-        .padding(.vertical, -22)
     }
 
-    var fileCreationSettingsView: some View {
-        VStack(alignment: .formControlAlignment) {
-            Text("File Creation")
-                .font(.headline)
-
-            // Naming mode
-            LabeledFormElement("Naming Mode") {
-                Picker("", selection: $settings.store.IDNamingMode) {
-                    ForEach(MarkerIDMode.allCases) { item in
-                        Text(item.displayName)
-                            .tag(item)
+    struct FileCreationSettingsView: View {
+        @EnvironmentObject var settings: SettingsContainer
+        @State var showNamingModeWarningPopover = false
+        
+        var body: some View {
+            Section("File Creation") {
+                LabeledContent("Naming Mode") {
+                    HStack {
+                        Picker("Naming Mode", selection: $settings.store.IDNamingMode) {
+                            ForEach(MarkerIDMode.allCases) { item in
+                                Text(item.displayName)
+                                    .tag(item)
+                            }
+                        }
+                        .labelsHidden()
+                        .applyPickerSizing()
+                        
+                        if settings.store.IDNamingMode == .notes && settings.store.markersSource != .markers {
+                            Button {
+                                showNamingModeWarningPopover = true
+                            } label: {
+                                Image(systemName: "exclamationmark.triangle")
+                                    .foregroundStyle(Color.yellow)
+                            }
+                            .buttonStyle(.plain)
+                            .popover(isPresented: $showNamingModeWarningPopover) {
+                                Text("**Incompatible Settings Detected** - The **Naming Mode** is set to **Notes**, which conflicts with **Marker Source** when set to **Marker and Captions** or **Captions**. Please adjust your settings to resolve this conflict.")
+                                    .frame(maxWidth: 400, minHeight: 65)
+                                    .padding(8)
+                            }
+                        }
                     }
                 }
-                .frame(width: self.pickerWidth)
-
-                if settings.store.IDNamingMode == .notes && settings.store.markersSource != .markers {
-                    Button {
-                        showNamingModeWarningPopover = true
-                    } label: {
-                        Image(systemName: "exclamationmark.triangle")
-                            .foregroundStyle(Color.yellow)
-                    }
-                    .buttonStyle(.plain)
-                    .popover(isPresented: $showNamingModeWarningPopover) {
-                        Text("**Incompatible Settings Detected** - The **Naming Mode** is set to **Notes**, which conflicts with **Marker Source** when set to **Marker and Captions** or **Captions**. Please adjust your settings to resolve this conflict.")
-                            .frame(maxWidth: 400, minHeight: 65)
-                            .padding(8)
-                    }
-                }
-            }
-
-            // Markers source
-            LabeledFormElement("Markers Source") {
-                Picker("", selection: $settings.store.markersSource) {
+                
+                FixedPicker("Markers Source", selection: $settings.store.markersSource) {
                     ForEach(MarkersSource.allCases, id: \.self) { source in
                         Text(source.description)
                     }
                 }
-                .frame(width: self.pickerWidth)
-            }
-
-            // Image format
-            LabeledFormElement("Image Format") {
+                
                 ImageModePicker()
-                    .frame(width: self.pickerWidth)
             }
         }
     }
 
-    var imageSizeSettingsView: some View {
-        VStack(alignment: .formControlAlignment) {
-            Text("Image Size")
-                .font(.headline)
-
-            Picker("", selection: $settings.store.overrideImageSize) {
-                Text("Default")
-                    .tag(OverrideImageSizeOption.noOverride)
-
-                // Image size percent
-                LabeledFormElement("Size (%)") {
-                    TextField(
-                        "",
-                        value: $settings.store.imageSizePercent,
-                        format: .number
-                    )
-                    .frame(width: 50)
-                    .onChange(of: settings.store.imageSizePercent) { oldValue, newValue in
-                        settings.store.imageSizePercent = newValue.clamped(to: 1...100)
-                    }
-
-                    Text("%")
-                        .padding(.leading, -7)
-
-                    Stepper(
-                        "",
-                        value: $settings.store.imageSizePercent,
-                        in: 0...100
-                    )
-                }
-                .padding(.vertical, 6)
-                .tag(OverrideImageSizeOption.overrideImageSizePercent)
-                .disabled(settings.store.overrideImageSize != OverrideImageSizeOption.overrideImageSizePercent)
-
-                // Image width and height
-                VStack {
-                    LabeledFormElement("Width") {
+    struct ImageSizeSettingsView: View {
+        @EnvironmentObject var settings: SettingsContainer
+        
+        var body: some View {
+            Section("Image Size") {
+                Picker("", selection: $settings.store.overrideImageSize) {
+                    Text("Default")
+                        .tag(OverrideImageSizeOption.noOverride)
+                    
+                    HStack {
+                        Text("Size (%):")
+                        
                         TextField(
                             "",
-                            value: $settings.store.imageWidth,
+                            value: $settings.store.imageSizePercent,
                             format: .number
                         )
-                        .frame(width: 75)
+                        .frame(width: 50)
+                        .onChange(of: settings.store.imageSizePercent) { oldValue, newValue in
+                            settings.store.imageSizePercent = newValue.clamped(to: 1...100)
+                        }
+                        
+                        Text("%")
+                            .padding(.leading, -7)
+                        
+                        Stepper(
+                            "",
+                            value: $settings.store.imageSizePercent,
+                            in: 0...100
+                        )
+                        .labelsHidden()
                     }
+                    .padding(.vertical, 6)
+                    .tag(OverrideImageSizeOption.overrideImageSizePercent)
+                    .disabled(settings.store.overrideImageSize != OverrideImageSizeOption.overrideImageSizePercent)
+                    
+                    VStack {
+                        HStack {
+                            Text("Width:")
+                            TextField(
+                                "",
+                                value: $settings.store.imageWidth,
+                                format: .number
+                            )
+                            .frame(width: 75)
+                        }
+                        
+                        HStack {
+                            Text("Height:")
+                            TextField(
+                                "",
+                                value: $settings.store.imageHeight,
+                                format: .number
+                            )
+                            .frame(width: 75)
+                        }
+                    }
+                    .tag(OverrideImageSizeOption.overrideImageWidthAndHeight)
+                    .disabled(settings.store.overrideImageSize != .overrideImageWidthAndHeight)
+                }
+                .pickerStyle(.radioGroup)
+                .labelsHidden()
+            }
+        }
+    }
 
-                    LabeledFormElement("Height:") {
+    struct JpegSettingsView: View {
+        @EnvironmentObject var settings: SettingsContainer
+        
+        var body: some View {
+            Section("JPG") {
+                LabeledContent("Quality") {
+                    HStack {
                         TextField(
                             "",
-                            value: $settings.store.imageHeight,
-                            format: .number
+                            value: $settings.store.JPEGImageQuality,
+                            format: .percent
                         )
-                        .frame(width: 75)
+                        .frame(width: 50)
+                        
+                        Stepper(
+                            "",
+                            value: $settings.store.JPEGImageQuality,
+                            in: 0...100
+                        )
+                        .labelsHidden()
+                        .padding(.leading, -5.0)
                     }
                 }
-                .tag(OverrideImageSizeOption.overrideImageWidthAndHeight)
-                .disabled(settings.store.overrideImageSize != .overrideImageWidthAndHeight)
-            }
-            .pickerStyle(.radioGroup)
-            .padding(.bottom, 8)
-        }
-    }
-
-    var jpegSettingsView: some View {
-        VStack(alignment: .formControlAlignment) {
-            Text("JPG")
-                .font(.headline)
-
-            LabeledFormElement("Quality") {
-                TextField(
-                    "",
-                    value: $settings.store.JPEGImageQuality,
-                    format: .percent
-                )
-                .labelsHidden()
-                .frame(width: 50)
-
-                Stepper(
-                    "",
-                    value: $settings.store.JPEGImageQuality,
-                    in: 0...100
-                )
-                .labelsHidden()
-                .padding(.leading, -5.0)
             }
         }
     }
 
-    var gifSettingsView: some View {
-        VStack(alignment: .formControlAlignment) {
-            Text("GIF")
-                .font(.headline)
-
-            LabeledFormElement("FPS") {
-                TextField(
-                    "",
-                    value: $settings.store.GIFFPS,
-                    format: .number.precision(.fractionLength(0))
-                )
-                .frame(width: 50)
-
-                Stepper(
-                    "",
-                    value: $settings.store.GIFFPS,
-                    in: 0...100
-                )
-                .padding(.leading, -5)
-            }
-
-            LabeledFormElement("Span (Sec)") {
-                TextField(
-                    "",
-                    value: $settings.store.GIFLength,
-                    format: .number.precision(.fractionLength(0))
-                )
-                .frame(width: 50)
-
-                Stepper(
-                    "",
-                    value: $settings.store.GIFLength,
-                    in: 0...100
-                )
-                .padding(.leading, -5)
+    struct GifSettingsView: View {
+        @EnvironmentObject var settings: SettingsContainer
+        
+        var body: some View {
+            Section("GIF") {
+                LabeledContent("FPS") {
+                    HStack {
+                        TextField(
+                            "",
+                            value: $settings.store.GIFFPS,
+                            format: .number.precision(.fractionLength(0))
+                        )
+                        .frame(width: 50)
+                        
+                        Stepper(
+                            "",
+                            value: $settings.store.GIFFPS,
+                            in: 0...100
+                        )
+                        .labelsHidden()
+                        .padding(.leading, -5)
+                    }
+                }
+                
+                LabeledContent("Span (Sec)") {
+                    HStack {
+                        TextField(
+                            "",
+                            value: $settings.store.GIFLength,
+                            format: .number.precision(.fractionLength(0))
+                        )
+                        .frame(width: 50)
+                        
+                        Stepper(
+                            "",
+                            value: $settings.store.GIFLength,
+                            in: 0...100
+                        )
+                        .labelsHidden()
+                        .padding(.leading, -5)
+                    }
+                }
             }
         }
     }

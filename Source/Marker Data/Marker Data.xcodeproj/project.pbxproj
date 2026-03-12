@@ -95,6 +95,9 @@
 		417272A02B46F65A005A04BE /* UnifiedExportProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4172729F2B46F65A005A04BE /* UnifiedExportProfile.swift */; };
 		417272A22B484B82005A04BE /* ExportDestinationPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417272A12B484B82005A04BE /* ExportDestinationPicker.swift */; };
 		417389632AC86BE600984FD8 /* ExtractView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417389622AC86BE600984FD8 /* ExtractView.swift */; };
+		4176E7E42F608D51001547D7 /* ApplyPickerSizing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4176E7E32F608D51001547D7 /* ApplyPickerSizing.swift */; };
+		4176E7E72F609243001547D7 /* OptionalKeyboardShortcut.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4176E7E62F609243001547D7 /* OptionalKeyboardShortcut.swift */; };
+		4176E7E92F61772A001547D7 /* FixedPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4176E7E82F61772A001547D7 /* FixedPicker.swift */; };
 		417914FF2B7547CE00215688 /* DropboxSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417914FE2B7547CE00215688 /* DropboxSetupView.swift */; };
 		417915022B754E1500215688 /* DropboxInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417915012B754E1500215688 /* DropboxInfo.swift */; };
 		417915062B75547C00215688 /* DropboxSetupModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417915052B75547C00215688 /* DropboxSetupModel.swift */; };
@@ -102,7 +105,6 @@
 		4186A7502BA451CD00FFD75B /* DominantColorAlgorithmExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4186A74F2BA451CD00FFD75B /* DominantColorAlgorithmExtension.swift */; };
 		4188C3002BDE919100DA1806 /* RolesManager+DropDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4188C2FF2BDE919100DA1806 /* RolesManager+DropDelegate.swift */; };
 		4188C3012BDE92BE00DA1806 /* RolesManager+DropDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4188C2FF2BDE919100DA1806 /* RolesManager+DropDelegate.swift */; };
-		4188C3032BE2A4B200DA1806 /* LabeledFormElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4188C3022BE2A4B200DA1806 /* LabeledFormElement.swift */; };
 		4188C3062BE35A7F00DA1806 /* ExtractError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 415619662B3A18D60032E82C /* ExtractError.swift */; };
 		418D5DB62B910F4900589E17 /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = 418D5DB52B910F4900589E17 /* Sparkle */; };
 		418D5DB92B91163500589E17 /* CheckForUpdatesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418D5DB82B91163500589E17 /* CheckForUpdatesView.swift */; };
@@ -174,7 +176,7 @@
 		41FBE8592F5CAF9D007781ED /* Marker-Data.icon in Resources */ = {isa = PBXBuildFile; fileRef = 41FBE8582F5CAF9D007781ED /* Marker-Data.icon */; };
 		41FBE85A2F5CAF9D007781ED /* Marker-Data.icon in Resources */ = {isa = PBXBuildFile; fileRef = 41FBE8582F5CAF9D007781ED /* Marker-Data.icon */; };
 		47411FDA2A3EA121005890FE /* HelpButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47411FD92A3EA121005890FE /* HelpButton.swift */; };
-		47411FDC2A3EA140005890FE /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47411FDB2A3EA140005890FE /* ViewExtensions.swift */; };
+		47411FDC2A3EA140005890FE /* OverlayHelpButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47411FDB2A3EA140005890FE /* OverlayHelpButton.swift */; };
 		47411FDE2A3EA1BA005890FE /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47411FDD2A3EA1BA005890FE /* AboutView.swift */; };
 		4741202E2A3EFC42005890FE /* EmptyOrIntFormatStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4741202D2A3EFC42005890FE /* EmptyOrIntFormatStyle.swift */; };
 		474595372A40113000EF100D /* LabeledTextboxStepperForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 474595362A40113000EF100D /* LabeledTextboxStepperForm.swift */; };
@@ -308,12 +310,14 @@
 		4172729F2B46F65A005A04BE /* UnifiedExportProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnifiedExportProfile.swift; sourceTree = "<group>"; };
 		417272A12B484B82005A04BE /* ExportDestinationPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportDestinationPicker.swift; sourceTree = "<group>"; };
 		417389622AC86BE600984FD8 /* ExtractView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractView.swift; sourceTree = "<group>"; };
+		4176E7E32F608D51001547D7 /* ApplyPickerSizing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyPickerSizing.swift; sourceTree = "<group>"; };
+		4176E7E62F609243001547D7 /* OptionalKeyboardShortcut.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalKeyboardShortcut.swift; sourceTree = "<group>"; };
+		4176E7E82F61772A001547D7 /* FixedPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixedPicker.swift; sourceTree = "<group>"; };
 		417914FE2B7547CE00215688 /* DropboxSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxSetupView.swift; sourceTree = "<group>"; };
 		417915012B754E1500215688 /* DropboxInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxInfo.swift; sourceTree = "<group>"; };
 		417915052B75547C00215688 /* DropboxSetupModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxSetupModel.swift; sourceTree = "<group>"; };
 		4186A74F2BA451CD00FFD75B /* DominantColorAlgorithmExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DominantColorAlgorithmExtension.swift; sourceTree = "<group>"; };
 		4188C2FF2BDE919100DA1806 /* RolesManager+DropDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RolesManager+DropDelegate.swift"; sourceTree = "<group>"; };
-		4188C3022BE2A4B200DA1806 /* LabeledFormElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabeledFormElement.swift; sourceTree = "<group>"; };
 		418D5DB82B91163500589E17 /* CheckForUpdatesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckForUpdatesView.swift; sourceTree = "<group>"; };
 		418D5DBA2B9117BB00589E17 /* UpdateSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateSettingsView.swift; sourceTree = "<group>"; };
 		419EC4A72C07D237003DB6E8 /* DeminiaturizeAllWindows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeminiaturizeAllWindows.swift; sourceTree = "<group>"; };
@@ -378,7 +382,7 @@
 		41FBE7122F5C8C35007781ED /* FileWatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileWatcher.swift; sourceTree = "<group>"; };
 		41FBE8582F5CAF9D007781ED /* Marker-Data.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = "Marker-Data.icon"; sourceTree = "<group>"; };
 		47411FD92A3EA121005890FE /* HelpButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpButton.swift; sourceTree = "<group>"; };
-		47411FDB2A3EA140005890FE /* ViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
+		47411FDB2A3EA140005890FE /* OverlayHelpButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OverlayHelpButton.swift; sourceTree = "<group>"; };
 		47411FDD2A3EA1BA005890FE /* AboutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		4741202D2A3EFC42005890FE /* EmptyOrIntFormatStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyOrIntFormatStyle.swift; sourceTree = "<group>"; };
 		474595362A40113000EF100D /* LabeledTextboxStepperForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabeledTextboxStepperForm.swift; sourceTree = "<group>"; };
@@ -454,7 +458,6 @@
 		4100D5E22AD161570081F0EC /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				47411FDB2A3EA140005890FE /* ViewExtensions.swift */,
 				4100D5E32AD1616D0081F0EC /* ColorExtension.swift */,
 				414262BA2AD2E1AC00FC6CFC /* URLExtension.swift */,
 				414262BC2AD2E24A00FC6CFC /* BundleExtension.swift */,
@@ -643,6 +646,15 @@
 				41FBE7122F5C8C35007781ED /* FileWatcher.swift */,
 			);
 			path = Other;
+			sourceTree = "<group>";
+		};
+		4176E7E52F608D75001547D7 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				4176E7E32F608D51001547D7 /* ApplyPickerSizing.swift */,
+				4176E7E62F609243001547D7 /* OptionalKeyboardShortcut.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		417914FC2B75479D00215688 /* Notion */ = {
@@ -872,13 +884,14 @@
 		474595352A40110F00EF100D /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				47411FDB2A3EA140005890FE /* OverlayHelpButton.swift */,
 				474595362A40113000EF100D /* LabeledTextboxStepperForm.swift */,
 				474595572A40254E00EF100D /* ColorPickerOpacitySliderForm.swift */,
 				41F88ADB2B029D4A004A3B58 /* ColorPickerForm.swift */,
 				411F37442B56DE7400CC05E6 /* PulsingIcon.swift */,
 				4155B6D02B5D93BA008D3505 /* ResizedImage.swift */,
-				4188C3022BE2A4B200DA1806 /* LabeledFormElement.swift */,
 				419EC4B62C148642003DB6E8 /* BigButtonStyle.swift */,
+				4176E7E82F61772A001547D7 /* FixedPicker.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -918,6 +931,7 @@
 				419EC4A92C1477FB003DB6E8 /* Onboarding */,
 				47B21A6E2A4DF96D004FECFA /* Other */,
 				474595352A40110F00EF100D /* Components */,
+				4176E7E52F608D75001547D7 /* Extensions */,
 				41C538952AE3018100E8A8A1 /* Menu Bar Commands */,
 			);
 			path = Views;
@@ -1188,7 +1202,7 @@
 				4156196B2B3AE41F0032E82C /* ProgressViewModel.swift in Sources */,
 				4741202E2A3EFC42005890FE /* EmptyOrIntFormatStyle.swift in Sources */,
 				417272A22B484B82005A04BE /* ExportDestinationPicker.swift in Sources */,
-				47411FDC2A3EA140005890FE /* ViewExtensions.swift in Sources */,
+				47411FDC2A3EA140005890FE /* OverlayHelpButton.swift in Sources */,
 				4188C3002BDE919100DA1806 /* RolesManager+DropDelegate.swift in Sources */,
 				41C298F52B82B16900AA7517 /* ConfigurationContextMenuView.swift in Sources */,
 				41176AE92B8216520093F4C8 /* MarkersExtractorModelExtensions.swift in Sources */,
@@ -1244,6 +1258,7 @@
 				41EBAD522AF8172F00E6AF7C /* MainViews.swift in Sources */,
 				411D9CC72D5DFD8300465CBC /* ShellError.swift in Sources */,
 				411F373B2B55B77100CC05E6 /* LibraryFolders.swift in Sources */,
+				4176E7E72F609243001547D7 /* OptionalKeyboardShortcut.swift in Sources */,
 				41D1E4DE2B71769700AE2E55 /* AirtableDBModel.swift in Sources */,
 				41D1E4E22B729ED500AE2E55 /* PlatformInfoTextField.swift in Sources */,
 				411F37472B56F11400CC05E6 /* InstallShareDestinationView.swift in Sources */,
@@ -1268,6 +1283,7 @@
 				41D1E4EB2B742BA000AE2E55 /* NotionFormView.swift in Sources */,
 				41C839852B52C9E300C6B133 /* DocumentController.m in Sources */,
 				417915062B75547C00215688 /* DropboxSetupModel.swift in Sources */,
+				4176E7E42F608D51001547D7 /* ApplyPickerSizing.swift in Sources */,
 				410840002BC45FBC008B7B03 /* ImageStrip.swift in Sources */,
 				41EBAD502AF7B6F200E6AF7C /* WindowSize.swift in Sources */,
 				41BFEB792B1F925800C8B551 /* ExportProcess.swift in Sources */,
@@ -1276,6 +1292,7 @@
 				41176ADA2B7BDA9D0093F4C8 /* QueueModel.swift in Sources */,
 				41C538942AE1AFF200E8A8A1 /* SettingsContainer.swift in Sources */,
 				41176AE02B7BF0420093F4C8 /* QueueView.swift in Sources */,
+				4176E7E92F61772A001547D7 /* FixedPicker.swift in Sources */,
 				41FAC46A2CD564520034FC09 /* UserDefaultsArray.swift in Sources */,
 				419EC4A82C07D237003DB6E8 /* DeminiaturizeAllWindows.swift in Sources */,
 				411F37632B5C5F5D00CC05E6 /* FileCommands.swift in Sources */,
@@ -1316,7 +1333,6 @@
 				41086A112BD5653F00E0CE09 /* TaskExtension.swift in Sources */,
 				4155B6C22B5D309C008D3505 /* NotificationManager.swift in Sources */,
 				41D1E4DC2B71763D00AE2E55 /* NotionDBModel.swift in Sources */,
-				4188C3032BE2A4B200DA1806 /* LabeledFormElement.swift in Sources */,
 				474595372A40113000EF100D /* LabeledTextboxStepperForm.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

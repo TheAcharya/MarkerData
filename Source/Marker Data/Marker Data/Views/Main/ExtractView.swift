@@ -347,6 +347,7 @@ public struct ExtractView: View {
                         
                         ExportProfilePicker()
                             .labelsHidden()
+                            .applyPickerSizing()
                         
                         HStack {
                             Text("Save data locally or upload to database")

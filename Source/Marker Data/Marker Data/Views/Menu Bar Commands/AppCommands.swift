@@ -26,10 +26,7 @@ struct AppCommands: Commands {
             CheckForUpdatesView(updater: updaterController.updater) {
                 Text("Check for Updates...")
             }
-            .if(updateAvailable) { view in
-                view
-                    .badge("Update Available")
-            }
+            .badge(updateAvailable ? "Update Available" : nil)
         }
     }
 }

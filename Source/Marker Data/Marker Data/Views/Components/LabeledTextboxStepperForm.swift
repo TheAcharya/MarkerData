@@ -47,14 +47,14 @@ struct LabeledTextboxStepperForm<Value, Label, Format>: View where
             )
             .multilineTextAlignment(.center)
             .textFieldStyle(.roundedBorder)
-            .formControlLeadingAlignmentGuide()
             .frame(width: textFieldWidth)
-            
+
             Stepper(
                 "",
                 value: $value,
                 in: range
             )
+            .labelsHidden()
             .padding(.leading, -10)
         }
 

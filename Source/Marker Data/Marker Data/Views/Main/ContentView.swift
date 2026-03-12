@@ -46,16 +46,7 @@ struct ContentView: View {
                         .tag(MainViews.label)
 
                     Label("Configurations", systemImage: "briefcase")
-                        .if({
-                            return settings.unsavedChanges
-                        }()) { view in
-                            view
-                                .badge(
-                                Text("Changed")
-                                    .font(.system(size: 7, weight: .black))
-                                    .foregroundStyle(.orange)
-                            )
-                        }
+                        .badge(settings.unsavedChanges ? changedLabel : nil)
                         .tag(MainViews.configurations)
 
                     Label("Databases", systemImage: "server.rack")
@@ -141,6 +132,12 @@ struct ContentView: View {
         } message: {
             Text("Marker Data must be installed in the Applications folder to run correctly. Please move the application to the Applications folder and try again.")
         }
+    }
+    
+    var changedLabel: Text {
+        Text("Changed")
+            .font(.system(size: 7, weight: .black))
+            .foregroundStyle(.orange)
     }
 }
 
