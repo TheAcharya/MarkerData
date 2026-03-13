@@ -43,7 +43,6 @@ struct ConfigurationSettingsView: View {
         }
         .padding()
         .overlayHelpButton(url: Links.configurationSettingsURL)
-        .navigationTitle("Configuration Settings")
         .onAppear {
             // Set view models settings
             confModel.settings = self.settings
@@ -125,7 +124,7 @@ struct ConfigurationSettingsView: View {
                     Color.green
                 }
             } else {
-                Color.accentColor
+                Color.accent
             }
             
             Label(
@@ -165,14 +164,18 @@ struct ConfigurationSettingsView: View {
                 }
             } label: {
                 Image(systemName: "plus")
+                    .frame(minHeight: 16)
             }
+            .accessibilityLabel("Add Configuration")
             
             // Remove configuration button
             Button {
                showRemoveConfigurationConfirm = true
             } label: {
                 Image(systemName: "minus")
+                    .frame(minHeight: 16)
             }
+            .accessibilityLabel("Remove Configuration")
             .disabled(selectedStore == nil || selectedStore?.isDefault() ?? false)
 
             Divider()
@@ -219,6 +222,7 @@ struct ConfigurationSettingsView: View {
                 .frame(width: 500)
                 .padding()
         }
+        .frame(height: 30)
     }
     
     /// Opens the configurations directory in Finder

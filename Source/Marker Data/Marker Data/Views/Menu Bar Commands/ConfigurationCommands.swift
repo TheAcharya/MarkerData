@@ -52,6 +52,19 @@ struct ConfigurationCommands: Commands {
             Text("Select Configuration")
             
             ForEach(settings.configurations) { store in
+                var shortcut: KeyboardShortcut? {
+                    guard settings.keyboardShortcuts.contains(store.name) else {
+                        return nil
+                    }
+                    
+                    guard let shortcutIndex = settings.keyboardShortcuts.firstIndex(of: store.name) else {
+                        return nil
+                    }
+                    
+                    let key = KeyEquivalent("\(shortcutIndex + 1)".first ?? "0")
+                    return KeyboardShortcut(key)
+                }
+                
                 Button {
                     do {
                         try settings.load(store)
@@ -66,13 +79,7 @@ struct ConfigurationCommands: Commands {
                     }
                 }
                 .labelStyle(.titleAndIcon)
-                .if(settings.keyboardShortcuts.contains(store.name)) { view in
-                    let shortcutIndex = settings.keyboardShortcuts.firstIndex(of: store.name) ?? 0
-                    let shortcut = KeyEquivalent("\(shortcutIndex + 1)".first ?? "0")
-
-                    return view
-                        .keyboardShortcut(shortcut, modifiers: .command)
-                }
+                .optionalKeyboardShortcut(shortcut)
             }
         }
     }

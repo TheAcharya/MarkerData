@@ -39,7 +39,6 @@ struct ExportProfilePicker: View {
                 }
             }
         }
-        .labelStyle(.titleAndIcon)
         // To avoid getting errors like Picker: the selection ... is invalid
         // Uncomment the code below to set the selection with a delay
         // We need to wait until the picker is fully initialized to not get the error

@@ -29,19 +29,19 @@ struct UpdateSettingsView: View {
 
             Text("Current app version: \(Bundle.main.version) (\(Bundle.main.buildNumber))")
                 .font(.system(.body, weight: .light))
-                .foregroundColor(.secondary)
+                .foregroundStyle(.secondary)
 
             Spacer()
                 .frame(height: 20)
 
             Toggle("Automatically check for updates", isOn: $automaticallyChecksForUpdates)
-                .onChange(of: automaticallyChecksForUpdates) { newValue in
+                .onChange(of: automaticallyChecksForUpdates) { oldValue, newValue in
                     updater.automaticallyChecksForUpdates = newValue
                 }
 
             Toggle("Automatically download updates", isOn: $automaticallyDownloadsUpdates)
                 .disabled(!automaticallyChecksForUpdates)
-                .onChange(of: automaticallyDownloadsUpdates) { newValue in
+                .onChange(of: automaticallyDownloadsUpdates) { oldValue, newValue in
                     updater.automaticallyDownloadsUpdates = newValue
                 }
         }

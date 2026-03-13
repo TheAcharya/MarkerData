@@ -31,87 +31,88 @@ struct ContentView: View {
             List(selection: $sidebarSelection) {
                 Label("Extract", systemImage: "house")
                     .tag(MainViews.extract)
-                
+
                 Label("Queue", systemImage: "tray.and.arrow.up")
                     .tag(MainViews.queue)
-                
+
                 Section("Export Settings") {
                     Label("General", systemImage: "gearshape")
                         .tag(MainViews.general)
-                    
+
                     Label("Image", systemImage: "photo")
                         .tag(MainViews.image)
-                    
+
                     Label("Label", systemImage: "tag")
                         .tag(MainViews.label)
-                    
+
                     Label("Configurations", systemImage: "briefcase")
-                        .if({
-                            return settings.unsavedChanges
-                        }()) { view in
-                            view
-                                .badge(
-                                Text("Changed")
-                                    .font(.system(size: 7, weight: .black))
-                                    .foregroundColor(.orange)
-                            )
-                        }
+                        .badge(settings.unsavedChanges ? changedLabel : nil)
                         .tag(MainViews.configurations)
-                    
+
                     Label("Databases", systemImage: "server.rack")
                         .tag(MainViews.databases)
-                    
+
                     Label("About", systemImage: "info.circle")
                         .tag(MainViews.about)
                 }
             }
-            .frame(minWidth: WindowSize.sidebarWidth)
+            .navigationSplitViewColumnWidth(WindowSize.sidebarWidth)
         } detail: {
             Group {
                 switch sidebarSelection {
                 case .extract:
                     ExtractView(extractionModel: extractionModel)
+                        .navigationTitle("Extract")
                 case .queue:
                     QueueView(queueModel: queueModel)
+                        .navigationTitle("Queue")
                 case .general:
                     GeneralSettingsView(updater: updater)
+                        .navigationTitle("General Settings")
                 case .image:
                     ImageSettingsView()
+                        .navigationTitle("Image Settings")
                 case .label:
                     LabelSettingsView()
+                        .navigationTitle("Label Settings")
                 case .configurations:
                     ConfigurationSettingsView()
+                        .navigationTitle("Configuration Settings")
                 case .databases:
                     DatabaseSettingsView()
+                        .navigationTitle("Database Settings")
                 case .about:
                     AboutView()
+                        .navigationTitle("About")
                 }
             }
             .frame(width: WindowSize.detailWidth)
         }
         // Configuration picker
         .toolbar {
-            Picker("Configuration", selection: $selectedConfigurationName) {
-                ForEach(settings.configurations) { store in
-                    Text(store.name)
-                        .tag(store.name)
-                }
-            }
-            .onAppear {
-                selectedConfigurationName = settings.store.name
-            }
-            // React to changes
-            .onReceive(settings.objectWillChange) { _ in
-                selectedConfigurationName = settings.store.name
-            }
-            // Load configuration
-            .onChange(of: selectedConfigurationName) { newStoreName in
-                do {
-                    if let store = settings.findByName(newStoreName) {
-                        try settings.load(store)
+            ToolbarItem {
+                Picker("Configuration", selection: $selectedConfigurationName) {
+                    ForEach(settings.configurations) { store in
+                        Text(store.name)
+                            .tag(store.name)
                     }
-                } catch {
-                    print("Failed to load config from menu bar")
+                }
+                .onAppear {
+                    selectedConfigurationName = settings.store.name
+                }
+                // React to changes
+                .onReceive(settings.objectWillChange) { _ in
+                    selectedConfigurationName = settings.store.name
+                }
+                // Load configuration
+                .onChange(of: selectedConfigurationName) { oldValue, newStoreName in
+                    do {
+                        if let store = settings.findByName(newStoreName) {
+                            try settings.load(store)
+                        }
+                    } catch {
+                        print("Failed to load config from menu bar")
+                    }
                 }
             }
         }
@@ -131,6 +132,12 @@ struct ContentView: View {
         } message: {
             Text("Marker Data must be installed in the Applications folder to run correctly. Please move the application to the Applications folder and try again.")
         }
+    }
+    
+    var changedLabel: Text {
+        Text("Changed")
+            .font(.system(size: 7, weight: .black))
+            .foregroundStyle(.orange)
     }
 }
 

@@ -7,7 +7,7 @@
 
 import DominantColors
 
-extension DeltaEFormula: Codable {}
+extension DeltaEFormula: @retroactive Codable {}
 
 extension DeltaEFormula {
     var name: String {

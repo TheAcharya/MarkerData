@@ -1,0 +1,114 @@
+{
+  "fill" : "automatic",
+  "groups" : [
+    {
+      "layers" : [
+        {
+          "blend-mode-specializations" : [
+            {
+              "appearance" : "tinted",
+              "value" : "normal"
+            }
+          ],
+          "fill-specializations" : [
+            {
+              "value" : "none"
+            },
+            {
+              "appearance" : "tinted",
+              "value" : "none"
+            }
+          ],
+          "glass" : false,
+          "hidden" : false,
+          "image-name" : "Marker-Data-Liquid-Glass-L01.png",
+          "name" : "Marker Data Icon",
+          "opacity-specializations" : [
+            {
+              "value" : 1
+            },
+            {
+              "appearance" : "tinted",
+              "value" : 1
+            }
+          ],
+          "position" : {
+            "scale" : 0.45,
+            "translation-in-points" : [
+              -12,
+              -60
+            ]
+          }
+        }
+      ],
+      "name" : "Marker Data Icon",
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0.5
+      },
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.5
+      }
+    },
+    {
+      "layers" : [
+        {
+          "blend-mode-specializations" : [
+            {
+              "value" : "normal"
+            },
+            {
+              "appearance" : "tinted",
+              "value" : "normal"
+            }
+          ],
+          "fill-specializations" : [
+            {
+              "value" : "none"
+            },
+            {
+              "appearance" : "dark",
+              "value" : "none"
+            },
+            {
+              "appearance" : "tinted",
+              "value" : "none"
+            }
+          ],
+          "glass" : false,
+          "hidden" : false,
+          "image-name" : "Marker-Data-Liquid-Glass-L02.png",
+          "name" : "Background",
+          "opacity-specializations" : [
+            {
+              "appearance" : "tinted",
+              "value" : 1
+            }
+          ],
+          "position" : {
+            "scale" : 0.38,
+            "translation-in-points" : [
+              0,
+              18
+            ]
+          }
+        }
+      ],
+      "name" : "Background",
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0.5
+      },
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.5
+      }
+    }
+  ],
+  "supported-platforms" : {
+    "squares" : [
+      "macOS"
+    ]
+  }
+}

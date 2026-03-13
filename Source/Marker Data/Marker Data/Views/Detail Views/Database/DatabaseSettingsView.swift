@@ -36,7 +36,6 @@ struct DatabaseSettingsView: View {
         }
         .padding()
         .overlayHelpButton(url: Links.databaseSettingsURL)
-        .navigationTitle("Database Settings")
         .sheet(isPresented: $showCreateProfileSheet) {
             CreateDBProfileSheet(
                 editProfile: $editProfile,
@@ -68,7 +67,7 @@ struct DatabaseSettingsView: View {
             TableColumn("Platform", value: \.plaform.rawValue)
         }
         .clipShape(RoundedRectangle(cornerRadius: 10))
-        .onChange(of: sortOrder) { newOrder in
+        .onChange(of: sortOrder) { oldValue, newOrder in
             databaseManager.profiles.sort(using: newOrder)
         }
     }
@@ -80,6 +79,7 @@ struct DatabaseSettingsView: View {
                 showCreateProfileSheet = true
             } label: {
                 Image(systemName: "plus")
+                    .frame(minHeight: 16)
             }
             
             // Remove profile button
@@ -87,6 +87,7 @@ struct DatabaseSettingsView: View {
                showDeleteConfirm = true
             } label: {
                 Image(systemName: "minus")
+                    .frame(minHeight: 16)
             }
             .disabled(selection == nil)
             

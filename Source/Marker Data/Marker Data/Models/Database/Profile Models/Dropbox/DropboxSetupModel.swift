@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import AppKit
 import OSLog
 
 @MainActor
@@ -46,9 +47,12 @@ class DropboxSetupModel: ObservableObject {
         try data.write(to: URL.dropboxTokenJSON)
     }
     
+    /// Launches Terminal with the airlift Dropbox auth command using a .command file,
+    /// avoiding NSAppleScript which requires Apple Events permissions
+    /// that macOS Tahoe restricts.
     private func launchTerminal() throws {
         guard let airliftURL = Bundle.main.url(forResource: "airlift", withExtension: nil) else {
-            Self.logger.error("Failed to upload to Notion: csv2notion executable not found")
+            Self.logger.error("Failed to find airlift executable")
             throw DatabaseUploadError.csv2notionExecutableNotFound
         }
         
@@ -57,18 +61,22 @@ class DropboxSetupModel: ObservableObject {
         let logPath = URL.logsFolder
             .appendingPathComponent("airlift_log.txt", conformingTo: .plainText).path(percentEncoded: false)
         
-        let scriptSource = """
-tell application "Terminal"
-    activate
-    do script "\\"\(executablePath)\\" --dropbox-token \\"\(dropboxJSONPath)\\" --dropbox-refresh-token --log \\"\(logPath)\\" --verbose"
-end tell
-"""
-        let script = NSAppleScript(source: scriptSource)
-        var errorInfo: NSDictionary? = nil
-        let result = script?.executeAndReturnError(&errorInfo)
+        let scriptContent = """
+        #!/bin/bash
+        "\(executablePath)" --dropbox-token "\(dropboxJSONPath)" --dropbox-refresh-token --log "\(logPath)" --verbose
+        """
         
-        if result == nil {
-            Self.logger.error("Failed to launch Terminal. \(errorInfo.debugDescription)")
+        let scriptURL = FileManager.default.temporaryDirectory
+            .appendingPathComponent("marker_data_dropbox_setup.command")
+        
+        try scriptContent.write(to: scriptURL, atomically: true, encoding: .utf8)
+        try FileManager.default.setAttributes(
+            [.posixPermissions: 0o755],
+            ofItemAtPath: scriptURL.path(percentEncoded: false)
+        )
+        
+        if !NSWorkspace.shared.open(scriptURL) {
+            Self.logger.error("Failed to open .command file in Terminal")
             throw DropboxError.terminalLaunchError
         }
     }
@@ -105,8 +113,19 @@ enum AirtableAuthRequestStatus {
     case success
 }
 
-enum DropboxError: Error {
+enum DropboxError: Error, LocalizedError {
     case airliftGetURLError
     case failedToFindURL
     case terminalLaunchError
+
+    var errorDescription: String? {
+        switch self {
+        case .airliftGetURLError:
+            return "Failed to get airlift URL."
+        case .failedToFindURL:
+            return "Failed to find URL."
+        case .terminalLaunchError:
+            return "Failed to launch Terminal. Please ensure Marker Data has permission to open Terminal in System Settings > Privacy & Security."
+        }
+    }
 }

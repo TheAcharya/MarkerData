@@ -1,0 +1,31 @@
+# Marker Data – Cursor rules
+
+You are working in the **Marker Data** repository: a macOS Swift/SwiftUI app that extracts Final Cut Pro marker metadata (via MarkersExtractor), optionally renders images and color swatches, and uploads to Notion/Airtable via bundled CLIs. It also includes a Final Cut Pro Workflow Extension and Share Destination integration.
+
+## Project layout
+- Main app: `Source/Marker Data/Marker Data/`
+- Workflow Extension: `Source/Marker Data/Workflow Extension/`
+- FCP Share Destination (Swift + Obj-C): `Source/Marker Data/Marker Data/FCP Share Destination/`
+- Bundled binaries (do not modify): `Source/Marker Data/Marker Data/Resources/airlift`, `csv2notion_neo`
+- Build: open `Source/Marker Data/Marker Data.xcodeproj`. Target **Apple Silicon**; CI uses Xcode 26.3.0 on macos-26.
+
+## Core context
+- Read **AGENT.md** for entry points, build/CI, and “when you change X, also change Y”.
+- Read **ARCHITECTURE.md** for modules, data flows, persistence, and FCP integration behavior.
+
+## Swift / SwiftUI conventions
+- Format Swift with SwiftFormat (see CONTRIBUTING.md).
+- Models that drive UI are `@MainActor` and mutate on main; extraction uses `TaskGroup` with cancellation.
+- Settings live in `~/Library/Application Support/Marker Data/` (see `URLExtension.swift`). Schema is versioned; any change to `SettingsStore` must:
+  - Bump `SettingsStore.version`
+  - Add a migration in `SettingsVersioningManager.upgradeVersion(...)`.
+
+## Pitfalls to avoid
+- Do not remove or rename persisted settings keys without a migration.
+- Do not assume behavior of `airlift` / `csv2notion_neo` beyond the CLI usage in `DatabaseUploader`.
+- Share Destination scripting contract is in `Resources/OSAScriptingDefinition.sdef` and Obj-C; Workflow Extension uses `DistributedNotificationCenter` and files under `~/Movies/Marker Data Cache/`.
+- The app warns if not run from `/Applications`; do not remove that check.
+
+## Definition of done for code changes
+- App builds (Debug and Release) for arm64.
+- Settings load and migrate; extraction works for `.fcpxml`/`.fcpxmld`; queue scan/upload still works for folders containing `extract_info.json`.

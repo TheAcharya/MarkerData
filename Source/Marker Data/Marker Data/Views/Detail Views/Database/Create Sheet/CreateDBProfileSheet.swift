@@ -76,9 +76,7 @@ struct CreateDBProfileSheet: View {
             .padding(.bottom)
             
             HStack {
-                HelpButton(action: {
-                    self.openURL(selectedPlatform == .airtable ? Links.airtableHelpURL : Links.notionHelpURL)
-                })
+                HelpButton(url: selectedPlatform == .airtable ? Links.airtableHelpURL : Links.notionHelpURL)
                 
                 Spacer()
                 

@@ -20,16 +20,14 @@ struct WorkflowExtensionView: View {
             Divider()
             
             TabView {
-                extractTabView
-                    .tabItem {
-                        Label("Extract", systemImage: "gearshape.2")
-                    }
-                
-                RolesSettingsView()
-                    .padding(8)
-                    .tabItem {
-                        Label("Roles", systemImage: "movieclapper")
-                    }
+                Tab("Extract", systemImage: "gearshape.2") {
+                    extractTabView
+                }
+
+                Tab("Roles", systemImage: "movieclapper") {
+                    RolesSettingsView()
+                        .padding(8)
+                }
             }
             .padding(.bottom)
             
@@ -37,12 +35,7 @@ struct WorkflowExtensionView: View {
         }
         .frame(width: 600, height: 400)
         .padding()
-        .overlay(alignment: .bottomTrailing) {
-            HelpButton {
-                self.openURL(URL(string: "https://markerdata.theacharya.co/user-guide/workflow-extension/")!)
-            }
-            .padding([.trailing, .bottom], 10)
-        }
+        .overlayHelpButton(url: URL(string: "https://markerdata.theacharya.co/user-guide/workflow-extension/")!)
     }
     
     private var titleHeaderView: some View {
@@ -71,7 +64,7 @@ struct WorkflowExtensionView: View {
             
             if !self.errorMessage.isEmpty {
                 Text("Failed to receive file: \(self.errorMessage)")
-                    .foregroundColor(Color.red)
+                    .foregroundStyle(.red)
             }
             
             Spacer()

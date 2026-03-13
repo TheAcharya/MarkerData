@@ -27,11 +27,11 @@ on:
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: macos-26
 
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
 
     - name: List Xcode Installations
       run: sudo ls -1 /Applications | grep "Xcode"

@@ -10,17 +10,17 @@ on:
 
 jobs:
   build:
-    runs-on: macos-15
+    runs-on: macos-26
 
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
 
     - name: List Xcode Installations
       run: sudo ls -1 /Applications | grep "Xcode"
       
-    - name: Select Xcode 16.4
-      run: sudo xcode-select -s /Applications/Xcode_16.4.0.app/Contents/Developer
+    - name: Select Xcode 26.3.0
+      run: sudo xcode-select -s /Applications/Xcode_26.3.0.app/Contents/Developer
     
     - name: Change to Xcode Project Directory
       run: cd Source/Marker\ Data
@@ -196,7 +196,7 @@ jobs:
         rm -rf test_build/Marker\ Data.app
 
     - name: Save App as Artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: Marker Data
         path: test_build

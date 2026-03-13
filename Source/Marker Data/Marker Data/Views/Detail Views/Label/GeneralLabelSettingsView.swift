@@ -7,131 +7,147 @@
 
 import SwiftUI
 import MarkersExtractor
+import ColorWellKit
 
 struct GeneralLabelSettingsView: View {
     @EnvironmentObject var settings: SettingsContainer
 
-    let intFormatter: NumberFormatter = {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .decimal
-        return formatter
-    }()
-    
-    var fontSizeBinding: Binding<String> {
-        .init(get: {
-            "\(settings.store.fontSize)"
-        }, set: {
-            settings.store.fontSize = Int($0) ?? settings.store.fontSize
-        })
-    }
-    
-    var strokeSizeBinding: Binding<String> {
-        .init(get: {
-            "\(settings.store.strokeSize)"
-        }, set: {
-            settings.store.strokeSize = Int($0) ?? settings.store.strokeSize
-        })
-    }
-    
-    @State var testColor: Color = .white
-
     var body: some View {
-        VStack(alignment: .formControlAlignment) {
-            fontSettingsView
-
-            Divider()
-                .padding(.vertical, 10)
-
-            strokeSettingsView
-
-            Divider()
-                .padding(.vertical, 10)
-
-            alignmentSettingsView
-        }
-        .navigationTitle("Label Settings")
-    }
-
-    var fontSettingsView: some View {
-        Group {
-            Text("Font")
-                .font(.headline)
-
-            LabeledFormElement("Typeface") {
-                FontNamePicker()
-                    .frame(width: 150)
-            }
-
-            LabeledFormElement("Style") {
-                FontStylePicker()
-                    .frame(width: 150)
-            }
-
-            LabeledTextboxStepperForm(
-                label: "Size:",
-                value: $settings.store.fontSize,
-                in: 6...100,
-                format: .number,
-                textFieldWidth: 50
-            )
-
-            // Color & Opacity
-            LabeledFormElement("Color & Opacity") {
-                ColorPickerOpacitySliderForm(
-                    color: $settings.store.fontColor,
-                    opacity: $settings.store.fontColorOpacity
-                )
-            }
+        Form {
+            FontSettingsView()
+            StrokeSettingsView()
+            AlignmentSettingsView()
         }
     }
 
-    var strokeSettingsView: some View {
-        Group {
-            Text("Stroke")
-                .font(.headline)
-
-            HStack {
-                LabeledTextboxStepperForm(
-                    label: "Size:",
-                    value: $settings.store.strokeSize,
-                    in: 0...100,
-                    format: .number,
-                    textFieldWidth: 50
-                )
-                .disabled(settings.store.isStrokeSizeAuto)
-
-                Divider()
-                    .frame(height: 16)
-
-                Toggle("Auto", isOn: $settings.store.isStrokeSizeAuto)
+    struct FontSettingsView: View {
+        @EnvironmentObject var settings: SettingsContainer
+        
+        var body: some View {
+            Section(header: SectionHeader("Font")) {
+                LabeledContent("Typeface") {
+                    FontNamePicker()
+                        .labelsHidden()
+                }
+                
+                LabeledContent("Style") {
+                    FontStylePicker()
+                }
+                
+                LabeledContent("Size") {
+                    HStack {
+                        TextField(
+                            "",
+                            value: $settings.store.fontSize,
+                            format: .number
+                        )
+                        .multilineTextAlignment(.center)
+                        .textFieldStyle(.roundedBorder)
+                        .frame(width: 50)
+                        
+                        Stepper(
+                            "",
+                            value: $settings.store.fontSize,
+                            in: 6...100
+                        )
+                        .labelsHidden()
+                    }
+                }
+                
+                LabeledContent("Color & Opacity") {
+                    ColorPickerOpacitySliderForm(
+                        color: $settings.store.fontColor,
+                        opacity: $settings.store.fontColorOpacity
+                    )
+                    .labelsHidden()
+                }
             }
-
-            ColorPickerForm(color: $settings.store.strokeColor)
         }
     }
 
-    var alignmentSettingsView: some View {
-        Group {
-            Text("Alignment")
-                .font(.headline)
+    struct StrokeSettingsView: View {
+        @EnvironmentObject var settings: SettingsContainer
+        
+        var body: some View {
+            Section(header: SectionHeader("Stroke")) {
+                LabeledContent("Size") {
+                    HStack {
+                        TextField(
+                            "",
+                            value: $settings.store.strokeSize,
+                            format: .number
+                        )
+                        .multilineTextAlignment(.center)
+                        .textFieldStyle(.roundedBorder)
+                        .frame(width: 50)
+                        
+                        Stepper(
+                            "",
+                            value: $settings.store.strokeSize,
+                            in: 0...100
+                        )
+                        .labelsHidden()
+                        .padding(.leading, -10)
+                        
+                        Divider()
+                            .frame(height: 16)
+                        
+                        Toggle("Auto", isOn: $settings.store.isStrokeSizeAuto)
+                    }
+                    .disabled(settings.store.isStrokeSizeAuto)
+                }
+                
+                LabeledContent("Color") {
+                    ColorWell(selection: $settings.store.strokeColor, supportsOpacity: false)
+                        .colorWellStyle(.minimal)
+                }
+            }
+        }
+    }
 
-            LabeledFormElement("Horizontal") {
-                Picker("", selection: $settings.store.horizonalAlignment) {
+    struct AlignmentSettingsView: View {
+        @EnvironmentObject var settings: SettingsContainer
+        
+        var body: some View {
+            Section(header: SectionHeader("Alignment")) {
+                FixedPicker("Horizontal", selection: $settings.store.horizonalAlignment) {
                     ForEach(MarkerLabelProperties.AlignHorizontal.allCases) { item in
                         Text(item.displayName).tag(item)
                     }
                 }
-                .frame(width: 150)
-            }
-
-            LabeledFormElement("Vertical") {
-                Picker("", selection: $settings.store.verticalAlignment) {
+                
+                FixedPicker("Vertical", selection: $settings.store.verticalAlignment) {
                     ForEach(MarkerLabelProperties.AlignVertical.allCases) { item in
                         Text(item.displayName).tag(item)
                     }
                 }
-                .frame(width: 150)
             }
+        }
+    }
+    
+    struct FontNamePicker: View {
+        @EnvironmentObject var settings: SettingsContainer
+
+        var body: some View {
+            FixedPicker("Typeface", selection: $settings.store.fontNameType) {
+                ForEach(FontNameType.allCases) { fontNameType in
+                    Text(fontNameType.displayName).tag(fontNameType)
+                }
+            }
+        }
+    }
+    
+    struct FontStylePicker: View {
+        @EnvironmentObject var settings: SettingsContainer
+
+        var body: some View {
+            Picker("Style", selection: $settings.store.fontStyleType) {
+                ForEach(FontStyleType.allCases) { fontStyleType in
+                    Text(fontStyleType.displayName).tag(fontStyleType)
+                }
+            }
+            .labelsHidden()
+            .applyPickerSizing()
         }
     }
 }

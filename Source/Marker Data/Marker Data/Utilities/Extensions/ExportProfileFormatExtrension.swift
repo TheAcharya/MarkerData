@@ -8,7 +8,7 @@
 import Foundation
 import MarkersExtractor
 
-extension ExportProfileFormat: Codable {
+extension ExportProfileFormat: @retroactive Codable {
     static var allCasesInUIOrder: [ExportProfileFormat] {
         let inUIOrder = [Self.csv, Self.tsv, Self.xlsx, Self.midi, Self.markdown, Self.srt, Self.youtube, Self.compressor, Self.notion, Self.airtable]
         assert(inUIOrder.count == Self.allCases.count - 1, "ExportProfileFormat.allCasesInUIOrder has invalid number of elements")

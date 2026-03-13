@@ -24,12 +24,9 @@ struct AppCommands: Commands {
 
         CommandGroup(before: .systemServices) {
             CheckForUpdatesView(updater: updaterController.updater) {
-                Text("Check for Updates...")
+                Label("Check for Updates...", systemImage: "arrow.trianglehead.clockwise.rotate.90")
             }
-            .if(updateAvailable) { view in
-                view
-                    .badge("Update Available")
-            }
+            .badge(updateAvailable ? "Update Available" : nil)
         }
     }
 }
