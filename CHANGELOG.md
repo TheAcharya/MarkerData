@@ -8,7 +8,7 @@
 **Marker Data** no longer officially supports macOS Sonoma starting with version 2.0.0.
 
 **🔨 Improvements:**
-- Updated Marker Data's GUI to Liquid Glass
+- Overhaul Marker Data's GUI to Liquid Glass
 - Updated Marker Data's application icon for macOS Tahoe
 - Excel export profile now has the ability to automatically embed images
 - Added support and compatibility for FCPXML v1.14 (Final Cut Pro 12)
@@ -16,10 +16,12 @@
 - Updated Notion Module CSV2Notion Neo to version 2.1.0
 - Updated Pagemaker Module to version 1.1.1
 - Updated core dependencies
-- Codebase updates for Xcode 26
+- Codebase updates for Xcode 26.3
 
 **🐞 Bug Fix:**
 - Removed unintended exposure of the XML Path column in Notion Database Profile
+- Fixed an issue that prevented macOS notifications for Marker Data
+- Fixed an issue that casued Dropbox setup to fail on macOS Tahoe due to Apple restrictions
 
 ---
 
