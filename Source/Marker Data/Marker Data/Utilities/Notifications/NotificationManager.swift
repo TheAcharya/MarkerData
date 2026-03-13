@@ -9,17 +9,43 @@ import Foundation
 import UserNotifications
 import OSLog
 
-struct NotificationManager {
+class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
     private static let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "NotificationManager")
-    
+
+    nonisolated(unsafe) static let shared = NotificationManager()
+
+    private override init() {
+        super.init()
+    }
+
+    /// Sets up the notification center delegate so notifications can be displayed while the app is in the foreground.
+    static func setupDelegate() {
+        UNUserNotificationCenter.current().delegate = shared
+    }
+
+    // MARK: - UNUserNotificationCenterDelegate
+
+    func userNotificationCenter(
+        _ center: UNUserNotificationCenter,
+        willPresent notification: UNNotification
+    ) async -> UNNotificationPresentationOptions {
+        [.banner, .sound]
+    }
+
+    // MARK: - Send Notification
+
     static func sendNotification(taskFinished: Bool, title: String, body: String = "") async {
-        let frequencyInt = UserDefaults.standard.integer(forKey: "notificationFrequency")
-        guard let notificationFrequency = NotificationFrequency(rawValue: frequencyInt) else {
-            Self.logger.error("Failed to read notification frequency settings")
+        let notificationFrequency: NotificationFrequency
+        do {
+            let data = try Data(contentsOf: URL.preferencesJSON)
+            let store = try JSONDecoder().decode(SettingsStore.self, from: data)
+            notificationFrequency = store.notificationFrequency
+        } catch {
+            logger.error("Failed to read notification frequency settings: \(error.localizedDescription)")
             return
         }
-        
-        // Check if we should send notifiction
+
+        // Check if we should send notification
         // else return
         switch notificationFrequency {
         case .never:
@@ -31,21 +57,22 @@ struct NotificationManager {
         case .allSteps:
             break
         }
-        
+
         let center = UNUserNotificationCenter.current()
         let settings = await center.notificationSettings()
 
-        guard (settings.authorizationStatus == .authorized) ||
-                (settings.authorizationStatus == .provisional) else {
-
+        if settings.authorizationStatus != .authorized && settings.authorizationStatus != .provisional {
             // Ask for authorization
             do {
-                try await center.requestAuthorization(options: [.alert, .sound, .badge])
+                let granted = try await center.requestAuthorization(options: [.alert, .sound, .badge])
+                guard granted else {
+                    logger.warning("Notification authorization denied by user")
+                    return
+                }
             } catch {
                 logger.error("Failed to request notification authorization. Error: \(error.localizedDescription)")
+                return
             }
-
-            return
         }
 
         let content = UNMutableNotificationContent()
@@ -54,13 +81,12 @@ struct NotificationManager {
         content.body = body
         content.sound = .default
 
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: .leastNonzeroMagnitude, repeats: false)
-        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: nil)
 
         do {
-            try await UNUserNotificationCenter.current().add(request)
+            try await center.add(request)
         } catch {
-            logger.error("Failed to send notication. Error: \(error.localizedDescription)")
+            logger.error("Failed to send notification. Error: \(error.localizedDescription)")
         }
     }
 }
