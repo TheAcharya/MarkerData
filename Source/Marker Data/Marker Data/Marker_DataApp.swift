@@ -52,6 +52,9 @@ struct Marker_DataApp: App {
         self._extractionModel = StateObject(wrappedValue: extractionModel)
         self._databaseManager = StateObject(wrappedValue: databaseManager)
         self._queueModel = StateObject(wrappedValue: queueModel)
+
+        // Enable foreground notification display
+        NotificationManager.setupDelegate()
     }
 
     @NSApplicationDelegateAdaptor(ApplicationDelegate.self) var appDelegate
