@@ -13,6 +13,7 @@ struct DropboxSetupView: View {
     @StateObject var dropboxSetupModel = DropboxSetupModel()
     
     @State var showAppKeyError = false
+    @State var appKeyErrorMessage = ""
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -36,6 +37,7 @@ struct DropboxSetupView: View {
                             do {
                                 try await dropboxSetupModel.saveAppKeyAndLaunchTerminal(appKey)
                             } catch {
+                                appKeyErrorMessage = error.localizedDescription
                                 showAppKeyError = true
                                 dropboxSetupModel.authRequestStatus = .notInitiated
                             }
@@ -57,7 +59,9 @@ struct DropboxSetupView: View {
                         .foregroundStyle(.green)
                 }
             }
-            .alert("Failed to save app key", isPresented: $showAppKeyError) {}
+            .alert("Dropbox Setup Failed", isPresented: $showAppKeyError) {} message: {
+                Text(appKeyErrorMessage)
+            }
             
             Text("Clicking **Continue** will launch the Terminal. Follow the on-screen instructions for the rest of the setup process.")
                 .fontWeight(.thin)
