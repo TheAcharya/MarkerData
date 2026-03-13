@@ -90,7 +90,7 @@ struct ContentView: View {
         }
         // Configuration picker
         .toolbar {
-            ToolbarItem(placement: .navigation) {
+            ToolbarItem {
                 Picker("Configuration", selection: $selectedConfigurationName) {
                     ForEach(settings.configurations) { store in
                         Text(store.name)

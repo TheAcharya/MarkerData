@@ -27,6 +27,7 @@ struct GeneralLabelSettingsView: View {
             Section("Font") {
                 LabeledContent("Typeface") {
                     FontNamePicker()
+                        .labelsHidden()
                 }
                 
                 LabeledContent("Style") {
@@ -50,7 +51,6 @@ struct GeneralLabelSettingsView: View {
                             in: 6...100
                         )
                         .labelsHidden()
-                        .padding(.leading, -10)
                     }
                 }
                 
@@ -59,6 +59,7 @@ struct GeneralLabelSettingsView: View {
                         color: $settings.store.fontColor,
                         opacity: $settings.store.fontColorOpacity
                     )
+                    .labelsHidden()
                 }
             }
         }
