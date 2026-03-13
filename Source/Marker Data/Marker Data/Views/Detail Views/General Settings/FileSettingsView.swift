@@ -31,7 +31,7 @@ struct FileSettingsView: View {
         @EnvironmentObject var settings: SettingsContainer
         
         var body: some View {
-            Section("Export Destination") {
+            Section(header: SectionHeader("Export Destination")) {
                 LabeledContent("Export Folder") {
                     ExportDestinationPicker()
                         .frame(width: WindowSize.pickerWidth)
@@ -51,7 +51,7 @@ struct FileSettingsView: View {
         @EnvironmentObject var settings: SettingsContainer
         
         var body: some View {
-            Section("Extraction Profile") {
+            Section(header: SectionHeader("Extraction Profile")) {
                 LabeledContent("Export Profile") {
                     ExportProfilePicker()
                         .labelsHidden()

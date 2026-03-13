@@ -24,7 +24,7 @@ struct GeneralLabelSettingsView: View {
         @EnvironmentObject var settings: SettingsContainer
         
         var body: some View {
-            Section("Font") {
+            Section(header: SectionHeader("Font")) {
                 LabeledContent("Typeface") {
                     FontNamePicker()
                         .labelsHidden()
@@ -69,7 +69,7 @@ struct GeneralLabelSettingsView: View {
         @EnvironmentObject var settings: SettingsContainer
         
         var body: some View {
-            Section("Stroke") {
+            Section(header: SectionHeader("Stroke")) {
                 LabeledContent("Size") {
                     HStack {
                         TextField(
@@ -109,7 +109,7 @@ struct GeneralLabelSettingsView: View {
         @EnvironmentObject var settings: SettingsContainer
         
         var body: some View {
-            Section("Alignment") {
+            Section(header: SectionHeader("Alignment")) {
                 FixedPicker("Horizontal", selection: $settings.store.horizonalAlignment) {
                     ForEach(MarkerLabelProperties.AlignHorizontal.allCases) { item in
                         Text(item.displayName).tag(item)

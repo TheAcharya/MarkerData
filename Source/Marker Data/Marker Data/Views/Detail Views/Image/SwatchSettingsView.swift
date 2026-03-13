@@ -23,7 +23,7 @@ struct SwatchSettingsView: View {
     var body: some View {
         VStack {
             Form {
-                Section("Swatch Analysis") {
+                Section(header: SectionHeader("Swatch Analysis")) {
                     Toggle("Enable Swatch", isOn: $settings.store.colorSwatchSettings.enableSwatch)
 
                     FixedPicker("Algorithm", selection: $settings.store.colorSwatchSettings.algorithm) {

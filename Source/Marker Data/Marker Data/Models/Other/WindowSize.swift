@@ -9,7 +9,7 @@ import Foundation
 
 struct WindowSize {
     static let fullWidth: CGFloat = 920
-    static let fullHeight: CGFloat = 500
+    static let fullHeight: CGFloat = 520
     static let sidebarWidth: CGFloat = 208
     static var detailWidth: CGFloat { Self.fullWidth - Self.sidebarWidth }
     static let pickerWidth: CGFloat = 216

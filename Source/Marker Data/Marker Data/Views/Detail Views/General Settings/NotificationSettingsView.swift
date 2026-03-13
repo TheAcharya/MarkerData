@@ -15,7 +15,7 @@ struct NotificationSettingsView: View {
             Spacer()
             
             Form {
-                Section("Progress Reporting") {
+                Section(header: SectionHeader("Progress Reporting")) {
                     Picker("Notification Frequency", selection: $settings.store.notificationFrequency) {
                         ForEach(NotificationFrequency.allCases) { frequency in
                             Text(frequency.displayName)

@@ -30,7 +30,7 @@ struct ImageExtractionSettingsView: View {
         @State var showNamingModeWarningPopover = false
         
         var body: some View {
-            Section("File Creation") {
+            Section(header: SectionHeader("File Creation")) {
                 LabeledContent("Naming Mode") {
                     HStack {
                         Picker("Naming Mode", selection: $settings.store.IDNamingMode) {
@@ -74,7 +74,7 @@ struct ImageExtractionSettingsView: View {
         @EnvironmentObject var settings: SettingsContainer
         
         var body: some View {
-            Section("Image Size") {
+            Section(header: SectionHeader("Image Size")) {
                 Picker("", selection: $settings.store.overrideImageSize) {
                     Text("Default")
                         .tag(OverrideImageSizeOption.noOverride)
@@ -140,7 +140,7 @@ struct ImageExtractionSettingsView: View {
         @EnvironmentObject var settings: SettingsContainer
         
         var body: some View {
-            Section("JPG") {
+            Section(header: SectionHeader("JPG")) {
                 LabeledContent("Quality") {
                     HStack {
                         TextField(
@@ -167,7 +167,7 @@ struct ImageExtractionSettingsView: View {
         @EnvironmentObject var settings: SettingsContainer
         
         var body: some View {
-            Section("GIF") {
+            Section(header: SectionHeader("GIF")) {
                 LabeledContent("FPS") {
                     HStack {
                         TextField(

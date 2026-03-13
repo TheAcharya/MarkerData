@@ -100,6 +100,7 @@
 		4176E7EA2F632E7F001547D7 /* OverlayHelpButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47411FDB2A3EA140005890FE /* OverlayHelpButton.swift */; };
 		4176E7EC2F632FA9001547D7 /* HelpButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4176E7EB2F632FA9001547D7 /* HelpButton.swift */; };
 		4176E7ED2F63326A001547D7 /* HelpButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4176E7EB2F632FA9001547D7 /* HelpButton.swift */; };
+		4176E7EF2F645320001547D7 /* SectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4176E7EE2F645320001547D7 /* SectionHeader.swift */; };
 		417914FF2B7547CE00215688 /* DropboxSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417914FE2B7547CE00215688 /* DropboxSetupView.swift */; };
 		417915022B754E1500215688 /* DropboxInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417915012B754E1500215688 /* DropboxInfo.swift */; };
 		417915062B75547C00215688 /* DropboxSetupModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417915052B75547C00215688 /* DropboxSetupModel.swift */; };
@@ -314,6 +315,7 @@
 		4176E7E62F609243001547D7 /* OptionalKeyboardShortcut.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalKeyboardShortcut.swift; sourceTree = "<group>"; };
 		4176E7E82F61772A001547D7 /* FixedPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixedPicker.swift; sourceTree = "<group>"; };
 		4176E7EB2F632FA9001547D7 /* HelpButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpButton.swift; sourceTree = "<group>"; };
+		4176E7EE2F645320001547D7 /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
 		417914FE2B7547CE00215688 /* DropboxSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxSetupView.swift; sourceTree = "<group>"; };
 		417915012B754E1500215688 /* DropboxInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxInfo.swift; sourceTree = "<group>"; };
 		417915052B75547C00215688 /* DropboxSetupModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxSetupModel.swift; sourceTree = "<group>"; };
@@ -892,6 +894,7 @@
 				419EC4B62C148642003DB6E8 /* BigButtonStyle.swift */,
 				4176E7E82F61772A001547D7 /* FixedPicker.swift */,
 				4176E7EB2F632FA9001547D7 /* HelpButton.swift */,
+				4176E7EE2F645320001547D7 /* SectionHeader.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1245,6 +1248,7 @@
 				419EC4B32C14803C003DB6E8 /* OnboardingPages.swift in Sources */,
 				41FB27002DC60D09005F8303 /* PagemakerUIDelegate.swift in Sources */,
 				4100D5E42AD1616D0081F0EC /* ColorExtension.swift in Sources */,
+				4176E7EF2F645320001547D7 /* SectionHeader.swift in Sources */,
 				9B4D90DE2A0BB11000FE7603 /* DatabaseSettingsView.swift in Sources */,
 				417914FF2B7547CE00215688 /* DropboxSetupView.swift in Sources */,
 				4155B7112B62D47B008D3505 /* NotificationSettingsView.swift in Sources */,
