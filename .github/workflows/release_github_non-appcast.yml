@@ -354,7 +354,7 @@ jobs:
         echo "VER=$VER" >> $GITHUB_ENV
 
     - name: Save DMG as Artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: marker-data-dmg
         path: ${{ env.PARENT }}/dist/dmg-builds/dmg-output/Marker-Data_${{ env.VER }}.dmg
