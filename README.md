@@ -69,6 +69,12 @@ Marker Data allows users to extract, convert & create databases from <a href="ht
 </p>
 </details>
 
+<details><summary>Send to Excel</summary>
+<p>
+<p align="center"> <img src="https://github.com/TheAcharya/MarkerData-Website/blob/main/docs/assets/md-send-to-excel-02.gif?raw=true"> </p>
+</p>
+</details>
+
 <details><summary>Create YouTube Chapters</summary>
 <p>
 <p align="center"> <img src="https://github.com/TheAcharya/MarkerData-Website/blob/main/docs/assets/md-send-to-youtube-02.gif?raw=true"> </p>
