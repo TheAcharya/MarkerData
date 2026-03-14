@@ -48,7 +48,7 @@ enum MarkerDataUninstaller {
         ]
 
         for path in folderPaths {
-            if removeIfExists(path, issues: &issues) {
+            if removeIfExists(path) {
                 deletedPaths.append(path)
             } else {
                 undeletedPaths.append(path)
@@ -61,7 +61,7 @@ enum MarkerDataUninstaller {
     }
 
     @discardableResult
-    nonisolated private static func removeIfExists(_ path: String, issues: inout [String]) -> Bool {
+    nonisolated private static func removeIfExists(_ path: String) -> Bool {
         guard FileManager.default.fileExists(atPath: path) else {
             return true
         }
@@ -69,7 +69,7 @@ enum MarkerDataUninstaller {
             try FileManager.default.trashItem(at: URL(fileURLWithPath: path), resultingItemURL: nil)
             return true
         } catch {
-            issues.append("Failed to remove (\(path)): \(error.localizedDescription)")
+            // Don't add to issues (GUI); undeleted path is still written to the log file
             return false
         }
     }

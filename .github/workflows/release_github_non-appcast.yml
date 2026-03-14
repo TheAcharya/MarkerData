@@ -112,9 +112,7 @@ jobs:
         mkdir -p "$PARENT/dist/dmg-builds/uninstaller/include"
         
         cp -R ./Distribution/dmg-builds/entitlements.plist "$PARENT/dist/dmg-builds/"
-        cp -R ./Distribution/dmg-builds/uninstaller/include/applet.icns "$PARENT/dist/dmg-builds/uninstaller/include/"
         cp -R ./Distribution/dmg-builds/uninstaller/include/entitlements.plist "$PARENT/dist/dmg-builds/uninstaller/include/"
-        cp -R ./Distribution/dmg-builds/uninstaller/include/Uninstall\ Marker\ Data.scpt "$PARENT/dist/dmg-builds/uninstaller/include/"
         cp -R ./Distribution/dmg-builds/build-marker-data-dmg.json "$PARENT/dist/dmg-builds/"
         cp -R $PARENT/dist/dmg-builds/app-build/Build/Products/${{ env.CONFIG }}/Marker\ Data.app "$PARENT/dist/dmg-builds/latest-build/"
         cp -R $PARENT/dist/dmg-builds/app-build/Build/Products/${{ env.CONFIG }}/Uninstall\ Marker\ Data.app "$PARENT/dist/dmg-builds/latest-build/"
@@ -209,8 +207,12 @@ jobs:
         
     - name: Verify Uninstaller
       run: |
-        echo "Checking copied files..."
-        ls -l ./dist/dmg-builds/latest-build
+        PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+        UAPP="$PARENT/dist/dmg-builds/latest-build/Uninstall Marker Data.app"
+        echo "Verifying Uninstall Marker Data.app in latest-build..."
+        ls -l "$PARENT/dist/dmg-builds/latest-build"
+        test -d "$UAPP" || (echo "Missing $UAPP" && exit 1)
+        echo "Uninstall Marker Data.app present."
 
     - name: Codesign Uninstaller
       env: 

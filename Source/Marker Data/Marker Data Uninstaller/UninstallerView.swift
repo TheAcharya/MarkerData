@@ -22,7 +22,7 @@ struct UninstallerView: View {
                 .scaledToFit()
                 .frame(width: 96, height: 96)
 
-            Text("Uninstall Marker Data")
+            Text("Marker Data Uninstaller")
                 .font(.title2.weight(.semibold))
 
             Text("Completely remove Marker Data, including all Caches, Preferences, Configurations and Databases.")
@@ -51,14 +51,19 @@ struct UninstallerView: View {
             if hasRunUninstall, !isUninstalling {
                 Group {
                     if uninstallIssues.isEmpty {
-                        Label("Marker Data has been successfully uninstalled. Log file created on Desktop.", systemImage: "checkmark.circle.fill")
-                            .foregroundStyle(.green)
+                        VStack(spacing: 6) {
+                            Label("Marker Data has been successfully uninstalled.", systemImage: "checkmark.circle.fill")
+                                .foregroundStyle(.green)
+                            Text("Log file created on Desktop.")
+                                .font(.body)
+                                .foregroundStyle(.secondary)
+                        }
                     } else {
-                        VStack(alignment: .leading, spacing: 6) {
-                            Label("Uninstall finished with some issues. Log file created on Desktop.", systemImage: "exclamationmark.triangle.fill")
-                                .foregroundStyle(.orange)
-                            Text(uninstallIssues.joined(separator: "\n"))
-                                .font(.caption)
+                        VStack(spacing: 6) {
+                            Label("Uninstall finished.", systemImage: "checkmark.circle.fill")
+                                .foregroundStyle(.green)
+                            Text("Check log for details.")
+                                .font(.body)
                                 .foregroundStyle(.secondary)
                         }
                     }
