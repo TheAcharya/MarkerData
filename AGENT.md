@@ -37,7 +37,7 @@ Recommended:
   - Workflow Extension
   - Sparkle framework components
   - Main app
-  - Uninstaller app (compiled from an AppleScript `.scpt`)
+  - Uninstaller app (Swift target **Uninstall Marker Data** in `Marker Data Uninstaller/`; built by CI with xcodebuild)
 - DMG packaging uses `appdmg` with `Distribution/dmg-builds/build-marker-data-dmg.json`.
 - Sparkle feed is `appcast.xml` and is updated by `Distribution/dmg-builds/sparkle/generate_appcast_script.py`.
 

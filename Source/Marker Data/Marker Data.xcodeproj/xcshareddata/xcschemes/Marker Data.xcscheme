@@ -20,6 +20,20 @@
                ReferencedContainer = "container:Marker Data.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "41E900092B602694008D3505"
+               BuildableName = "Uninstall Marker Data.app"
+               BlueprintName = "Uninstall Marker Data"
+               ReferencedContainer = "container:Marker Data.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
