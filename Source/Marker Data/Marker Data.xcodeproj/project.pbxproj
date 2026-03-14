@@ -200,6 +200,10 @@
 		D5F74A4D2973019000EEE2FE /* Collections in Frameworks */ = {isa = PBXBuildFile; productRef = D5F74A4C2973019000EEE2FE /* Collections */; };
 		D5F74A4F2973019000EEE2FE /* DequeModule in Frameworks */ = {isa = PBXBuildFile; productRef = D5F74A4E2973019000EEE2FE /* DequeModule */; };
 		D5F74A512973019000EEE2FE /* OrderedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = D5F74A502973019000EEE2FE /* OrderedCollections */; };
+		41E9000D2B602694008D3505 /* UninstallerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41E900012B602694008D3505 /* UninstallerApp.swift */; };
+		41E9000E2B602694008D3505 /* UninstallerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41E900022B602694008D3505 /* UninstallerView.swift */; };
+		41E9000F2B602694008D3505 /* MarkerDataUninstaller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41E900032B602694008D3505 /* MarkerDataUninstaller.swift */; };
+		41E900102B602694008D3505 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41C839982B52D77200C6B133 /* Cocoa.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -408,6 +412,11 @@
 		D5F74A372972D32100EEE2FE /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		D5F74A392972D32100EEE2FE /* Marker_Data.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Marker_Data.entitlements; sourceTree = "<group>"; };
 		D5F74A3F2972DFD800EEE2FE /* Marker-Data-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Marker-Data-Info.plist"; sourceTree = SOURCE_ROOT; };
+		41E900012B602694008D3505 /* UninstallerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UninstallerApp.swift; sourceTree = "<group>"; };
+		41E900022B602694008D3505 /* UninstallerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UninstallerView.swift; sourceTree = "<group>"; };
+		41E900032B602694008D3505 /* MarkerDataUninstaller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkerDataUninstaller.swift; sourceTree = "<group>"; };
+		41E900042B602694008D3505 /* Uninstall Marker Data.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Uninstall Marker Data.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		41E900112B602694008D3505 /* Uninstaller.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Uninstaller.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -417,6 +426,14 @@
 			files = (
 				410840072BD3C76F008B7B03 /* DominantColors in Frameworks */,
 				4155B7202B62E2A3008D3505 /* MarkersExtractor in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		41E900072B602694008D3505 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				41E900102B602694008D3505 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -600,6 +617,17 @@
 				4155B6E02B602694008D3505 /* WorkflowExtension.entitlements */,
 			);
 			path = "Workflow Extension";
+			sourceTree = "<group>";
+		};
+		41E900052B602694008D3505 /* Marker Data Uninstaller */ = {
+			isa = PBXGroup;
+			children = (
+				41E900012B602694008D3505 /* UninstallerApp.swift */,
+				41E900022B602694008D3505 /* UninstallerView.swift */,
+				41E900032B602694008D3505 /* MarkerDataUninstaller.swift */,
+				41E900112B602694008D3505 /* Uninstaller.entitlements */,
+			);
+			path = "Marker Data Uninstaller";
 			sourceTree = "<group>";
 		};
 		4155B70B2B62CE64008D3505 /* General Settings */ = {
@@ -982,6 +1010,7 @@
 			children = (
 				D5F74A2F2972D31C00EEE2FE /* Marker Data */,
 				4155B6D72B602694008D3505 /* Workflow Extension */,
+				41E900052B602694008D3505 /* Marker Data Uninstaller */,
 				D5F74A2E2972D31C00EEE2FE /* Products */,
 				9B39B0CA29E19B740055F31E /* Frameworks */,
 			);
@@ -992,6 +1021,7 @@
 			children = (
 				D5F74A2D2972D31C00EEE2FE /* Marker Data.app */,
 				4155B6D62B602694008D3505 /* Workflow Extension.appex */,
+				41E900042B602694008D3505 /* Uninstall Marker Data.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1083,6 +1113,23 @@
 			productReference = D5F74A2D2972D31C00EEE2FE /* Marker Data.app */;
 			productType = "com.apple.product-type.application";
 		};
+		41E900092B602694008D3505 /* Uninstall Marker Data */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 41E9000A2B602694008D3505 /* Build configuration list for PBXNativeTarget "Uninstall Marker Data" */;
+			buildPhases = (
+				41E900062B602694008D3505 /* Sources */,
+				41E900072B602694008D3505 /* Frameworks */,
+				41E900082B602694008D3505 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Uninstall Marker Data";
+			productName = "Uninstall Marker Data";
+			productReference = 41E900042B602694008D3505 /* Uninstall Marker Data.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -1095,6 +1142,9 @@
 				TargetAttributes = {
 					4155B6D52B602694008D3505 = {
 						CreatedOnToolsVersion = 15.2;
+					};
+					41E900092B602694008D3505 = {
+						CreatedOnToolsVersion = 16.3;
 					};
 					D5F74A2C2972D31C00EEE2FE = {
 						CreatedOnToolsVersion = 14.2;
@@ -1129,6 +1179,7 @@
 			targets = (
 				D5F74A2C2972D31C00EEE2FE /* Marker Data */,
 				4155B6D52B602694008D3505 /* Workflow Extension */,
+				41E900092B602694008D3505 /* Uninstall Marker Data */,
 			);
 		};
 /* End PBXProject section */
@@ -1140,6 +1191,13 @@
 			files = (
 				41FBE85A2F5CAF9D007781ED /* Marker-Data.icon in Resources */,
 				4155B6D92B602694008D3505 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		41E900082B602694008D3505 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1163,6 +1221,16 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		41E900062B602694008D3505 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				41E9000D2B602694008D3505 /* UninstallerApp.swift in Sources */,
+				41E9000E2B602694008D3505 /* UninstallerView.swift in Sources */,
+				41E9000F2B602694008D3505 /* MarkerDataUninstaller.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4155B6D22B602694008D3505 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1676,6 +1744,62 @@
 			};
 			name = Release;
 		};
+		41E9000B2B602694008D3505 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "Marker Data Uninstaller/Uninstaller.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 16;
+				DEAD_CODE_STRIPPING = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Marker Data Uninstaller";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2026 The Acharya. All rights reserved.";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MARKETING_VERSION = 1.4.4;
+				PRODUCT_BUNDLE_IDENTIFIER = "co.theacharya.MarkerData.Uninstaller";
+				PRODUCT_NAME = "Uninstall Marker Data";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		41E9000C2B602694008D3505 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "Marker Data Uninstaller/Uninstaller.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 16;
+				DEAD_CODE_STRIPPING = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Marker Data Uninstaller";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2026 The Acharya. All rights reserved.";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MARKETING_VERSION = 1.4.4;
+				PRODUCT_BUNDLE_IDENTIFIER = "co.theacharya.MarkerData.Uninstaller";
+				PRODUCT_NAME = "Uninstall Marker Data";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1702,6 +1826,15 @@
 			buildConfigurations = (
 				D5F74A3D2972D32100EEE2FE /* Debug */,
 				D5F74A3E2972D32100EEE2FE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		41E9000A2B602694008D3505 /* Build configuration list for PBXNativeTarget "Uninstall Marker Data" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				41E9000B2B602694008D3505 /* Debug */,
+				41E9000C2B602694008D3505 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
