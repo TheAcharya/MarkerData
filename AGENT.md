@@ -6,6 +6,7 @@ This `AGENT.md` is guidance for humans and AI agents working in this repo: how t
 ## What you’re working on
 - **Main app (SwiftUI)**: `Source/Marker Data/Marker Data/`
 - **Workflow Extension target**: `Source/Marker Data/Workflow Extension/`
+- **Uninstaller app (SwiftUI)**: `Source/Marker Data/Marker Data Uninstaller/` — target **Uninstall Marker Data**; product name `Uninstall Marker Data.app`; display name “Marker Data Uninstaller”. Built as part of the Marker Data scheme.
 - **Share Destination / scripting bridge**:
   - Swift install UI: `Source/Marker Data/Marker Data/FCP Share Destination/Install View/`
   - Objective‑C scripting/doc controller: `Source/Marker Data/Marker Data/FCP Share Destination/Objective-C Code/`
@@ -33,11 +34,7 @@ Recommended:
 
 ## CI / release basics (what to know)
 - CI builds use `xcodebuild` and install the Workflow Extensions SDK from `SDK/Workflow_Extensions_1.0.3.dmg`.
-- Release workflows codesign:
-  - Workflow Extension
-  - Sparkle framework components
-  - Main app
-  - Uninstaller app (Swift target **Uninstall Marker Data** in `Marker Data Uninstaller/`; built by CI with xcodebuild)
+- Release workflows: build the **Marker Data** scheme (which includes the **Uninstall Marker Data** target); copy both `Marker Data.app` and `Uninstall Marker Data.app` from build products to `latest-build/`. Codesign: Workflow Extension, Sparkle framework components, main app, then Uninstaller app.
 - DMG packaging uses `appdmg` with `Distribution/dmg-builds/build-marker-data-dmg.json`.
 - Sparkle feed is `appcast.xml` and is updated by `Distribution/dmg-builds/sparkle/generate_appcast_script.py`.
 
