@@ -10,6 +10,7 @@
 **🔨 Improvements:**
 - Overhaul Marker Data's GUI to Liquid Glass
 - Updated Marker Data's application icon for macOS Tahoe
+- Verified to run under macOS Tahoe and Final Cut Pro 12
 - [Excel export profile](https://markerdata.theacharya.co/in-action/excel-profile/) now has the ability to automatically embed images
 - Added support and compatibility for FCPXML v1.14 (Final Cut Pro 12)
 - Added support for Final Cut Pro Creator Studio (Subscription Version)
