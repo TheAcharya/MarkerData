@@ -9,7 +9,7 @@ import Foundation
 import DAWFileTools
 
 struct RoleModel: Identifiable, Codable, Hashable, Equatable {
-    let role: FinalCutPro.FCPXML.AnyRole
+    let role: FCPXML.AnyRole
     var enabled: Bool
     
     var id: String {
@@ -19,7 +19,7 @@ struct RoleModel: Identifiable, Codable, Hashable, Equatable {
     var displayName: String {
         var name = self.role.rawValue
 
-        if let captionRole = FinalCutPro.FCPXML.CaptionRole(rawValue: self.role.rawValue) {
+        if let captionRole = FCPXML.CaptionRole(rawValue: self.role.rawValue) {
             name = "\(captionRole.role) (\(captionRole.captionFormat))"
         }
 
