@@ -13,6 +13,7 @@ struct UninstallerView: View {
     @State private var isUninstalling = false
     @State private var hasRunUninstall = false
     @State private var uninstallIssues: [String] = []
+    @State private var isShowingUninstallConfirmation = false
 
     var body: some View {
         VStack(spacing: 18) {
@@ -33,7 +34,7 @@ struct UninstallerView: View {
 
             HStack(spacing: 12) {
                 Button("Uninstall Marker Data", role: .destructive) {
-                    runUninstall()
+                    isShowingUninstallConfirmation = true
                 }
                 .disabled(isUninstalling || hasRunUninstall)
 
@@ -74,6 +75,18 @@ struct UninstallerView: View {
         }
         .padding(24)
         .frame(width: 520, height: 340)
+        .confirmationDialog(
+            "Uninstall Marker Data?",
+            isPresented: $isShowingUninstallConfirmation,
+            titleVisibility: .visible
+        ) {
+            Button("Uninstall Marker Data", role: .destructive) {
+                runUninstall()
+            }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("This will permanently delete Marker Data preferences, caches, configurations, and local databases.")
+        }
     }
 
     private func runUninstall() {
