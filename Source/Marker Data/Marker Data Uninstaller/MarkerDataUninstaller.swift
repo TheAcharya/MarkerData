@@ -41,6 +41,7 @@ enum MarkerDataUninstaller {
             "\(home)/Library/WebKit/co.theacharya.MarkerData",
             "\(home)/Library/HTTPStorages/co.theacharya.MarkerData",
             "\(home)/Library/HTTPStorages/co.theacharya.MarkerData.binarycookies",
+            "\(home)/Library/Containers/Marker Data",
             "\(home)/Library/Containers/co.theacharya.MarkerData.WorkflowExtension",
             "\(home)/Library/Application Scripts/co.theacharya.MarkerData.WorkflowExtension",
             "\(home)/Library/Application Support/Marker Data",
