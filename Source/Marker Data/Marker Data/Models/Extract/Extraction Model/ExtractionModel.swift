@@ -21,7 +21,7 @@ final class ExtractionModel: ObservableObject, Sendable {
     @Published var showProgressUI = false
     /// Extraction currently is in progress
     @Published var extractionInProgress = false
-    /// External file recieved
+    /// External file received
     @Published var externalFileRecieved = false
     @Published var externalFileURL: URL? = nil
     /// Extraction exit result/status
