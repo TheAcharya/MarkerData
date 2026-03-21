@@ -5,7 +5,7 @@
 **🎉 Released:**
 - TBC
 
-**Marker Data** no longer officially supports macOS Sonoma starting with version 2.0.0.
+**Marker Data** now only supports macOS Sequoia 15.7 or later, starting with version 2.0.0.
 
 **🔨 Improvements:**
 - Overhaul Marker Data's GUI to Liquid Glass
