@@ -7,13 +7,14 @@
 //
 
 import SwiftUI
-import AppKit
 
 struct UninstallerView: View {
     @State private var isUninstalling = false
     @State private var hasRunUninstall = false
     @State private var uninstallIssues: [String] = []
     @State private var isShowingUninstallConfirmation = false
+
+    private var uninstallDisabled: Bool { isUninstalling || hasRunUninstall }
 
     var body: some View {
         ZStack {
@@ -39,24 +40,32 @@ struct UninstallerView: View {
                     .font(.title2.weight(.semibold))
 
                 Text("Completely remove Marker Data, including all Caches, Preferences, Configurations and Databases.")
-                    .font(.body)
                     .multilineTextAlignment(.center)
                     .foregroundStyle(.secondary)
                     .frame(maxWidth: 420)
-                    .lineLimit(nil)
                     .fixedSize(horizontal: false, vertical: true)
                     .layoutPriority(1)
 
                 HStack(spacing: 12) {
-                    let uninstallDisabled = isUninstalling || hasRunUninstall
                     Button("Uninstall Marker Data", role: .destructive) {
                         isShowingUninstallConfirmation = true
+                    }
+                    .confirmationDialog(
+                        "Uninstall Marker Data?",
+                        isPresented: $isShowingUninstallConfirmation,
+                        titleVisibility: .visible
+                    ) {
+                        Button("Uninstall Marker Data", role: .destructive) {
+                            runUninstall()
+                        }
+                        Button("Cancel", role: .cancel) {}
+                    } message: {
+                        Text("This will permanently delete Marker Data preferences, caches, configurations, and local databases.")
                     }
                     .buttonStyle(.borderedProminent)
                     .tint(.red)
                     .foregroundStyle(.white)
-                    .opacity(uninstallDisabled ? 0.85 : 1)
-                    .allowsHitTesting(!uninstallDisabled)
+                    .disabled(uninstallDisabled)
 
                     Button("Quit") {
                         NSApplication.shared.terminate(nil)
@@ -73,52 +82,33 @@ struct UninstallerView: View {
                 }
 
                 if hasRunUninstall, !isUninstalling {
-                    Group {
-                        if uninstallIssues.isEmpty {
-                            VStack(spacing: 6) {
-                                Label("Marker Data has been successfully uninstalled.", systemImage: "checkmark.circle.fill")
-                                    .foregroundStyle(.green)
-                                Text("Log file created on Desktop.")
-                                    .font(.body)
-                                    .foregroundStyle(.secondary)
-                            }
-                        } else {
-                            VStack(spacing: 6) {
-                                Label("Uninstall finished.", systemImage: "checkmark.circle.fill")
-                                    .foregroundStyle(.green)
-                                Text("Check log for details.")
-                                    .font(.body)
-                                    .foregroundStyle(.secondary)
-                            }
-                        }
+                    VStack(spacing: 6) {
+                        Label(
+                            uninstallIssues.isEmpty
+                                ? "Marker Data has been successfully uninstalled."
+                                : "Uninstall finished.",
+                            systemImage: "checkmark.circle.fill"
+                        )
+                        .foregroundStyle(.green)
+
+                        Text(uninstallIssues.isEmpty ? "Log file created on Desktop." : "Check log for details.")
+                            .foregroundStyle(.secondary)
                     }
                     .multilineTextAlignment(.center)
                     .frame(maxWidth: 440)
                 }
             }
             .padding(24)
-            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 22, style: .continuous))
-            .overlay(
-                RoundedRectangle(cornerRadius: 22, style: .continuous)
+            .background(.ultraThinMaterial, in: .rect(cornerRadius: 22))
+            .overlay {
+                RoundedRectangle(cornerRadius: 22)
                     .strokeBorder(.white.opacity(0.18), lineWidth: 1)
-            )
+            }
             .shadow(color: .black.opacity(0.18), radius: 22, x: 0, y: 10)
             .padding(18)
         }
         .frame(width: 520, height: 340)
         .tint(.indigo)
-        .confirmationDialog(
-            "Uninstall Marker Data?",
-            isPresented: $isShowingUninstallConfirmation,
-            titleVisibility: .visible
-        ) {
-            Button("Uninstall Marker Data", role: .destructive) {
-                runUninstall()
-            }
-            Button("Cancel", role: .cancel) {}
-        } message: {
-            Text("This will permanently delete Marker Data preferences, caches, configurations, and local databases.")
-        }
     }
 
     private func runUninstall() {
@@ -131,17 +121,13 @@ struct UninstallerView: View {
                 MarkerDataUninstaller.run()
             }.value
 
-            await MainActor.run {
-                uninstallIssues = issues
-                isUninstalling = false
-                hasRunUninstall = true
-            }
+            uninstallIssues = issues
+            isUninstalling = false
+            hasRunUninstall = true
         }
     }
 }
 
-#if DEBUG
 #Preview {
     UninstallerView()
 }
-#endif

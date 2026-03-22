@@ -11,11 +11,11 @@ import Foundation
 enum MarkerDataUninstaller {
     /// Runs the uninstall process: terminate app, clear defaults domain, remove paths, write log.
     /// Returns a list of issue messages (empty on full success).
-    nonisolated static func run() -> [String] {
+    static func run() -> [String] {
         var issues: [String] = []
         var deletedPaths: [String] = []
         var undeletedPaths: [String] = []
-        let home = FileManager.default.homeDirectoryForCurrentUser.path
+        let home = URL.homeDirectory.path
 
         // Terminate Marker Data if running
         runCommand(
@@ -61,13 +61,12 @@ enum MarkerDataUninstaller {
         return issues
     }
 
-    @discardableResult
-    nonisolated private static func removeIfExists(_ path: String) -> Bool {
+    private static func removeIfExists(_ path: String) -> Bool {
         guard FileManager.default.fileExists(atPath: path) else {
             return true
         }
         do {
-            try FileManager.default.trashItem(at: URL(fileURLWithPath: path), resultingItemURL: nil)
+            try FileManager.default.trashItem(at: URL(filePath: path), resultingItemURL: nil)
             return true
         } catch {
             // Don't add to issues (GUI); undeleted path is still written to the log file
@@ -75,7 +74,7 @@ enum MarkerDataUninstaller {
         }
     }
 
-    nonisolated private static func writeLog(deletedPaths: [String], undeletedPaths: [String], home: String) {
+    private static func writeLog(deletedPaths: [String], undeletedPaths: [String], home: String) {
         let desktopPath = "\(home)/Desktop/Marker-Data_Uninstall_Log.txt"
         var logContent = "Deleted Files and Folders:\n"
         logContent += deletedPaths.isEmpty ? "None\n" : deletedPaths.joined(separator: "\n") + "\n"
@@ -83,20 +82,20 @@ enum MarkerDataUninstaller {
         logContent += undeletedPaths.isEmpty ? "None\n" : undeletedPaths.joined(separator: "\n") + "\n"
 
         do {
-            try logContent.write(toFile: desktopPath, atomically: true, encoding: .utf8)
+            try logContent.write(to: URL(filePath: desktopPath), atomically: true, encoding: .utf8)
         } catch {
             print("Failed to write log: \(error.localizedDescription)")
         }
     }
 
-    nonisolated private static func runCommand(
+    private static func runCommand(
         executable: String,
         arguments: [String],
         ignoreFailure: Bool,
         issues: inout [String]
     ) {
         let process = Process()
-        process.executableURL = URL(fileURLWithPath: executable)
+        process.executableURL = URL(filePath: executable)
         process.arguments = arguments
 
         let stderrPipe = Pipe()
