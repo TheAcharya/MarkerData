@@ -99,7 +99,25 @@ struct SettingsStore: Sendable, Codable, Hashable, Equatable, Identifiable {
     var showDockProgress: Bool
 
     // MARK: Color swatch
-    var colorSwatchSettings: ColorSwatchSettingsModel
+    /// Backing property for color swatch settings
+    private var _colorSwatchSettings: ColorSwatchSettingsModel
+    var colorSwatchSettings: ColorSwatchSettingsModel {
+        get {
+            // Disable swatch if export profile is excel
+            if self.unifiedExportProfile.extractProfile == .xlsx {
+                var copy = self._colorSwatchSettings
+                copy.enableSwatch = false
+                return copy
+            } else {
+                return self._colorSwatchSettings
+            }
+        }
+        
+        set {
+            self._colorSwatchSettings = newValue
+        }
+    }
+    
 
     /// Default settings
     public static func defaults() -> Self {
@@ -144,7 +162,7 @@ struct SettingsStore: Sendable, Codable, Hashable, Equatable, Identifiable {
             roles: [],
             notificationFrequency: .onlyOnCompletion,
             showDockProgress: true,
-            colorSwatchSettings: .defaults()
+            _colorSwatchSettings: .defaults()
         )
     }
 
