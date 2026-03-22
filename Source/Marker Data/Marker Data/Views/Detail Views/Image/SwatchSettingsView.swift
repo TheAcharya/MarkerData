@@ -13,6 +13,10 @@ struct SwatchSettingsView: View {
     @EnvironmentObject var settings: SettingsContainer
 
     var swatchDisabled: Bool {
+        if settings.store.unifiedExportProfile.extractProfile == .xlsx {
+            return true
+        }
+        
         let jsonProfiles: [ExportProfileFormat] = [.notion, .airtable]
         let isJSON = jsonProfiles.contains(settings.store.unifiedExportProfile.extractProfile)
         let isGIF = settings.store.imageMode == .GIF
