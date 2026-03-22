@@ -8,4 +8,4 @@
 import Foundation
 import DAWFileTools
 
-extension FinalCutPro.FCPXML.AnyRole: @retroactive Codable {}
+extension FCPXML.AnyRole: @retroactive Codable {}

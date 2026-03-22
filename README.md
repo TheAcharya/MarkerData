@@ -133,7 +133,7 @@ Marker Data allows users to extract, convert & create databases from <a href="ht
 
 ## System Requirements
 
-macOS Sequoia 15.7 or later <br> Final Cut Pro 12.0 or later <br> Runs only on Apple silicon Macs <br> Internet connection is necessary for some modules and functionality
+macOS Sequoia 15.7 or later <br> Final Cut Pro 12.0 (Lifetime / Perpetual Version) or later <br> Final Cut Pro Creator Studio 12.0 (Subscription Version) or later <br> Runs only on Apple silicon Macs <br> Internet connection is necessary for some modules and functionality
 
 ## Installation
 

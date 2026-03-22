@@ -5,6 +5,7 @@ You are working in the **Marker Data** repository: a macOS Swift/SwiftUI app tha
 ## Project layout
 - Main app: `Source/Marker Data/Marker Data/`
 - Workflow Extension: `Source/Marker Data/Workflow Extension/`
+- Uninstaller app: `Source/Marker Data/Marker Data Uninstaller/` (target **Uninstall Marker Data**, product `Uninstall Marker Data.app`)
 - FCP Share Destination (Swift + Obj-C): `Source/Marker Data/Marker Data/FCP Share Destination/`
 - Bundled binaries (do not modify): `Source/Marker Data/Marker Data/Resources/airlift`, `csv2notion_neo`
 - Build: open `Source/Marker Data/Marker Data.xcodeproj`. Target **Apple Silicon**; CI uses Xcode 26.3.0 on macos-26.

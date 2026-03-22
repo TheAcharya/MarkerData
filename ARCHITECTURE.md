@@ -29,6 +29,15 @@ Responsibilities:
 - Writes a cache file to `~/Movies/Marker Data Cache/WorkflowExtensionExport.fcpxml`
 - Opens the main app and posts `DistributedNotificationCenter` event `.workflowExtensionFileReceived`
 
+### Uninstaller target (`Uninstall Marker Data`)
+Location: `Source/Marker Data/Marker Data Uninstaller/`
+
+Responsibilities:
+- SwiftUI dialog app that removes Marker Data app, caches, preferences, and related paths (see `MarkerDataUninstaller.run()`).
+- Product name: `Uninstall Marker Data.app`; display name: “Marker Data Uninstaller”. Bundle ID: `co.theacharya.MarkerData.Uninstaller`.
+- Writes a log to `~/Desktop/Marker-Data_Uninstall_Log.txt` (deleted / undeleted paths).
+- Built as part of the **Marker Data** scheme; CI copies it from build products into the DMG layout.
+
 ### Share Destination / scripting bridge (inside main app bundle)
 Location: `Source/Marker Data/Marker Data/FCP Share Destination/`
 
@@ -159,5 +168,5 @@ There are multiple entitlements plists used in different contexts:
 - Sparkle:
   - Feed URL in Info.plist points to `appcast.xml`
   - `Distribution/dmg-builds/sparkle/generate_appcast_script.py` inserts a new `<item>` with ECDSA signature and length.
-- Release workflows handle signing + notarization for app, extension, Sparkle framework, and the uninstaller app.
+- Release workflows build the Marker Data scheme (main app + Uninstall Marker Data target), copy both apps to `latest-build/`, then handle signing + notarization for the app, extension, Sparkle framework, and the uninstaller app.
 

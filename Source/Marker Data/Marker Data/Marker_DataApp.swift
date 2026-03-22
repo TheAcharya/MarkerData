@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Sparkle
+import DockProgress
 
 @main
 struct Marker_DataApp: App {
@@ -52,6 +53,9 @@ struct Marker_DataApp: App {
         self._extractionModel = StateObject(wrappedValue: extractionModel)
         self._databaseManager = StateObject(wrappedValue: databaseManager)
         self._queueModel = StateObject(wrappedValue: queueModel)
+
+        // Use a dock-icon-conforming progress ring instead of the default bar style (color: #8BDBFA).
+        DockProgress.style = .squircle(color: Color(red: 139 / 255, green: 219 / 255, blue: 250 / 255, opacity: 1))
 
         // Enable foreground notification display
         NotificationManager.setupDelegate()
