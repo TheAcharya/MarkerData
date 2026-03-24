@@ -7,21 +7,30 @@ body:
   attributes:
     label: Marker Data Version?
     description: Which version of Marker Data are you using?
-    placeholder: "1.2.0"
+    placeholder: "2.0.0"
   validations:
     required: true
 - type: input
   attributes:
     label: macOS Version
     description: Which macOS version are you using?
-    placeholder: "e.g. macOS Sonoma 14.7"
+    placeholder: "e.g. macOS Tahoe 26.3"
   validations:
     required: true
 - type: input
   attributes:
     label: Final Cut Pro Version
     description: Which Final Cut Pro version are you using?
-    placeholder: "e.g. 11.0"
+    placeholder: "e.g. 12.0"
+  validations:
+    required: true
+- type: dropdown
+  attributes:
+    label: License Type
+    description: Which license type are you using?
+    options:
+      - Lifetime / Perpetual Version
+      - Subscription Version
   validations:
     required: true
 - type: textarea
