@@ -1868,8 +1868,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Dean151/ButtonKit";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.7.0;
+				kind = branch;
+				branch = main;
 			};
 		};
 		4155B6C32B5D3709008D3505 /* XCRemoteSwiftPackageReference "DockProgress" */ = {
