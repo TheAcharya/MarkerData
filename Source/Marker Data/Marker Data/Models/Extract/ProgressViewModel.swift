@@ -44,27 +44,30 @@ final class ProgressViewModel: ObservableObject {
     }
     
     // Default: true
-    private var shouldShowDockProgress: Bool {
+    private func shouldShowDockProgress() async -> Bool {
         if !showDockProgress {
             return false
         } else {
-            return UserDefaults.standard.boolOptional(forKey: "showDockProgress") ?? true
+            guard let store = try? await SettingsStore.loadStaticStoreFromDisk() else {
+                return false
+            }
+            return store.showDockProgress
         }
     }
     
     /// Initializes new export processes
-    func setProcesses(urls: [URL]) {
+    func setProcesses(urls: [URL]) async {
         self.processes = urls.map { ExportProcess(url: $0) }
-        DockProgress.progressInstance = self.shouldShowDockProgress ? self.progress : nil
+        DockProgress.progressInstance = await self.shouldShowDockProgress() ? self.progress : nil
     }
     
     /// Adds a process
-    func addProcess(url: URL) {
+    func addProcess(url: URL) async {
         self.processes.append(ExportProcess(url: url))
         
         // Only set on first addition
         if self.processes.count == 1 {
-            DockProgress.progressInstance = self.shouldShowDockProgress ? self.progress : nil
+            DockProgress.progressInstance = await self.shouldShowDockProgress() ? self.progress : nil
         }
     }
     

@@ -76,7 +76,7 @@ final class ExtractionModel: ObservableObject, Sendable {
         func prepareExtraction(for urls: [URL]) async {
             Self.logger.notice("Processing files: \(urls.map { $0.path(percentEncoded: false) })")
             
-            self.extractionProgress.setProcesses(urls: urls)
+            await self.extractionProgress.setProcesses(urls: urls)
             
             // Show extraction progress
             self.showProgressUI = true

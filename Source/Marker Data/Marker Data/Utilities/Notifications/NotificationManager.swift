@@ -37,8 +37,7 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
     static func sendNotification(taskFinished: Bool, title: String, body: String = "") async {
         let notificationFrequency: NotificationFrequency
         do {
-            let data = try Data(contentsOf: URL.preferencesJSON)
-            let store = try JSONDecoder().decode(SettingsStore.self, from: data)
+            let store = try await SettingsStore.loadStaticStoreFromDisk()
             notificationFrequency = store.notificationFrequency
         } catch {
             logger.error("Failed to read notification frequency settings: \(error.localizedDescription)")

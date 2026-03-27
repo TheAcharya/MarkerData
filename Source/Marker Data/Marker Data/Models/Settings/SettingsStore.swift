@@ -120,7 +120,7 @@ struct SettingsStore: Sendable, Codable, Hashable, Equatable, Identifiable {
     
 
     /// Default settings
-    public static func defaults() -> Self {
+    static func defaults() -> Self {
         let exportProfile = UnifiedExportProfile(
             displayName: "CSV",
             extractProfile: .csv,
@@ -169,7 +169,7 @@ struct SettingsStore: Sendable, Codable, Hashable, Equatable, Identifiable {
     // MARK: CLI settings
 
     /// Returns the settings needed for a ``MarkersExtractor`` object
-    public func markersExtractorSettings(fcpxmlFileUrl: URL) throws -> MarkersExtractor.Settings {
+    func markersExtractorSettings(fcpxmlFileUrl: URL) throws -> MarkersExtractor.Settings {
         // Output dir
         let outputDirURL: URL = self.exportFolderURL ?? URL.FCPExportCacheFolder
         
@@ -241,11 +241,11 @@ struct SettingsStore: Sendable, Codable, Hashable, Equatable, Identifiable {
         return settings
     }
 
-    public func saveAsConfiguration() async throws {
+    func saveAsConfiguration() async throws {
         try await self.save(at: jsonURL)
     }
 
-    public func saveAsCurrent() async throws {
+    func saveAsCurrent() async throws {
         try await self.save(at: URL.preferencesJSON)
     }
 
@@ -258,11 +258,16 @@ struct SettingsStore: Sendable, Codable, Hashable, Equatable, Identifiable {
         try data.write(to: url)
     }
 
-    public func delete() throws {
+    func delete() throws {
         try jsonURL.trashOrDelete()
     }
 
-    public func isDefault() -> Bool {
+    func isDefault() -> Bool {
         return self.name == Self.defaultName
+    }
+    
+    static func loadStaticStoreFromDisk() async throws -> Self {
+        let data = try Data(contentsOf: URL.preferencesJSON)
+        return try JSONDecoder().decode(SettingsStore.self, from: data)
     }
 }

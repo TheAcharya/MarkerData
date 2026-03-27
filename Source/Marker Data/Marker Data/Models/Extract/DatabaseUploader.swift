@@ -24,7 +24,7 @@ final class DatabaseUploader: ObservableObject {
             }
             
             // Add process to upload progress
-            self.uploadProgress.addProcess(url: url)
+            await self.uploadProgress.addProcess(url: url)
             
             try await uploadToNotion(url: url, notionProfile: notionProfile)
         case .airtable:
@@ -33,7 +33,7 @@ final class DatabaseUploader: ObservableObject {
             }
             
             // Add process to upload progress
-            self.uploadProgress.addProcess(url: url)
+            await self.uploadProgress.addProcess(url: url)
             
             try await uploadToAirtable(url: url, airtableProfile: airtableProfile)
         }
