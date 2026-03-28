@@ -27,7 +27,7 @@
 - Fixed an issue that prevented macOS notifications for Marker Data
 - Fixed an issue that caused Dropbox setup to fail on macOS Tahoe due to Apple restrictions
 - Fixed an issue where the Dock Icon progress toggle was not working
-- Embedding extracted images with a Color Swatch Palette is not supported for Excel Profile
+- Embedding extracted images with Swatch Palette is not supported for Excel Profile
 
 ---
 
