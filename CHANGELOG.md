@@ -20,12 +20,13 @@
 - Updated Pagemaker Module to version 1.1.1
 - Marker Data's Uninstaller has been rewritten in Swift
 - Updated core dependencies
-- Codebase updates for Xcode 26.4.0
+- Codebase updates for Xcode 26.4
 
 **🐞 Bug Fix:**
 - Removed unintended exposure of the XML Path column in Notion Database Profile
 - Fixed an issue that prevented macOS notifications for Marker Data
 - Fixed an issue that caused Dropbox setup to fail on macOS Tahoe due to Apple restrictions
+- Fixed an issue where the Dock Icon progress toggle was not working
 - Embedding extracted images with a Color Swatch Palette is not supported for Excel Profile
 
 ---
