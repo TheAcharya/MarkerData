@@ -11,14 +11,13 @@ struct QueueView: View {
     @ObservedObject var queueModel: QueueModel
 
     @State var scanFailed = false
-    // TODO: revisit sorting
-//    @State var sortOrder = [SendableComparator(\QueueInstance.extractInfo.creationDate)]
+    @State private var sortOrder = [KeyPathComparator(\QueueInstance.creationDate, order: .reverse)]
 
     var body: some View {
         VStack {
             ZStack {
                 tableView
-                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                    .clipShape(.rect(cornerRadius: 8))
                     .padding(.bottom, 8)
             }
 
@@ -38,22 +37,22 @@ struct QueueView: View {
     }
     
     var tableView: some View {
-        Table(queueModel.queueInstances, sortOrder: .constant(.init())) {
+        Table(queueModel.queueInstances, sortOrder: $sortOrder) {
             TableColumn("Name", value: \.name) { queueInstance in
                 Text(queueInstance.name)
                     .help(queueInstance.name)
             }
             .width(ideal: 110)
 
-            TableColumn("Date", value: \.extractInfo.creationDate) { queueInstance in
+            TableColumn("Date", value: \.creationDate) { queueInstance in
                 Text(queueInstance.creationDateFormatted)
                     .help(queueInstance.creationDateFormatted)
             }
             .width(ideal: 100)
 
-            TableColumn("Profile", value: \.extractInfo.profile.rawValue) { queueInstance in
-                Text(queueInstance.extractInfo.profile.rawValue)
-                    .help(queueInstance.extractInfo.profile.rawValue)
+            TableColumn("Profile", value: \.profile.rawValue) { queueInstance in
+                Text(queueInstance.profile.rawValue)
+                    .help(queueInstance.profile.rawValue)
             }
             .width(ideal: 25)
 
@@ -68,10 +67,9 @@ struct QueueView: View {
             }
             .width(ideal: 60)
         }
-        // TODO: revisit sorting
-//        .onChange(of: sortOrder) { newOrder in
-//            queueModel.queueInstances.sort(using: newOrder)
-//        }
+        .onChange(of: sortOrder) {
+            queueModel.queueInstances.sort(using: sortOrder)
+        }
         .dropDestination(for: URL.self) { urls, location in
             queueModel.performDrop(urls: urls)
             return true

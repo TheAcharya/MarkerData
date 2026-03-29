@@ -10,7 +10,10 @@ import OSLog
 
 @MainActor
 class QueueInstance: ObservableObject, Identifiable, Sendable {
-    public let name: String
+    // These need to be unisolated because otherwise the table cannot sort them
+    nonisolated public let name: String
+    nonisolated let creationDate: Date
+    nonisolated let profile: DatabasePlatform
     private let folderURL: URL
     let extractInfo: ExtractInfo
     let uploader = DatabaseUploader()
@@ -27,6 +30,8 @@ class QueueInstance: ObservableObject, Identifiable, Sendable {
     
     init(extractInfo: ExtractInfo, folderURL: URL, databaseProfiles: [DatabaseProfileModel]) {
         self.name = extractInfo.jsonURL.deletingPathExtension().lastPathComponent
+        self.creationDate = extractInfo.creationDate
+        self.profile = extractInfo.profile
         self.extractInfo = extractInfo
         self.availableDatabaseProfiles = databaseProfiles.filter { $0.plaform == extractInfo.profile }
         self.folderURL = folderURL
