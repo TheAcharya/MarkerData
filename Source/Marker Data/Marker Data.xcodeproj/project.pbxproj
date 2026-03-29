@@ -1885,7 +1885,7 @@
 			repositoryURL = "https://github.com/TheAcharya/MarkersExtractor";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.4.1;
+				minimumVersion = 0.4.2;
 			};
 		};
 		4155B72A2B668C0D008D3505 /* XCRemoteSwiftPackageReference "swift-log-oslog" */ = {
