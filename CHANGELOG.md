@@ -1,5 +1,13 @@
 # Changelog
 
+### 2.0.1 (18)
+
+**🎉 Released:**
+- 27th April 2026
+
+**🔨 Improvements:**
+- Updated core dependencies
+
 ### 2.0.0 (17)
 
 **🎉 Released:**
