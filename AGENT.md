@@ -45,16 +45,47 @@ Recommended:
   - Extraction uses `TaskGroup` for parallelism; cancellation is supported via `Task.cancel()`.
 - **Persistence**:
   - Settings are stored as JSON in `~/Library/Application Support/Marker Data/` (see `URLExtension.swift`).
-  - `SettingsStore.version` is authoritative; schema changes must include migrations.
+  - See **Settings system** below and `ARCHITECTURE.md` for the full schema, migration, and UI wiring model.
 - **External tools**:
   - Notion/Airtable uploads are done by spawning bundled executables; treat them as opaque.
   - Progress parsing depends on `NN%` output lines.
 
+## Settings system (read before changing preferences)
+
+Marker Data settings are **versioned JSON**. The active store is `preferences.json`; named presets live in `Configurations/*.json`. Both use the same `SettingsStore` schema.
+
+**Core files:** `SettingsStore.swift`, `SettingsContainer.swift`, `SettingsVersioningManager.swift`. Full detail: `ARCHITECTURE.md` → *Settings system*.
+
+### How it works (short)
+
+1. **Launch:** `SettingsVersioningManager.updateAll()` migrates every settings JSON on disk (dict-based, step-by-step) **before** `JSONDecoder` loads `SettingsStore`.
+2. **Runtime:** `SettingsContainer.store` is `@Published`; UI binds via `@EnvironmentObject` and `$settings.store.<property>`.
+3. **Auto-save:** any change to `store` writes `preferences.json` immediately.
+4. **Extraction:** `SettingsStore.markersExtractorSettings(fcpxmlFileUrl:)` maps store fields → `MarkersExtractor.Settings` (not automatic — wire new export-related fields here).
+5. **Roles exception:** `RolesManager` reads/writes `preferences.json` directly for Workflow Extension sync — do not break that contract.
+
+### Checklist: add or change a persisted setting
+
+| Step | Action |
+|------|--------|
+| 1 | Add property to `SettingsStore`; set default in `defaults()` |
+| 2 | **Bump `SettingsStore.version`** (static `let version`) |
+| 3 | Add `case <oldVersion>:` in `SettingsVersioningManager.upgradeVersion(dict:version:)` |
+| 4 | Add UI toggle/picker in the relevant settings view under `Views/Detail Views/` |
+| 5 | If export-related: pass through `markersExtractorSettings(fcpxmlFileUrl:)` |
+| 6 | If MarkersExtractor gained a new API: bump package in `project.pbxproj` |
+| 7 | Confirm old JSON files migrate and the app still loads settings (definition of done) |
+
+**Always migrate** when adding/removing/renaming persisted keys. **Never** rely on `Codable` defaults alone for existing on-disk files.
+
+**Reference implementation:** `allowUTF8InMIDIExport` (issue #148) — property, v7→v8 migration, `FileSettingsView` toggle, `isMIDIFileUTF8EncodingAllowed` in `markersExtractorSettings`, MarkersExtractor 0.4.6.
+
 ## “When you change X, also change Y”
-- **SettingsStore changes**:
+- **SettingsStore changes** (see checklist above):
   - Increment `SettingsStore.version`.
   - Add a new migration step in `SettingsVersioningManager.upgradeVersion(...)`.
   - Ensure UI bindings (Settings views) remain consistent.
+  - Wire `markersExtractorSettings(...)` when the setting affects extraction.
 - **New export fields / overlays**:
   - Update UI in `OverlaySettingsView` (and any Notion merge-only lists).
   - Ensure the export pipeline supports it through `MarkersExtractor` / manifest fields.
@@ -68,7 +99,7 @@ Recommended:
   - Workflow Extension communicates via `DistributedNotificationCenter` and shared disk files in Movies cache.
 
 ## Common pitfalls
-- **Don’t break migrations**: settings JSONs in the wild must be upgradable; never remove keys without a migration plan.
+- **Don’t break migrations**: settings JSONs in the wild must be upgradable; never remove keys without a migration plan. See **Settings system** above.
 - **Entitlements & signing**: changes that touch Apple Events, sandboxing, or extension behavior may require entitlement updates.
 - **Install location**: app expects to run from `/Applications` (warning is shown in `ContentView`).
 - **Opaque helpers**: `airlift` / `csv2notion_neo` are binaries; don’t assume internal behavior beyond CLI contracts used in `DatabaseUploader`.

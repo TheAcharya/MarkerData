@@ -72,10 +72,90 @@ Defined by `URLExtension.swift` and created/validated by `LibraryFolders.checkAn
   - `Logs/*.txt`
 - `~/Movies/Marker Data Cache/` (FCP export cache + workflow extension handoff file)
 
-### Settings schema and migration
-- Persisted type: `SettingsStore` (schema version is `SettingsStore.version`)
-- Loader/controller: `SettingsContainer`
-- Migration: `SettingsVersioningManager.updateAll()` upgrades `preferences.json` and every config JSON in-place to current schema.
+### Settings system
+
+Marker Data persists almost all user preferences as versioned JSON. Understanding this system is required before adding or changing any setting.
+
+#### Key types and files
+
+| File | Role |
+|------|------|
+| `Models/Settings/SettingsStore.swift` | `Codable` value type holding the full settings schema; `static let version` is the **current schema number** (check the file — do not hard-code in docs) |
+| `Models/Settings/SettingsContainer.swift` | `@MainActor` `ObservableObject` wrapping the active `store`; loads/saves, manages named configurations, auto-saves on change |
+| `Models/Settings/SettingsVersioningManager.swift` | Dict-based migrations run **before** `JSONDecoder` decode |
+| `Models/Settings/SettingsModels.swift` | Supporting enums/types used by `SettingsStore` (e.g. `ImageMode`, `FontNameType`) |
+| `Models/Settings/MarkersExtractorModelExtensions.swift` | Display-name / `Codable` extensions for MarkersExtractor types |
+| `Utilities/Extensions/URLExtension.swift` | Canonical paths under Application Support |
+
+#### What gets persisted where
+
+| Path | Contents |
+|------|----------|
+| `preferences.json` | **Active** settings — what the app uses right now |
+| `Configurations/{name}.json` | **Named configuration presets** (toolbar picker); same schema as `preferences.json` |
+| `Database Profiles/` | Notion/Airtable credentials — **separate** from `SettingsStore`; managed by `DatabaseManager` |
+| `Resources/DefaultConfiguration.json` | Legacy bundle resource; **not** the live settings source (URL helper exists but is unused) |
+
+Both `preferences.json` and every `Configurations/*.json` file include a `"version"` integer that must match `SettingsStore.version` after migration.
+
+#### Runtime lifecycle (app launch)
+
+```
+SettingsContainer.init()
+  → SettingsVersioningManager.updateAll()     // migrate JSON dicts on disk
+  → load preferences.json into store          // JSONDecoder → SettingsStore
+  → load all Configurations/*.json
+  → save preferences.json (normalize on disk)
+  → subscribe to $store → auto-save on every change
+```
+
+Migrations run **synchronously at launch** (via `Task.synchronous`) before any settings are decoded. If migration fails for a file, it is logged; decode may then fail for that file.
+
+#### Schema versioning
+
+- `SettingsStore.version` (static) = schema the **current app code** expects.
+- `version` (per JSON file) = schema that file was written with.
+- On launch, for each settings JSON: while `file.version < SettingsStore.version`, apply one `upgradeVersion(dict:version:)` step, increment `version`, save file.
+
+Migrations operate on `[String: Any]` dictionaries — **not** on Swift `Codable` — so renames, nested dict updates, and default injection are explicit. Each `case N` in `upgradeVersion` handles the upgrade **from** version `N` **to** `N + 1`.
+
+**Example (v7 → v8):** added `allowUTF8InMIDIExport` with default `false` for existing users.
+
+#### Auto-save and configurations
+
+- SwiftUI views bind to `$settings.store.<property>` via `@EnvironmentObject SettingsContainer`.
+- Any change to `store` triggers `saveAsCurrent()` → writes `preferences.json`.
+- Named configurations are separate files; **saving a configuration** (`saveCurrentAs`, duplicate, etc.) writes `Configurations/{name}.json`.
+- `unsavedChanges` compares in-memory `store` to the on-disk file for the active configuration.
+- Configuration CRUD UI uses `ConfigurationsViewModel` as a thin facade over `SettingsContainer`.
+
+#### Bridge to extraction (`markersExtractorSettings`)
+
+Not every `SettingsStore` field maps 1:1 to the UI. Extraction reads settings through:
+
+`SettingsStore.markersExtractorSettings(fcpxmlFileUrl:)` → `MarkersExtractor.Settings`
+
+When adding a setting that affects extraction/export, wire it here (and bump MarkersExtractor dependency if the library adds a new parameter). Example: `allowUTF8InMIDIExport` → `isMIDIFileUTF8EncodingAllowed`.
+
+#### Exception: Roles (`RolesManager`)
+
+FCP role enable/disable is stored in `preferences.json` but **`RolesManager` reads/writes the file directly** (not via `SettingsContainer`) so the Workflow Extension can share the same file. Changes to `roles` must remain compatible with both the main app and the extension; cross-process sync uses `DistributedNotificationCenter` (`.rolesChanged`).
+
+#### Checklist: adding or changing a persisted setting
+
+1. Add property to `SettingsStore` with a default in `defaults()`.
+2. **Increment** `SettingsStore.version` by 1.
+3. Add `case <previousVersion>:` in `SettingsVersioningManager.upgradeVersion` — inject the new key (use `SettingsStore.defaults()` for default values) or migrate renamed keys.
+4. Add UI binding in the appropriate settings view (`Views/Detail Views/...`).
+5. If it affects extraction: update `markersExtractorSettings(fcpxmlFileUrl:)`.
+6. If it affects MarkersExtractor API: bump the Swift package version in `Marker Data.xcodeproj`.
+7. Verify existing `preferences.json` and `Configurations/*.json` on disk upgrade cleanly (definition of done).
+
+**When you must migrate:** new persisted property, renamed JSON key, removed property, changed nested structure, or any change that would break `JSONDecoder` decode of older files.
+
+**When migration is not needed:** UI-only changes, recalculating defaults for **new** installs only, or settings stored outside `SettingsStore` (e.g. database profiles).
+
+**Never** remove or rename JSON keys without a migration step — users keep settings across app updates.
 
 ## Core flows
 ### 1) Extract flow (interactive)
@@ -145,7 +225,7 @@ Implementation:
 - `SidebarSelectionSwitcher` forces UI to the Extract panel on those events.
 
 ## UI architecture
-SwiftUI views generally bind directly into `SettingsContainer.store` (a published `SettingsStore`), so changing UI fields will auto-save current settings.
+SwiftUI views generally bind directly into `SettingsContainer.store` (a published `SettingsStore`), so changing UI fields will auto-save to `preferences.json`. See **Settings system** for the full persistence, migration, and configuration model.
 
 Notable UI modules:
 - **General settings**: File, Roles, Notifications, Updates

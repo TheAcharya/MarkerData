@@ -4,6 +4,7 @@
     "selectedImageMode": 0,
     "enabledSubframes": false,
     "enabledNoMedia": false,
+    "allowUTF8InMIDIExport": false,
     "selectedIDNamingMode": 0,
     "selectedMarkersSource": "markers",
     "overrideImageSize": 0,

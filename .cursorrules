@@ -17,9 +17,21 @@ You are working in the **Marker Data** repository: a macOS Swift/SwiftUI app tha
 ## Swift / SwiftUI conventions
 - Format Swift with SwiftFormat (see CONTRIBUTING.md).
 - Models that drive UI are `@MainActor` and mutate on main; extraction uses `TaskGroup` with cancellation.
-- Settings live in `~/Library/Application Support/Marker Data/` (see `URLExtension.swift`). Schema is versioned; any change to `SettingsStore` must:
-  - Bump `SettingsStore.version`
-  - Add a migration in `SettingsVersioningManager.upgradeVersion(...)`.
+
+## Settings system (required reading for preference changes)
+- Read **AGENT.md** → *Settings system* and **ARCHITECTURE.md** → *Settings system* before adding or changing persisted preferences.
+- Active settings: `~/Library/Application Support/Marker Data/preferences.json`. Named presets: `Configurations/*.json`. Both use `SettingsStore` (`SettingsStore.swift`).
+- `SettingsContainer` (`SettingsContainer.swift`) holds the active `store`, auto-saves on change, and manages configuration CRUD.
+- On launch, `SettingsVersioningManager.updateAll()` migrates JSON **before** decode — migrations are dict-based in `SettingsVersioningManager.upgradeVersion(...)`, one step per version increment.
+- UI binds via `@EnvironmentObject SettingsContainer` and `$settings.store.<property>`.
+- Export pipeline reads settings through `SettingsStore.markersExtractorSettings(fcpxmlFileUrl:)` → `MarkersExtractor.Settings` — wire new export-related fields there.
+- `RolesManager` reads/writes `preferences.json` directly (Workflow Extension sync) — keep `roles` compatible.
+- **Any new/changed/renamed persisted `SettingsStore` property:**
+  1. Bump `SettingsStore.version`
+  2. Add migration `case` for the previous version
+  3. Add UI binding
+  4. Wire `markersExtractorSettings` if export-related
+  5. Never remove/rename JSON keys without a migration
 
 ## Pitfalls to avoid
 - Do not remove or rename persisted settings keys without a migration.

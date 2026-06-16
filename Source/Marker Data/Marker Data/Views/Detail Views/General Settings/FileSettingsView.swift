@@ -65,6 +65,8 @@ struct FileSettingsView: View {
                 Toggle("Use Chapter Marker Pin Image", isOn: $settings.store.useChapterMarkerThumbnails)
                 
                 Toggle("Skip Image Generation", isOn: $settings.store.enabledNoMedia)
+
+                Toggle("Allow UTF-8 in MIDI Export Profile", isOn: $settings.store.allowUTF8InMIDIExport)
             }
         }
     }

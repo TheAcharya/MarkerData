@@ -11,7 +11,7 @@ import MarkersExtractor
 
 struct SettingsStore: Sendable, Codable, Hashable, Equatable, Identifiable {
     /// Used for versioning
-    static let version: Int = 7
+    static let version: Int = 8
     var version: Int = Self.version
 
     var name: String
@@ -36,6 +36,7 @@ struct SettingsStore: Sendable, Codable, Hashable, Equatable, Identifiable {
     var enabledSubframes: Bool
     var includeDisabledClips: Bool
     var enabledNoMedia: Bool
+    var allowUTF8InMIDIExport: Bool
 
     var IDNamingMode: MarkerIDMode
     var markersSource: MarkersSource
@@ -43,7 +44,7 @@ struct SettingsStore: Sendable, Codable, Hashable, Equatable, Identifiable {
 
     // MARK: Overall image size settings
 
-    // If .noOverride image size, image width andd image hight will be ignored
+    // If .noOverride image size, image width and image hight will be ignored
     var overrideImageSize: OverrideImageSizeOption
     
     // Will be ignored if override image size is off
@@ -136,6 +137,7 @@ struct SettingsStore: Sendable, Codable, Hashable, Equatable, Identifiable {
             enabledSubframes: false,
             includeDisabledClips: false, 
             enabledNoMedia: false,
+            allowUTF8InMIDIExport: false,
             IDNamingMode: .timelineNameAndTimecode,
             markersSource: .markers,
             useChapterMarkerThumbnails: false,
@@ -223,6 +225,7 @@ struct SettingsStore: Sendable, Codable, Hashable, Equatable, Identifiable {
             imageSizePercent: imageSizePercent,
             gifFPS: Double(self.GIFFPS),
             gifSpan: TimeInterval(self.GIFLength),
+            isMIDIFileUTF8EncodingAllowed: self.allowUTF8InMIDIExport,
             idNamingMode: self.IDNamingMode,
             imageLabels: self.overlays,
             imageLabelCopyright: self.copyrightText,

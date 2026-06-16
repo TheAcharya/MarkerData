@@ -88,6 +88,8 @@ struct SettingsVersioningManager {
                     dict["IDNamingMode"] = "timelineNameAndTimecode"
                 }
             }
+        case 7:
+            dict["allowUTF8InMIDIExport"] = SettingsStore.defaults().allowUTF8InMIDIExport
         default:
             throw VersioningError.invalidVersion
         }
