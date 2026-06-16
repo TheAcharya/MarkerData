@@ -1,5 +1,15 @@
 # Changelog
 
+### 2.0.3 (20)
+
+**🎉 Released:**
+- 16th June 2026
+
+**🔨 Improvements:**
+- Added new option [Allow UTF-8 in MIDI Export Profile](https://markerdata.theacharya.co/user-guide/general/#allow-utf-8-in-midi-export-profile) under General Settings (#148)
+
+---
+
 ### 2.0.2 (19)
 
 **🎉 Released:**
