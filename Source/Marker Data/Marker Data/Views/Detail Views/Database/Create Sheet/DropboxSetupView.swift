@@ -62,6 +62,7 @@ struct DropboxSetupView: View {
             .alert("Dropbox Setup Failed", isPresented: $showAppKeyError) {} message: {
                 Text(appKeyErrorMessage)
             }
+            .appDialogIcon()
             
             Text("Clicking **Continue** will launch the Terminal. Follow the on-screen instructions for the rest of the setup process.")
                 .fontWeight(.thin)

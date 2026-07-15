@@ -72,6 +72,7 @@ public struct ExtractView: View {
         } message: {
             Text(extractionModel.extractionProgress.alertMessage)
         }
+        .appDialogIcon()
         .alert("Failed to upload completely", isPresented: $extractionModel.databaseUploader.uploadProgress.showAlert) {
             Button("Show Error Details") {
                 openWindow(value: extractionModel.failedTasks)
@@ -81,6 +82,7 @@ public struct ExtractView: View {
         } message: {
             Text(extractionModel.databaseUploader.uploadProgress.alertMessage)
         }
+        .appDialogIcon()
     }
     
     var titleAndFileOpenView: some View {

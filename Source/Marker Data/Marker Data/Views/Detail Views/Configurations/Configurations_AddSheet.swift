@@ -12,11 +12,19 @@ extension ConfigurationSettingsView {
     func addOrRenameConfigurationModal(rename: Bool = false) -> some View {
         func doAction() async {
             if rename {
-                await confModel.rename(store: selectedStore, to: configurationNameText)
+                guard await confModel.rename(store: selectedStore, to: configurationNameText) else {
+                    // Dismiss sheet so the parent alert presents as a top-level dialog with icon.
+                    showRenameConfigurationSheet = false
+                    return
+                }
                 configurationNameText.removeAll()
                 showRenameConfigurationSheet = false
             } else {
-                await confModel.add(saveAs: configurationNameText)
+                guard await confModel.add(saveAs: configurationNameText) else {
+                    showAddConfigurationSheet = false
+                    return
+                }
+                configurationNameText.removeAll()
                 showAddConfigurationSheet = false
             }
         }

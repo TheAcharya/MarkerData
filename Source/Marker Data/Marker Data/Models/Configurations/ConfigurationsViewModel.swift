@@ -15,11 +15,14 @@ class ConfigurationsViewModel: ObservableObject {
     @Published var alertTitle = ""
     @Published var alertMessage = ""
 
-    public func add(saveAs name: String) async {
+    @discardableResult
+    public func add(saveAs name: String) async -> Bool {
         do {
             try await settings?.saveCurrentAs(name: name)
+            return true
         } catch {
             showAlert("Couldn't create configuration", message: error.localizedDescription)
+            return false
         }
     }
 
@@ -54,7 +57,7 @@ class ConfigurationsViewModel: ObservableObject {
             try await settings?.duplicateStore(store: storeUnwrapped, as: storeUnwrapped.name + " copy")
             settings?.objectWillChange.send()
         } catch {
-            showAlert("Failed to duplicate configuration")
+            showAlert("Failed to duplicate configuration", message: error.localizedDescription)
         }
     }
 
@@ -75,18 +78,25 @@ class ConfigurationsViewModel: ObservableObject {
         }
     }
 
-    public func rename(store: SettingsStore?, to newName: String) async {
+    @discardableResult
+    public func rename(store: SettingsStore?, to newName: String) async -> Bool {
         guard let jsonURL = store?.jsonURL,
               let loadedStore = try? settings?.loadStoreFromDisk(at: jsonURL) else {
             showAlert("Failed to rename")
-            return
+            return false
+        }
+
+        if newName == loadedStore.name {
+            return true
         }
 
         do {
             try await settings?.duplicateStore(store: loadedStore, as: newName, setAsCurrent: true)
             try await settings?.removeConfiguration(name: loadedStore.name)
+            return true
         } catch {
             showAlert("Failed to rename", message: error.localizedDescription)
+            return false
         }
     }
 

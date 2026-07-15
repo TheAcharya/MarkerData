@@ -92,6 +92,7 @@ struct CreateDBProfileSheet: View {
             .alert("Validation Error", isPresented: $showAlert) {} message: {
                 Text(alertMessage)
             }
+            .appDialogIcon()
         }
     }
     

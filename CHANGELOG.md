@@ -1,5 +1,23 @@
 # Changelog
 
+
+### 2.0.4 (21)
+
+**🎉 Released:**
+- TBA
+
+**🔨 Improvements:**
+- Configuration add, rename, and duplicate now reject duplicate names and keep the sheet open until the save succeeds
+- Updated core dependencies
+- Codebase updates for Xcode 26.6
+
+**🐞 Bug Fix:**
+- Fixed an issue where saving a configuration with a name that already exists silently overwrote the existing file
+- Fixed an issue where Rename Configuration opened with an empty name field
+- Fixed an issue where some alerts showed a blank document icon instead of the Marker Data app icon
+
+---
+
 ### 2.0.3 (20)
 
 **🎉 Released:**

@@ -99,6 +99,7 @@ struct ConfigurationSettingsView: View {
         } message: {
             Text(confModel.alertMessage)
         }
+        .appDialogIcon()
     }
     
     // MARK: Views
@@ -143,6 +144,7 @@ struct ConfigurationSettingsView: View {
                     confModel: confModel,
                     store: $configuration,
                     selectedStoreName: $selectedStoreName,
+                    configurationNameText: $configurationNameText,
                     showRenameConfigurationSheet: $showRenameConfigurationSheet
                 )
             }

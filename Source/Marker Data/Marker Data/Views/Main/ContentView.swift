@@ -132,6 +132,7 @@ struct ContentView: View {
         } message: {
             Text("Marker Data must be installed in the Applications folder to run correctly. Please move the application to the Applications folder and try again.")
         }
+        .appDialogIcon()
     }
     
     var changedLabel: Text {

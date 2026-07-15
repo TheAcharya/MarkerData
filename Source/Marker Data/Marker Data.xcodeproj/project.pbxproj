@@ -96,6 +96,7 @@
 		417389632AC86BE600984FD8 /* ExtractView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417389622AC86BE600984FD8 /* ExtractView.swift */; };
 		4176E7E42F608D51001547D7 /* ApplyPickerSizing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4176E7E32F608D51001547D7 /* ApplyPickerSizing.swift */; };
 		4176E7E72F609243001547D7 /* OptionalKeyboardShortcut.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4176E7E62F609243001547D7 /* OptionalKeyboardShortcut.swift */; };
+		4176E7F02F7A0001001547D7 /* DialogIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4176E7F12F7A0001001547D7 /* DialogIcon.swift */; };
 		4176E7E92F61772A001547D7 /* FixedPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4176E7E82F61772A001547D7 /* FixedPicker.swift */; };
 		4176E7EA2F632E7F001547D7 /* OverlayHelpButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47411FDB2A3EA140005890FE /* OverlayHelpButton.swift */; };
 		4176E7EC2F632FA9001547D7 /* HelpButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4176E7EB2F632FA9001547D7 /* HelpButton.swift */; };
@@ -318,6 +319,7 @@
 		417389622AC86BE600984FD8 /* ExtractView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractView.swift; sourceTree = "<group>"; };
 		4176E7E32F608D51001547D7 /* ApplyPickerSizing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyPickerSizing.swift; sourceTree = "<group>"; };
 		4176E7E62F609243001547D7 /* OptionalKeyboardShortcut.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalKeyboardShortcut.swift; sourceTree = "<group>"; };
+		4176E7F12F7A0001001547D7 /* DialogIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialogIcon.swift; sourceTree = "<group>"; };
 		4176E7E82F61772A001547D7 /* FixedPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixedPicker.swift; sourceTree = "<group>"; };
 		4176E7EB2F632FA9001547D7 /* HelpButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpButton.swift; sourceTree = "<group>"; };
 		4176E7EE2F645320001547D7 /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
@@ -672,6 +674,7 @@
 			isa = PBXGroup;
 			children = (
 				4176E7E32F608D51001547D7 /* ApplyPickerSizing.swift */,
+				4176E7F12F7A0001001547D7 /* DialogIcon.swift */,
 				4176E7E62F609243001547D7 /* OptionalKeyboardShortcut.swift */,
 			);
 			path = Extensions;
@@ -1333,6 +1336,7 @@
 				411D9CC72D5DFD8300465CBC /* ShellError.swift in Sources */,
 				411F373B2B55B77100CC05E6 /* LibraryFolders.swift in Sources */,
 				4176E7E72F609243001547D7 /* OptionalKeyboardShortcut.swift in Sources */,
+				4176E7F02F7A0001001547D7 /* DialogIcon.swift in Sources */,
 				41D1E4DE2B71769700AE2E55 /* AirtableDBModel.swift in Sources */,
 				41D1E4E22B729ED500AE2E55 /* PlatformInfoTextField.swift in Sources */,
 				411F37472B56F11400CC05E6 /* InstallShareDestinationView.swift in Sources */,
@@ -1885,7 +1889,7 @@
 			repositoryURL = "https://github.com/TheAcharya/MarkersExtractor";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.4.6;
+				minimumVersion = 0.4.7;
 			};
 		};
 		4155B72A2B668C0D008D3505 /* XCRemoteSwiftPackageReference "swift-log-oslog" */ = {
