@@ -1437,7 +1437,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 20;
+				CURRENT_PROJECT_VERSION = 21;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					/Library/Frameworks,
@@ -1465,7 +1465,7 @@
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MACH_O_TYPE = mh_execute;
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 2.0.3;
+				MARKETING_VERSION = 2.0.4;
 				OTHER_LDFLAGS = (
 					"-fapplication-extension",
 					"-lProExtension",
@@ -1492,7 +1492,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 20;
+				CURRENT_PROJECT_VERSION = 21;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					/Library/Frameworks,
@@ -1520,7 +1520,7 @@
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MACH_O_TYPE = mh_execute;
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 2.0.3;
+				MARKETING_VERSION = 2.0.4;
 				OTHER_LDFLAGS = (
 					"-fapplication-extension",
 					"-lProExtension",
@@ -1544,7 +1544,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 20;
+				CURRENT_PROJECT_VERSION = 21;
 				DEAD_CODE_STRIPPING = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1556,7 +1556,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 2.0.3;
+				MARKETING_VERSION = 2.0.4;
 				PRODUCT_BUNDLE_IDENTIFIER = co.theacharya.MarkerData.Uninstaller;
 				PRODUCT_NAME = "Uninstall Marker Data";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -1573,7 +1573,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 20;
+				CURRENT_PROJECT_VERSION = 21;
 				DEAD_CODE_STRIPPING = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1585,7 +1585,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 2.0.3;
+				MARKETING_VERSION = 2.0.4;
 				PRODUCT_BUNDLE_IDENTIFIER = co.theacharya.MarkerData.Uninstaller;
 				PRODUCT_NAME = "Uninstall Marker Data";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -1726,7 +1726,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 20;
+				CURRENT_PROJECT_VERSION = 21;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Marker Data/Preview Content\"";
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -1754,7 +1754,7 @@
 					"$(SDKROOT)/usr/lib/swift",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 2.0.3;
+				MARKETING_VERSION = 2.0.4;
 				PRODUCT_BUNDLE_IDENTIFIER = co.theacharya.MarkerData;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1773,7 +1773,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 20;
+				CURRENT_PROJECT_VERSION = 21;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Marker Data/Preview Content\"";
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -1801,7 +1801,7 @@
 					"$(SDKROOT)/usr/lib/swift",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 2.0.3;
+				MARKETING_VERSION = 2.0.4;
 				PRODUCT_BUNDLE_IDENTIFIER = co.theacharya.MarkerData;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

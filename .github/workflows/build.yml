@@ -36,6 +36,8 @@ jobs:
     - name: List Xcode Installations
       run: sudo ls -1 /Applications | grep "Xcode"
       
+    # Always check against the latest macOS runner image / preinstalled Xcode:
+    # https://github.com/actions/runner-images
     - name: Select Xcode 26.6.0
       run: sudo xcode-select -s /Applications/Xcode_26.6.0.app/Contents/Developer
     

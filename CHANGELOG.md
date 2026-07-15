@@ -4,7 +4,7 @@
 ### 2.0.4 (21)
 
 **🎉 Released:**
-- TBA
+- 15th July 2026
 
 **🔨 Improvements:**
 - Configuration add, rename, and duplicate now reject duplicate names and keep the sheet open until the save succeeds
