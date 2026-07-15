@@ -8,6 +8,7 @@
 
 **🔨 Improvements:**
 - Configuration add, rename, and duplicate now reject duplicate names and keep the sheet open until the save succeeds
+- Updated core dependencies
 - Codebase updates for Xcode 26.6
 
 **🐞 Bug Fix:**

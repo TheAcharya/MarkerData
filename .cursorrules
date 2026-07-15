@@ -2,31 +2,34 @@
 
 You are working in the **Marker Data** repository: a macOS Swift/SwiftUI app that extracts Final Cut Pro marker metadata (via MarkersExtractor), optionally renders images and color swatches, and uploads to Notion/Airtable via bundled CLIs. It also includes a Final Cut Pro Workflow Extension and Share Destination integration.
 
+## Required reading
+- **`AGENT.md`** — entry points, build/CI, settings checklist, “when you change X, also change Y”, pitfalls, definition of done
+- **`ARCHITECTURE.md`** — modules, persistence layout, extract/queue/upload/FCP flows, notification contracts, directory map
+
+Keep these three files consistent when architecture or agent guidance changes.
+
 ## Project layout
 - Main app: `Source/Marker Data/Marker Data/`
 - Workflow Extension: `Source/Marker Data/Workflow Extension/`
-- Uninstaller app: `Source/Marker Data/Marker Data Uninstaller/` (target **Uninstall Marker Data**, product `Uninstall Marker Data.app`)
-- FCP Share Destination (Swift + Obj-C): `Source/Marker Data/Marker Data/FCP Share Destination/`
-- Bundled binaries (do not modify): `Source/Marker Data/Marker Data/Resources/airlift`, `csv2notion_neo`
-- Build: open `Source/Marker Data/Marker Data.xcodeproj`. Target **Apple Silicon**; CI uses Xcode 26.3.0 on macos-26.
-
-## Core context
-- Read **AGENT.md** for entry points, build/CI, and “when you change X, also change Y”.
-- Read **ARCHITECTURE.md** for modules, data flows, persistence, and FCP integration behavior.
+- Uninstaller: `Source/Marker Data/Marker Data Uninstaller/` (target **Uninstall Marker Data**; product `Uninstall Marker Data.app`; bundle ID `co.theacharya.MarkerData.Uninstaller`)
+- FCP Share Destination (Swift + Obj‑C): `Source/Marker Data/Marker Data/FCP Share Destination/`
+- Bundled binaries (do not modify internals): `Source/Marker Data/Marker Data/Resources/airlift`, `csv2notion_neo`
+- Build: open `Source/Marker Data/Marker Data.xcodeproj`, scheme **Marker Data**, **Apple Silicon** (`arm64`) only
+- CI: `macos-26` runners with **Xcode 26.6.0**; Workflow Extensions SDK from `SDK/Workflow_Extensions_1.0.3.dmg`
 
 ## Swift / SwiftUI conventions
-- Format Swift with SwiftFormat (see CONTRIBUTING.md).
-- Models that drive UI are `@MainActor` and mutate on main; extraction uses `TaskGroup` with cancellation.
+- Format Swift with SwiftFormat (see `CONTRIBUTING.md`).
+- Models that drive UI are `@MainActor` and mutate on main; extraction/upload use `Task` / `TaskGroup` with cancellation (including terminating child `Process`es).
 
-## Settings system (required reading for preference changes)
-- Read **AGENT.md** → *Settings system* and **ARCHITECTURE.md** → *Settings system* before adding or changing persisted preferences.
-- Active settings: `~/Library/Application Support/Marker Data/preferences.json`. Named presets: `Configurations/*.json`. Both use `SettingsStore` (`SettingsStore.swift`).
-- `SettingsContainer` (`SettingsContainer.swift`) holds the active `store`, auto-saves on change, and manages configuration CRUD.
+## Settings system (required for preference changes)
+- Read **AGENT.md → Settings system** and **ARCHITECTURE.md → Settings system** before adding or changing persisted preferences.
+- Active settings: `~/Library/Application Support/Marker Data/preferences.json`. Named presets: `Configurations/*.json`. Schema: `SettingsStore` (`SettingsStore.swift`; `static let version` currently **8**).
+- `SettingsContainer` holds the active `store`, auto-saves on change, and manages configuration CRUD.
 - **Unique configuration names:** add / rename / duplicate must throw `ConfigurationSaveError.nameAlreadyExists` — never overwrite `{name}.json` silently. Rename prefills the current name; sheets dismiss only on success.
-- On launch, `SettingsVersioningManager.updateAll()` migrates JSON **before** decode — migrations are dict-based in `SettingsVersioningManager.upgradeVersion(...)`, one step per version increment.
+- On launch, `SettingsVersioningManager.updateAll()` migrates JSON **before** decode — dict-based `upgradeVersion(...)`, one step per version increment.
 - UI binds via `@EnvironmentObject SettingsContainer` and `$settings.store.<property>`.
-- Export pipeline reads settings through `SettingsStore.markersExtractorSettings(fcpxmlFileUrl:)` → `MarkersExtractor.Settings` — wire new export-related fields there.
-- `RolesManager` reads/writes `preferences.json` directly (Workflow Extension sync) — keep `roles` compatible.
+- Export pipeline reads settings through `SettingsStore.markersExtractorSettings(fcpxmlFileUrl:)` → `MarkersExtractor.Settings` — wire new export-related fields there. Roles are reloaded from disk inside that method.
+- `RolesManager` reads/writes `preferences.json` directly (Workflow Extension sync via DistributedNotification `.rolesChanged`) — keep `roles` compatible.
 - **Any new/changed/renamed persisted `SettingsStore` property:**
   1. Bump `SettingsStore.version`
   2. Add migration `case` for the previous version
@@ -34,13 +37,22 @@ You are working in the **Marker Data** repository: a macOS Swift/SwiftUI app tha
   4. Wire `markersExtractorSettings` if export-related
   5. Never remove/rename JSON keys without a migration
 
+## Key runtime flows (see ARCHITECTURE.md for detail)
+- **Extract:** `ExtractionModel` → MarkersExtractor → optional `ColorPaletteRenderer` → optional `DatabaseUploader`
+- **Queue:** scans for `extract_info.json` (written only for Notion/Airtable extracts with a JSON manifest) → parallel re-upload
+- **Workflow Extension:** writes `~/Movies/Marker Data Cache/WorkflowExtensionExport.fcpxml`, opens `/Applications/Marker Data.app`, posts DistributedNotification `.workflowExtensionFileReceived`
+- **Share Destination:** `OSAScriptingDefinition.sdef` + Obj‑C `MakeCommand` → Movies cache → local `FCPShareStart` → Apple Event open → `.openFile`
+
 ## Pitfalls to avoid
 - Do not remove or rename persisted settings keys without a migration.
-- Do not assume behavior of `airlift` / `csv2notion_neo` beyond the CLI usage in `DatabaseUploader`.
-- Share Destination scripting contract is in `Resources/OSAScriptingDefinition.sdef` and Obj-C; Workflow Extension uses `DistributedNotificationCenter` and files under `~/Movies/Marker Data Cache/`.
-- The app warns if not run from `/Applications`; do not remove that check.
-- SwiftUI `.alert` icons: Dock uses Icon Composer (`Marker-Data.icon`), which often yields a blank document glyph in alerts. After every `.alert`, chain `.appDialogIcon()` (`Views/Extensions/DialogIcon.swift` → PNG `AppIconSingle`, same as About).
+- Do not assume behavior of `airlift` / `csv2notion_neo` beyond CLI usage in `DatabaseUploader` (and Dropbox setup in `DropboxSetupModel`).
+- Do not break Share Destination scripting (`Resources/OSAScriptingDefinition.sdef` + Obj‑C) or Workflow Extension disk/DNC contracts.
+- The app warns if not run from `/Applications`; do not remove that check (extension opens that path).
+- SwiftUI `.alert` icons: Dock uses Icon Composer (`Marker-Data.icon`), which often yields a blank document glyph. After every `.alert`, chain `.appDialogIcon()` (`Views/Extensions/DialogIcon.swift` → PNG `AppIconSingle`).
+- Database models use property name `plaform` — keep consistent unless intentionally migrating.
+- If adding new on-disk paths the app uses, update `MarkerDataUninstaller` cleanup paths too.
 
 ## Definition of done for code changes
 - App builds (Debug and Release) for arm64.
 - Settings load and migrate; extraction works for `.fcpxml`/`.fcpxmld`; queue scan/upload still works for folders containing `extract_info.json`.
+- New alerts use `.appDialogIcon()`; settings changes include version + migration + wiring as required above.
