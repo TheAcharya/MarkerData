@@ -3,6 +3,16 @@
     <channel>
         <title>Marker Data</title>
         <item>
+        <title>Version 2.0.4</title>
+        <link>https://markerdata.theacharya.co</link>
+        <pubDate>Wed, 15 Jul 2026 13:05:10 +0800</pubDate>
+        <sparkle:version>21</sparkle:version>
+        <sparkle:shortVersionString>2.0.4</sparkle:shortVersionString>
+        <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
+        <sparkle:releaseNotesLink>https://markerdata.theacharya.co/release-notes-appcast.html</sparkle:releaseNotesLink>
+        <sparkle:fullReleaseNotesLink>https://markerdata.theacharya.co/release-notes/</sparkle:fullReleaseNotesLink>
+        <enclosure url="https://github.com/TheAcharya/MarkerData/releases/download/v2.0.4/Marker-Data_v2.0.4.dmg" length="51980927" type="application/octet-stream" sparkle:edSignature="ZqLtdJneb3pE5OJfA/rIjBktZGa09ph51OIdz9okEVrzXxaKTlvedR7ULJg9yeorCeqGvTKddnlY6wQXAgPXBQ==" />
+    </item><item>
         <title>Version 2.0.3</title>
         <link>https://markerdata.theacharya.co</link>
         <pubDate>Tue, 16 Jun 2026 09:07:18 +0800</pubDate>
