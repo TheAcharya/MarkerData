@@ -22,6 +22,7 @@ You are working in the **Marker Data** repository: a macOS Swift/SwiftUI app tha
 - Read **AGENT.md** → *Settings system* and **ARCHITECTURE.md** → *Settings system* before adding or changing persisted preferences.
 - Active settings: `~/Library/Application Support/Marker Data/preferences.json`. Named presets: `Configurations/*.json`. Both use `SettingsStore` (`SettingsStore.swift`).
 - `SettingsContainer` (`SettingsContainer.swift`) holds the active `store`, auto-saves on change, and manages configuration CRUD.
+- **Unique configuration names:** add / rename / duplicate must throw `ConfigurationSaveError.nameAlreadyExists` — never overwrite `{name}.json` silently. Rename prefills the current name; sheets dismiss only on success.
 - On launch, `SettingsVersioningManager.updateAll()` migrates JSON **before** decode — migrations are dict-based in `SettingsVersioningManager.upgradeVersion(...)`, one step per version increment.
 - UI binds via `@EnvironmentObject SettingsContainer` and `$settings.store.<property>`.
 - Export pipeline reads settings through `SettingsStore.markersExtractorSettings(fcpxmlFileUrl:)` → `MarkersExtractor.Settings` — wire new export-related fields there.
@@ -38,6 +39,7 @@ You are working in the **Marker Data** repository: a macOS Swift/SwiftUI app tha
 - Do not assume behavior of `airlift` / `csv2notion_neo` beyond the CLI usage in `DatabaseUploader`.
 - Share Destination scripting contract is in `Resources/OSAScriptingDefinition.sdef` and Obj-C; Workflow Extension uses `DistributedNotificationCenter` and files under `~/Movies/Marker Data Cache/`.
 - The app warns if not run from `/Applications`; do not remove that check.
+- SwiftUI `.alert` icons: Dock uses Icon Composer (`Marker-Data.icon`), which often yields a blank document glyph in alerts. After every `.alert`, chain `.appDialogIcon()` (`Views/Extensions/DialogIcon.swift` → PNG `AppIconSingle`, same as About).
 
 ## Definition of done for code changes
 - App builds (Debug and Release) for arm64.

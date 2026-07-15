@@ -14,6 +14,7 @@ struct ConfigurationContextMenuView: View {
     @ObservedObject var confModel: ConfigurationsViewModel
     @Binding var store: SettingsStore
     @Binding var selectedStoreName: String
+    @Binding var configurationNameText: String
     @Binding var showRenameConfigurationSheet: Bool
 
     var body: some View {
@@ -59,6 +60,8 @@ struct ConfigurationContextMenuView: View {
 
                 // Rename configuration
                 Button {
+                    selectedStoreName = store.name
+                    configurationNameText = store.name
                     showRenameConfigurationSheet = true
                 } label: {
                     Label("Rename", systemImage: "square.and.pencil")

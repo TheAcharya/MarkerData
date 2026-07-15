@@ -104,6 +104,7 @@ struct Marker_DataApp: App {
                 OnboardingView()
             }
             .alert("Failed to initialize all Library folders", isPresented: $showLibraryFolderCreationAlert) {}
+            .appDialogIcon()
         }
         // Set fix window size
         .windowResizability(.contentSize)

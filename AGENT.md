@@ -54,6 +54,8 @@ Recommended:
 
 Marker Data settings are **versioned JSON**. The active store is `preferences.json`; named presets live in `Configurations/*.json`. Both use the same `SettingsStore` schema.
 
+**Configuration names must be unique:** add / rename / duplicate throw `ConfigurationSaveError.nameAlreadyExists` when a name already exists (list or on disk). Do not overwrite `{name}.json` silently. Rename prefills the current name; add/rename sheets dismiss only on success.
+
 **Core files:** `SettingsStore.swift`, `SettingsContainer.swift`, `SettingsVersioningManager.swift`. Full detail: `ARCHITECTURE.md` → *Settings system*.
 
 ### How it works (short)
@@ -103,6 +105,7 @@ Marker Data settings are **versioned JSON**. The active store is `preferences.js
 - **Entitlements & signing**: changes that touch Apple Events, sandboxing, or extension behavior may require entitlement updates.
 - **Install location**: app expects to run from `/Applications` (warning is shown in `ContentView`).
 - **Opaque helpers**: `airlift` / `csv2notion_neo` are binaries; don’t assume internal behavior beyond CLI contracts used in `DatabaseUploader`.
+- **SwiftUI alert icons**: Dock/app icon is Icon Composer (`Marker-Data.icon`); SwiftUI `.alert` often shows a blank document glyph instead. Chain `.appDialogIcon()` (PNG `AppIconSingle`, same as About) after every `.alert`. Helper: `Views/Extensions/DialogIcon.swift`.
 
 ## “Definition of done” for most changes
 - App builds (Debug + Release) for arm64.

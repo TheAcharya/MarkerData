@@ -126,6 +126,7 @@ Migrations operate on `[String: Any]` dictionaries — **not** on Swift `Codable
 - SwiftUI views bind to `$settings.store.<property>` via `@EnvironmentObject SettingsContainer`.
 - Any change to `store` triggers `saveAsCurrent()` → writes `preferences.json`.
 - Named configurations are separate files; **saving a configuration** (`saveCurrentAs`, duplicate, etc.) writes `Configurations/{name}.json`.
+- **Unique names:** add / rename / duplicate reject collisions via `ConfigurationSaveError.nameAlreadyExists` (in-memory list + on-disk file); never overwrite silently. Add/rename sheets dismiss only on success. Context-menu **Rename** prefills the current name; rename-to-same-name is a no-op.
 - `unsavedChanges` compares in-memory `store` to the on-disk file for the active configuration.
 - Configuration CRUD UI uses `ConfigurationsViewModel` as a thin facade over `SettingsContainer`.
 
@@ -231,7 +232,7 @@ Notable UI modules:
 - **General settings**: File, Roles, Notifications, Updates
 - **Image settings**: Extraction + Swatch tabs
 - **Label settings**: Appearance + Overlays
-- **Configurations**: create/rename/duplicate/remove; unsaved-change dialogs; optional ⌘1…⌘9 shortcuts
+- **Configurations**: create/rename/duplicate/remove; identical names rejected (`nameAlreadyExists`); Rename prefills current name; unsaved-change dialogs; optional ⌘1…⌘9 shortcuts
 - **Databases**: CRUD for Notion/Airtable profiles; Airtable includes Dropbox token setup
 - **Pagemaker**: a bundled HTML app in a WebView with JS→Swift message to export PDF via `NSSavePanel`
 

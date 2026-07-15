@@ -45,7 +45,9 @@ struct DatabaseSettingsView: View {
             .frame(width: 700)
         }
         .alert("Failed to remove profile", isPresented: $showProfileRemoveAlert) { }
+        .appDialogIcon()
         .alert("Failed to duplicate profile", isPresented: $showDuplicationAlert) { }
+        .appDialogIcon()
         .confirmationDialog("Delete profile \(selection?.quoted ?? "")? This action cannot be undone.", isPresented: $showDeleteConfirm) {
             Button("Delete", role: .destructive) {
                 do {

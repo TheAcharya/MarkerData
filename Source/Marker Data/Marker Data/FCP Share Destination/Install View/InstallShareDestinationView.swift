@@ -52,6 +52,7 @@ struct InstallShareDestinationView: View {
         .background(.linearGradient(colors: [.black, .darkPurple], startPoint: .leading, endPoint: .trailing))
         .clipShape(RoundedRectangle(cornerRadius: 8))
         .alert("Failed to install Share Destination", isPresented: $showFailAlert) {}
+        .appDialogIcon()
     }
     
     var installButton: some View {

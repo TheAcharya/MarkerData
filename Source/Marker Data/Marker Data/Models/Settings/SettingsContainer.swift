@@ -101,6 +101,10 @@ class SettingsContainer: ObservableObject {
             throw ConfigurationSaveError.illegalName
         }
 
+        guard !configurationNameExists(name) else {
+            throw ConfigurationSaveError.nameAlreadyExists
+        }
+
         guard var duplicate = deepCopy(of: store) else {
             throw ConfigurationSaveError.duplicationError
         }
@@ -236,5 +240,15 @@ class SettingsContainer: ObservableObject {
         } catch {
             Self.logger.error("Failed to load new roles: \(error.localizedDescription)")
         }
+    }
+
+    /// Whether a named configuration already exists in memory or on disk under Configurations/.
+    private func configurationNameExists(_ name: String) -> Bool {
+        if self.configurations.contains(where: { $0.name == name }) {
+            return true
+        }
+
+        let url = URL.configurationsFolder.appendingPathComponent(name, conformingTo: .json)
+        return FileManager.default.fileExists(atPath: url.path(percentEncoded: false))
     }
 }
