@@ -156,6 +156,7 @@ jobs:
       run: |
         PARENT=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
         APP="$PARENT/dist/dmg-builds/latest-build/Marker Data.app"
+        APP_ENTITLE="$PARENT/Source/Marker Data/Marker Data/Marker_Data.entitlements"
         
         echo $APPLE_CERT_DATA | base64 --decode > certificate.p12
         security create-keychain -p $KEYCHAIN_PASSWORD_M build-m.keychain
@@ -163,7 +164,7 @@ jobs:
         security unlock-keychain -p $KEYCHAIN_PASSWORD_M build-m.keychain
         security import certificate.p12 -k build-m.keychain -P $APPLE_CERT_PASSWORD -T /usr/bin/codesign
         security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k $KEYCHAIN_PASSWORD_M build-m.keychain
-        /usr/bin/codesign --force -s $APPLE_TEAM_ID --options runtime "$APP" -v
+        /usr/bin/codesign --force -s $APPLE_TEAM_ID --options runtime --entitlements "$APP_ENTITLE" "$APP" -v
         
     - name: Notarize Marker Data
       env:
