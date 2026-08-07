@@ -35,7 +35,9 @@ For deeper module/data-flow detail, see **`ARCHITECTURE.md`**. For hard always/n
 | External handoffs (open / Workflow Extension) | `.../ExtractionModel_EventHandlers.swift` |
 | FCPXML intake (files / pasteboard / textClipping) | `Utilities/Other/FCPXMLIntake.swift`, `TextClippingReader.swift` |
 | Extract drop modifier | `Views/Components/FCPXMLDropModifier.swift` (`.fcpxmlDropDestination`) |
-| Drop overlay (Extract / Roles / Queue) | `Views/Components/DropTargetOverlay.swift` |
+| Drop overlay (Extract / Roles / Queue + WE) | `Views/Components/DropTargetOverlay.swift` (also Workflow Extension Compile Sources) |
+| Workflow Extension UI | `Source/Marker Data/Workflow Extension/WorkflowExtensionView.swift` |
+| Color helpers (`markerAccent`, `heroGradient`) | `Utilities/Extensions/ColorExtension.swift` |
 | Queue UI | `Views/Detail Views/QueueView.swift` |
 | Queue scan/upload | `Models/Queue/QueueModel.swift` |
 | Queue row + local-first manifest | `Models/Queue/QueueInstance.swift` (`manifestURL`) |
@@ -89,7 +91,7 @@ When bumping a release: update `MARKETING_VERSION` and `CURRENT_PROJECT_VERSION`
   - Extraction/upload use `Task` / `TaskGroup`; cancellation via `Task.cancel()` and terminating child `Process`es.
 - **Persistence:** versioned JSON under Application Support (see Settings system). Database profiles are separate JSON files.
 - **External tools:** Notion/Airtable uploads spawn bundled executables; treat binaries as opaque. Progress UI depends on stdout lines containing `NN%`.
-- **Colors / icons:** Dock icon is Icon Composer (`Marker-Data.icon`). SwiftUI `.alert` often shows a blank document glyph — always chain `.appDialogIcon()` after `.alert` / confirmation dialogs.
+- **Colors / icons:** Dock icon is Icon Composer (`Marker-Data.icon`). SwiftUI `.alert` often shows a blank document glyph — always chain `.appDialogIcon()` after `.alert` / confirmation dialogs. Shared Workflow Extension chrome uses `Color.markerAccent` (not host `accentColor`).
 
 ## Settings system (read before changing preferences)
 
@@ -174,9 +176,10 @@ Also: getter for `colorSwatchSettings` **forces `enableSwatch = false` when extr
 - Workflow Extension: DistributedNotificationCenter names + fixed Movies-cache FCPXML path; roles via `preferences.json`.
 - Extract panel intake: `FCPXMLIntake` / `FCPXMLDropModifier` — keep Dock Open With (`OpenEventHandler`) and Share Destination paths distinct.
 
-### Drop overlay / shared Roles UI
+### Drop overlay / shared Workflow Extension UI
 - Update copy in **`GUARDRAILS.md`** (Drop overlay copy table) when changing messages.
-- If Roles overlay types change, ensure Workflow Extension Compile Sources still include them (`DropTargetOverlay`, `ColorExtension`).
+- Workflow Extension **Extract** (`WorkflowExtensionView`) and **Roles** (shared `RolesSettingsView`) both show overlays.
+- If overlay / color helpers change, ensure Workflow Extension Compile Sources still include `DropTargetOverlay` and `ColorExtension`. Shared chrome uses `Color.markerAccent`.
 
 ### Uninstaller cleanup paths
 - If the app/extension gains new Application Support, cache, container, or preferences paths, update `MarkerDataUninstaller.run()` path list to match.
@@ -237,7 +240,7 @@ Exact overlay strings and always/never rules: **`GUARDRAILS.md`**.
 - App builds (Debug + Release) for **arm64** (Workflow Extension still embeds).
 - Settings still load and migrate cleanly (`preferences.json` + `Configurations/*.json`).
 - Extraction works for `.fcpxml` and `.fcpxmld`, including FCP pasteboard / textClipping intake via `FCPXMLIntake`.
-- Drop overlays still work on Extract, Roles (app + extension), and Queue.
+- Drop overlays still work on main-app Extract / Roles / Queue **and** Workflow Extension Extract + Roles.
 - Queue scan/upload still works for folders containing `extract_info.json`, including **moved/copied** folders (`manifestURL`).
 - Any new `.alert` uses `.appDialogIcon()`.
 - If settings changed: version bumped + migration case + UI wired + export bridge if needed.

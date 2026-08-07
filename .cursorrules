@@ -11,7 +11,7 @@ Keep these four files consistent when architecture or agent guidance changes.
 
 ## Project layout
 - Main app: `Source/Marker Data/Marker Data/`
-- Workflow Extension: `Source/Marker Data/Workflow Extension/`
+- Workflow Extension: `Source/Marker Data/Workflow Extension/` (`WorkflowExtensionView.swift` — Extract + Roles tabs)
 - Uninstaller: `Source/Marker Data/Marker Data Uninstaller/` (target **Uninstall Marker Data**; product `Uninstall Marker Data.app`; bundle ID `co.theacharya.MarkerData.Uninstaller`)
 - FCP Share Destination (Swift + Obj‑C): `Source/Marker Data/Marker Data/FCP Share Destination/`
 - Bundled binaries (do not modify internals): `Source/Marker Data/Marker Data/Resources/airlift`, `csv2notion_neo`
@@ -41,9 +41,9 @@ Keep these four files consistent when architecture or agent guidance changes.
 ## Key runtime flows (see ARCHITECTURE.md for detail)
 - **Extract intake:** `FCPXMLIntake` resolves `.fcpxml` / `.fcpxmld`, Finder `.textClipping`, and Final Cut Pro pasteboard → temp file under `~/Movies/Marker Data Cache/` → `ExtractionModel.receiveFiles` / `receiveItemProviders`
 - **Extract:** `ExtractionModel` → MarkersExtractor → optional `ColorPaletteRenderer` (use `applyTaskAppearance` / `markAllProcessesFinished`, not progress `reset()` before swatch) → optional `DatabaseUploader`
-- **Drop overlays:** shared `DropTargetOverlay` on Extract, Roles, Queue — exact copy in **GUARDRAILS.md**
+- **Drop overlays:** shared `DropTargetOverlay` on main-app Extract / Roles / Queue **and** Workflow Extension Extract + Roles — exact copy in **GUARDRAILS.md**; border uses `Color.markerAccent` (not host `accentColor`)
 - **Queue:** scans for `extract_info.json` (Notion/Airtable + JSON manifest only) → upload via `QueueInstance.manifestURL` (local JSON beside folder preferred) → parallel re-upload; folder drop clears queue and disables auto-scan
-- **Workflow Extension:** writes `~/Movies/Marker Data Cache/WorkflowExtensionExport.fcpxml`, opens `/Applications/Marker Data.app`, posts DistributedNotification `.workflowExtensionFileReceived`; Roles UI shares `DropTargetOverlay` (must stay in extension Compile Sources). Shared chrome uses `Color.markerAccent` — not `accentColor` (FCP host blue).
+- **Workflow Extension:** Extract tab drops `.fcpxml` → Movies-cache handoff → open `/Applications/Marker Data.app` → DistributedNotification `.workflowExtensionFileReceived`; both Extract and Roles show `DropTargetOverlay` (`WorkflowExtensionView` + shared `RolesSettingsView`). Extension Compile Sources must include `DropTargetOverlay` + `ColorExtension` (+ shared Roles sources)
 - **Share Destination:** `OSAScriptingDefinition.sdef` + Obj‑C `MakeCommand` → Movies cache → local `FCPShareStart` → Apple Event open → `.openFile`
 
 ## Pitfalls to avoid
@@ -57,10 +57,11 @@ Keep these four files consistent when architecture or agent guidance changes.
 - Do not upload Queue jobs using only absolute `ExtractInfo.jsonURL` when a same-named JSON exists in the dropped/scanned folder — use `manifestURL`.
 - Do not call `ProgressViewModel.reset()` when transitioning extract → swatch; use `applyTaskAppearance`.
 - FCP timeline drops onto the Dock icon are often pasteboard-only; Extract panel drop is the supported timeline path.
+- Do not use `Color.accentColor` / `.accent` for shared chrome hosted in Final Cut Pro — use `Color.markerAccent`.
 
 ## Definition of done for code changes
 - App builds (Debug and Release) for arm64 (Workflow Extension still embeds).
 - Settings load and migrate; extraction works for `.fcpxml`/`.fcpxmld` (incl. FCP pasteboard / textClipping via `FCPXMLIntake`).
-- Drop overlays still work on Extract, Roles (app + extension), and Queue; queue still finds/uploads `extract_info.json` folders via `manifestURL`.
+- Drop overlays still work on main-app Extract / Roles / Queue **and** Workflow Extension Extract + Roles; queue still finds/uploads `extract_info.json` folders via `manifestURL`.
 - New alerts use `.appDialogIcon()`; settings changes include version + migration + wiring as required above.
 - Update `AGENT.md` / `ARCHITECTURE.md` / `GUARDRAILS.md` / `.cursorrules` when behavior changes.

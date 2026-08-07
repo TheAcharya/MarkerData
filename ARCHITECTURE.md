@@ -10,7 +10,7 @@
 It also ships two Final Cut Pro integrations:
 
 - **Share Destination** — Media Asset Protocol / AppleScript so FCP exports media + FCPXML and opens them into Marker Data
-- **Workflow Extension** — ProExtensions-hosted UI that can send an FCPXML to the app and manage Roles
+- **Workflow Extension** — ProExtensions-hosted UI: Extract tab handoff (overlay + Movies-cache FCPXML → open app) and Roles management (shared prefs + overlay)
 
 **Runtime requirements (product):** Apple silicon; macOS Sequoia 15.7+ (from 2.0.0); Final Cut Pro 12+ recommended. The app is expected to run from **`/Applications/Marker Data.app`**.
 
@@ -430,7 +430,7 @@ Notable modules under `Views/`:
 | Detail | General (File/Roles/Notifications/Updates), Image, Label, Configurations, Databases, Queue (folder drop overlay), About |
 | Menu commands | App / File / Edit / Sidebar / Configuration / Help |
 | Onboarding | `@AppStorage("showOnboarding")` sheet |
-| Components | `DropTargetOverlay`, `FCPXMLDropModifier`, shared controls |
+| Components | `DropTargetOverlay` (main app + WE), `FCPXMLDropModifier`, shared controls |
 | Extensions | **`DialogIcon.appDialogIcon()`** for alerts |
 | Other | `FailedExtractionsView` (truncate + `.help()` tooltips; min ~640×240) |
 | Pagemaker | `PagemakerView` WebView + `PagemakerPDFExportHandler` (JS → Swift PDF via `NSSavePanel`) |
@@ -441,23 +441,45 @@ Drop overlay copy and invariants: **`GUARDRAILS.md`**.
 
 ```mermaid
 flowchart TB
-  subgraph surfaces [Drop surfaces]
+  subgraph mainApp [Main app]
     EX[ExtractView]
     RO[RolesSettingsView]
     QU[QueueView]
+  end
+
+  subgraph we [Workflow Extension]
+    WEX[WorkflowExtensionView Extract]
+    WRO[RolesSettingsView]
   end
 
   OV[DropTargetOverlay]
   EX --> OV
   RO --> OV
   QU --> OV
+  WEX --> OV
+  WRO --> OV
 
   EX --> FM[FCPXMLDropModifier]
   FM --> IN[FCPXMLIntake]
   IN --> EM[ExtractionModel]
 
   RO --> RM[RolesManager DropDelegate]
+  WRO --> RM
   QU --> QM[QueueModel.performDrop]
+  WEX --> HO[Movies cache + open app + DNC]
+```
+
+```mermaid
+flowchart LR
+  Drop[FCPXML drop on WE Extract]
+  Overlay[DropTargetOverlay]
+  Cache[WorkflowExtensionExport.fcpxml]
+  App["/Applications/Marker Data.app"]
+  DNC[.workflowExtensionFileReceived]
+  EM[ExtractionModel]
+
+  Drop --> Overlay
+  Drop --> Cache --> App --> DNC --> EM
 ```
 
 ---
@@ -521,7 +543,7 @@ Plus `defaults delete co.theacharya.MarkerData` and `killall "Marker Data"`.
 
 ---
 
-## Directory map (main app sources)
+## Directory map (sources)
 
 ```
 Source/Marker Data/Marker Data/
@@ -546,12 +568,17 @@ Source/Marker Data/Marker Data/
     Install View/, Objective-C Code/, OpenEventHandler (Swift)
   Pagemaker/
   Utilities/
-    Extensions/        # URL, Color (heroGradient), UTType, NotificationName, …
+    Extensions/        # URL, Color (markerAccent, heroGradient), UTType, NotificationName, …
     Shell/, Notifications/,
     Other/             # FCPXMLIntake, TextClippingReader, LibraryFolders, …
   Resources/
     airlift, csv2notion_neo, OSAScriptingDefinition.sdef,
     *.fcpxdest, Pagemaker.html, entitlements, DefaultConfiguration.json
+
+Source/Marker Data/Workflow Extension/
+  WorkflowExtensionView.swift          # Extract overlay + handoff; hosts RolesSettingsView
+  WorkflowExtensionViewController.swift
+  Assets.xcassets/, Info.plist, entitlements, bridging header
 ```
 
 ---
@@ -561,12 +588,14 @@ Source/Marker Data/Marker Data/
 1. Settings migrations are mandatory for persisted key changes; Codable defaults alone are insufficient for existing users.
 2. Configuration filenames are unique; silent overwrite is a product bug.
 3. Roles are a cross-process file + DNC contract shared with the Workflow Extension (incl. shared drop overlay types in both targets).
-4. Queue is upload-oriented around `extract_info.json` (Notion/Airtable), not a universal browser of all exports.
-5. Queue uploads must use `QueueInstance.manifestURL` so moved/copied folders work despite absolute sidecar paths.
-6. Extract → swatch progress must use `applyTaskAppearance` / `markAllProcessesFinished`, not `reset()`, when image lists can be empty.
-7. CLI progress and success depend on binary stdout contracts (`NN%`, exit codes).
-8. Share Destination and Workflow Extension both assume `/Applications` install.
-9. Alert UI must use PNG `AppIconSingle` via `.appDialogIcon()` (Icon Composer dock asset is unreliable in dialogs).
-10. Preserve `plaform` spelling when touching database models unless intentionally migrating.
-11. FCPXML pasteboard/clipping temps live under `~/Movies/Marker Data Cache/` (not App Support).
-12. Definition of done: arm64 Debug+Release build; settings migrate; `.fcpxml`/`.fcpxmld` + pasteboard intake; queue finds/uploads via `manifestURL`; agent docs (`AGENT.md` / `ARCHITECTURE.md` / `GUARDRAILS.md` / `.cursorrules`) stay aligned.
+4. Workflow Extension **Extract** and **Roles** both show `DropTargetOverlay`; Extract handoff is local to `WorkflowExtensionView`, Roles uses shared `RolesSettingsView`.
+5. Shared WE chrome must use `Color.markerAccent` — `accentColor` resolves to Final Cut Pro’s blue inside the appex.
+6. Queue is upload-oriented around `extract_info.json` (Notion/Airtable), not a universal browser of all exports.
+7. Queue uploads must use `QueueInstance.manifestURL` so moved/copied folders work despite absolute sidecar paths.
+8. Extract → swatch progress must use `applyTaskAppearance` / `markAllProcessesFinished`, not `reset()`, when image lists can be empty.
+9. CLI progress and success depend on binary stdout contracts (`NN%`, exit codes).
+10. Share Destination and Workflow Extension both assume `/Applications` install.
+11. Alert UI must use PNG `AppIconSingle` via `.appDialogIcon()` (Icon Composer dock asset is unreliable in dialogs).
+12. Preserve `plaform` spelling when touching database models unless intentionally migrating.
+13. FCPXML pasteboard/clipping temps live under `~/Movies/Marker Data Cache/` (not App Support).
+14. Definition of done: arm64 Debug+Release build; settings migrate; `.fcpxml`/`.fcpxmld` + pasteboard intake; WE Extract + Roles overlays; queue finds/uploads via `manifestURL`; agent docs (`AGENT.md` / `ARCHITECTURE.md` / `GUARDRAILS.md` / `.cursorrules`) stay aligned.

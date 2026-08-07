@@ -1,6 +1,22 @@
 # Changelog
 
 
+### 2.0.6 (23)
+
+**🎉 Released:**
+- 7th August 2026
+
+**🔨 Improvements:**
+- Added drag-and-drop overlays on Extract, Roles, Queue, and the Workflow Extension (Extract and Roles tabs)
+- Extract panel now accepts a timeline drop from Final Cut Pro, as well as `.fcpxml` / `.fcpxmld` files and Finder text clippings
+- Improved Failed Extractions window readability with truncated paths and hover tooltips
+
+**🐞 Bug Fix:**
+- Fixed an issue where Queue uploads failed after moving or copying Notion/Airtable extract folders to another location
+- Fixed an issue where the progress bar could reset or stall at 0% when extracting without stills or color swatches
+
+---
+
 ### 2.0.5 (22)
 
 **🎉 Released:**
