@@ -9,8 +9,21 @@ import SwiftUI
 import MarkersExtractor
 
 extension RolesManager: DropDelegate {
+    nonisolated func dropEntered(info: DropInfo) {
+        Task { @MainActor in
+            self.isDropTargeted = true
+        }
+    }
+
+    nonisolated func dropExited(info: DropInfo) {
+        Task { @MainActor in
+            self.isDropTargeted = false
+        }
+    }
+
     nonisolated func performDrop(info: DropInfo) -> Bool {
         Task { @MainActor in
+            self.isDropTargeted = false
             self.loadingInProgress = true
         }
 

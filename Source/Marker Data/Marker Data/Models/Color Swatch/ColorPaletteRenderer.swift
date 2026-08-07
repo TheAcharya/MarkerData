@@ -27,6 +27,12 @@ struct ColorPaletteRenderer {
             return
         }
 
+        // No stills (no-media / skip image generation / empty export) — keep extract progress intact
+        guard !imageFileURLs.isEmpty else {
+            Self.logger.notice("No images found for color palette. Skipping swatch render.")
+            return
+        }
+
         let isGIF: Bool = imageFileURLs.contains(where: { $0.pathExtension == "gif" })
         let isJSON = exportResult.jsonManifestPath != nil
 

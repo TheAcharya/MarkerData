@@ -131,7 +131,7 @@ class QueueModel: ObservableObject {
     /// Filters out queue instaces which no loger point to existing files
     func filterMissing() async {
         self.queueInstances = self.queueInstances.filter {
-            $0.extractInfo.jsonURL.fileExists
+            $0.manifestURL.fileExists
         }
     }
 

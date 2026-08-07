@@ -11,6 +11,7 @@ struct QueueView: View {
     @ObservedObject var queueModel: QueueModel
 
     @State var scanFailed = false
+    @State private var isDropTargeted = false
     @State private var sortOrder = [KeyPathComparator(\QueueInstance.creationDate, order: .reverse)]
 
     var body: some View {
@@ -18,13 +19,27 @@ struct QueueView: View {
             ZStack {
                 tableView
                     .clipShape(.rect(cornerRadius: 8))
-                    .padding(.bottom, 8)
+
+                if isDropTargeted, !queueModel.uploadInProgress {
+                    DropTargetOverlay(
+                        message: "Drop Extract Folders (Notion or Airtable) into Queue",
+                        subtitle: nil,
+                        systemImage: "folder.fill"
+                    )
+                }
             }
+            .padding(.bottom, 8)
+            .animation(.easeInOut(duration: 0.2), value: isDropTargeted)
 
             actionsAndSettingsView
         }
         .padding()
         .overlayHelpButton(url: Links.queueHelpURL)
+        .onChange(of: queueModel.uploadInProgress) { _, uploading in
+            if uploading {
+                isDropTargeted = false
+            }
+        }
         .task {
             do {
                 try await queueModel.scanExportFolder()
@@ -70,9 +85,12 @@ struct QueueView: View {
         .onChange(of: sortOrder) {
             queueModel.queueInstances.sort(using: sortOrder)
         }
-        .dropDestination(for: URL.self) { urls, location in
+        .dropDestination(for: URL.self) { urls, _ in
+            guard !queueModel.uploadInProgress else { return false }
             queueModel.performDrop(urls: urls)
             return true
+        } isTargeted: { targeted in
+            isDropTargeted = queueModel.uploadInProgress ? false : targeted
         }
         .contextMenu {
             Button {
