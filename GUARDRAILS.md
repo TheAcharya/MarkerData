@@ -44,7 +44,8 @@ Read with **`AGENT.md`** (how to change things), **`ARCHITECTURE.md`** (how it w
 
 | Surface | Message | Icon | Notes |
 |---------|---------|------|-------|
-| **Extract** | Default: **“Drop to Extract Marker Metadata”**; subtitle **“Use Marker Data's Share Destination for Image Extraction”**. Hero caption under title: **“Drop a timeline from Final Cut Pro, or an .fcpxml / .fcpxmld file”** | `arrow.down.doc.fill` | Hide while `extractionInProgress`. Border: `Color.markerAccent` (explicit indigo — not `accentColor`, which becomes host blue in FCP); arrow: `Color.heroGradient`. |
+| **Extract** (main app) | Default: **“Drop to Extract Marker Metadata”**; subtitle **“Use Marker Data's Share Destination for Image Extraction”**. Hero caption under title: **“Drop a timeline from Final Cut Pro, or an .fcpxml / .fcpxmld file”** | `arrow.down.doc.fill` | Hide while `extractionInProgress`. Border: `Color.markerAccent` (explicit indigo — not `accentColor`, which becomes host blue in FCP); arrow: `Color.heroGradient`. |
+| **Extract** (Workflow Extension) | **“Drop to Open Marker Data”** | default | `subtitle: nil`; handoff writes Movies-cache FCPXML then opens the app. |
 | **Roles** (app + Workflow Extension) | **“Drop to Retrieve Roles Metadata”** | default | `subtitle: nil`; hide while `loadingInProgress`. |
 | **Queue** | **“Drop Extract Folders (Notion or Airtable) into Queue”** | `folder.fill` | `subtitle: nil`; hide while `uploadInProgress`; drop blocked during upload. |
 

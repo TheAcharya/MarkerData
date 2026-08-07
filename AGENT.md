@@ -192,6 +192,7 @@ Also: getter for `colorSwatchSettings` **forces `enableSwatch = false` when extr
 | Surface | Intake | Overlay |
 |---------|--------|---------|
 | **Extract** | `.fcpxmlDropDestination` → `ExtractionModel.receiveItemProviders` → `FCPXMLIntake` (FCP pasteboard, `.fcpxml`/`.fcpxmld`, `.textClipping`). Dock/Finder Open With still via `OpenEventHandler` → `.openFile`. | `DropTargetOverlay()` defaults + hero caption *“Drop a timeline from Final Cut Pro, or an .fcpxml / .fcpxmld file”* |
+| **Extract** (Workflow Extension) | `WorkflowExtensionView` `.onDrop([.fcpxml])` → Movies-cache handoff → open app → `.workflowExtensionFileReceived` | `DropTargetOverlay(message: "Drop to Open Marker Data", subtitle: nil)` |
 | **Roles** (app + Workflow Extension) | `RolesManager` `DropDelegate` (`.fcpxml` / file URL); `isDropTargeted` from `dropEntered` / `dropExited` | `DropTargetOverlay(message: "Drop to Retrieve Roles Metadata", subtitle: nil)` |
 | **Queue** | `.dropDestination(for: URL.self)` → `QueueModel.performDrop` (directories only; clears queue; scans for `extract_info.json`; disables auto-scan) | `DropTargetOverlay(message: "Drop Extract Folders (Notion or Airtable) into Queue", subtitle: nil, systemImage: "folder.fill")`; hidden while uploading |
 
@@ -201,7 +202,7 @@ Also: getter for `colorSwatchSettings` **forces `enableSwatch = false` when extr
 
 **Temporary pasteboard FCPXML:** `FCPXMLIntake.writeTemporaryFCPXML` → `~/Movies/Marker Data Cache/`.
 
-**Workflow Extension:** shares `RolesSettingsView` / `RolesManager` / `DropTargetOverlay` / `ColorExtension`. Add shared UI types to the extension target’s Compile Sources. Prefer `Color.accentColor` in shared views (extension SDK may lack `Color.accent`).
+**Workflow Extension:** Extract + Roles tabs both use `DropTargetOverlay` (`WorkflowExtensionView` / shared `RolesSettingsView`); also shares `RolesManager` / `ColorExtension`. Add shared UI types to the extension target’s Compile Sources. Shared chrome uses `Color.markerAccent` (not host `accentColor`).
 
 Exact overlay strings and always/never rules: **`GUARDRAILS.md`**.
 

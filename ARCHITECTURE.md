@@ -43,7 +43,7 @@ Primary responsibilities:
 
 Responsibilities:
 - SwiftUI UI inside `WorkflowExtensionViewController` (`NSHostingView`)
-- Drag/drop `.fcpxml` → write Movies-cache handoff file → open main app → DistributedNotification
+- Extract tab: drag/drop `.fcpxml` + `DropTargetOverlay` (“Drop to Open Marker Data”) → write Movies-cache handoff file → open main app → DistributedNotification
 - Roles tab sharing `RolesSettingsView` / `RolesManager` / `DropTargetOverlay` / `ColorExtension` with the main app (same prefs file)
 
 ### Uninstaller target (`Uninstall Marker Data`)
@@ -352,15 +352,16 @@ Dropbox auth for Airtable: `DropboxSetupModel` writes a temp `.command` that run
 
 ### 4) Workflow Extension handoff
 
-**Entry:** drop `.fcpxml` on extension Extract tab.
+**Entry:** drop `.fcpxml` on extension Extract tab (`WorkflowExtensionView`).
 
-1. Write `~/Movies/Marker Data Cache/WorkflowExtensionExport.fcpxml`
-2. `NSWorkspace.openApplication` → `/Applications/Marker Data.app`
-3. DistributedNotification `.workflowExtensionFileReceived` (no URL payload)
+1. Show `DropTargetOverlay` (**“Drop to Open Marker Data”**) while targeted
+2. Write `~/Movies/Marker Data Cache/WorkflowExtensionExport.fcpxml`
+3. `NSWorkspace.openApplication` → `/Applications/Marker Data.app`
+4. DistributedNotification `.workflowExtensionFileReceived` (no URL payload)
 
 App: `ExtractionModel_EventHandlers.handleWorkflowExtensionEvent` reads the fixed path; starts extraction or sets external-file gate. `SidebarSelectionSwitcher` selects Extract.
 
-Roles tab: same `RolesSettingsView` + `DropTargetOverlay` as the main app (extension Compile Sources must include overlay + `ColorExtension`).
+Roles tab: same `RolesSettingsView` + `DropTargetOverlay` as the main app (extension Compile Sources must include overlay + `ColorExtension`). Overlay borders use `Color.markerAccent` so FCP’s host accent does not turn them blue.
 
 ### 5) Share Destination handoff
 
