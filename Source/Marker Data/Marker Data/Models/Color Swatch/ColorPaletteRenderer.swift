@@ -46,7 +46,7 @@ struct ColorPaletteRenderer {
         }
 
         // Only retitle the progress bar when there is real swatch work to do
-        progress.applyTaskAppearance(
+        await progress.applyTaskAppearance(
             taskDescription: "Analysing swatch",
             taskIcon: "swatchpalette"
         )
