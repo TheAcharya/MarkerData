@@ -17,20 +17,23 @@ import OSLog
 struct ColorPaletteRenderer {
     static let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "ColorPaletteRenderer")
 
-    static func render(exportResult: ExportResult, swatchSettings: ColorSwatchSettingsModel, progress: ProgressViewModel) async {
+    /// Renders color palettes into export images.
+    /// - Returns: `true` if swatch work ran; `false` if skipped (no images, unsupported GIF, etc.).
+    @discardableResult
+    static func render(exportResult: ExportResult, swatchSettings: ColorSwatchSettingsModel, progress: ProgressViewModel) async -> Bool {
         guard let imageFileURLs = try? FileManager.default
             .contentsOfDirectory(at: exportResult.exportFolder, includingPropertiesForKeys: [])
             .filter({ ["png", "jpg", "jpeg", "gif"].contains($0.pathExtension.lowercased()) }) // Filter for images
             .filter({ !$0.lastPathComponent.contains("icon-marker") }) // Filter out marker icons
         else {
             Self.logger.error("Failed to get contents of directory")
-            return
+            return false
         }
 
-        // No stills (no-media / skip image generation / empty export) — keep extract progress intact
+        // No stills (no-media / skip image generation / empty export)
         guard !imageFileURLs.isEmpty else {
             Self.logger.notice("No images found for color palette. Skipping swatch render.")
-            return
+            return false
         }
 
         let isGIF: Bool = imageFileURLs.contains(where: { $0.pathExtension == "gif" })
@@ -39,8 +42,14 @@ struct ColorPaletteRenderer {
         // Skip palette if image format is GIF and the export format is not JSON
         if isGIF && !isJSON {
             Self.logger.warning("GIF export can be only used with JSON. Skipping palette creation.")
-            return
+            return false
         }
+
+        // Only retitle the progress bar when there is real swatch work to do
+        progress.applyTaskAppearance(
+            taskDescription: "Analysing swatch",
+            taskIcon: "swatchpalette"
+        )
 
         let imageService = ImageRenderService()
         let colorMood = ColorMood(
@@ -80,12 +89,12 @@ struct ColorPaletteRenderer {
                   let json = try? JSONSerialization.jsonObject(with: data, options: []),
                   let extractResultDicts = json as? [[String: Any]] else {
                 Self.logger.error("Failed to get extract result dict")
-                return
+                return true
             }
 
             guard let jsonURL = exportResult.jsonManifestPath else {
                 Self.logger.error("Failed to get JSON manifest path for palette creation")
-                return
+                return true
             }
 
             var updatedResultDict = extractResultDicts
@@ -97,6 +106,8 @@ struct ColorPaletteRenderer {
             }
             Self.updateResultJSON(at: jsonURL, to: updatedResultDict)
         }
+
+        return true
     }
 
     private static func getSeparatePaletteURL(from url: URL) -> URL {

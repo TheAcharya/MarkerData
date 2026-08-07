@@ -201,7 +201,7 @@ Also: getter for `colorSwatchSettings` **forces `enableSwatch = false` when extr
 
 **Queue manifest resolution:** `QueueInstance.manifestURL` prefers `{folder}/{json basename}` when that file exists (moved/copied exports), else falls back to absolute `ExtractInfo.jsonURL`. Uploads and `filterMissing()` must use `manifestURL`, not the sidecar path alone.
 
-**Progress across extract → swatch:** use `applyTaskAppearance` (do not `reset()` before swatch). Empty image sets: early-return in renderers + `markAllProcessesFinished()`. Ignore late KVO after a process is finished.
+**Progress across extract → swatch:** call `applyTaskAppearance` only when swatch rendering actually runs (inside `ColorPaletteRenderer` after image checks). Empty / skipped swatch: keep Extract wording via `markProcessAsFinished`. After a real swatch run: `markAllProcessesFinished()`. Ignore late KVO after a process is finished.
 
 **Temporary pasteboard FCPXML:** `FCPXMLIntake.writeTemporaryFCPXML` → `~/Movies/Marker Data Cache/`.
 

@@ -288,7 +288,7 @@ Pipeline (`performExtraction`):
    - Build settings via `markersExtractorSettings`
    - `MarkersExtractor.extract()`; KVO `progress.fractionCompleted` → progress UI / DockProgress
    - Optionally write `extract_info.json` when `ExtractInfo(exportResult:)` succeeds (Notion/Airtable + JSON path)
-   - If swatches enabled: `applyTaskAppearance` (not `reset()`), then `ColorPaletteRenderer.render(...)` (may rewrite JSON for GIF palette filenames); empty image sets early-return + `markAllProcessesFinished()`
+   - If swatches enabled and images exist: `applyTaskAppearance` then `ColorPaletteRenderer.render(...)` (may rewrite JSON for GIF palette filenames); if skipped (no images / unsupported GIF): finish extract URL without retitling; if rendered: `markAllProcessesFinished()`
    - If DB profile selected: `DatabaseUploader.uploadToDatabase(jsonManifestPath, profile)`
 4. Aggregate `ExportExitStatus` + `ExtractionFailure[]`; notifications; optional Finder/Pagemaker open
 
@@ -396,7 +396,7 @@ After successful extract, if `colorSwatchSettings.enableSwatch`:
 - GIF + JSON export: separate `{name}-Palette.jpg`, rewrite manifest with `"Palette Filename"`
 - GIF + non-JSON: skip palette
 - Forced off for XLSX extract profile (settings getter)
-- No images / Skip Image Generation: renderers early-return; extraction finishes progress with `markAllProcessesFinished()` (do not `reset()` when entering the swatch phase — use `applyTaskAppearance`)
+- No images / Skip Image Generation: renderers early-return **without** switching the progress label to “Analysing swatch”; extraction finishes as **“Extract done”** via `markProcessAsFinished`. Real swatch runs use `applyTaskAppearance` then `markAllProcessesFinished` (do not `reset()` when entering the swatch phase)
 
 Settings model: `ColorSwatchSettingsModel` (nested under SettingsStore, Codable).
 

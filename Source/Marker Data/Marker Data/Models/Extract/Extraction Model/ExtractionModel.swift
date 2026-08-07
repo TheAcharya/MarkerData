@@ -161,24 +161,20 @@ final class ExtractionModel: ObservableObject, Sendable {
             if swatchSettings.enableSwatch {
                 Self.logger.notice("Color palette enabled. Calculating dominant colors.")
 
-                // Change label only — do not reset progress/processes (that zeros the bar
-                // and breaks finish tracking, especially when there are no stills).
-                self.extractionProgress.applyTaskAppearance(
-                    taskDescription: "Analysing swatch",
-                    taskIcon: "swatchpalette"
-                )
-
-                await ColorPaletteRenderer.render(
+                let didRenderSwatch = await ColorPaletteRenderer.render(
                     exportResult: exportResult,
                     swatchSettings: swatchSettings,
                     progress: extractionProgress
                 )
 
-                Self.logger.notice("Color palette render done.")
-
-                // Swatch rendering may replace extract URLs with image URLs (or leave none
-                // when there is no media). Mark whatever is tracked as finished.
-                await self.extractionProgress.markAllProcessesFinished()
+                if didRenderSwatch {
+                    Self.logger.notice("Color palette render done.")
+                    // Swatch rendering replaces extract URLs with image URLs
+                    await self.extractionProgress.markAllProcessesFinished()
+                } else {
+                    // No images / skipped — keep Extract progress wording (not "Analysing swatch done")
+                    await self.extractionProgress.markProcessAsFinished(url: url)
+                }
             } else {
                 await self.extractionProgress.markProcessAsFinished(url: url)
             }

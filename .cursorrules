@@ -40,7 +40,7 @@ Keep these four files consistent when architecture or agent guidance changes.
 
 ## Key runtime flows (see ARCHITECTURE.md for detail)
 - **Extract intake:** `FCPXMLIntake` resolves `.fcpxml` / `.fcpxmld`, Finder `.textClipping`, and Final Cut Pro pasteboard → temp file under `~/Movies/Marker Data Cache/` → `ExtractionModel.receiveFiles` / `receiveItemProviders`
-- **Extract:** `ExtractionModel` → MarkersExtractor → optional `ColorPaletteRenderer` (use `applyTaskAppearance` / `markAllProcessesFinished`, not progress `reset()` before swatch) → optional `DatabaseUploader`
+- **Extract:** `ExtractionModel` → MarkersExtractor → optional `ColorPaletteRenderer` (`applyTaskAppearance` only when swatch work runs; skipped/no-images keeps “Extract done” via `markProcessAsFinished`; never `reset()` before swatch) → optional `DatabaseUploader`
 - **Drop overlays:** shared `DropTargetOverlay` on main-app Extract / Roles / Queue **and** Workflow Extension Extract + Roles — exact copy in **GUARDRAILS.md**; border uses `Color.markerAccent` (not host `accentColor`)
 - **Queue:** scans for `extract_info.json` (Notion/Airtable + JSON manifest only) → upload via `QueueInstance.manifestURL` (local JSON beside folder preferred) → parallel re-upload; folder drop clears queue and disables auto-scan
 - **Workflow Extension:** Extract tab drops `.fcpxml` → Movies-cache handoff → open `/Applications/Marker Data.app` → DistributedNotification `.workflowExtensionFileReceived`; both Extract and Roles show `DropTargetOverlay` (`WorkflowExtensionView` + shared `RolesSettingsView`). Extension Compile Sources must include `DropTargetOverlay` + `ColorExtension` (+ shared Roles sources)

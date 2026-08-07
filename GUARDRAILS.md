@@ -17,7 +17,7 @@ Read with **`AGENT.md`** (how to change things), **`ARCHITECTURE.md`** (how it w
 | **Shared WE chrome color** | Use `Color.markerAccent` (system indigo) for overlay borders and other shared chrome hosted in FCP — not `Color.accentColor`. |
 | **Queue uploads** | Upload via `QueueInstance.manifestURL` (prefer JSON beside the scanned/dropped folder; fall back to sidecar `jsonURL`). |
 | **Progress phases** | Between extract → swatch, call `ProgressViewModel.applyTaskAppearance` — do **not** `reset()` (wipes processes and can leave the bar at 0% when there are no stills). |
-| **No-media / empty swatch** | Early-return when there are no images; finish with `markAllProcessesFinished()` so the bar reaches 100%. |
+| **No-media / empty swatch** | Early-return when there are no images **without** retitling to “Analysing swatch”; finish the extract URL with `markProcessAsFinished` so the bar reads **“Extract done”**. |
 | **Install location** | Keep the `/Applications` warning; Workflow Extension opens `/Applications/Marker Data.app`. |
 | **Uninstaller** | If the app gains new on-disk paths, update `MarkerDataUninstaller.run()` cleanup list. |
 | **Architecture** | Prefer Apple Silicon (`arm64`) only; CI uses `macos-26` + **Xcode 26.6.0**. |
@@ -58,7 +58,7 @@ Shared component: `Views/Components/DropTargetOverlay.swift` (main app + Workflo
 ## Signs (learned pitfalls)
 
 1. **`extract_info.json` stores absolute `jsonURL`.** After the user moves/copies an export folder, uploading the sidecar path fails (`FileNotFoundError`). Always resolve with `manifestURL`.
-2. **Progress `reset()` before swatch** clears processes and can leave 0% when Skip Image Generation / empty image sets skip render — use `applyTaskAppearance` + `markAllProcessesFinished`.
+2. **Progress `reset()` before swatch** clears processes and can leave 0% when Skip Image Generation / empty image sets skip render — use `applyTaskAppearance` only when swatch work actually runs, then `markAllProcessesFinished`. If swatch is skipped, keep **“Extract done”** via `markProcessAsFinished`.
 3. **Ignore late KVO** after a process is marked finished (`ProgressViewModel.updateProgress`) or the bar can bounce backward.
 4. **FCP timeline → Dock** often cannot deliver a file URL (pasteboard-only). Supported paths: drop on Extract panel, open `.fcpxml`/`.fcpxmld` via Dock/Finder Open With, Workflow Extension / Share Destination handoffs.
 5. **Temporary FCP pasteboard XML** is written under `~/Movies/Marker Data Cache/` (`FCPXMLIntake.writeTemporaryFCPXML`) — Marker Data convention, not App Support Cache.

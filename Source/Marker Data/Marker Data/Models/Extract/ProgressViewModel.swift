@@ -107,8 +107,7 @@ final class ProgressViewModel: ObservableObject {
     }
 
     /// Marks every tracked process finished and forces the bar to 100%.
-    /// Used after swatch rendering replaces extract URLs with image URLs,
-    /// or when there are no images to process (no-media extracts).
+    /// Used after swatch rendering replaces extract URLs with image URLs.
     func markAllProcessesFinished() async {
         if self.processes.isEmpty {
             self.progress.completedUnitCount = 100
