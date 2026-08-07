@@ -52,6 +52,10 @@ extension Color: @retroactive Codable {
 
     static let darkPurple = Color(#colorLiteral(red: 0.2784313725, green: 0.03137254902, blue: 0.5843137255, alpha: 1))
 
+    /// Marker Data accent — matches Assets `AccentColor` (`systemIndigo`).
+    /// Prefer over `Color.accentColor` in shared UI (Workflow Extension inherits the host’s blue accent).
+    static let markerAccent = Color(nsColor: .systemIndigo)
+
     /// Hero gradient start — Extract title / drop overlay arrow
     static let heroGradientStart = Color(#colorLiteral(red: 0.3294117748737335, green: 0.9843137264251709, blue: 0.9764705896377563, alpha: 1))
     /// Hero gradient end — Extract title / drop overlay arrow

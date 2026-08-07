@@ -43,7 +43,7 @@ Keep these four files consistent when architecture or agent guidance changes.
 - **Extract:** `ExtractionModel` → MarkersExtractor → optional `ColorPaletteRenderer` (use `applyTaskAppearance` / `markAllProcessesFinished`, not progress `reset()` before swatch) → optional `DatabaseUploader`
 - **Drop overlays:** shared `DropTargetOverlay` on Extract, Roles, Queue — exact copy in **GUARDRAILS.md**
 - **Queue:** scans for `extract_info.json` (Notion/Airtable + JSON manifest only) → upload via `QueueInstance.manifestURL` (local JSON beside folder preferred) → parallel re-upload; folder drop clears queue and disables auto-scan
-- **Workflow Extension:** writes `~/Movies/Marker Data Cache/WorkflowExtensionExport.fcpxml`, opens `/Applications/Marker Data.app`, posts DistributedNotification `.workflowExtensionFileReceived`; Roles UI shares `DropTargetOverlay` (must stay in extension Compile Sources)
+- **Workflow Extension:** writes `~/Movies/Marker Data Cache/WorkflowExtensionExport.fcpxml`, opens `/Applications/Marker Data.app`, posts DistributedNotification `.workflowExtensionFileReceived`; Roles UI shares `DropTargetOverlay` (must stay in extension Compile Sources). Shared chrome uses `Color.markerAccent` — not `accentColor` (FCP host blue).
 - **Share Destination:** `OSAScriptingDefinition.sdef` + Obj‑C `MakeCommand` → Movies cache → local `FCPShareStart` → Apple Event open → `.openFile`
 
 ## Pitfalls to avoid

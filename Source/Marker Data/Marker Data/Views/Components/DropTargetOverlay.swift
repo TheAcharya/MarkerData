@@ -43,7 +43,7 @@ struct DropTargetOverlay: View {
         }
         .overlay {
             RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .strokeBorder(Color.accentColor.opacity(0.85), lineWidth: 2)
+                .strokeBorder(Color.markerAccent.opacity(0.85), lineWidth: 2)
                 .padding(10)
         }
         .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
