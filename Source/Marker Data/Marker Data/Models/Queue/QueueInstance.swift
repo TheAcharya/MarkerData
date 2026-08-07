@@ -25,6 +25,15 @@ class QueueInstance: ObservableObject, Identifiable, Sendable {
     var creationDateFormatted: String {
         extractInfo.creationDate.formatted()
     }
+
+    /// JSON beside this queue folder when present (moved/copied exports); else sidecar `jsonURL`.
+    var manifestURL: URL {
+        let local = folderURL.appending(path: extractInfo.jsonURL.lastPathComponent)
+        if local.fileExists {
+            return local
+        }
+        return extractInfo.jsonURL
+    }
     
     static let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "QueueInstance")
     
@@ -44,9 +53,14 @@ class QueueInstance: ObservableObject, Identifiable, Sendable {
         }
 
         self.status = .uploading
+
+        let manifest = manifestURL
+        Self.logger.notice(
+            "Queue upload manifest=\(manifest.path(percentEncoded: false), privacy: .public) folder=\(self.folderURL.path(percentEncoded: false), privacy: .public)"
+        )
         
         try await self.uploader.uploadToDatabase(
-            url: extractInfo.jsonURL,
+            url: manifest,
             databaseProfile: uploadDestinationUnwrapped
         )
 

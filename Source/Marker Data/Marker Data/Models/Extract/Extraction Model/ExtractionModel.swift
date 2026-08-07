@@ -51,6 +51,36 @@ final class ExtractionModel: ObservableObject, Sendable {
         self.setupEventHandlers()
     }
 
+    // MARK: Intake
+
+    /// Resolves Finder / Open panel FCPXML URLs and starts extraction.
+    func receiveFiles(_ urls: [URL]) {
+        guard !urls.isEmpty else { return }
+
+        Task {
+            var resolved: [URL] = []
+            for url in urls {
+                if let intakeURL = try? await FCPXMLIntake.resolve(url) {
+                    resolved.append(intakeURL)
+                }
+            }
+
+            guard !resolved.isEmpty else { return }
+            self.startExtraction(for: resolved)
+        }
+    }
+
+    /// Resolves Final Cut Pro pasteboard drops, Finder files, and text clippings.
+    func receiveItemProviders(_ providers: [NSItemProvider]) {
+        guard !providers.isEmpty else { return }
+
+        Task {
+            let resolved = await FCPXMLIntake.urls(from: providers)
+            guard !resolved.isEmpty else { return }
+            self.startExtraction(for: resolved)
+        }
+    }
+
     func startExtraction(for urls: [URL]) {
         let task = Task {
             await self.performExtraction(urls)
@@ -131,20 +161,23 @@ final class ExtractionModel: ObservableObject, Sendable {
             if swatchSettings.enableSwatch {
                 Self.logger.notice("Color palette enabled. Calculating dominant colors.")
 
-                // Update progress message and icon
-                self.extractionProgress.reset(taskDescription: "Analysing swatch", taskIcon: "swatchpalette")
-
-                await ColorPaletteRenderer.render(
+                let didRenderSwatch = await ColorPaletteRenderer.render(
                     exportResult: exportResult,
                     swatchSettings: swatchSettings,
                     progress: extractionProgress
                 )
 
-                Self.logger.notice("Color palette render done.")
+                if didRenderSwatch {
+                    Self.logger.notice("Color palette render done.")
+                    // Swatch rendering replaces extract URLs with image URLs
+                    await self.extractionProgress.markAllProcessesFinished()
+                } else {
+                    // No images / skipped — keep Extract progress wording (not "Analysing swatch done")
+                    await self.extractionProgress.markProcessAsFinished(url: url)
+                }
+            } else {
+                await self.extractionProgress.markProcessAsFinished(url: url)
             }
-
-            // Set progress as finished
-            await self.extractionProgress.markProcessAsFinished(url: url)
             
             Self.logger.notice("Successfully extracted: \(url.path(percentEncoded: false))")
 

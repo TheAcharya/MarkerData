@@ -9,6 +9,7 @@ import SwiftUI
 
 struct WorkflowExtensionView: View {
     @State var errorMessage = ""
+    @State private var isExtractDropTargeted = false
     
     @Environment(\.openURL) var openURL
     
@@ -57,19 +58,31 @@ struct WorkflowExtensionView: View {
     }
     
     private var extractTabView: some View {
-        VStack {
-            Spacer()
-            
-            Text("Drag & Drop Final Cut Pro Project to Open Marker Data")
-            
-            if !self.errorMessage.isEmpty {
-                Text("Failed to receive file: \(self.errorMessage)")
-                    .foregroundStyle(.red)
+        ZStack {
+            VStack {
+                Spacer()
+                
+                Text("Drag & Drop Final Cut Pro Project to Open Marker Data")
+                
+                if !self.errorMessage.isEmpty {
+                    Text("Failed to receive file: \(self.errorMessage)")
+                        .foregroundStyle(.red)
+                }
+                
+                Spacer()
             }
-            
-            Spacer()
+
+            if isExtractDropTargeted {
+                DropTargetOverlay(
+                    message: "Drop to Open Marker Data",
+                    subtitle: nil
+                )
+                .padding(.horizontal, 12)
+                .padding(.vertical, 4)
+            }
         }
-        .onDrop(of: [.fcpxml], isTargeted: nil) { providers -> Bool in
+        .animation(.easeInOut(duration: 0.2), value: isExtractDropTargeted)
+        .onDrop(of: [.fcpxml], isTargeted: $isExtractDropTargeted) { providers -> Bool in
             for provider in providers {
                 _ = provider.loadDataRepresentation(for: .fcpxml) { data, error in
                     Task { @MainActor in

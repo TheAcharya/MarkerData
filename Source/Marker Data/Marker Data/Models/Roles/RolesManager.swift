@@ -17,6 +17,7 @@ import OSLog
 class RolesManager: ObservableObject {
     @Published var roles: [RoleModel] = []
     @Published var loadingInProgress = false
+    @Published var isDropTargeted = false
 
     nonisolated static let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "RolesManager")
     nonisolated static let staticPreferencesJSONURL = URL(filePath: "/Users/\(NSUserName())/Library/Application Support/Marker Data/preferences.json")

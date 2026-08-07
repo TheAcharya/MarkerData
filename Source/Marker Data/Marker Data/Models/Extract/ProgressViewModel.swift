@@ -78,6 +78,10 @@ final class ProgressViewModel: ObservableObject {
             return
         }
 
+        // Ignore late KVO updates after the process is already finished
+        // (common with fast no-media extracts that may report 0 at teardown).
+        guard !process.isFinished else { return }
+
         process.progress.completedUnitCount = percentage
 
         await self.updateTotalProgress()
@@ -101,10 +105,42 @@ final class ProgressViewModel: ObservableObject {
             body: "\(url.path(percentEncoded: false))"
         )
     }
+
+    /// Marks every tracked process finished and forces the bar to 100%.
+    /// Used after swatch rendering replaces extract URLs with image URLs.
+    func markAllProcessesFinished() async {
+        if self.processes.isEmpty {
+            self.progress.completedUnitCount = 100
+            self.message = "\(taskDescription) done"
+            self.icon = "checkmark"
+            self.objectWillChange.send()
+            return
+        }
+
+        for process in self.processes {
+            process.progress.completedUnitCount = 100
+            process.isFinished = true
+        }
+
+        await self.updateTotalProgress()
+    }
+
+    /// Updates the progress label/icon without wiping processes or resetting the bar.
+    func applyTaskAppearance(taskDescription: String, taskIcon: String) {
+        self.taskDescription = taskDescription
+        self.taskIcon = taskIcon
+        self.message = "\(taskDescription)..."
+        self.icon = taskIcon
+        self.objectWillChange.send()
+    }
     
     /// Calculate and update current progress
     private func updateTotalProgress() async {
         let processCount = self.processes.count
+
+        guard processCount > 0 else {
+            return
+        }
         
         // Calculate percent completed
         let total: Int64 = Int64(processCount * 100)

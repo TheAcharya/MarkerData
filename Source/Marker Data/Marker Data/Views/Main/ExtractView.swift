@@ -17,6 +17,7 @@ public struct ExtractView: View {
     @Environment(\.openWindow) var openWindow
     
     @AppStorage("showFCPShareDestinationCard") var showInstallShareDestination = true
+    @State private var isDropTargeted = false
     
     public var body: some View {
         VStack {
@@ -45,20 +46,20 @@ public struct ExtractView: View {
                 }
                 .padding(.horizontal)
                 .padding(.bottom, -12)
+
+                if isDropTargeted, !extractionModel.extractionInProgress {
+                    DropTargetOverlay()
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 4)
+                }
             }
             .padding(.vertical)
-            // Handle file drop and perform extraction
-            .dropDestination(for: URL.self) { urls, location in
-                let supportedURLs = urls.filter { $0.conformsToType(ExtractionModel.supportedContentTypes) }
-
-                guard !supportedURLs.isEmpty else {
-                    return false
-                }
-
-                extractionModel.startExtraction(for: urls)
-
-                return true
-            }
+            .animation(.easeInOut(duration: 0.2), value: isDropTargeted)
+            .fcpxmlDropDestination(
+                extractionModel: extractionModel,
+                isTargeted: $isDropTargeted,
+                isEnabled: !extractionModel.extractionInProgress
+            )
 
             // Quick Settings
             QuickSettingsView()
@@ -95,7 +96,14 @@ public struct ExtractView: View {
                 //Text Prompt To Drop Final Cut Pro XML File
                 Label("Drag and Drop FCP XML", systemImage: "cursorarrow.motionlines")
                     .font(.system(size: 32, weight: .bold))
-                    .foregroundStyle(.linearGradient(Gradient(colors: [Color(#colorLiteral(red: 0.3294117748737335, green: 0.9843137264251709, blue: 0.9764705896377563, alpha: 1)), Color(#colorLiteral(red: 0.41960784792900085, green: 0.21176470816135406, blue: 0.9921568632125854, alpha: 1))]), startPoint: .leading, endPoint: .trailing))
+                    .foregroundStyle(Color.heroGradient)
+
+                Text("Drop a timeline from Final Cut Pro, or an .fcpxml / .fcpxmld file")
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+                    .padding(.top, 6)
+                    .padding(.horizontal, 24)
                 
                 Text("OR")
                     .font(.system(size: 16, weight: .bold))
@@ -104,7 +112,7 @@ public struct ExtractView: View {
                 
                 FilePicker(types: [.fcpxml, .fcpxmld], allowMultiple: true) { urls in
                     if !urls.isEmpty {
-                        extractionModel.startExtraction(for: urls)
+                        extractionModel.receiveFiles(urls)
                     }
                 } label: {
                     Label("Choose File", systemImage: "folder")

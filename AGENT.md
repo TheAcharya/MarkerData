@@ -1,11 +1,41 @@
 # AGENT.md
 
+## Table of contents
+
+- [Purpose](#purpose)
+- [What you’re working on](#what-youre-working-on)
+- [Key entry points (start here)](#key-entry-points-start-here)
+- [Build & run (local)](#build--run-local)
+- [CI / release basics](#ci--release-basics)
+- [Code conventions & expectations](#code-conventions--expectations)
+- [Settings system (read before changing preferences)](#settings-system-read-before-changing-preferences)
+  - [Core files](#core-files)
+  - [How it works (short)](#how-it-works-short)
+  - [Migration ladder (each `case N` upgrades N → N+1)](#migration-ladder-each-case-n-upgrades-n--n1)
+  - [Checklist: add or change a persisted setting](#checklist-add-or-change-a-persisted-setting)
+  - [Known settings gaps (do not “fix” casually without product intent)](#known-settings-gaps-do-not-fix-casually-without-product-intent)
+- [“When you change X, also change Y”](#when-you-change-x-also-change-y)
+  - [SettingsStore / preferences](#settingsstore--preferences)
+  - [New export fields / overlays](#new-export-fields--overlays)
+  - [New database platform](#new-database-platform)
+  - [FCP integrations](#fcp-integrations)
+  - [Drop overlay / shared Workflow Extension UI](#drop-overlay--shared-workflow-extension-ui)
+  - [Uninstaller cleanup paths](#uninstaller-cleanup-paths)
+  - [Release metadata](#release-metadata)
+  - [Agent documentation](#agent-documentation)
+- [Extract / Roles / Queue drop surfaces](#extract--roles--queue-drop-surfaces)
+- [Notification & handoff cheat sheet](#notification--handoff-cheat-sheet)
+- [Common pitfalls](#common-pitfalls)
+- [Definition of done for most changes](#definition-of-done-for-most-changes)
+
+---
+
 ## Purpose
 This repository contains **Marker Data**, a macOS Swift/SwiftUI app that extracts Final Cut Pro marker metadata (via `MarkersExtractor`), optionally renders images/palettes, and can upload results to Notion/Airtable via bundled CLIs. It also ships a **Final Cut Pro Workflow Extension** and a **Share Destination** integration.
 
 This `AGENT.md` is guidance for humans and AI agents working in this repo: how to build, where to look, what to avoid, and how changes should be made.
 
-For deeper module/data-flow detail, see **`ARCHITECTURE.md`**. For short agent guardrails, see **`.cursorrules`**.
+For deeper module/data-flow detail, see **`ARCHITECTURE.md`**. For hard always/never constraints and learned pitfalls, see **`GUARDRAILS.md`**. For short Cursor enforcement, see **`.cursorrules`**. Keep all four consistent when architecture or agent guidance changes.
 
 ## What you’re working on
 
@@ -33,8 +63,18 @@ For deeper module/data-flow detail, see **`ARCHITECTURE.md`**. For short agent g
 | Extract UI | `Source/Marker Data/Marker Data/Views/Main/ExtractView.swift` |
 | Extraction orchestration | `Source/Marker Data/Marker Data/Models/Extract/Extraction Model/ExtractionModel.swift` |
 | External handoffs (open / Workflow Extension) | `.../ExtractionModel_EventHandlers.swift` |
-| Queue scan/upload | `Source/Marker Data/Marker Data/Models/Queue/QueueModel.swift` |
-| Database uploads | `Source/Marker Data/Marker Data/Models/Extract/DatabaseUploader.swift` |
+| FCPXML intake (files / pasteboard / textClipping) | `Utilities/Other/FCPXMLIntake.swift`, `TextClippingReader.swift` |
+| Extract drop modifier | `Views/Components/FCPXMLDropModifier.swift` (`.fcpxmlDropDestination`) |
+| Drop overlay (Extract / Roles / Queue + WE) | `Views/Components/DropTargetOverlay.swift` (also Workflow Extension Compile Sources) |
+| Workflow Extension UI | `Source/Marker Data/Workflow Extension/WorkflowExtensionView.swift` |
+| Color helpers (`markerAccent`, `heroGradient`) | `Utilities/Extensions/ColorExtension.swift` |
+| Queue UI | `Views/Detail Views/QueueView.swift` |
+| Queue scan/upload | `Models/Queue/QueueModel.swift` |
+| Queue row + local-first manifest | `Models/Queue/QueueInstance.swift` (`manifestURL`) |
+| Database uploads | `Models/Extract/DatabaseUploader.swift` |
+| Progress aggregation | `Models/Extract/ProgressViewModel.swift` (`applyTaskAppearance`, `markAllProcessesFinished`, `markProcessAsFinished`) |
+| Color swatch render | `Models/Color Swatch/ColorPaletteRenderer.swift` (`render(...) -> Bool`; `await applyTaskAppearance` after image checks) |
+| Failed Tasks window | `Views/Other/FailedExtractionsView.swift` |
 | Settings schema | `Source/Marker Data/Marker Data/Models/Settings/SettingsStore.swift` (`static let version` — currently **8**) |
 | Settings container / configs | `Source/Marker Data/Marker Data/Models/Settings/SettingsContainer.swift` |
 | Settings migrations | `Source/Marker Data/Marker Data/Models/Settings/SettingsVersioningManager.swift` |
@@ -82,7 +122,7 @@ When bumping a release: update `MARKETING_VERSION` and `CURRENT_PROJECT_VERSION`
   - Extraction/upload use `Task` / `TaskGroup`; cancellation via `Task.cancel()` and terminating child `Process`es.
 - **Persistence:** versioned JSON under Application Support (see Settings system). Database profiles are separate JSON files.
 - **External tools:** Notion/Airtable uploads spawn bundled executables; treat binaries as opaque. Progress UI depends on stdout lines containing `NN%`.
-- **Colors / icons:** Dock icon is Icon Composer (`Marker-Data.icon`). SwiftUI `.alert` often shows a blank document glyph — always chain `.appDialogIcon()` after `.alert` / confirmation dialogs.
+- **Colors / icons:** Dock icon is Icon Composer (`Marker-Data.icon`). SwiftUI `.alert` often shows a blank document glyph — always chain `.appDialogIcon()` after `.alert` / confirmation dialogs. Shared Workflow Extension chrome uses `Color.markerAccent` (not host `accentColor`).
 
 ## Settings system (read before changing preferences)
 
@@ -165,12 +205,40 @@ Also: getter for `colorSwatchSettings` **forces `enableSwatch = false` when extr
 ### FCP integrations
 - Share Destination: `Resources/OSAScriptingDefinition.sdef` + Obj‑C under `FCP Share Destination/Objective-C Code/` + Swift `OpenEventHandler`.
 - Workflow Extension: DistributedNotificationCenter names + fixed Movies-cache FCPXML path; roles via `preferences.json`.
+- Extract panel intake: `FCPXMLIntake` / `FCPXMLDropModifier` — keep Dock Open With (`OpenEventHandler`) and Share Destination paths distinct.
+
+### Drop overlay / shared Workflow Extension UI
+- Update copy in **`GUARDRAILS.md`** (Drop overlay copy table) when changing messages.
+- Workflow Extension **Extract** (`WorkflowExtensionView`) and **Roles** (shared `RolesSettingsView`) both show overlays.
+- If overlay / color helpers change, ensure Workflow Extension Compile Sources still include `DropTargetOverlay` and `ColorExtension`. Shared chrome uses `Color.markerAccent`.
 
 ### Uninstaller cleanup paths
 - If the app/extension gains new Application Support, cache, container, or preferences paths, update `MarkerDataUninstaller.run()` path list to match.
 
 ### Release metadata
 - `project.pbxproj` versions, `CHANGELOG.md`, `Distribution/version.txt`, website notes (`CONTRIBUTING.md`).
+
+### Agent documentation
+- Keep `AGENT.md`, `ARCHITECTURE.md`, `GUARDRAILS.md`, and `.cursorrules` aligned when flows, paths, or invariants change.
+
+## Extract / Roles / Queue drop surfaces
+
+| Surface | Intake | Overlay |
+|---------|--------|---------|
+| **Extract** | `.fcpxmlDropDestination` → `ExtractionModel.receiveItemProviders` → `FCPXMLIntake` (FCP pasteboard, `.fcpxml`/`.fcpxmld`, `.textClipping`). Dock/Finder Open With still via `OpenEventHandler` → `.openFile`. | `DropTargetOverlay()` defaults + hero caption *“Drop a timeline from Final Cut Pro, or an .fcpxml / .fcpxmld file”* |
+| **Extract** (Workflow Extension) | `WorkflowExtensionView` `.onDrop([.fcpxml])` → Movies-cache handoff → open app → `.workflowExtensionFileReceived` | `DropTargetOverlay(message: "Drop to Open Marker Data", subtitle: nil)` |
+| **Roles** (app + Workflow Extension) | `RolesManager` `DropDelegate` (`.fcpxml` / file URL); `isDropTargeted` from `dropEntered` / `dropExited` | `DropTargetOverlay(message: "Drop to Retrieve Roles Metadata", subtitle: nil)` |
+| **Queue** | `.dropDestination(for: URL.self)` → `QueueModel.performDrop` (directories only; clears queue; scans for `extract_info.json`; disables auto-scan) | `DropTargetOverlay(message: "Drop Extract Folders (Notion or Airtable) into Queue", subtitle: nil, systemImage: "folder.fill")`; hidden while uploading |
+
+**Queue manifest resolution:** `QueueInstance.manifestURL` prefers `{folder}/{json basename}` when that file exists (moved/copied exports), else falls back to absolute `ExtractInfo.jsonURL`. Uploads and `filterMissing()` must use `manifestURL`, not the sidecar path alone.
+
+**Progress across extract → swatch:** `ColorPaletteRenderer.render(...) -> Bool`. Inside renderer, after image checks pass, `await progress.applyTaskAppearance("Analysing swatch", ...)` (MainActor). Returns `false` on skip (no images / unsupported GIF) → ExtractionModel uses `markProcessAsFinished` (**“Extract done”**). Returns `true` → `markAllProcessesFinished`. Never `reset()` when entering swatch. Ignore late KVO after a process is finished.
+
+**Temporary pasteboard FCPXML:** `FCPXMLIntake.writeTemporaryFCPXML` → `~/Movies/Marker Data Cache/`.
+
+**Workflow Extension:** Extract + Roles tabs both use `DropTargetOverlay` (`WorkflowExtensionView` / shared `RolesSettingsView`); also shares `RolesManager` / `ColorExtension`. Add shared UI types to the extension target’s Compile Sources. Shared chrome uses `Color.markerAccent` (not host `accentColor`).
+
+Exact overlay strings and always/never rules: **`GUARDRAILS.md`**.
 
 ## Notification & handoff cheat sheet
 
@@ -192,14 +260,20 @@ Also: getter for `colorSwatchSettings` **forces `enableSwatch = false` when extr
 - **Install location:** app warns if not under `/Applications` (`ContentView`); Workflow Extension opens that path — do not remove the check.
 - **Opaque helpers:** only the CLI args in `DatabaseUploader` / `DropboxSetupModel` are the contract.
 - **Queue scope:** `extract_info.json` is written only when the export profile is Notion/Airtable **and** a JSON manifest path exists. Queue will not list pure CSV/XLSX/etc. extract folders.
+- **Queue relocated folders:** never upload only `ExtractInfo.jsonURL` — use `manifestURL` (see Signs in `GUARDRAILS.md`).
+- **Progress `reset()` / wrong swatch label:** never `reset()` before swatch; never retitle to “Analysing swatch” until render will run. Skipped swatch must finish as **“Extract done”**, not **“Analysing swatch done”**. `await applyTaskAppearance` from `ColorPaletteRenderer` (MainActor).
+- **FCP timeline → Dock:** often pasteboard-only; Extract panel drop is the supported UI path for timelines.
 - **Alert icons:** chain `.appDialogIcon()` after every `.alert`.
 - **Dual Sparkle controllers:** both `Marker_DataApp` and `ApplicationDelegate` construct `SPUStandardUpdaterController`; update-available UI relies on `ApplicationDelegate.bestValidUpdate(...)` posting `.updateAvailable`. Don’t “simplify” without understanding that path.
 - **`OpenEventHandler`:** must re-register on `.FCPShareStart`; registration should stay on the main queue (see comments in that file).
 
 ## Definition of done for most changes
-- App builds (Debug + Release) for **arm64**.
+- App builds (Debug + Release) for **arm64** (Workflow Extension still embeds).
 - Settings still load and migrate cleanly (`preferences.json` + `Configurations/*.json`).
-- Extraction works for `.fcpxml` and `.fcpxmld`.
-- Queue scan/upload still works for folders containing `extract_info.json`.
+- Extraction works for `.fcpxml` and `.fcpxmld`, including FCP pasteboard / textClipping intake via `FCPXMLIntake`.
+- Drop overlays still work on main-app Extract / Roles / Queue **and** Workflow Extension Extract + Roles.
+- Queue scan/upload still works for folders containing `extract_info.json`, including **moved/copied** folders (`manifestURL`).
+- Skipped / no-media swatch finishes as **“Extract done”** (not **“Analysing swatch done”**).
 - Any new `.alert` uses `.appDialogIcon()`.
 - If settings changed: version bumped + migration case + UI wired + export bridge if needed.
+- If behavior/architecture changed: update `AGENT.md`, `ARCHITECTURE.md`, `GUARDRAILS.md`, and `.cursorrules`.

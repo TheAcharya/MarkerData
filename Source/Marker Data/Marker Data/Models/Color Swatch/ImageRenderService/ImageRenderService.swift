@@ -25,6 +25,8 @@ class ImageRenderService {
         paletteStripOnly: Bool,
         progress: ProgressViewModel
     ) async {
+        guard !imageStrips.isEmpty else { return }
+
         await progress.setProcesses(urls: imageStrips.map(\.url))
 
         await withTaskGroup(of: Void.self) { group in

@@ -1,5 +1,45 @@
 # ARCHITECTURE.md
 
+## Table of contents
+
+- [Overview](#overview)
+- [Targets & modules](#targets--modules)
+  - [Main app target (`Marker Data`)](#main-app-target-marker-data)
+  - [Workflow Extension target](#workflow-extension-target)
+  - [Uninstaller target (`Uninstall Marker Data`)](#uninstaller-target-uninstall-marker-data)
+  - [Share Destination / scripting bridge (inside main app)](#share-destination--scripting-bridge-inside-main-app)
+- [High-level runtime graph](#high-level-runtime-graph)
+  - [Navigation](#navigation)
+- [Data & persistence](#data--persistence)
+  - [App Support & cache layout](#app-support--cache-layout)
+  - [Settings system](#settings-system)
+    - [Key types and files](#key-types-and-files)
+    - [What gets persisted where](#what-gets-persisted-where)
+    - [Runtime lifecycle (app launch)](#runtime-lifecycle-app-launch)
+    - [Schema versioning](#schema-versioning)
+    - [Auto-save and configurations](#auto-save-and-configurations)
+    - [Bridge to extraction (`markersExtractorSettings`)](#bridge-to-extraction-markersextractorsettings)
+    - [Exception: Roles (`RolesManager`)](#exception-roles-rolesmanager)
+    - [Checklist: adding or changing a persisted setting](#checklist-adding-or-changing-a-persisted-setting)
+- [Core flows](#core-flows)
+  - [1) Extract flow (interactive)](#1-extract-flow-interactive)
+  - [2) Queue flow (batch upload)](#2-queue-flow-batch-upload)
+  - [3) Database upload flow](#3-database-upload-flow)
+  - [4) Workflow Extension handoff](#4-workflow-extension-handoff)
+  - [5) Share Destination handoff](#5-share-destination-handoff)
+- [Color swatch pipeline](#color-swatch-pipeline)
+- [Database profiles](#database-profiles)
+- [UI architecture](#ui-architecture)
+- [Notifications (full list)](#notifications-full-list)
+- [Entitlements / security model](#entitlements--security-model)
+- [Build, packaging, updates](#build-packaging-updates)
+  - [Notable SPM dependencies (main app)](#notable-spm-dependencies-main-app)
+- [Uninstaller path contract](#uninstaller-path-contract)
+- [Directory map (sources)](#directory-map-sources)
+- [Invariants & pitfalls (architecture-level)](#invariants--pitfalls-architecture-level)
+
+---
+
 ## Overview
 **Marker Data** is a macOS SwiftUI application that extracts Final Cut Pro marker metadata and generates export artifacts (CSV/TSV/XLSX/MIDI/Markdown/SRT/YouTube/Compressor, plus Notion/Airtable JSON). It can optionally:
 
@@ -10,11 +50,11 @@
 It also ships two Final Cut Pro integrations:
 
 - **Share Destination** — Media Asset Protocol / AppleScript so FCP exports media + FCPXML and opens them into Marker Data
-- **Workflow Extension** — ProExtensions-hosted UI that can send an FCPXML to the app and manage Roles
+- **Workflow Extension** — ProExtensions-hosted UI: Extract tab handoff (overlay + Movies-cache FCPXML → open app) and Roles management (shared prefs + overlay)
 
 **Runtime requirements (product):** Apple silicon; macOS Sequoia 15.7+ (from 2.0.0); Final Cut Pro 12+ recommended. The app is expected to run from **`/Applications/Marker Data.app`**.
 
-For agent-oriented change checklists, see **`AGENT.md`**. For short Cursor guardrails, see **`.cursorrules`**.
+For agent-oriented change checklists, see **`AGENT.md`**. For hard always/never constraints and learned pitfalls, see **`GUARDRAILS.md`**. For short Cursor enforcement, see **`.cursorrules`**.
 
 ---
 
@@ -26,9 +66,10 @@ For agent-oriented change checklists, see **`AGENT.md`**. For short Cursor guard
 
 Primary responsibilities:
 - UI/navigation and settings panels
+- FCPXML intake (Finder, Dock Open With, FCP pasteboard, text clippings) and drop overlays
 - Extraction orchestration, progress, notifications
 - Persistence of configurations, DB profiles, logs
-- Queue scanning/uploading previously extracted Notion/Airtable jobs
+- Queue scanning/uploading previously extracted Notion/Airtable jobs (local-first `manifestURL`)
 - Installing FCP Share Destination templates
 - Hosting Pagemaker (WebView) for PDF generation
 - Embedding the Workflow Extension as `Contents/PlugIns/Workflow Extension.appex`
@@ -42,8 +83,8 @@ Primary responsibilities:
 
 Responsibilities:
 - SwiftUI UI inside `WorkflowExtensionViewController` (`NSHostingView`)
-- Drag/drop `.fcpxml` → write Movies-cache handoff file → open main app → DistributedNotification
-- Roles tab sharing `RolesSettingsView` / `RolesManager` with the main app (same prefs file)
+- Extract tab: drag/drop `.fcpxml` + `DropTargetOverlay` (“Drop to Open Marker Data”) → write Movies-cache handoff file → open main app → DistributedNotification
+- Roles tab sharing `RolesSettingsView` / `RolesManager` / `DropTargetOverlay` / `ColorExtension` with the main app (same prefs file)
 
 ### Uninstaller target (`Uninstall Marker Data`)
 **Location:** `Source/Marker Data/Marker Data Uninstaller/`  
@@ -68,12 +109,23 @@ Built as part of the **Marker Data** scheme; CI copies it next to the main app i
 
 Constructed at app launch (`Marker_DataApp.swift`):
 
-```
-Marker_DataApp
- ├─ SettingsContainer          (@EnvironmentObject)
- ├─ DatabaseManager(settings)  (@EnvironmentObject)
- ├─ ExtractionModel(settings, databaseManager)  (@ObservedObject in Extract)
- └─ QueueModel(settings, databaseManager)       (@ObservedObject in Queue)
+```mermaid
+flowchart TB
+  App[Marker_DataApp]
+  SC[SettingsContainer]
+  DM[DatabaseManager]
+  EM[ExtractionModel]
+  QM[QueueModel]
+
+  App --> SC
+  App --> DM
+  App --> EM
+  App --> QM
+  DM --> SC
+  EM --> SC
+  EM --> DM
+  QM --> SC
+  QM --> DM
 ```
 
 Also at launch / first appear:
@@ -88,8 +140,8 @@ Also at launch / first appear:
 
 | Case | Detail |
 |------|--------|
-| `extract` | `ExtractView` |
-| `queue` | `QueueView` |
+| `extract` | `ExtractView` (drop overlay + FCPXML intake) |
+| `queue` | `QueueView` (folder drop overlay + upload table) |
 | `general` | File / Roles / Notifications / Updates |
 | `image` | Extraction + Swatch tabs |
 | `label` | Appearance + Overlays |
@@ -121,6 +173,7 @@ Defined by `URLExtension.swift`; created/validated by `LibraryFolders`.
 ~/Movies/Marker Data Cache/
   WorkflowExtensionExport.fcpxml   # Workflow Extension handoff
   <Share Destination export dirs>/ # media + fcpxml from FCP
+  FCP Drop-*.fcpxml                # temp pasteboard / clipping intake (FCPXMLIntake)
 ```
 
 `Resources/DefaultConfiguration.json` in the app bundle is a **legacy** resource (`URL.defaultConfigurationJSON`); it is **not** the live settings source.
@@ -236,9 +289,37 @@ Changing the JSON shape of `roles` / `RoleModel` must remain compatible with bot
 
 ### 1) Extract flow (interactive)
 
-**Entry:** `ExtractView` → `ExtractionModel.startExtraction(for:)`
+**Entry points:**
+- `ExtractView` `.fcpxmlDropDestination` → `ExtractionModel.receiveItemProviders`
+- Choose File / open panel → `receiveFiles`
+- Dock / Finder Open With → `OpenEventHandler` → `.openFile` → `handleOpenDocument`
+- Workflow Extension / Share Destination handoffs (see §§ 4–5)
+
+**Intake (`FCPXMLIntake`):**
+- Resolves `.fcpxml` / `.fcpxmld` URLs
+- Reads Finder `.textClipping` via `TextClippingReader`
+- Loads Final Cut Pro pasteboard (`UTType.fcpxml` data) → writes temp file under `~/Movies/Marker Data Cache/`
+- Does **not** replace Share Destination media+FCPXML exports
+
+**UI:** `DropTargetOverlay` while targeted and not extracting; hero caption under title describes FCP timeline / file drop. Overlay copy: see **`GUARDRAILS.md`**.
 
 Supported types: `UTType.fcpxml`, `UTType.fcpxmld` (`ExtractionModel.supportedContentTypes`).
+
+```mermaid
+flowchart LR
+  Drop[Drop / Open / Pasteboard]
+  Intake[FCPXMLIntake]
+  EM[ExtractionModel]
+  ME[MarkersExtractor]
+  Swatch["ColorPaletteRenderer.render -> Bool"]
+  Up[DatabaseUploader]
+
+  Drop --> Intake --> EM --> ME
+  ME --> Swatch
+  ME --> Up
+  Swatch -->|true: markAllProcessesFinished| Up
+  Swatch -->|false: markProcessAsFinished Extract done| Up
+```
 
 Pipeline (`performExtraction`):
 
@@ -248,7 +329,8 @@ Pipeline (`performExtraction`):
    - Build settings via `markersExtractorSettings`
    - `MarkersExtractor.extract()`; KVO `progress.fractionCompleted` → progress UI / DockProgress
    - Optionally write `extract_info.json` when `ExtractInfo(exportResult:)` succeeds (Notion/Airtable + JSON path)
-   - If swatches enabled: `ColorPaletteRenderer.render(...)` (may rewrite JSON for GIF palette filenames)
+   - If swatches enabled: `didRender = await ColorPaletteRenderer.render(...)` — renderer `await`s `applyTaskAppearance` only after images pass checks; `true` → `markAllProcessesFinished`; `false` → `markProcessAsFinished(url)` (keeps **“Extract done”**)
+   - If swatches disabled: `markProcessAsFinished(url)`
    - If DB profile selected: `DatabaseUploader.uploadToDatabase(jsonManifestPath, profile)`
 4. Aggregate `ExportExitStatus` + `ExtractionFailure[]`; notifications; optional Finder/Pagemaker open
 
@@ -258,18 +340,38 @@ External file gate: if open/Workflow Extension arrives without a valid export fo
 
 ### 2) Queue flow (batch upload)
 
-**Entry:** `QueueView` `.task { scanExportFolder }` and/or drag-drop folders.
+**Entry:** `QueueView` `.task { scanExportFolder }` and/or drag-drop folders (any location).
+
+**UI:** `DropTargetOverlay` with folder icon while targeted and not uploading — copy in **`GUARDRAILS.md`**.
+
+```mermaid
+flowchart TB
+  Scan[scanFolder / performDrop]
+  Info[extract_info.json]
+  QI[QueueInstance]
+  Man[manifestURL]
+  Up[DatabaseUploader]
+
+  Scan --> Info --> QI --> Man --> Up
+```
 
 **Scan (`QueueModel.scanFolder`):**
 - Recursive walk for files named `extract_info.json`
 - Decode `ExtractInfo` → `QueueInstance` with DB profiles filtered to matching `plaform`
 - Sort by `creationDate` descending
 - Automatic scan uses `settings.store.exportFolderURL` when `@AppStorage("queueAutomaticScanEnabled")`
+- Folder drop (`performDrop`): clear queue, scan each directory with `append: true`, set `automaticScanEnabled = false`
+
+**Manifest resolution (`QueueInstance.manifestURL`):**
+- Prefer `{folderURL}/{ExtractInfo.jsonURL.lastPathComponent}` when that file exists (moved/copied export folders)
+- Else fall back to absolute `ExtractInfo.jsonURL` written at extract time
+- `filterMissing()` and upload both use `manifestURL`
 
 **Upload (`QueueModel.upload`):**
 - Parallel `TaskGroup` → each `QueueInstance` owns its own `DatabaseUploader` (`showDockProgress = false`)
-- Uploads the JSON URL recorded in `ExtractInfo` to the user-selected profile
+- Uploads `manifestURL` to the user-selected profile
 - Optional `@AppStorage("deleteFolderAfterUpload")` → trash export folder after success
+- Drop / Start Upload blocked while `uploadInProgress`
 
 **Important:** Queue only discovers Notion/Airtable extract jobs. Extract-only CSV/TSV/XLSX/etc. do not produce usable `extract_info.json`.
 
@@ -292,13 +394,16 @@ Dropbox auth for Airtable: `DropboxSetupModel` writes a temp `.command` that run
 
 ### 4) Workflow Extension handoff
 
-**Entry:** drop `.fcpxml` on extension Extract tab.
+**Entry:** drop `.fcpxml` on extension Extract tab (`WorkflowExtensionView`).
 
-1. Write `~/Movies/Marker Data Cache/WorkflowExtensionExport.fcpxml`
-2. `NSWorkspace.openApplication` → `/Applications/Marker Data.app`
-3. DistributedNotification `.workflowExtensionFileReceived` (no URL payload)
+1. Show `DropTargetOverlay` (**“Drop to Open Marker Data”**) while targeted
+2. Write `~/Movies/Marker Data Cache/WorkflowExtensionExport.fcpxml`
+3. `NSWorkspace.openApplication` → `/Applications/Marker Data.app`
+4. DistributedNotification `.workflowExtensionFileReceived` (no URL payload)
 
 App: `ExtractionModel_EventHandlers.handleWorkflowExtensionEvent` reads the fixed path; starts extraction or sets external-file gate. `SidebarSelectionSwitcher` selects Extract.
+
+Roles tab: same `RolesSettingsView` + `DropTargetOverlay` as the main app (extension Compile Sources must include overlay + `ColorExtension`). Overlay borders use `Color.markerAccent` so FCP’s host accent does not turn them blue.
 
 ### 5) Share Destination handoff
 
@@ -319,18 +424,26 @@ App: `ExtractionModel_EventHandlers.handleWorkflowExtensionEvent` reads the fixe
 
 Info.plist advertises Media Asset Protocol and document types for asset media/description collections.
 
+**Note:** FCP **timeline** drops onto the Dock icon are often pasteboard-only (no file URL). Prefer Extract panel drop, file Open With, Workflow Extension, or Share Destination for media+XML.
+
 ---
 
 ## Color swatch pipeline
 
 After successful extract, if `colorSwatchSettings.enableSwatch`:
 
-`ColorPaletteRenderer` → scans export images (skips `icon-marker*`) → `ColorsExtractorService` / DominantColors → `ImageRenderService` / `ImageMergeOperation`.
+`ColorPaletteRenderer.render(...) -> Bool`:
+
+1. Scan export folder for images (skips `icon-marker*`)
+2. Early `return false` if no images, directory failure, or GIF without JSON (no progress retitle)
+3. Else `await progress.applyTaskAppearance("Analysing swatch", ...)` (MainActor), then `ColorsExtractorService` / DominantColors → `ImageRenderService` / `ImageMergeOperation`
+4. `return true` (caller runs `markAllProcessesFinished`)
 
 - Still images: palette strip merged onto originals
 - GIF + JSON export: separate `{name}-Palette.jpg`, rewrite manifest with `"Palette Filename"`
-- GIF + non-JSON: skip palette
+- GIF + non-JSON: skip palette (`false`)
 - Forced off for XLSX extract profile (settings getter)
+- No images / Skip Image Generation: `false` → ExtractionModel `markProcessAsFinished` → **“Extract done”** (never **“Analysing swatch done”**). Do not `reset()` when entering the swatch phase.
 
 Settings model: `ColorSwatchSettingsModel` (nested under SettingsStore, Codable).
 
@@ -360,14 +473,61 @@ Notable modules under `Views/`:
 
 | Area | Notes |
 |------|--------|
-| Main | `ContentView`, `ExtractView` |
-| Detail | General (File/Roles/Notifications/Updates), Image, Label, Configurations, Databases, Queue, About |
+| Main | `ContentView`, `ExtractView` (drop overlay + `.fcpxmlDropDestination`) |
+| Detail | General (File/Roles/Notifications/Updates), Image, Label, Configurations, Databases, Queue (folder drop overlay), About |
 | Menu commands | App / File / Edit / Sidebar / Configuration / Help |
 | Onboarding | `@AppStorage("showOnboarding")` sheet |
-| Components / Extensions | Shared controls; **`DialogIcon.appDialogIcon()`** for alerts |
+| Components | `DropTargetOverlay` (main app + WE), `FCPXMLDropModifier`, shared controls |
+| Extensions | **`DialogIcon.appDialogIcon()`** for alerts |
+| Other | `FailedExtractionsView` (truncate + `.help()` tooltips; min ~640×240) |
 | Pagemaker | `PagemakerView` WebView + `PagemakerPDFExportHandler` (JS → Swift PDF via `NSSavePanel`) |
 
 Install-location warning: on appear, if not under `/Applications` and `@AppStorage("ignoreInstallLocation")` is false, show alert (with `.appDialogIcon()`).
+
+Drop overlay copy and invariants: **`GUARDRAILS.md`**.
+
+```mermaid
+flowchart TB
+  subgraph mainApp [Main app]
+    EX[ExtractView]
+    RO[RolesSettingsView]
+    QU[QueueView]
+  end
+
+  subgraph we [Workflow Extension]
+    WEX[WorkflowExtensionView Extract]
+    WRO[RolesSettingsView]
+  end
+
+  OV[DropTargetOverlay]
+  EX --> OV
+  RO --> OV
+  QU --> OV
+  WEX --> OV
+  WRO --> OV
+
+  EX --> FM[FCPXMLDropModifier]
+  FM --> IN[FCPXMLIntake]
+  IN --> EM[ExtractionModel]
+
+  RO --> RM[RolesManager DropDelegate]
+  WRO --> RM
+  QU --> QM[QueueModel.performDrop]
+  WEX --> HO[Movies cache + open app + DNC]
+```
+
+```mermaid
+flowchart LR
+  Drop[FCPXML drop on WE Extract]
+  Overlay[DropTargetOverlay]
+  Cache[WorkflowExtensionExport.fcpxml]
+  App["/Applications/Marker Data.app"]
+  DNC[.workflowExtensionFileReceived]
+  EM[ExtractionModel]
+
+  Drop --> Overlay
+  Drop --> Cache --> App --> DNC --> EM
+```
 
 ---
 
@@ -430,33 +590,42 @@ Plus `defaults delete co.theacharya.MarkerData` and `killall "Marker Data"`.
 
 ---
 
-## Directory map (main app sources)
+## Directory map (sources)
 
 ```
 Source/Marker Data/Marker Data/
   Marker_DataApp.swift
   ApplicationDelegate.swift
   Models/
-    Extract/           # ExtractionModel, Progress, DatabaseUploader, results
-    Queue/             # QueueModel, QueueInstance, ExtractInfo
+    Extract/           # ExtractionModel, ProgressViewModel, DatabaseUploader, results
+    Queue/             # QueueModel, QueueInstance (manifestURL), ExtractInfo
     Settings/          # Store, Container, Versioning, models
     Database/          # Manager + Notion/Airtable/Dropbox profiles
-    Roles/             # RolesManager, RoleModel
-    Color Swatch/      # Palette renderer + image merge + color extraction
+    Roles/             # RolesManager (+ DropDelegate isDropTargeted), RoleModel
+    Color Swatch/      # ColorPaletteRenderer (render -> Bool), image merge, color extraction
     Configurations/    # ConfigurationsViewModel
     Errors/
     Other/             # MainViews, WindowSize, UnifiedExportProfile
   Views/
-    Main/, Detail Views/, Components/, Menu Bar Commands/,
-    Extensions/ (DialogIcon), Onboarding/, Other/
+    Main/, Detail Views/, Menu Bar Commands/,
+    Components/        # DropTargetOverlay, FCPXMLDropModifier, …
+    Extensions/        # DialogIcon
+    Onboarding/, Other/  # FailedExtractionsView, …
   FCP Share Destination/
     Install View/, Objective-C Code/, OpenEventHandler (Swift)
   Pagemaker/
   Utilities/
-    Extensions/, Shell/, Notifications/, Other/
+    Extensions/        # URL, Color (markerAccent, heroGradient), UTType, NotificationName, …
+    Shell/, Notifications/,
+    Other/             # FCPXMLIntake, TextClippingReader, LibraryFolders, …
   Resources/
     airlift, csv2notion_neo, OSAScriptingDefinition.sdef,
     *.fcpxdest, Pagemaker.html, entitlements, DefaultConfiguration.json
+
+Source/Marker Data/Workflow Extension/
+  WorkflowExtensionView.swift          # Extract overlay + handoff; hosts RolesSettingsView
+  WorkflowExtensionViewController.swift
+  Assets.xcassets/, Info.plist, entitlements, bridging header
 ```
 
 ---
@@ -465,10 +634,15 @@ Source/Marker Data/Marker Data/
 
 1. Settings migrations are mandatory for persisted key changes; Codable defaults alone are insufficient for existing users.
 2. Configuration filenames are unique; silent overwrite is a product bug.
-3. Roles are a cross-process file + DNC contract shared with the Workflow Extension.
-4. Queue is upload-oriented around `extract_info.json` (Notion/Airtable), not a universal browser of all exports.
-5. CLI progress and success depend on binary stdout contracts (`NN%`, exit codes).
-6. Share Destination and Workflow Extension both assume `/Applications` install.
-7. Alert UI must use PNG `AppIconSingle` via `.appDialogIcon()` (Icon Composer dock asset is unreliable in dialogs).
-8. Preserve `plaform` spelling when touching database models unless intentionally migrating.
-9. Definition of done: arm64 Debug+Release build; settings migrate; `.fcpxml`/`.fcpxmld` extract; queue still finds/uploads `extract_info.json` folders.
+3. Roles are a cross-process file + DNC contract shared with the Workflow Extension (incl. shared drop overlay types in both targets).
+4. Workflow Extension **Extract** and **Roles** both show `DropTargetOverlay`; Extract handoff is local to `WorkflowExtensionView`, Roles uses shared `RolesSettingsView`.
+5. Shared WE chrome must use `Color.markerAccent` — `accentColor` resolves to Final Cut Pro’s blue inside the appex.
+6. Queue is upload-oriented around `extract_info.json` (Notion/Airtable), not a universal browser of all exports.
+7. Queue uploads must use `QueueInstance.manifestURL` so moved/copied folders work despite absolute sidecar paths.
+8. Extract → swatch: never `reset()`. `ColorPaletteRenderer.render -> Bool`; retitle only via `await applyTaskAppearance` after images exist; skip → `markProcessAsFinished` (“Extract done”); success → `markAllProcessesFinished`.
+9. CLI progress and success depend on binary stdout contracts (`NN%`, exit codes).
+10. Share Destination and Workflow Extension both assume `/Applications` install.
+11. Alert UI must use PNG `AppIconSingle` via `.appDialogIcon()` (Icon Composer dock asset is unreliable in dialogs).
+12. Preserve `plaform` spelling when touching database models unless intentionally migrating.
+13. FCPXML pasteboard/clipping temps live under `~/Movies/Marker Data Cache/` (not App Support).
+14. Definition of done: arm64 Debug+Release build; settings migrate; `.fcpxml`/`.fcpxmld` + pasteboard intake; WE Extract + Roles overlays; queue finds/uploads via `manifestURL`; agent docs (`AGENT.md` / `ARCHITECTURE.md` / `GUARDRAILS.md` / `.cursorrules`) stay aligned.

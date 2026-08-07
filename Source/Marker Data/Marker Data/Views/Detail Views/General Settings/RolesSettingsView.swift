@@ -23,7 +23,17 @@ struct RolesSettingsView: View {
                     // If nil or empty
                     Text("Drag & Drop Final Cut Pro Project (or .FCPXMLD) to Retrive Roles Metadata")
                 }
+
+                if rolesManager.isDropTargeted, !rolesManager.loadingInProgress {
+                    DropTargetOverlay(
+                        message: "Drop to Retrieve Roles Metadata",
+                        subtitle: nil
+                    )
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 4)
+                }
             }
+            .animation(.easeInOut(duration: 0.2), value: rolesManager.isDropTargeted)
             
             buttonsView
         }

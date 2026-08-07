@@ -3,14 +3,15 @@
 You are working in the **Marker Data** repository: a macOS Swift/SwiftUI app that extracts Final Cut Pro marker metadata (via MarkersExtractor), optionally renders images and color swatches, and uploads to Notion/Airtable via bundled CLIs. It also includes a Final Cut Pro Workflow Extension and Share Destination integration.
 
 ## Required reading
-- **`AGENT.md`** — entry points, build/CI, settings checklist, “when you change X, also change Y”, pitfalls, definition of done
-- **`ARCHITECTURE.md`** — modules, persistence layout, extract/queue/upload/FCP flows, notification contracts, directory map
+- **`AGENT.md`** — entry points, build/CI, settings checklist, drop surfaces, “when you change X, also change Y”, pitfalls, definition of done
+- **`ARCHITECTURE.md`** — modules, persistence layout, extract/queue/upload/FCP flows (incl. Mermaid), notification contracts, directory map
+- **`GUARDRAILS.md`** — hard always/never rules, drop overlay copy, Signs (learned pitfalls)
 
-Keep these three files consistent when architecture or agent guidance changes.
+Keep these four files consistent when architecture or agent guidance changes.
 
 ## Project layout
 - Main app: `Source/Marker Data/Marker Data/`
-- Workflow Extension: `Source/Marker Data/Workflow Extension/`
+- Workflow Extension: `Source/Marker Data/Workflow Extension/` (`WorkflowExtensionView.swift` — Extract + Roles tabs)
 - Uninstaller: `Source/Marker Data/Marker Data Uninstaller/` (target **Uninstall Marker Data**; product `Uninstall Marker Data.app`; bundle ID `co.theacharya.MarkerData.Uninstaller`)
 - FCP Share Destination (Swift + Obj‑C): `Source/Marker Data/Marker Data/FCP Share Destination/`
 - Bundled binaries (do not modify internals): `Source/Marker Data/Marker Data/Resources/airlift`, `csv2notion_neo`
@@ -38,9 +39,11 @@ Keep these three files consistent when architecture or agent guidance changes.
   5. Never remove/rename JSON keys without a migration
 
 ## Key runtime flows (see ARCHITECTURE.md for detail)
-- **Extract:** `ExtractionModel` → MarkersExtractor → optional `ColorPaletteRenderer` → optional `DatabaseUploader`
-- **Queue:** scans for `extract_info.json` (written only for Notion/Airtable extracts with a JSON manifest) → parallel re-upload
-- **Workflow Extension:** writes `~/Movies/Marker Data Cache/WorkflowExtensionExport.fcpxml`, opens `/Applications/Marker Data.app`, posts DistributedNotification `.workflowExtensionFileReceived`
+- **Extract intake:** `FCPXMLIntake` resolves `.fcpxml` / `.fcpxmld`, Finder `.textClipping`, and Final Cut Pro pasteboard → temp file under `~/Movies/Marker Data Cache/` → `ExtractionModel.receiveFiles` / `receiveItemProviders`
+- **Extract:** `ExtractionModel` → MarkersExtractor → optional `ColorPaletteRenderer.render(...) -> Bool` (`await applyTaskAppearance` only after image checks inside renderer; `false` → `markProcessAsFinished` / “Extract done”; `true` → `markAllProcessesFinished`; never `reset()` before swatch) → optional `DatabaseUploader`
+- **Drop overlays:** shared `DropTargetOverlay` on main-app Extract / Roles / Queue **and** Workflow Extension Extract + Roles — exact copy in **GUARDRAILS.md**; border uses `Color.markerAccent` (not host `accentColor`)
+- **Queue:** scans for `extract_info.json` (Notion/Airtable + JSON manifest only) → upload via `QueueInstance.manifestURL` (local JSON beside folder preferred) → parallel re-upload; folder drop clears queue and disables auto-scan
+- **Workflow Extension:** Extract tab drops `.fcpxml` → Movies-cache handoff → open `/Applications/Marker Data.app` → DistributedNotification `.workflowExtensionFileReceived`; both Extract and Roles show `DropTargetOverlay` (`WorkflowExtensionView` + shared `RolesSettingsView`). Extension Compile Sources must include `DropTargetOverlay` + `ColorExtension` (+ shared Roles sources)
 - **Share Destination:** `OSAScriptingDefinition.sdef` + Obj‑C `MakeCommand` → Movies cache → local `FCPShareStart` → Apple Event open → `.openFile`
 
 ## Pitfalls to avoid
@@ -51,8 +54,16 @@ Keep these three files consistent when architecture or agent guidance changes.
 - SwiftUI `.alert` icons: Dock uses Icon Composer (`Marker-Data.icon`), which often yields a blank document glyph. After every `.alert`, chain `.appDialogIcon()` (`Views/Extensions/DialogIcon.swift` → PNG `AppIconSingle`).
 - Database models use property name `plaform` — keep consistent unless intentionally migrating.
 - If adding new on-disk paths the app uses, update `MarkerDataUninstaller` cleanup paths too.
+- Do not upload Queue jobs using only absolute `ExtractInfo.jsonURL` when a same-named JSON exists in the dropped/scanned folder — use `manifestURL`.
+- Do not call `ProgressViewModel.reset()` when transitioning extract → swatch. Retitle only via `await applyTaskAppearance` inside `ColorPaletteRenderer` after images exist; skipped swatch must stay “Extract done”.
+- `applyTaskAppearance` is `@MainActor` — always `await` it from `ColorPaletteRenderer`.
+- FCP timeline drops onto the Dock icon are often pasteboard-only; Extract panel drop is the supported timeline path.
+- Do not use `Color.accentColor` / `.accent` for shared chrome hosted in Final Cut Pro — use `Color.markerAccent`.
 
 ## Definition of done for code changes
-- App builds (Debug and Release) for arm64.
-- Settings load and migrate; extraction works for `.fcpxml`/`.fcpxmld`; queue scan/upload still works for folders containing `extract_info.json`.
+- App builds (Debug and Release) for arm64 (Workflow Extension still embeds).
+- Settings load and migrate; extraction works for `.fcpxml`/`.fcpxmld` (incl. FCP pasteboard / textClipping via `FCPXMLIntake`).
+- Drop overlays still work on main-app Extract / Roles / Queue **and** Workflow Extension Extract + Roles; queue still finds/uploads `extract_info.json` folders via `manifestURL`.
+- Skipped / no-media swatch finishes as “Extract done” (not “Analysing swatch done”).
 - New alerts use `.appDialogIcon()`; settings changes include version + migration + wiring as required above.
+- Update `AGENT.md` / `ARCHITECTURE.md` / `GUARDRAILS.md` / `.cursorrules` when behavior changes.

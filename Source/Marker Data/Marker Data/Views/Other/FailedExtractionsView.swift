@@ -13,13 +13,25 @@ struct FailedExtractionsView: View {
     var body: some View {
         Table(failedExtractions) {
             TableColumn("File Path") { failedTask in
-                Text(failedTask.url.path(percentEncoded: false))
+                let path = failedTask.url.path(percentEncoded: false)
+                Text(path)
+                    .lineLimit(1)
+                    .help(path)
             }
                 
-            TableColumn("Error Type", value: \.exitStatus.rawValue)
+            TableColumn("Error Type") { failedTask in
+                Text(failedTask.exitStatus.rawValue)
+                    .lineLimit(1)
+                    .help(failedTask.exitStatus.rawValue)
+            }
             
-            TableColumn("Error Message", value: \.errorMessage)
+            TableColumn("Error Message") { failedTask in
+                Text(failedTask.errorMessage)
+                    .lineLimit(1)
+                    .help(failedTask.errorMessage)
+            }
         }
+        .frame(minWidth: 640, minHeight: 240)
     }
 }
 
