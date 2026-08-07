@@ -1,5 +1,45 @@
 # ARCHITECTURE.md
 
+## Table of contents
+
+- [Overview](#overview)
+- [Targets & modules](#targets--modules)
+  - [Main app target (`Marker Data`)](#main-app-target-marker-data)
+  - [Workflow Extension target](#workflow-extension-target)
+  - [Uninstaller target (`Uninstall Marker Data`)](#uninstaller-target-uninstall-marker-data)
+  - [Share Destination / scripting bridge (inside main app)](#share-destination--scripting-bridge-inside-main-app)
+- [High-level runtime graph](#high-level-runtime-graph)
+  - [Navigation](#navigation)
+- [Data & persistence](#data--persistence)
+  - [App Support & cache layout](#app-support--cache-layout)
+  - [Settings system](#settings-system)
+    - [Key types and files](#key-types-and-files)
+    - [What gets persisted where](#what-gets-persisted-where)
+    - [Runtime lifecycle (app launch)](#runtime-lifecycle-app-launch)
+    - [Schema versioning](#schema-versioning)
+    - [Auto-save and configurations](#auto-save-and-configurations)
+    - [Bridge to extraction (`markersExtractorSettings`)](#bridge-to-extraction-markersextractorsettings)
+    - [Exception: Roles (`RolesManager`)](#exception-roles-rolesmanager)
+    - [Checklist: adding or changing a persisted setting](#checklist-adding-or-changing-a-persisted-setting)
+- [Core flows](#core-flows)
+  - [1) Extract flow (interactive)](#1-extract-flow-interactive)
+  - [2) Queue flow (batch upload)](#2-queue-flow-batch-upload)
+  - [3) Database upload flow](#3-database-upload-flow)
+  - [4) Workflow Extension handoff](#4-workflow-extension-handoff)
+  - [5) Share Destination handoff](#5-share-destination-handoff)
+- [Color swatch pipeline](#color-swatch-pipeline)
+- [Database profiles](#database-profiles)
+- [UI architecture](#ui-architecture)
+- [Notifications (full list)](#notifications-full-list)
+- [Entitlements / security model](#entitlements--security-model)
+- [Build, packaging, updates](#build-packaging-updates)
+  - [Notable SPM dependencies (main app)](#notable-spm-dependencies-main-app)
+- [Uninstaller path contract](#uninstaller-path-contract)
+- [Directory map (sources)](#directory-map-sources)
+- [Invariants & pitfalls (architecture-level)](#invariants--pitfalls-architecture-level)
+
+---
+
 ## Overview
 **Marker Data** is a macOS SwiftUI application that extracts Final Cut Pro marker metadata and generates export artifacts (CSV/TSV/XLSX/MIDI/Markdown/SRT/YouTube/Compressor, plus Notion/Airtable JSON). It can optionally:
 
@@ -271,13 +311,14 @@ flowchart LR
   Intake[FCPXMLIntake]
   EM[ExtractionModel]
   ME[MarkersExtractor]
-  Swatch[ColorPaletteRenderer]
+  Swatch["ColorPaletteRenderer.render -> Bool"]
   Up[DatabaseUploader]
 
   Drop --> Intake --> EM --> ME
   ME --> Swatch
   ME --> Up
-  Swatch --> Up
+  Swatch -->|true: markAllProcessesFinished| Up
+  Swatch -->|false: markProcessAsFinished Extract done| Up
 ```
 
 Pipeline (`performExtraction`):
@@ -288,7 +329,8 @@ Pipeline (`performExtraction`):
    - Build settings via `markersExtractorSettings`
    - `MarkersExtractor.extract()`; KVO `progress.fractionCompleted` → progress UI / DockProgress
    - Optionally write `extract_info.json` when `ExtractInfo(exportResult:)` succeeds (Notion/Airtable + JSON path)
-   - If swatches enabled and images exist: `applyTaskAppearance` then `ColorPaletteRenderer.render(...)` (may rewrite JSON for GIF palette filenames); if skipped (no images / unsupported GIF): finish extract URL without retitling; if rendered: `markAllProcessesFinished()`
+   - If swatches enabled: `didRender = await ColorPaletteRenderer.render(...)` — renderer `await`s `applyTaskAppearance` only after images pass checks; `true` → `markAllProcessesFinished`; `false` → `markProcessAsFinished(url)` (keeps **“Extract done”**)
+   - If swatches disabled: `markProcessAsFinished(url)`
    - If DB profile selected: `DatabaseUploader.uploadToDatabase(jsonManifestPath, profile)`
 4. Aggregate `ExportExitStatus` + `ExtractionFailure[]`; notifications; optional Finder/Pagemaker open
 
@@ -390,13 +432,18 @@ Info.plist advertises Media Asset Protocol and document types for asset media/de
 
 After successful extract, if `colorSwatchSettings.enableSwatch`:
 
-`ColorPaletteRenderer` → scans export images (skips `icon-marker*`) → `ColorsExtractorService` / DominantColors → `ImageRenderService` / `ImageMergeOperation`.
+`ColorPaletteRenderer.render(...) -> Bool`:
+
+1. Scan export folder for images (skips `icon-marker*`)
+2. Early `return false` if no images, directory failure, or GIF without JSON (no progress retitle)
+3. Else `await progress.applyTaskAppearance("Analysing swatch", ...)` (MainActor), then `ColorsExtractorService` / DominantColors → `ImageRenderService` / `ImageMergeOperation`
+4. `return true` (caller runs `markAllProcessesFinished`)
 
 - Still images: palette strip merged onto originals
 - GIF + JSON export: separate `{name}-Palette.jpg`, rewrite manifest with `"Palette Filename"`
-- GIF + non-JSON: skip palette
+- GIF + non-JSON: skip palette (`false`)
 - Forced off for XLSX extract profile (settings getter)
-- No images / Skip Image Generation: renderers early-return **without** switching the progress label to “Analysing swatch”; extraction finishes as **“Extract done”** via `markProcessAsFinished`. Real swatch runs use `applyTaskAppearance` then `markAllProcessesFinished` (do not `reset()` when entering the swatch phase)
+- No images / Skip Image Generation: `false` → ExtractionModel `markProcessAsFinished` → **“Extract done”** (never **“Analysing swatch done”**). Do not `reset()` when entering the swatch phase.
 
 Settings model: `ColorSwatchSettingsModel` (nested under SettingsStore, Codable).
 
@@ -555,7 +602,7 @@ Source/Marker Data/Marker Data/
     Settings/          # Store, Container, Versioning, models
     Database/          # Manager + Notion/Airtable/Dropbox profiles
     Roles/             # RolesManager (+ DropDelegate isDropTargeted), RoleModel
-    Color Swatch/      # Palette renderer + image merge + color extraction
+    Color Swatch/      # ColorPaletteRenderer (render -> Bool), image merge, color extraction
     Configurations/    # ConfigurationsViewModel
     Errors/
     Other/             # MainViews, WindowSize, UnifiedExportProfile
@@ -592,7 +639,7 @@ Source/Marker Data/Workflow Extension/
 5. Shared WE chrome must use `Color.markerAccent` — `accentColor` resolves to Final Cut Pro’s blue inside the appex.
 6. Queue is upload-oriented around `extract_info.json` (Notion/Airtable), not a universal browser of all exports.
 7. Queue uploads must use `QueueInstance.manifestURL` so moved/copied folders work despite absolute sidecar paths.
-8. Extract → swatch progress must use `applyTaskAppearance` / `markAllProcessesFinished`, not `reset()`, when image lists can be empty.
+8. Extract → swatch: never `reset()`. `ColorPaletteRenderer.render -> Bool`; retitle only via `await applyTaskAppearance` after images exist; skip → `markProcessAsFinished` (“Extract done”); success → `markAllProcessesFinished`.
 9. CLI progress and success depend on binary stdout contracts (`NN%`, exit codes).
 10. Share Destination and Workflow Extension both assume `/Applications` install.
 11. Alert UI must use PNG `AppIconSingle` via `.appDialogIcon()` (Icon Composer dock asset is unreliable in dialogs).

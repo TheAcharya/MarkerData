@@ -40,7 +40,7 @@ Keep these four files consistent when architecture or agent guidance changes.
 
 ## Key runtime flows (see ARCHITECTURE.md for detail)
 - **Extract intake:** `FCPXMLIntake` resolves `.fcpxml` / `.fcpxmld`, Finder `.textClipping`, and Final Cut Pro pasteboard → temp file under `~/Movies/Marker Data Cache/` → `ExtractionModel.receiveFiles` / `receiveItemProviders`
-- **Extract:** `ExtractionModel` → MarkersExtractor → optional `ColorPaletteRenderer` (`applyTaskAppearance` only when swatch work runs; skipped/no-images keeps “Extract done” via `markProcessAsFinished`; never `reset()` before swatch) → optional `DatabaseUploader`
+- **Extract:** `ExtractionModel` → MarkersExtractor → optional `ColorPaletteRenderer.render(...) -> Bool` (`await applyTaskAppearance` only after image checks inside renderer; `false` → `markProcessAsFinished` / “Extract done”; `true` → `markAllProcessesFinished`; never `reset()` before swatch) → optional `DatabaseUploader`
 - **Drop overlays:** shared `DropTargetOverlay` on main-app Extract / Roles / Queue **and** Workflow Extension Extract + Roles — exact copy in **GUARDRAILS.md**; border uses `Color.markerAccent` (not host `accentColor`)
 - **Queue:** scans for `extract_info.json` (Notion/Airtable + JSON manifest only) → upload via `QueueInstance.manifestURL` (local JSON beside folder preferred) → parallel re-upload; folder drop clears queue and disables auto-scan
 - **Workflow Extension:** Extract tab drops `.fcpxml` → Movies-cache handoff → open `/Applications/Marker Data.app` → DistributedNotification `.workflowExtensionFileReceived`; both Extract and Roles show `DropTargetOverlay` (`WorkflowExtensionView` + shared `RolesSettingsView`). Extension Compile Sources must include `DropTargetOverlay` + `ColorExtension` (+ shared Roles sources)
@@ -55,7 +55,8 @@ Keep these four files consistent when architecture or agent guidance changes.
 - Database models use property name `plaform` — keep consistent unless intentionally migrating.
 - If adding new on-disk paths the app uses, update `MarkerDataUninstaller` cleanup paths too.
 - Do not upload Queue jobs using only absolute `ExtractInfo.jsonURL` when a same-named JSON exists in the dropped/scanned folder — use `manifestURL`.
-- Do not call `ProgressViewModel.reset()` when transitioning extract → swatch; use `applyTaskAppearance`.
+- Do not call `ProgressViewModel.reset()` when transitioning extract → swatch. Retitle only via `await applyTaskAppearance` inside `ColorPaletteRenderer` after images exist; skipped swatch must stay “Extract done”.
+- `applyTaskAppearance` is `@MainActor` — always `await` it from `ColorPaletteRenderer`.
 - FCP timeline drops onto the Dock icon are often pasteboard-only; Extract panel drop is the supported timeline path.
 - Do not use `Color.accentColor` / `.accent` for shared chrome hosted in Final Cut Pro — use `Color.markerAccent`.
 
@@ -63,5 +64,6 @@ Keep these four files consistent when architecture or agent guidance changes.
 - App builds (Debug and Release) for arm64 (Workflow Extension still embeds).
 - Settings load and migrate; extraction works for `.fcpxml`/`.fcpxmld` (incl. FCP pasteboard / textClipping via `FCPXMLIntake`).
 - Drop overlays still work on main-app Extract / Roles / Queue **and** Workflow Extension Extract + Roles; queue still finds/uploads `extract_info.json` folders via `manifestURL`.
+- Skipped / no-media swatch finishes as “Extract done” (not “Analysing swatch done”).
 - New alerts use `.appDialogIcon()`; settings changes include version + migration + wiring as required above.
 - Update `AGENT.md` / `ARCHITECTURE.md` / `GUARDRAILS.md` / `.cursorrules` when behavior changes.

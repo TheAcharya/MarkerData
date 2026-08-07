@@ -1,5 +1,35 @@
 # AGENT.md
 
+## Table of contents
+
+- [Purpose](#purpose)
+- [What you’re working on](#what-youre-working-on)
+- [Key entry points (start here)](#key-entry-points-start-here)
+- [Build & run (local)](#build--run-local)
+- [CI / release basics](#ci--release-basics)
+- [Code conventions & expectations](#code-conventions--expectations)
+- [Settings system (read before changing preferences)](#settings-system-read-before-changing-preferences)
+  - [Core files](#core-files)
+  - [How it works (short)](#how-it-works-short)
+  - [Migration ladder (each `case N` upgrades N → N+1)](#migration-ladder-each-case-n-upgrades-n--n1)
+  - [Checklist: add or change a persisted setting](#checklist-add-or-change-a-persisted-setting)
+  - [Known settings gaps (do not “fix” casually without product intent)](#known-settings-gaps-do-not-fix-casually-without-product-intent)
+- [“When you change X, also change Y”](#when-you-change-x-also-change-y)
+  - [SettingsStore / preferences](#settingsstore--preferences)
+  - [New export fields / overlays](#new-export-fields--overlays)
+  - [New database platform](#new-database-platform)
+  - [FCP integrations](#fcp-integrations)
+  - [Drop overlay / shared Workflow Extension UI](#drop-overlay--shared-workflow-extension-ui)
+  - [Uninstaller cleanup paths](#uninstaller-cleanup-paths)
+  - [Release metadata](#release-metadata)
+  - [Agent documentation](#agent-documentation)
+- [Extract / Roles / Queue drop surfaces](#extract--roles--queue-drop-surfaces)
+- [Notification & handoff cheat sheet](#notification--handoff-cheat-sheet)
+- [Common pitfalls](#common-pitfalls)
+- [Definition of done for most changes](#definition-of-done-for-most-changes)
+
+---
+
 ## Purpose
 This repository contains **Marker Data**, a macOS Swift/SwiftUI app that extracts Final Cut Pro marker metadata (via `MarkersExtractor`), optionally renders images/palettes, and can upload results to Notion/Airtable via bundled CLIs. It also ships a **Final Cut Pro Workflow Extension** and a **Share Destination** integration.
 
@@ -42,7 +72,8 @@ For deeper module/data-flow detail, see **`ARCHITECTURE.md`**. For hard always/n
 | Queue scan/upload | `Models/Queue/QueueModel.swift` |
 | Queue row + local-first manifest | `Models/Queue/QueueInstance.swift` (`manifestURL`) |
 | Database uploads | `Models/Extract/DatabaseUploader.swift` |
-| Progress aggregation | `Models/Extract/ProgressViewModel.swift` (`applyTaskAppearance`, `markAllProcessesFinished`) |
+| Progress aggregation | `Models/Extract/ProgressViewModel.swift` (`applyTaskAppearance`, `markAllProcessesFinished`, `markProcessAsFinished`) |
+| Color swatch render | `Models/Color Swatch/ColorPaletteRenderer.swift` (`render(...) -> Bool`; `await applyTaskAppearance` after image checks) |
 | Failed Tasks window | `Views/Other/FailedExtractionsView.swift` |
 | Settings schema | `Source/Marker Data/Marker Data/Models/Settings/SettingsStore.swift` (`static let version` — currently **8**) |
 | Settings container / configs | `Source/Marker Data/Marker Data/Models/Settings/SettingsContainer.swift` |
@@ -201,7 +232,7 @@ Also: getter for `colorSwatchSettings` **forces `enableSwatch = false` when extr
 
 **Queue manifest resolution:** `QueueInstance.manifestURL` prefers `{folder}/{json basename}` when that file exists (moved/copied exports), else falls back to absolute `ExtractInfo.jsonURL`. Uploads and `filterMissing()` must use `manifestURL`, not the sidecar path alone.
 
-**Progress across extract → swatch:** call `applyTaskAppearance` only when swatch rendering actually runs (inside `ColorPaletteRenderer` after image checks). Empty / skipped swatch: keep Extract wording via `markProcessAsFinished`. After a real swatch run: `markAllProcessesFinished()`. Ignore late KVO after a process is finished.
+**Progress across extract → swatch:** `ColorPaletteRenderer.render(...) -> Bool`. Inside renderer, after image checks pass, `await progress.applyTaskAppearance("Analysing swatch", ...)` (MainActor). Returns `false` on skip (no images / unsupported GIF) → ExtractionModel uses `markProcessAsFinished` (**“Extract done”**). Returns `true` → `markAllProcessesFinished`. Never `reset()` when entering swatch. Ignore late KVO after a process is finished.
 
 **Temporary pasteboard FCPXML:** `FCPXMLIntake.writeTemporaryFCPXML` → `~/Movies/Marker Data Cache/`.
 
@@ -230,7 +261,7 @@ Exact overlay strings and always/never rules: **`GUARDRAILS.md`**.
 - **Opaque helpers:** only the CLI args in `DatabaseUploader` / `DropboxSetupModel` are the contract.
 - **Queue scope:** `extract_info.json` is written only when the export profile is Notion/Airtable **and** a JSON manifest path exists. Queue will not list pure CSV/XLSX/etc. extract folders.
 - **Queue relocated folders:** never upload only `ExtractInfo.jsonURL` — use `manifestURL` (see Signs in `GUARDRAILS.md`).
-- **Progress `reset()` before swatch:** can leave the bar at 0% when there are no stills — use `applyTaskAppearance`.
+- **Progress `reset()` / wrong swatch label:** never `reset()` before swatch; never retitle to “Analysing swatch” until render will run. Skipped swatch must finish as **“Extract done”**, not **“Analysing swatch done”**. `await applyTaskAppearance` from `ColorPaletteRenderer` (MainActor).
 - **FCP timeline → Dock:** often pasteboard-only; Extract panel drop is the supported UI path for timelines.
 - **Alert icons:** chain `.appDialogIcon()` after every `.alert`.
 - **Dual Sparkle controllers:** both `Marker_DataApp` and `ApplicationDelegate` construct `SPUStandardUpdaterController`; update-available UI relies on `ApplicationDelegate.bestValidUpdate(...)` posting `.updateAvailable`. Don’t “simplify” without understanding that path.
@@ -242,6 +273,7 @@ Exact overlay strings and always/never rules: **`GUARDRAILS.md`**.
 - Extraction works for `.fcpxml` and `.fcpxmld`, including FCP pasteboard / textClipping intake via `FCPXMLIntake`.
 - Drop overlays still work on main-app Extract / Roles / Queue **and** Workflow Extension Extract + Roles.
 - Queue scan/upload still works for folders containing `extract_info.json`, including **moved/copied** folders (`manifestURL`).
+- Skipped / no-media swatch finishes as **“Extract done”** (not **“Analysing swatch done”**).
 - Any new `.alert` uses `.appDialogIcon()`.
 - If settings changed: version bumped + migration case + UI wired + export bridge if needed.
 - If behavior/architecture changed: update `AGENT.md`, `ARCHITECTURE.md`, `GUARDRAILS.md`, and `.cursorrules`.

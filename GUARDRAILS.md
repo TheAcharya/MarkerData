@@ -3,6 +3,14 @@
 Hard constraints for humans and AI agents working in **Marker Data**.  
 Read with **`AGENT.md`** (how to change things), **`ARCHITECTURE.md`** (how it works), and **`.cursorrules`** (Cursor enforcement). Keep all four consistent when behavior or architecture changes.
 
+## Table of contents
+
+- [Always](#always)
+- [Never](#never)
+- [Drop overlay copy (keep in sync with UI)](#drop-overlay-copy-keep-in-sync-with-ui)
+- [Signs (learned pitfalls)](#signs-learned-pitfalls)
+- [Definition of done (guardrail checklist)](#definition-of-done-guardrail-checklist)
+
 ---
 
 ## Always
@@ -16,8 +24,8 @@ Read with **`AGENT.md`** (how to change things), **`ARCHITECTURE.md`** (how it w
 | **Drop overlays** | Use shared `DropTargetOverlay` on main-app Extract / Roles / Queue **and** Workflow Extension Extract + Roles; keep extension Compile Sources including `DropTargetOverlay` + `ColorExtension` (+ shared Roles sources). |
 | **Shared WE chrome color** | Use `Color.markerAccent` (system indigo) for overlay borders and other shared chrome hosted in FCP — not `Color.accentColor`. |
 | **Queue uploads** | Upload via `QueueInstance.manifestURL` (prefer JSON beside the scanned/dropped folder; fall back to sidecar `jsonURL`). |
-| **Progress phases** | Between extract → swatch, call `ProgressViewModel.applyTaskAppearance` — do **not** `reset()` (wipes processes and can leave the bar at 0% when there are no stills). |
-| **No-media / empty swatch** | Early-return when there are no images **without** retitling to “Analysing swatch”; finish the extract URL with `markProcessAsFinished` so the bar reads **“Extract done”**. |
+| **Progress phases** | Do **not** `ProgressViewModel.reset()` when entering swatch. Call `await applyTaskAppearance` **only inside** `ColorPaletteRenderer` after image checks pass (MainActor). On skip: `markProcessAsFinished` → **“Extract done”**. On render: `markAllProcessesFinished`. |
+| **No-media / empty swatch** | `ColorPaletteRenderer.render` returns `false` without retitling; finish the extract URL with `markProcessAsFinished` so the bar never shows **“Analysing swatch done”**. |
 | **Install location** | Keep the `/Applications` warning; Workflow Extension opens `/Applications/Marker Data.app`. |
 | **Uninstaller** | If the app gains new on-disk paths, update `MarkerDataUninstaller.run()` cleanup list. |
 | **Architecture** | Prefer Apple Silicon (`arm64`) only; CI uses `macos-26` + **Xcode 26.6.0**. |
@@ -58,16 +66,17 @@ Shared component: `Views/Components/DropTargetOverlay.swift` (main app + Workflo
 ## Signs (learned pitfalls)
 
 1. **`extract_info.json` stores absolute `jsonURL`.** After the user moves/copies an export folder, uploading the sidecar path fails (`FileNotFoundError`). Always resolve with `manifestURL`.
-2. **Progress `reset()` before swatch** clears processes and can leave 0% when Skip Image Generation / empty image sets skip render — use `applyTaskAppearance` only when swatch work actually runs, then `markAllProcessesFinished`. If swatch is skipped, keep **“Extract done”** via `markProcessAsFinished`.
-3. **Ignore late KVO** after a process is marked finished (`ProgressViewModel.updateProgress`) or the bar can bounce backward.
-4. **FCP timeline → Dock** often cannot deliver a file URL (pasteboard-only). Supported paths: drop on Extract panel, open `.fcpxml`/`.fcpxmld` via Dock/Finder Open With, Workflow Extension / Share Destination handoffs.
-5. **Temporary FCP pasteboard XML** is written under `~/Movies/Marker Data Cache/` (`FCPXMLIntake.writeTemporaryFCPXML`) — Marker Data convention, not App Support Cache.
-6. **Workflow Extension accent:** `Color.accentColor` / `.accent` inside the appex often resolves to Final Cut Pro’s blue. Shared chrome (e.g. `DropTargetOverlay` border) must use `Color.markerAccent` (system indigo, matching Assets `AccentColor`). Extension Compile Sources must still include `DropTargetOverlay` + `ColorExtension`.
-7. **Workflow Extension Extract vs Roles:** Extract handoff lives in `WorkflowExtensionView` (`.onDrop([.fcpxml])`); Roles uses shared `RolesSettingsView` / `RolesManager` `DropDelegate`. Both show overlays — do not assume only Roles has one.
-8. **Icon Composer** Dock asset (`Marker-Data.icon`) often yields a blank `.alert` glyph — PNG via `.appDialogIcon()` is mandatory.
-9. **Dual Sparkle controllers** (`Marker_DataApp` + `ApplicationDelegate`) — don’t “simplify” without understanding `.updateAvailable` / `bestValidUpdate`.
-10. **`OpenEventHandler`** must re-register on `.FCPShareStart`; keep registration on the main queue.
-11. **Failed Tasks table** (`FailedExtractionsView`): one-line truncate + `.help()` tooltips; min frame ~640×240.
+2. **Progress `reset()` before swatch** clears processes and can leave 0% — never reset when entering swatch. Retitle with `await applyTaskAppearance` only after `ColorPaletteRenderer` confirms images (returns `true`); then `markAllProcessesFinished`. If render returns `false`, keep **“Extract done”** via `markProcessAsFinished` (avoids **“Analysing swatch done”** with no stills).
+3. **`applyTaskAppearance` is `@MainActor`.** From `ColorPaletteRenderer` (nonisolated), call `await progress.applyTaskAppearance(...)` — a bare call fails isolation.
+4. **Ignore late KVO** after a process is marked finished (`ProgressViewModel.updateProgress`) or the bar can bounce backward.
+5. **FCP timeline → Dock** often cannot deliver a file URL (pasteboard-only). Supported paths: drop on Extract panel, open `.fcpxml`/`.fcpxmld` via Dock/Finder Open With, Workflow Extension / Share Destination handoffs.
+6. **Temporary FCP pasteboard XML** is written under `~/Movies/Marker Data Cache/` (`FCPXMLIntake.writeTemporaryFCPXML`) — Marker Data convention, not App Support Cache.
+7. **Workflow Extension accent:** `Color.accentColor` / `.accent` inside the appex often resolves to Final Cut Pro’s blue. Shared chrome (e.g. `DropTargetOverlay` border) must use `Color.markerAccent` (system indigo, matching Assets `AccentColor`). Extension Compile Sources must still include `DropTargetOverlay` + `ColorExtension`.
+8. **Workflow Extension Extract vs Roles:** Extract handoff lives in `WorkflowExtensionView` (`.onDrop([.fcpxml])`); Roles uses shared `RolesSettingsView` / `RolesManager` `DropDelegate`. Both show overlays — do not assume only Roles has one.
+9. **Icon Composer** Dock asset (`Marker-Data.icon`) often yields a blank `.alert` glyph — PNG via `.appDialogIcon()` is mandatory.
+10. **Dual Sparkle controllers** (`Marker_DataApp` + `ApplicationDelegate`) — don’t “simplify” without understanding `.updateAvailable` / `bestValidUpdate`.
+11. **`OpenEventHandler`** must re-register on `.FCPShareStart`; keep registration on the main queue.
+12. **Failed Tasks table** (`FailedExtractionsView`): one-line truncate + `.help()` tooltips; min frame ~640×240.
 
 ---
 
@@ -78,6 +87,7 @@ Shared component: `Views/Components/DropTargetOverlay.swift` (main app + Workflo
 - [ ] Extract accepts `.fcpxml` / `.fcpxmld`, FCP pasteboard drop, and text clippings via `FCPXMLIntake`.
 - [ ] Drop overlays appear on main-app Extract / Roles / Queue **and** Workflow Extension Extract + Roles with the copy above.
 - [ ] Queue finds `extract_info.json` folders and uploads via `manifestURL` (relocated folders work).
+- [ ] No-media / skipped swatch finishes as **“Extract done”** (not **“Analysing swatch done”**); `ColorPaletteRenderer.render` → `Bool` drives finish path.
 - [ ] New alerts use `.appDialogIcon()`.
 - [ ] Settings changes include version + migration + UI + export bridge when required.
 - [ ] New on-disk paths are reflected in the Uninstaller.
