@@ -12,9 +12,9 @@
 - Improved Failed Extractions window readability with truncated paths and hover tooltips
 
 **🐞 Bug Fix:**
-- Fixed an issue where Queue uploads failed after moving or copying Notion/Airtable extract folders to another location
-- Fixed an issue where the progress bar could reset or stall at 0% when extracting without stills or color swatches
-- Fixed an issue where the progress bar showed “Analysing swatch done” when Color Swatch was enabled but no images were extracted
+- Fixed an issue where Queue uploads failed after moving or copying Notion or Airtable extract folders to another location
+- Fixed an issue where the progress bar could reset or stall at 0% when extracting without stills or colour swatches
+- Fixed an issue where the progress bar showed “Analysing swatch done” when Colour Swatch was enabled but no images were extracted
 
 ---
 
