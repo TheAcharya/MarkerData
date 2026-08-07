@@ -5,7 +5,7 @@ This repository contains **Marker Data**, a macOS Swift/SwiftUI app that extract
 
 This `AGENT.md` is guidance for humans and AI agents working in this repo: how to build, where to look, what to avoid, and how changes should be made.
 
-For deeper module/data-flow detail, see **`ARCHITECTURE.md`**. For short agent guardrails, see **`.cursorrules`**.
+For deeper module/data-flow detail, see **`ARCHITECTURE.md`**. For hard always/never constraints and learned pitfalls, see **`GUARDRAILS.md`**. For short Cursor enforcement, see **`.cursorrules`**. Keep all four consistent when architecture or agent guidance changes.
 
 ## What you’re working on
 
@@ -33,8 +33,15 @@ For deeper module/data-flow detail, see **`ARCHITECTURE.md`**. For short agent g
 | Extract UI | `Source/Marker Data/Marker Data/Views/Main/ExtractView.swift` |
 | Extraction orchestration | `Source/Marker Data/Marker Data/Models/Extract/Extraction Model/ExtractionModel.swift` |
 | External handoffs (open / Workflow Extension) | `.../ExtractionModel_EventHandlers.swift` |
-| Queue scan/upload | `Source/Marker Data/Marker Data/Models/Queue/QueueModel.swift` |
-| Database uploads | `Source/Marker Data/Marker Data/Models/Extract/DatabaseUploader.swift` |
+| FCPXML intake (files / pasteboard / textClipping) | `Utilities/Other/FCPXMLIntake.swift`, `TextClippingReader.swift` |
+| Extract drop modifier | `Views/Components/FCPXMLDropModifier.swift` (`.fcpxmlDropDestination`) |
+| Drop overlay (Extract / Roles / Queue) | `Views/Components/DropTargetOverlay.swift` |
+| Queue UI | `Views/Detail Views/QueueView.swift` |
+| Queue scan/upload | `Models/Queue/QueueModel.swift` |
+| Queue row + local-first manifest | `Models/Queue/QueueInstance.swift` (`manifestURL`) |
+| Database uploads | `Models/Extract/DatabaseUploader.swift` |
+| Progress aggregation | `Models/Extract/ProgressViewModel.swift` (`applyTaskAppearance`, `markAllProcessesFinished`) |
+| Failed Tasks window | `Views/Other/FailedExtractionsView.swift` |
 | Settings schema | `Source/Marker Data/Marker Data/Models/Settings/SettingsStore.swift` (`static let version` — currently **8**) |
 | Settings container / configs | `Source/Marker Data/Marker Data/Models/Settings/SettingsContainer.swift` |
 | Settings migrations | `Source/Marker Data/Marker Data/Models/Settings/SettingsVersioningManager.swift` |
@@ -165,12 +172,38 @@ Also: getter for `colorSwatchSettings` **forces `enableSwatch = false` when extr
 ### FCP integrations
 - Share Destination: `Resources/OSAScriptingDefinition.sdef` + Obj‑C under `FCP Share Destination/Objective-C Code/` + Swift `OpenEventHandler`.
 - Workflow Extension: DistributedNotificationCenter names + fixed Movies-cache FCPXML path; roles via `preferences.json`.
+- Extract panel intake: `FCPXMLIntake` / `FCPXMLDropModifier` — keep Dock Open With (`OpenEventHandler`) and Share Destination paths distinct.
+
+### Drop overlay / shared Roles UI
+- Update copy in **`GUARDRAILS.md`** (Drop overlay copy table) when changing messages.
+- If Roles overlay types change, ensure Workflow Extension Compile Sources still include them (`DropTargetOverlay`, `ColorExtension`).
 
 ### Uninstaller cleanup paths
 - If the app/extension gains new Application Support, cache, container, or preferences paths, update `MarkerDataUninstaller.run()` path list to match.
 
 ### Release metadata
 - `project.pbxproj` versions, `CHANGELOG.md`, `Distribution/version.txt`, website notes (`CONTRIBUTING.md`).
+
+### Agent documentation
+- Keep `AGENT.md`, `ARCHITECTURE.md`, `GUARDRAILS.md`, and `.cursorrules` aligned when flows, paths, or invariants change.
+
+## Extract / Roles / Queue drop surfaces
+
+| Surface | Intake | Overlay |
+|---------|--------|---------|
+| **Extract** | `.fcpxmlDropDestination` → `ExtractionModel.receiveItemProviders` → `FCPXMLIntake` (FCP pasteboard, `.fcpxml`/`.fcpxmld`, `.textClipping`). Dock/Finder Open With still via `OpenEventHandler` → `.openFile`. | `DropTargetOverlay()` defaults + hero caption *“Drop a timeline from Final Cut Pro, or an .fcpxml / .fcpxmld file”* |
+| **Roles** (app + Workflow Extension) | `RolesManager` `DropDelegate` (`.fcpxml` / file URL); `isDropTargeted` from `dropEntered` / `dropExited` | `DropTargetOverlay(message: "Drop to Retrieve Roles Metadata", subtitle: nil)` |
+| **Queue** | `.dropDestination(for: URL.self)` → `QueueModel.performDrop` (directories only; clears queue; scans for `extract_info.json`; disables auto-scan) | `DropTargetOverlay(message: "Drop Extract Folders (Notion or Airtable) into Queue", subtitle: nil, systemImage: "folder.fill")`; hidden while uploading |
+
+**Queue manifest resolution:** `QueueInstance.manifestURL` prefers `{folder}/{json basename}` when that file exists (moved/copied exports), else falls back to absolute `ExtractInfo.jsonURL`. Uploads and `filterMissing()` must use `manifestURL`, not the sidecar path alone.
+
+**Progress across extract → swatch:** use `applyTaskAppearance` (do not `reset()` before swatch). Empty image sets: early-return in renderers + `markAllProcessesFinished()`. Ignore late KVO after a process is finished.
+
+**Temporary pasteboard FCPXML:** `FCPXMLIntake.writeTemporaryFCPXML` → `~/Movies/Marker Data Cache/`.
+
+**Workflow Extension:** shares `RolesSettingsView` / `RolesManager` / `DropTargetOverlay` / `ColorExtension`. Add shared UI types to the extension target’s Compile Sources. Prefer `Color.accentColor` in shared views (extension SDK may lack `Color.accent`).
+
+Exact overlay strings and always/never rules: **`GUARDRAILS.md`**.
 
 ## Notification & handoff cheat sheet
 
@@ -192,14 +225,19 @@ Also: getter for `colorSwatchSettings` **forces `enableSwatch = false` when extr
 - **Install location:** app warns if not under `/Applications` (`ContentView`); Workflow Extension opens that path — do not remove the check.
 - **Opaque helpers:** only the CLI args in `DatabaseUploader` / `DropboxSetupModel` are the contract.
 - **Queue scope:** `extract_info.json` is written only when the export profile is Notion/Airtable **and** a JSON manifest path exists. Queue will not list pure CSV/XLSX/etc. extract folders.
+- **Queue relocated folders:** never upload only `ExtractInfo.jsonURL` — use `manifestURL` (see Signs in `GUARDRAILS.md`).
+- **Progress `reset()` before swatch:** can leave the bar at 0% when there are no stills — use `applyTaskAppearance`.
+- **FCP timeline → Dock:** often pasteboard-only; Extract panel drop is the supported UI path for timelines.
 - **Alert icons:** chain `.appDialogIcon()` after every `.alert`.
 - **Dual Sparkle controllers:** both `Marker_DataApp` and `ApplicationDelegate` construct `SPUStandardUpdaterController`; update-available UI relies on `ApplicationDelegate.bestValidUpdate(...)` posting `.updateAvailable`. Don’t “simplify” without understanding that path.
 - **`OpenEventHandler`:** must re-register on `.FCPShareStart`; registration should stay on the main queue (see comments in that file).
 
 ## Definition of done for most changes
-- App builds (Debug + Release) for **arm64**.
+- App builds (Debug + Release) for **arm64** (Workflow Extension still embeds).
 - Settings still load and migrate cleanly (`preferences.json` + `Configurations/*.json`).
-- Extraction works for `.fcpxml` and `.fcpxmld`.
-- Queue scan/upload still works for folders containing `extract_info.json`.
+- Extraction works for `.fcpxml` and `.fcpxmld`, including FCP pasteboard / textClipping intake via `FCPXMLIntake`.
+- Drop overlays still work on Extract, Roles (app + extension), and Queue.
+- Queue scan/upload still works for folders containing `extract_info.json`, including **moved/copied** folders (`manifestURL`).
 - Any new `.alert` uses `.appDialogIcon()`.
 - If settings changed: version bumped + migration case + UI wired + export bridge if needed.
+- If behavior/architecture changed: update `AGENT.md`, `ARCHITECTURE.md`, `GUARDRAILS.md`, and `.cursorrules`.

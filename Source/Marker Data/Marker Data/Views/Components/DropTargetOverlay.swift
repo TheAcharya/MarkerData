@@ -5,7 +5,7 @@
 //  Created by Vigneswaran Rajkumar
 //
 //
-//  Visual overlay shown while dragging a supported drop over Extract or Roles.
+//  Visual overlay shown while dragging a supported drop over Extract, Roles, or Queue.
 //
 
 import SwiftUI
