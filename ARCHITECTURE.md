@@ -30,6 +30,7 @@
 - [Color swatch pipeline](#color-swatch-pipeline)
 - [Database profiles](#database-profiles)
 - [UI architecture](#ui-architecture)
+- [App icon and dialogs](#app-icon-and-dialogs)
 - [Notifications (full list)](#notifications-full-list)
 - [Entitlements / security model](#entitlements--security-model)
 - [Build, packaging, updates](#build-packaging-updates)
@@ -43,7 +44,7 @@
 ## Overview
 **Marker Data** is a macOS SwiftUI application that extracts Final Cut Pro marker metadata and generates export artifacts (CSV/TSV/XLSX/MIDI/Markdown/SRT/YouTube/Compressor, plus Notion/Airtable JSON). It can optionally:
 
-- Render stills / GIFs for markers (via **`MarkersExtractor`**, SPM ≥ **0.4.6**)
+- Render stills / GIFs for markers (via **`MarkersExtractor`**, SPM ≥ **0.4.8**)
 - Compute and render dominant color swatches/palettes into images (`DominantColors` + app-side merge)
 - Upload extracted JSON manifests to Notion/Airtable using bundled CLI tools (`csv2notion_neo`, `airlift`)
 
@@ -84,7 +85,9 @@ Primary responsibilities:
 Responsibilities:
 - SwiftUI UI inside `WorkflowExtensionViewController` (`NSHostingView`)
 - Extract tab: drag/drop `.fcpxml` + `DropTargetOverlay` (“Drop to Open Marker Data”) → write Movies-cache handoff file → open main app → DistributedNotification
+- Header: `MarkerDataAppIcon.image()` at 100×100 from the containing `Marker Data.app` (`DialogIcon.swift`); bundle/plugin icon remains `Assets.xcassets/AppIcon.appiconset`
 - Roles tab sharing `RolesSettingsView` / `RolesManager` / `DropTargetOverlay` / `ColorExtension` with the main app (same prefs file)
+- Shared Compile Sources also include `DialogIcon.swift`, `HelpButton`, `OverlayHelpButton`; Extract/Roles `TabView` uses `.padding(.bottom, 40)` so the drop zone stays above the help “?”
 
 ### Uninstaller target (`Uninstall Marker Data`)
 **Location:** `Source/Marker Data/Marker Data Uninstaller/`  
@@ -403,7 +406,7 @@ Dropbox auth for Airtable: `DropboxSetupModel` writes a temp `.command` that run
 
 App: `ExtractionModel_EventHandlers.handleWorkflowExtensionEvent` reads the fixed path; starts extraction or sets external-file gate. `SidebarSelectionSwitcher` selects Extract.
 
-Roles tab: same `RolesSettingsView` + `DropTargetOverlay` as the main app (extension Compile Sources must include overlay + `ColorExtension`). Overlay borders use `Color.markerAccent` so FCP’s host accent does not turn them blue.
+Roles tab: same `RolesSettingsView` + `DropTargetOverlay` as the main app (extension Compile Sources must include overlay + `ColorExtension` + `DialogIcon.swift` + `HelpButton` / `OverlayHelpButton`). Overlay borders use `Color.markerAccent` so FCP’s host accent does not turn them blue. Header icon comes from the containing `Marker Data.app`, not the appex `AppIcon.appiconset`.
 
 ### 5) Share Destination handoff
 
@@ -477,8 +480,8 @@ Notable modules under `Views/`:
 | Detail | General (File/Roles/Notifications/Updates), Image, Label, Configurations, Databases, Queue (folder drop overlay), About |
 | Menu commands | App / File / Edit / Sidebar / Configuration / Help |
 | Onboarding | `@AppStorage("showOnboarding")` sheet |
-| Components | `DropTargetOverlay` (main app + WE), `FCPXMLDropModifier`, shared controls |
-| Extensions | **`MarkerDataAppIcon` / `.appDialogIcon()`** (`DialogIcon.swift`) — About, Workflow Extension header, alerts from compiled `Marker-Data.icon` |
+| Components | `DropTargetOverlay` (main app + WE), `FCPXMLDropModifier`, `HelpButton` / `OverlayHelpButton`, shared controls |
+| Extensions | **`MarkerDataAppIcon` / `.appDialogIcon()`** (`DialogIcon.swift`, `@MainActor`) — About, Workflow Extension header, alerts; see **App icon and dialogs** |
 | Other | `FailedExtractionsView` (truncate + `.help()` tooltips; min ~640×240) |
 | Pagemaker | `PagemakerView` WebView + `PagemakerPDFExportHandler` (JS → Swift PDF via `NSSavePanel`) |
 
@@ -514,6 +517,10 @@ flowchart TB
   WRO --> RM
   QU --> QM[QueueModel.performDrop]
   WEX --> HO[Movies cache + open app + DNC]
+  ICON[MarkerDataAppIcon]
+  WEX --> ICON
+  AV[AboutView]
+  AV --> ICON
 ```
 
 ```mermaid
@@ -528,6 +535,50 @@ flowchart LR
   Drop --> Overlay
   Drop --> Cache --> App --> DNC --> EM
 ```
+
+---
+
+## App icon and dialogs
+
+Shared resolution in `Views/Extensions/DialogIcon.swift` (`@MainActor` `MarkerDataAppIcon` + `.appDialogIcon()`). Marker Data does **not** enable `SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor` (unlike Production Data), so the enum and `.appDialogIcon()` must be isolated or Swift 6 warns on `NSApplication.shared.applicationIconImage`.
+
+**No SF Symbol fallback. Do not flatten the Icon Composer layer PNG into `AppIconSingle`.**
+
+```mermaid
+flowchart TB
+  DOC["Marker-Data.icon<br/>Icon Composer"]
+  CAT["Main-app empty AppIcon.appiconset<br/>catalog placeholder"]
+  APPEX["WE AppIcon.appiconset<br/>bundle / plugin icon only"]
+  MD["MarkerDataAppIcon.displayIcon"]
+  ABOUT["AboutView 200×200"]
+  WEH["WE header 100×100"]
+  ALERTS[".appDialogIcon"]
+
+  DOC --> MD
+  CAT -.->|not artwork source| MD
+  APPEX -.->|do not use for header| MD
+  MD --> ABOUT
+  MD --> WEH
+  MD --> ALERTS
+```
+
+**Resolution:**
+
+| Context | Source |
+|---------|--------|
+| Main app | `NSImage(named: "Marker-Data")`, else `NSApplication.shared.applicationIconImage` |
+| Workflow Extension (`.appex`) | Containing `Marker Data.app`: walk `appex` → `PlugIns` → `Contents` → `.app`, then `Bundle.image(forResource: "Marker-Data")` or `NSWorkspace.icon(forFile:)`. Never the appex `applicationIconImage`. |
+
+| Surface | Wiring |
+|---------|--------|
+| Dock | `ASSETCATALOG_COMPILER_APPICON_NAME` = Marker-Data (`Marker-Data.icon`, not inside `Assets.xcassets`) |
+| About | `MarkerDataAppIcon.image()` — size **200×200** only in `AboutView` |
+| Workflow Extension header | `MarkerDataAppIcon.image()` — **100×100** in `WorkflowExtensionView` |
+| Alerts / confirmations | `.appDialogIcon()` after every `.alert` |
+
+**`.alert` call sites (all must chain `.appDialogIcon()`):** `Marker_DataApp`, `ContentView`, `ExtractView` (×2), `ConfigurationSettingsView`, `DatabaseSettingsView` (×2), `CreateDBProfileSheet`, `DropboxSetupView`, `InstallShareDestinationView`.
+
+`Marker-Data.icon` lives in `Source/Marker Data/Marker Data/` beside the catalog. Workflow Extension `ASSETCATALOG_COMPILER_APPICON_NAME` remains **AppIcon** (existing PNG `AppIcon.appiconset`) until that plugin icon is updated separately.
 
 ---
 
@@ -608,8 +659,8 @@ Source/Marker Data/Marker Data/
     Other/             # MainViews, WindowSize, UnifiedExportProfile
   Views/
     Main/, Detail Views/, Menu Bar Commands/,
-    Components/        # DropTargetOverlay, FCPXMLDropModifier, …
-    Extensions/        # DialogIcon (MarkerDataAppIcon + .appDialogIcon)
+    Components/        # DropTargetOverlay, FCPXMLDropModifier, HelpButton, OverlayHelpButton, …
+    Extensions/        # DialogIcon (@MainActor MarkerDataAppIcon + .appDialogIcon)
     Onboarding/, Other/  # FailedExtractionsView, …
   FCP Share Destination/
     Install View/, Objective-C Code/, OpenEventHandler (Swift)
@@ -621,15 +672,16 @@ Source/Marker Data/Marker Data/
   Resources/
     airlift, csv2notion_neo, OSAScriptingDefinition.sdef,
     *.fcpxdest, Pagemaker.html, entitlements, DefaultConfiguration.json
-  Marker-Data.icon                     # Icon Composer Liquid Glass (ASSETCATALOG_COMPILER_APPICON_NAME)
+  Marker-Data.icon                     # Icon Composer Liquid Glass (ASSETCATALOG_COMPILER_APPICON_NAME = Marker-Data)
   Assets.xcassets/                     # empty AppIcon.appiconset placeholder; no AppIconSingle
 
 Source/Marker Data/Workflow Extension/
-  WorkflowExtensionView.swift          # Extract overlay + handoff; MarkerDataAppIcon header; hosts RolesSettingsView
+  WorkflowExtensionView.swift          # Extract overlay + handoff; MarkerDataAppIcon header 100×100; hosts RolesSettingsView; TabView .padding(.bottom, 40) for help
   WorkflowExtensionViewController.swift
   Assets.xcassets/, Info.plist, entitlements, bridging header
   # Bundle/plugin icon remains AppIcon.appiconset (do not replace with Marker-Data.icon)
   # Header UI loads the containing Marker Data.app icon via DialogIcon.swift
+  # Compile Sources also: DropTargetOverlay, ColorExtension, DialogIcon, HelpButton, OverlayHelpButton, Roles*
 ```
 
 ---
@@ -646,7 +698,7 @@ Source/Marker Data/Workflow Extension/
 8. Extract → swatch: never `reset()`. `ColorPaletteRenderer.render -> Bool`; retitle only via `await applyTaskAppearance` after images exist; skip → `markProcessAsFinished` (“Extract done”); success → `markAllProcessesFinished`.
 9. CLI progress and success depend on binary stdout contracts (`NN%`, exit codes).
 10. Share Destination and Workflow Extension both assume `/Applications` install.
-11. Alert / About / Workflow Extension **header** UI must use `MarkerDataAppIcon` / `.appDialogIcon()` from compiled Icon Composer `Marker-Data.icon`. Do not flatten the layer PNG into `AppIconSingle`. Main-app `AppIcon.appiconset` is a catalog placeholder only. Do **not** replace the Workflow Extension’s bundle/plugin `AppIcon.appiconset`. In the extension header, load the icon from the containing `Marker Data.app` (appex `applicationIconImage` is the extension catalog or Final Cut Pro).
+11. Alert / About / Workflow Extension **header** UI must use `@MainActor` `MarkerDataAppIcon` / `.appDialogIcon()` from compiled Icon Composer `Marker-Data.icon`. Do not flatten the layer PNG into `AppIconSingle`. Main-app `AppIcon.appiconset` is a catalog placeholder only. Do **not** replace the Workflow Extension’s bundle/plugin `AppIcon.appiconset`. In the extension header, load the icon from the containing `Marker Data.app` (`appex` → `PlugIns` → `Contents` → `.app`); appex `applicationIconImage` is the extension catalog or Final Cut Pro.
 12. Preserve `plaform` spelling when touching database models unless intentionally migrating.
 13. FCPXML pasteboard/clipping temps live under `~/Movies/Marker Data Cache/` (not App Support).
 14. Definition of done: arm64 Debug+Release build; settings migrate; `.fcpxml`/`.fcpxmld` + pasteboard intake; WE Extract + Roles overlays; queue finds/uploads via `manifestURL`; agent docs (`AGENT.md` / `ARCHITECTURE.md` / `GUARDRAILS.md` / `.cursorrules`) stay aligned.
