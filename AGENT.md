@@ -216,7 +216,7 @@ Also: getter for `colorSwatchSettings` **forces `enableSwatch = false` when extr
 
 ### App icon / dialogs
 - Icon Composer **`Marker-Data.icon`** (`ASSETCATALOG_COMPILER_APPICON_NAME` = Marker-Data) lives beside the catalog — **not** inside `Assets.xcassets`. Main-app `AppIcon.appiconset` is an empty placeholder. Never flatten the layer PNG into `AppIconSingle`.
-- About (200×200) and alerts use `MarkerDataAppIcon` / `.appDialogIcon()`. Workflow Extension **header** (100×100) uses the same `MarkerDataAppIcon` (named `Marker-Data` asset — host `applicationIconImage` is Final Cut Pro). Do **not** change the Workflow Extension’s bundle/plugin icon (`ASSETCATALOG_COMPILER_APPICON_NAME` = AppIcon, existing `AppIcon.appiconset`).
+- About (200×200) and alerts use `MarkerDataAppIcon` / `.appDialogIcon()` from this app’s named `Marker-Data` asset. Workflow Extension **header** (100×100) loads the icon from the containing `Marker Data.app` — the appex’s `applicationIconImage` is its own `AppIcon.appiconset` (or Final Cut Pro). Do **not** change the Workflow Extension’s bundle/plugin icon (`ASSETCATALOG_COMPILER_APPICON_NAME` = AppIcon, existing `AppIcon.appiconset`).
 - Workflow Extension Compile Sources must include `DialogIcon.swift` (header UI only).
 
 ### Uninstaller cleanup paths

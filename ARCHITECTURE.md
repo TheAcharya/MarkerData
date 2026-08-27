@@ -629,7 +629,7 @@ Source/Marker Data/Workflow Extension/
   WorkflowExtensionViewController.swift
   Assets.xcassets/, Info.plist, entitlements, bridging header
   # Bundle/plugin icon remains AppIcon.appiconset (do not replace with Marker-Data.icon)
-  # Header UI shares Marker-Data.icon via DialogIcon.swift (named Marker-Data; not host applicationIconImage)
+  # Header UI loads the containing Marker Data.app icon via DialogIcon.swift
 ```
 
 ---
@@ -646,7 +646,7 @@ Source/Marker Data/Workflow Extension/
 8. Extract → swatch: never `reset()`. `ColorPaletteRenderer.render -> Bool`; retitle only via `await applyTaskAppearance` after images exist; skip → `markProcessAsFinished` (“Extract done”); success → `markAllProcessesFinished`.
 9. CLI progress and success depend on binary stdout contracts (`NN%`, exit codes).
 10. Share Destination and Workflow Extension both assume `/Applications` install.
-11. Alert / About / Workflow Extension **header** UI must use `MarkerDataAppIcon` / `.appDialogIcon()` from compiled Icon Composer `Marker-Data.icon`. Do not flatten the layer PNG into `AppIconSingle`. Main-app `AppIcon.appiconset` is a catalog placeholder only. Do **not** replace the Workflow Extension’s bundle/plugin `AppIcon.appiconset`. In the extension header, load the named `Marker-Data` asset (host `applicationIconImage` is Final Cut Pro).
+11. Alert / About / Workflow Extension **header** UI must use `MarkerDataAppIcon` / `.appDialogIcon()` from compiled Icon Composer `Marker-Data.icon`. Do not flatten the layer PNG into `AppIconSingle`. Main-app `AppIcon.appiconset` is a catalog placeholder only. Do **not** replace the Workflow Extension’s bundle/plugin `AppIcon.appiconset`. In the extension header, load the icon from the containing `Marker Data.app` (appex `applicationIconImage` is the extension catalog or Final Cut Pro).
 12. Preserve `plaform` spelling when touching database models unless intentionally migrating.
 13. FCPXML pasteboard/clipping temps live under `~/Movies/Marker Data Cache/` (not App Support).
 14. Definition of done: arm64 Debug+Release build; settings migrate; `.fcpxml`/`.fcpxmld` + pasteboard intake; WE Extract + Roles overlays; queue finds/uploads via `manifestURL`; agent docs (`AGENT.md` / `ARCHITECTURE.md` / `GUARDRAILS.md` / `.cursorrules`) stay aligned.
