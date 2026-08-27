@@ -30,9 +30,8 @@ struct WorkflowExtensionView: View {
                         .padding(8)
                 }
             }
-            .padding(.bottom)
-            
-            Spacer()
+            // Keep the drop zone above the overlaid help control
+            .padding(.bottom, 40)
         }
         .frame(width: 600, height: 400)
         .padding()
@@ -41,8 +40,7 @@ struct WorkflowExtensionView: View {
     
     private var titleHeaderView: some View {
         HStack {
-            Image("AppIconSingle")
-                .resizable()
+            MarkerDataAppIcon.image()
                 .frame(width: 100, height: 100)
                 .padding(.trailing, 8)
             

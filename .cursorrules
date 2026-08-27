@@ -43,7 +43,7 @@ Keep these four files consistent when architecture or agent guidance changes.
 - **Extract:** `ExtractionModel` → MarkersExtractor → optional `ColorPaletteRenderer.render(...) -> Bool` (`await applyTaskAppearance` only after image checks inside renderer; `false` → `markProcessAsFinished` / “Extract done”; `true` → `markAllProcessesFinished`; never `reset()` before swatch) → optional `DatabaseUploader`
 - **Drop overlays:** shared `DropTargetOverlay` on main-app Extract / Roles / Queue **and** Workflow Extension Extract + Roles — exact copy in **GUARDRAILS.md**; border uses `Color.markerAccent` (not host `accentColor`)
 - **Queue:** scans for `extract_info.json` (Notion/Airtable + JSON manifest only) → upload via `QueueInstance.manifestURL` (local JSON beside folder preferred) → parallel re-upload; folder drop clears queue and disables auto-scan
-- **Workflow Extension:** Extract tab drops `.fcpxml` → Movies-cache handoff → open `/Applications/Marker Data.app` → DistributedNotification `.workflowExtensionFileReceived`; both Extract and Roles show `DropTargetOverlay` (`WorkflowExtensionView` + shared `RolesSettingsView`). Extension Compile Sources must include `DropTargetOverlay` + `ColorExtension` (+ shared Roles sources)
+- **Workflow Extension:** Extract tab drops `.fcpxml` → Movies-cache handoff → open `/Applications/Marker Data.app` → DistributedNotification `.workflowExtensionFileReceived`; both Extract and Roles show `DropTargetOverlay` (`WorkflowExtensionView` + shared `RolesSettingsView`). Extension Compile Sources must include `DropTargetOverlay` + `ColorExtension` + `DialogIcon.swift` (+ shared Roles sources)
 - **Share Destination:** `OSAScriptingDefinition.sdef` + Obj‑C `MakeCommand` → Movies cache → local `FCPShareStart` → Apple Event open → `.openFile`
 
 ## Pitfalls to avoid
@@ -51,7 +51,7 @@ Keep these four files consistent when architecture or agent guidance changes.
 - Do not assume behavior of `airlift` / `csv2notion_neo` beyond CLI usage in `DatabaseUploader` (and Dropbox setup in `DropboxSetupModel`).
 - Do not break Share Destination scripting (`Resources/OSAScriptingDefinition.sdef` + Obj‑C) or Workflow Extension disk/DNC contracts.
 - The app warns if not run from `/Applications`; do not remove that check (extension opens that path).
-- SwiftUI `.alert` icons: Dock uses Icon Composer (`Marker-Data.icon`), which often yields a blank document glyph. After every `.alert`, chain `.appDialogIcon()` (`Views/Extensions/DialogIcon.swift` → PNG `AppIconSingle`).
+- SwiftUI `.alert` icons: Dock, About, Workflow Extension header, and alerts use Icon Composer `Marker-Data.icon` via `MarkerDataAppIcon` / `.appDialogIcon()` (`DialogIcon.swift`). Do not flatten the layer PNG into `AppIconSingle`. After every `.alert`, chain `.appDialogIcon()`.
 - Database models use property name `plaform` — keep consistent unless intentionally migrating.
 - If adding new on-disk paths the app uses, update `MarkerDataUninstaller` cleanup paths too.
 - Do not upload Queue jobs using only absolute `ExtractInfo.jsonURL` when a same-named JSON exists in the dropped/scanned folder — use `manifestURL`.

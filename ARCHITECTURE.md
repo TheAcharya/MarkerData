@@ -478,7 +478,7 @@ Notable modules under `Views/`:
 | Menu commands | App / File / Edit / Sidebar / Configuration / Help |
 | Onboarding | `@AppStorage("showOnboarding")` sheet |
 | Components | `DropTargetOverlay` (main app + WE), `FCPXMLDropModifier`, shared controls |
-| Extensions | **`DialogIcon.appDialogIcon()`** for alerts |
+| Extensions | **`MarkerDataAppIcon` / `.appDialogIcon()`** (`DialogIcon.swift`) — About, Workflow Extension header, alerts from compiled `Marker-Data.icon` |
 | Other | `FailedExtractionsView` (truncate + `.help()` tooltips; min ~640×240) |
 | Pagemaker | `PagemakerView` WebView + `PagemakerPDFExportHandler` (JS → Swift PDF via `NSSavePanel`) |
 
@@ -609,7 +609,7 @@ Source/Marker Data/Marker Data/
   Views/
     Main/, Detail Views/, Menu Bar Commands/,
     Components/        # DropTargetOverlay, FCPXMLDropModifier, …
-    Extensions/        # DialogIcon
+    Extensions/        # DialogIcon (MarkerDataAppIcon + .appDialogIcon)
     Onboarding/, Other/  # FailedExtractionsView, …
   FCP Share Destination/
     Install View/, Objective-C Code/, OpenEventHandler (Swift)
@@ -621,11 +621,15 @@ Source/Marker Data/Marker Data/
   Resources/
     airlift, csv2notion_neo, OSAScriptingDefinition.sdef,
     *.fcpxdest, Pagemaker.html, entitlements, DefaultConfiguration.json
+  Marker-Data.icon                     # Icon Composer Liquid Glass (ASSETCATALOG_COMPILER_APPICON_NAME)
+  Assets.xcassets/                     # empty AppIcon.appiconset placeholder; no AppIconSingle
 
 Source/Marker Data/Workflow Extension/
-  WorkflowExtensionView.swift          # Extract overlay + handoff; hosts RolesSettingsView
+  WorkflowExtensionView.swift          # Extract overlay + handoff; MarkerDataAppIcon header; hosts RolesSettingsView
   WorkflowExtensionViewController.swift
   Assets.xcassets/, Info.plist, entitlements, bridging header
+  # Bundle/plugin icon remains AppIcon.appiconset (do not replace with Marker-Data.icon)
+  # Header UI shares Marker-Data.icon via DialogIcon.swift (named Marker-Data; not host applicationIconImage)
 ```
 
 ---
@@ -642,7 +646,7 @@ Source/Marker Data/Workflow Extension/
 8. Extract → swatch: never `reset()`. `ColorPaletteRenderer.render -> Bool`; retitle only via `await applyTaskAppearance` after images exist; skip → `markProcessAsFinished` (“Extract done”); success → `markAllProcessesFinished`.
 9. CLI progress and success depend on binary stdout contracts (`NN%`, exit codes).
 10. Share Destination and Workflow Extension both assume `/Applications` install.
-11. Alert UI must use PNG `AppIconSingle` via `.appDialogIcon()` (Icon Composer dock asset is unreliable in dialogs).
+11. Alert / About / Workflow Extension **header** UI must use `MarkerDataAppIcon` / `.appDialogIcon()` from compiled Icon Composer `Marker-Data.icon`. Do not flatten the layer PNG into `AppIconSingle`. Main-app `AppIcon.appiconset` is a catalog placeholder only. Do **not** replace the Workflow Extension’s bundle/plugin `AppIcon.appiconset`. In the extension header, load the named `Marker-Data` asset (host `applicationIconImage` is Final Cut Pro).
 12. Preserve `plaform` spelling when touching database models unless intentionally migrating.
 13. FCPXML pasteboard/clipping temps live under `~/Movies/Marker Data Cache/` (not App Support).
 14. Definition of done: arm64 Debug+Release build; settings migrate; `.fcpxml`/`.fcpxmld` + pasteboard intake; WE Extract + Roles overlays; queue finds/uploads via `manifestURL`; agent docs (`AGENT.md` / `ARCHITECTURE.md` / `GUARDRAILS.md` / `.cursorrules`) stay aligned.

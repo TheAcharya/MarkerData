@@ -1,5 +1,16 @@
 # Changelog
 
+### 2.1.0 (24)
+
+**🎉 Released:**
+- TBA
+
+**🔨 Improvements:**
+- Updated Marker Data with a new application icon for macOS Tahoe
+- Updated core dependencies
+
+---
+
 
 ### 2.0.6 (23)
 

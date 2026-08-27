@@ -19,9 +19,9 @@ Read with **`AGENT.md`** (how to change things), **`ARCHITECTURE.md`** (how it w
 |------|------|
 | **Settings** | Bump `SettingsStore.version`, add a dict migration `case`, wire UI, and pass export-related fields through `markersExtractorSettings(fcpxmlFileUrl:)`. |
 | **Config names** | Throw `ConfigurationSaveError.nameAlreadyExists` on add / rename / duplicate collisions — never overwrite `{name}.json` silently. |
-| **Alerts** | Chain `.appDialogIcon()` after every `.alert` / confirmation dialog (`DialogIcon.swift` → PNG `AppIconSingle`). |
+| **Alerts** | Chain `.appDialogIcon()` after every `.alert` / confirmation dialog (`DialogIcon.swift` → `MarkerDataAppIcon` from compiled `Marker-Data.icon`). |
 | **Extract intake** | Route Finder files, text clippings, and Final Cut Pro pasteboard drops through `FCPXMLIntake` → `ExtractionModel.receiveFiles` / `receiveItemProviders`. |
-| **Drop overlays** | Use shared `DropTargetOverlay` on main-app Extract / Roles / Queue **and** Workflow Extension Extract + Roles; keep extension Compile Sources including `DropTargetOverlay` + `ColorExtension` (+ shared Roles sources). |
+| **Drop overlays** | Use shared `DropTargetOverlay` on main-app Extract / Roles / Queue **and** Workflow Extension Extract + Roles; keep extension Compile Sources including `DropTargetOverlay` + `ColorExtension` + `DialogIcon.swift` (+ shared Roles sources). |
 | **Shared WE chrome color** | Use `Color.markerAccent` (system indigo) for overlay borders and other shared chrome hosted in FCP — not `Color.accentColor`. |
 | **Queue uploads** | Upload via `QueueInstance.manifestURL` (prefer JSON beside the scanned/dropped folder; fall back to sidecar `jsonURL`). |
 | **Progress phases** | Do **not** `ProgressViewModel.reset()` when entering swatch. Call `await applyTaskAppearance` **only inside** `ColorPaletteRenderer` after image checks pass (MainActor). On skip: `markProcessAsFinished` → **“Extract done”**. On render: `markAllProcessesFinished`. |
@@ -30,6 +30,7 @@ Read with **`AGENT.md`** (how to change things), **`ARCHITECTURE.md`** (how it w
 | **Uninstaller** | If the app gains new on-disk paths, update `MarkerDataUninstaller.run()` cleanup list. |
 | **Architecture** | Prefer Apple Silicon (`arm64`) only; CI uses `macos-26` + **Xcode 26.6.0**. |
 | **Opaque CLIs** | Treat `airlift` / `csv2notion_neo` as black boxes; only the args in `DatabaseUploader` / `DropboxSetupModel` are the contract. |
+| **App icon** | Main app: Icon Composer **`Marker-Data.icon`** (name matches `ASSETCATALOG_COMPILER_APPICON_NAME`). Keep the empty main-app `AppIcon.appiconset` placeholder. Do not flatten the layer PNG into `AppIconSingle`. Do **not** replace the Workflow Extension bundle/plugin icon (`AppIcon.appiconset`). |
 
 ---
 
@@ -47,6 +48,7 @@ Read with **`AGENT.md`** (how to change things), **`ARCHITECTURE.md`** (how it w
 | **`plaform`** | Never “fix” the spelling on database models unless intentionally migrating. |
 | **Intel** | Never add `x86_64` as a supported architecture. |
 | **Silent config overwrite** | Never replace an existing configuration file because the name already exists. |
+| **AppIconSingle flatten** | Never copy the Icon Composer layer PNG into `AppIconSingle` (skips glass / fill). |
 
 ---
 
@@ -71,9 +73,9 @@ Shared component: `Views/Components/DropTargetOverlay.swift` (main app + Workflo
 4. **Ignore late KVO** after a process is marked finished (`ProgressViewModel.updateProgress`) or the bar can bounce backward.
 5. **FCP timeline → Dock** often cannot deliver a file URL (pasteboard-only). Supported paths: drop on Extract panel, open `.fcpxml`/`.fcpxmld` via Dock/Finder Open With, Workflow Extension / Share Destination handoffs.
 6. **Temporary FCP pasteboard XML** is written under `~/Movies/Marker Data Cache/` (`FCPXMLIntake.writeTemporaryFCPXML`) — Marker Data convention, not App Support Cache.
-7. **Workflow Extension accent:** `Color.accentColor` / `.accent` inside the appex often resolves to Final Cut Pro’s blue. Shared chrome (e.g. `DropTargetOverlay` border) must use `Color.markerAccent` (system indigo, matching Assets `AccentColor`). Extension Compile Sources must still include `DropTargetOverlay` + `ColorExtension`.
+7. **Workflow Extension accent:** `Color.accentColor` / `.accent` inside the appex often resolves to Final Cut Pro’s blue. Shared chrome (e.g. `DropTargetOverlay` border) must use `Color.markerAccent` (system indigo, matching Assets `AccentColor`). Extension Compile Sources must still include `DropTargetOverlay` + `ColorExtension` + `DialogIcon.swift`.
 8. **Workflow Extension Extract vs Roles:** Extract handoff lives in `WorkflowExtensionView` (`.onDrop([.fcpxml])`); Roles uses shared `RolesSettingsView` / `RolesManager` `DropDelegate`. Both show overlays — do not assume only Roles has one.
-9. **Icon Composer** Dock asset (`Marker-Data.icon`) often yields a blank `.alert` glyph — PNG via `.appDialogIcon()` is mandatory.
+9. **Icon Composer dialogs:** SwiftUI `.alert` still needs `.appDialogIcon()` (`MarkerDataAppIcon` from compiled `Marker-Data.icon`). Do not flatten the layer PNG into `AppIconSingle` (skips glass / fill). Workflow Extension **header** loads the named `Marker-Data` asset — `applicationIconImage` is Final Cut Pro’s icon. Leave the extension’s bundle/plugin `AppIcon.appiconset` unchanged.
 10. **Dual Sparkle controllers** (`Marker_DataApp` + `ApplicationDelegate`) — don’t “simplify” without understanding `.updateAvailable` / `bestValidUpdate`.
 11. **`OpenEventHandler`** must re-register on `.FCPShareStart`; keep registration on the main queue.
 12. **Failed Tasks table** (`FailedExtractionsView`): one-line truncate + `.help()` tooltips; min frame ~640×240.
@@ -88,7 +90,8 @@ Shared component: `Views/Components/DropTargetOverlay.swift` (main app + Workflo
 - [ ] Drop overlays appear on main-app Extract / Roles / Queue **and** Workflow Extension Extract + Roles with the copy above.
 - [ ] Queue finds `extract_info.json` folders and uploads via `manifestURL` (relocated folders work).
 - [ ] No-media / skipped swatch finishes as **“Extract done”** (not **“Analysing swatch done”**); `ColorPaletteRenderer.render` → `Bool` drives finish path.
-- [ ] New alerts use `.appDialogIcon()`.
+- [ ] New alerts use `.appDialogIcon()` (`MarkerDataAppIcon` from compiled `Marker-Data.icon`).
+- [ ] App icon still Icon Composer `Marker-Data.icon` for the **main app** (not inside `Assets.xcassets`; do not flatten layer PNG into `AppIconSingle`). Workflow Extension bundle/plugin icon stays `AppIcon.appiconset`.
 - [ ] Settings changes include version + migration + UI + export bridge when required.
 - [ ] New on-disk paths are reflected in the Uninstaller.
 - [ ] `AGENT.md` / `ARCHITECTURE.md` / `GUARDRAILS.md` / `.cursorrules` updated when behavior changes.

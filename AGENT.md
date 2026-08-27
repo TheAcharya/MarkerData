@@ -20,6 +20,7 @@
   - [New database platform](#new-database-platform)
   - [FCP integrations](#fcp-integrations)
   - [Drop overlay / shared Workflow Extension UI](#drop-overlay--shared-workflow-extension-ui)
+  - [App icon / dialogs](#app-icon--dialogs)
   - [Uninstaller cleanup paths](#uninstaller-cleanup-paths)
   - [Release metadata](#release-metadata)
   - [Agent documentation](#agent-documentation)
@@ -80,7 +81,8 @@ For deeper module/data-flow detail, see **`ARCHITECTURE.md`**. For hard always/n
 | Settings migrations | `Source/Marker Data/Marker Data/Models/Settings/SettingsVersioningManager.swift` |
 | Canonical disk paths | `Source/Marker Data/Marker Data/Utilities/Extensions/URLExtension.swift` |
 | Notification names | `Source/Marker Data/Marker Data/Utilities/Extensions/NotificationNameExtension.swift` |
-| Alert dialog icon helper | `Source/Marker Data/Marker Data/Views/Extensions/DialogIcon.swift` (`.appDialogIcon()`) |
+| App / dialog icon | `Views/Extensions/DialogIcon.swift` — `MarkerDataAppIcon` + `.appDialogIcon()`; Icon Composer `Marker-Data.icon` |
+| About | `Views/Detail Views/AboutView.swift` — `MarkerDataAppIcon.image()` at 200×200 |
 
 ## Build & run (local)
 1. Open `Source/Marker Data/Marker Data.xcodeproj`.
@@ -122,7 +124,7 @@ When bumping a release: update `MARKETING_VERSION` and `CURRENT_PROJECT_VERSION`
   - Extraction/upload use `Task` / `TaskGroup`; cancellation via `Task.cancel()` and terminating child `Process`es.
 - **Persistence:** versioned JSON under Application Support (see Settings system). Database profiles are separate JSON files.
 - **External tools:** Notion/Airtable uploads spawn bundled executables; treat binaries as opaque. Progress UI depends on stdout lines containing `NN%`.
-- **Colors / icons:** Dock icon is Icon Composer (`Marker-Data.icon`). SwiftUI `.alert` often shows a blank document glyph — always chain `.appDialogIcon()` after `.alert` / confirmation dialogs. Shared Workflow Extension chrome uses `Color.markerAccent` (not host `accentColor`).
+- **Colors / icons:** Dock, About, Workflow Extension header, and alerts use Icon Composer `Marker-Data.icon` via `MarkerDataAppIcon` / `.appDialogIcon()` (`DialogIcon.swift`). Do **not** flatten the layer PNG into `AppIconSingle`. Shared Workflow Extension chrome uses `Color.markerAccent` (not host `accentColor`). `DialogIcon.swift` must be in Workflow Extension Compile Sources.
 
 ## Settings system (read before changing preferences)
 
@@ -210,7 +212,12 @@ Also: getter for `colorSwatchSettings` **forces `enableSwatch = false` when extr
 ### Drop overlay / shared Workflow Extension UI
 - Update copy in **`GUARDRAILS.md`** (Drop overlay copy table) when changing messages.
 - Workflow Extension **Extract** (`WorkflowExtensionView`) and **Roles** (shared `RolesSettingsView`) both show overlays.
-- If overlay / color helpers change, ensure Workflow Extension Compile Sources still include `DropTargetOverlay` and `ColorExtension`. Shared chrome uses `Color.markerAccent`.
+- If overlay / color helpers change, ensure Workflow Extension Compile Sources still include `DropTargetOverlay`, `ColorExtension`, and `DialogIcon.swift`. Shared chrome uses `Color.markerAccent`.
+
+### App icon / dialogs
+- Icon Composer **`Marker-Data.icon`** (`ASSETCATALOG_COMPILER_APPICON_NAME` = Marker-Data) lives beside the catalog — **not** inside `Assets.xcassets`. Main-app `AppIcon.appiconset` is an empty placeholder. Never flatten the layer PNG into `AppIconSingle`.
+- About (200×200) and alerts use `MarkerDataAppIcon` / `.appDialogIcon()`. Workflow Extension **header** (100×100) uses the same `MarkerDataAppIcon` (named `Marker-Data` asset — host `applicationIconImage` is Final Cut Pro). Do **not** change the Workflow Extension’s bundle/plugin icon (`ASSETCATALOG_COMPILER_APPICON_NAME` = AppIcon, existing `AppIcon.appiconset`).
+- Workflow Extension Compile Sources must include `DialogIcon.swift` (header UI only).
 
 ### Uninstaller cleanup paths
 - If the app/extension gains new Application Support, cache, container, or preferences paths, update `MarkerDataUninstaller.run()` path list to match.
@@ -236,7 +243,7 @@ Also: getter for `colorSwatchSettings` **forces `enableSwatch = false` when extr
 
 **Temporary pasteboard FCPXML:** `FCPXMLIntake.writeTemporaryFCPXML` → `~/Movies/Marker Data Cache/`.
 
-**Workflow Extension:** Extract + Roles tabs both use `DropTargetOverlay` (`WorkflowExtensionView` / shared `RolesSettingsView`); also shares `RolesManager` / `ColorExtension`. Add shared UI types to the extension target’s Compile Sources. Shared chrome uses `Color.markerAccent` (not host `accentColor`).
+**Workflow Extension:** Extract + Roles tabs both use `DropTargetOverlay` (`WorkflowExtensionView` / shared `RolesSettingsView`); also shares `RolesManager` / `ColorExtension` / `DialogIcon` (`MarkerDataAppIcon`). Add shared UI types to the extension target’s Compile Sources. Shared chrome uses `Color.markerAccent` (not host `accentColor`).
 
 Exact overlay strings and always/never rules: **`GUARDRAILS.md`**.
 
@@ -263,7 +270,7 @@ Exact overlay strings and always/never rules: **`GUARDRAILS.md`**.
 - **Queue relocated folders:** never upload only `ExtractInfo.jsonURL` — use `manifestURL` (see Signs in `GUARDRAILS.md`).
 - **Progress `reset()` / wrong swatch label:** never `reset()` before swatch; never retitle to “Analysing swatch” until render will run. Skipped swatch must finish as **“Extract done”**, not **“Analysing swatch done”**. `await applyTaskAppearance` from `ColorPaletteRenderer` (MainActor).
 - **FCP timeline → Dock:** often pasteboard-only; Extract panel drop is the supported UI path for timelines.
-- **Alert icons:** chain `.appDialogIcon()` after every `.alert`.
+- **Alert icons:** chain `.appDialogIcon()` after every `.alert`. Source is compiled `Marker-Data.icon` via `MarkerDataAppIcon` — do not flatten the layer PNG into `AppIconSingle`.
 - **Dual Sparkle controllers:** both `Marker_DataApp` and `ApplicationDelegate` construct `SPUStandardUpdaterController`; update-available UI relies on `ApplicationDelegate.bestValidUpdate(...)` posting `.updateAvailable`. Don’t “simplify” without understanding that path.
 - **`OpenEventHandler`:** must re-register on `.FCPShareStart`; registration should stay on the main queue (see comments in that file).
 
@@ -274,6 +281,6 @@ Exact overlay strings and always/never rules: **`GUARDRAILS.md`**.
 - Drop overlays still work on main-app Extract / Roles / Queue **and** Workflow Extension Extract + Roles.
 - Queue scan/upload still works for folders containing `extract_info.json`, including **moved/copied** folders (`manifestURL`).
 - Skipped / no-media swatch finishes as **“Extract done”** (not **“Analysing swatch done”**).
-- Any new `.alert` uses `.appDialogIcon()`.
+- Any new `.alert` uses `.appDialogIcon()` (`MarkerDataAppIcon` from compiled `Marker-Data.icon`).
 - If settings changed: version bumped + migration case + UI wired + export bridge if needed.
 - If behavior/architecture changed: update `AGENT.md`, `ARCHITECTURE.md`, `GUARDRAILS.md`, and `.cursorrules`.
