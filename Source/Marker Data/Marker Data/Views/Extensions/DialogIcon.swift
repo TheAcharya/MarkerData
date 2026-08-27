@@ -12,6 +12,7 @@
 import AppKit
 import SwiftUI
 
+@MainActor
 enum MarkerDataAppIcon {
     /// Compiled Icon Composer `Marker-Data.icon` (`ASSETCATALOG_COMPILER_APPICON_NAME` = Marker-Data).
     /// Prefer the named asset from this bundle so the Workflow Extension (hosted in Final Cut Pro)
@@ -38,6 +39,7 @@ enum MarkerDataAppIcon {
 
 extension View {
     /// Applies the Marker Data app icon to alerts and confirmation dialogs.
+    @MainActor
     func appDialogIcon() -> some View {
         self.dialogIcon(MarkerDataAppIcon.dialogImage)
     }
