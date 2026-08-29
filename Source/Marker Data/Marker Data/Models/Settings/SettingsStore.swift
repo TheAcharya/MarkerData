@@ -86,7 +86,7 @@ struct SettingsStore: Sendable, Codable, Hashable, Equatable, Identifiable {
         }
     }
 
-    var horizonalAlignment: MarkerLabelProperties.AlignHorizontal
+    var horizontalAlignment: MarkerLabelProperties.AlignHorizontal
     var verticalAlignment: MarkerLabelProperties.AlignVertical
 
     var copyrightText: String
@@ -157,7 +157,7 @@ struct SettingsStore: Sendable, Codable, Hashable, Equatable, Identifiable {
             fontColorOpacity: 100,
             strokeColor: .black,
             overlays: [],
-            horizonalAlignment: .left,
+            horizontalAlignment: .left,
             verticalAlignment: .top,
             copyrightText: "",
             hideLabelNames: false,
@@ -235,7 +235,7 @@ struct SettingsStore: Sendable, Codable, Hashable, Equatable, Identifiable {
             imageLabelFontColor: self.fontColor.hex,
             imageLabelFontStrokeColor: self.strokeColor.hex,
             imageLabelFontStrokeWidth: strokeSize,
-            imageLabelAlignHorizontal: self.horizonalAlignment,
+            imageLabelAlignHorizontal: self.horizontalAlignment,
             imageLabelAlignVertical: self.verticalAlignment,
             imageLabelHideNames: self.hideLabelNames,
             exportFolderFormat: self.folderFormat

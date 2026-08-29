@@ -110,7 +110,7 @@ struct GeneralLabelSettingsView: View {
         
         var body: some View {
             Section(header: SectionHeader("Alignment")) {
-                FixedPicker("Horizontal", selection: $settings.store.horizonalAlignment) {
+                FixedPicker("Horizontal", selection: $settings.store.horizontalAlignment) {
                     ForEach(MarkerLabelProperties.AlignHorizontal.allCases) { item in
                         Text(item.displayName).tag(item)
                     }

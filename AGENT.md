@@ -84,13 +84,29 @@ For deeper module/data-flow detail, see **`ARCHITECTURE.md`**. For hard always/n
 | App / dialog icon | `Views/Extensions/DialogIcon.swift` — `@MainActor` `MarkerDataAppIcon` + `.appDialogIcon()`; Icon Composer `Marker-Data.icon` |
 | About | `Views/Detail Views/AboutView.swift` — `MarkerDataAppIcon.image()` at 200×200 |
 | Workflow Extension header icon | Same `MarkerDataAppIcon.image()` at 100×100; in the appex, resolve from containing `Marker Data.app` |
+| Apple Event open | `FCP Share Destination/OpenEventHandler.swift` — `kAEOpen` → `.openFile`; re-register on `.FCPShareStart` (main queue) |
+| Roles (app + WE) | `Models/Roles/RolesManager.swift` + `RolesManager+DropDelegate.swift` — reads/writes `preferences.json` (no `SettingsContainer` in the appex) |
+| Uninstaller | `Marker Data Uninstaller/MarkerDataUninstaller.swift` — path list must match runtime paths |
 
 ## Build & run (local)
 1. Open `Source/Marker Data/Marker Data.xcodeproj`.
 2. Select the **Marker Data** scheme.
 3. Build/run for **Apple Silicon** (`arm64`). Do not target Intel.
 
-CI installs the Workflow Extensions SDK from `SDK/Workflow_Extensions_1.0.3.dmg` before `xcodebuild`. Locally you need the same SDK installed under `/Library/Developer/SDKs/WorkflowExtensionSDK.sdk` to build the extension target.
+**Unsigned verification** (CI-equivalent; Debug **and** Release after code or agent-doc changes):
+
+```bash
+xcodebuild -project "Source/Marker Data/Marker Data.xcodeproj" \
+  -scheme "Marker Data" \
+  -configuration Debug \
+  -destination "platform=macOS,arch=arm64" \
+  ONLY_ACTIVE_ARCH=NO EXCLUDED_ARCHS="x86_64" \
+  CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
+```
+
+Repeat with `-configuration Release`. A good result is an adhoc/linker-signed thin **arm64** `Marker Data.app` with `Contents/PlugIns/Workflow Extension.appex` and `Uninstall Marker Data.app` beside it. This machine may redirect `SYMROOT` outside `-derivedDataPath`; confirm the Products folder actually contains those apps.
+
+CI installs the Workflow Extensions SDK from `SDK/Workflow_Extensions_1.0.3.dmg` (the folder may also contain an unused older `1.0.2` DMG). Locally you need that SDK under `/Library/Developer/SDKs/WorkflowExtensionSDK.sdk` to build the extension target.
 
 **SwiftFormat** (courtesy, not CI-enforced): from repo root, `swiftformat .` — see `CONTRIBUTING.md`.
 
@@ -125,7 +141,8 @@ When bumping a release: update `MARKETING_VERSION` and `CURRENT_PROJECT_VERSION`
   - Extraction/upload use `Task` / `TaskGroup`; cancellation via `Task.cancel()` and terminating child `Process`es.
 - **Persistence:** versioned JSON under Application Support (see Settings system). Database profiles are separate JSON files.
 - **External tools:** Notion/Airtable uploads spawn bundled executables; treat binaries as opaque. Progress UI depends on stdout lines containing `NN%`.
-- **Colors / icons:** `MarkerDataAppIcon` is `@MainActor` (`DialogIcon.swift`). Main-app Dock / About / alerts use Icon Composer `Marker-Data.icon`. Workflow Extension **header** loads that icon from the containing `Marker Data.app` (not the appex `AppIcon.appiconset`). Do **not** flatten the layer PNG into `AppIconSingle`. Shared Workflow Extension chrome uses `Color.markerAccent` (not host `accentColor`). Extension Compile Sources must include `DialogIcon.swift`, `HelpButton`, and `OverlayHelpButton`.
+- **Colors / icons:** `MarkerDataAppIcon` is `@MainActor` (`DialogIcon.swift`). Main-app Dock / About / alerts use Icon Composer `Marker-Data.icon`. Workflow Extension **header** loads that icon from the containing `Marker Data.app` (not the appex `AppIcon.appiconset`). Do **not** flatten the layer PNG into `AppIconSingle`. Shared Workflow Extension chrome uses `Color.markerAccent` (not host `accentColor`).
+- **Shared Compile Sources:** one file on disk can appear **twice** in `project.pbxproj` (`PBXBuildFile` “in Sources”) — main app + Workflow Extension. That is target membership, not a duplicate file. Never delete one row to “dedupe”. Full extension membership list: **ARCHITECTURE.md → Workflow Extension target**.
 
 ## Settings system (read before changing preferences)
 
@@ -150,7 +167,7 @@ Marker Data settings are **versioned JSON**. The active store is `preferences.js
 2. **Runtime:** UI binds via `@EnvironmentObject SettingsContainer` and `$settings.store.<property>`.
 3. **Auto-save:** any change to `store` writes `preferences.json` immediately.
 4. **Extraction:** `SettingsStore.markersExtractorSettings(fcpxmlFileUrl:)` maps store → `MarkersExtractor.Settings` (not automatic — wire new export-related fields here). Roles are **reloaded from disk** inside this method.
-5. **Roles exception:** `RolesManager` reads/writes `preferences.json` and posts DistributedNotification `.rolesChanged`. Main app `SettingsContainer` observes that and reloads the store.
+5. **Roles exception:** `RolesManager` reads/writes `preferences.json` and posts DistributedNotification `.rolesChanged`. Main app `SettingsContainer` observes that and reloads the store. The Workflow Extension uses this path only (no `SettingsContainer`, no `SettingsVersioningManager`).
 
 ### Migration ladder (each `case N` upgrades N → N+1)
 
@@ -180,7 +197,9 @@ Current schema version is **8**. Adding a property requires a new `case 8:` (8 �
 
 **Always migrate** when adding/removing/renaming persisted keys. **Never** rely on `Codable` defaults alone for existing on-disk files.
 
-**Reference implementation:** `allowUTF8InMIDIExport` (issue #148) — property, v7→v8 migration, `FileSettingsView` toggle, `isMIDIFileUTF8EncodingAllowed` in `markersExtractorSettings` (landed with MarkersExtractor 0.4.6; package minimum is now **0.4.8**).
+The Workflow Extension **compiles `SettingsStore.swift`** and decodes `preferences.json` via `RolesManager` **without** running `SettingsVersioningManager`. After a schema bump, the main app must launch once so migrations write before the extension can decode.
+
+**Reference implementation:** `allowUTF8InMIDIExport` (issue #148) — property, v7→v8 migration, `FileSettingsView` toggle, `isMIDIFileUTF8EncodingAllowed` in `markersExtractorSettings`. MarkersExtractor SPM minimum in `project.pbxproj` is **0.4.8**.
 
 ### Known settings gaps (do not “fix” casually without product intent)
 These fields exist in UI / `SettingsStore` but are **not** currently passed into `MarkersExtractor.Settings`:
@@ -213,7 +232,7 @@ Also: getter for `colorSwatchSettings` **forces `enableSwatch = false` when extr
 ### Drop overlay / shared Workflow Extension UI
 - Update copy in **`GUARDRAILS.md`** (Drop overlay copy table) when changing messages.
 - Workflow Extension **Extract** (`WorkflowExtensionView`) and **Roles** (shared `RolesSettingsView`) both show overlays.
-- If overlay / color helpers change, ensure Workflow Extension Compile Sources still include `DropTargetOverlay`, `ColorExtension`, `DialogIcon.swift`, `HelpButton`, and `OverlayHelpButton`. Shared chrome uses `Color.markerAccent`.
+- Shared types must stay in **both** targets’ Compile Sources (two `PBXBuildFile` rows, one `PBXFileReference`). Minimum shared UI: `DropTargetOverlay`, `ColorExtension`, `DialogIcon.swift`, `HelpButton`, `OverlayHelpButton`. Roles/settings files listed in **ARCHITECTURE.md**. Shared chrome uses `Color.markerAccent`.
 
 ### App icon / dialogs
 - Icon Composer **`Marker-Data.icon`** (`ASSETCATALOG_COMPILER_APPICON_NAME` = Marker-Data) lives beside the catalog — **not** inside `Assets.xcassets`. Main-app `AppIcon.appiconset` is an empty placeholder. Never flatten the layer PNG into `AppIconSingle` (imageset removed).
@@ -221,7 +240,9 @@ Also: getter for `colorSwatchSettings` **forces `enableSwatch = false` when extr
 - **Resolution (`displayIcon`):**
   1. If running as `.appex`: load from the containing `Marker Data.app` (`appex` → `PlugIns` → `Contents` → `.app`): `Bundle.image(forResource: "Marker-Data")`, else `NSWorkspace.icon(forFile:)`. Do **not** use the appex’s `applicationIconImage` (that is `AppIcon.appiconset`, or Final Cut Pro).
   2. Else: `NSImage(named: "Marker-Data")`, then `NSApplication.shared.applicationIconImage`.
-- **Surfaces:** About `MarkerDataAppIcon.image()` **200×200**; Workflow Extension header **100×100**; alerts `.appDialogIcon()`. Call sites: `Marker_DataApp`, `ContentView`, `ExtractView` (×2), `ConfigurationSettingsView`, `DatabaseSettingsView` (×2), `CreateDBProfileSheet`, `DropboxSetupView`, `InstallShareDestinationView`.
+- **Surfaces:** About `MarkerDataAppIcon.image()` **200×200**; Workflow Extension header **100×100**; alerts **and** confirmation dialogs `.appDialogIcon()`.
+- **Main-app `.alert` / `.confirmationDialog` (chain `.appDialogIcon()`):** `Marker_DataApp` (library folders); `ContentView` (install location); `ExtractView` (extract + upload, ×2); `ConfigurationSettingsView` (unsaved-switch, unsaved-add, and delete confirmations + alert); `DatabaseSettingsView` (remove + duplicate alerts, ×2, plus delete-profile confirmation); `CreateDBProfileSheet`; `DropboxSetupView`; `InstallShareDestinationView`.
+- Uninstaller is a **separate target**: `UninstallerView` uses `NSApplication.shared.applicationIconImage`, not `MarkerDataAppIcon`.
 - Do **not** change the Workflow Extension’s bundle/plugin icon (`ASSETCATALOG_COMPILER_APPICON_NAME` = AppIcon, existing `AppIcon.appiconset`).
 - Workflow Extension Compile Sources must include `DialogIcon.swift` (header UI). Keep Extract/Roles `TabView` `.padding(.bottom, 40)` so `overlayHelpButton` does not sit on the drop zone.
 
@@ -245,11 +266,11 @@ Also: getter for `colorSwatchSettings` **forces `enableSwatch = false` when extr
 
 **Queue manifest resolution:** `QueueInstance.manifestURL` prefers `{folder}/{json basename}` when that file exists (moved/copied exports), else falls back to absolute `ExtractInfo.jsonURL`. Uploads and `filterMissing()` must use `manifestURL`, not the sidecar path alone.
 
-**Progress across extract → swatch:** `ColorPaletteRenderer.render(...) -> Bool`. Inside renderer, after image checks pass, `await progress.applyTaskAppearance("Analysing swatch", ...)` (MainActor). Returns `false` on skip (no images / unsupported GIF) → ExtractionModel uses `markProcessAsFinished` (**“Extract done”**). Returns `true` → `markAllProcessesFinished`. Never `reset()` when entering swatch. Ignore late KVO after a process is finished.
+**Progress across extract → swatch:** `ColorPaletteRenderer.render(...) -> Bool`. Inside renderer, after image checks pass, `await progress.applyTaskAppearance("Analysing swatch", ...)` (MainActor). Returns `false` on skip (no images / unsupported GIF) → ExtractionModel uses `markProcessAsFinished` (**“Extract done”**). Returns `true` → `markAllProcessesFinished` (required because `ImageRenderService.export` calls `setProcesses` with **image** URLs, replacing the extract FCPXML rows). Never `reset()` when entering swatch. Ignore late KVO after a process is finished.
 
-**Temporary pasteboard FCPXML:** `FCPXMLIntake.writeTemporaryFCPXML` → `~/Movies/Marker Data Cache/`.
+**Temporary pasteboard FCPXML:** `FCPXMLIntake.writeTemporaryFCPXML` → `~/Movies/Marker Data Cache/` (creates the cache folder if needed).
 
-**Workflow Extension:** Extract + Roles tabs both use `DropTargetOverlay` (`WorkflowExtensionView` / shared `RolesSettingsView`); also shares `RolesManager` / `ColorExtension` / `DialogIcon` (`MarkerDataAppIcon`) / `HelpButton` / `OverlayHelpButton`. Add shared UI types to the extension target’s Compile Sources. Shared chrome uses `Color.markerAccent` (not host `accentColor`). Header icon: containing `Marker Data.app`, not appex `AppIcon.appiconset`. Extract/Roles `TabView` uses `.padding(.bottom, 40)` so the drop zone stays above the help “?”.
+**Workflow Extension:** Extract + Roles tabs both use `DropTargetOverlay` (`WorkflowExtensionView` / shared `RolesSettingsView`); also shares `RolesManager` / `ColorExtension` / `DialogIcon` (`MarkerDataAppIcon`) / `HelpButton` / `OverlayHelpButton` plus the settings/roles files in **ARCHITECTURE.md**. Shared chrome uses `Color.markerAccent` (not host `accentColor`). Header icon: containing `Marker Data.app`, not appex `AppIcon.appiconset`. Extract/Roles `TabView` uses `.padding(.bottom, 40)` so the drop zone stays above the help “?”. The extension **writes** `WorkflowExtensionExport.fcpxml` but does **not** create `~/Movies/Marker Data Cache/` — the main app’s `LibraryFolders.checkAndCreateMissing()` does.
 
 Exact overlay strings and always/never rules: **`GUARDRAILS.md`**.
 
@@ -264,7 +285,8 @@ Exact overlay strings and always/never rules: **`GUARDRAILS.md`**.
 | `updateAvailable` | Local | Sparkle delegate → sidebar badge |
 
 **Workflow Extension file:** `~/Movies/Marker Data Cache/WorkflowExtensionExport.fcpxml` (`URL.workflowExtensionExportFCPXML`).  
-**App open path hard-coded by extension:** `/Applications/Marker Data.app`.
+**App open path hard-coded by extension:** `/Applications/Marker Data.app`.  
+**`OpenEventHandler.setupHandler()`** is invoked from `init`, from `.FCPShareStart`, and again from `Marker_DataApp` `.task` — keep the `DispatchQueue.main.async` registration (see comments in that file).
 
 ## Common pitfalls
 - **Don’t break migrations:** settings JSONs in the wild must upgrade step-by-step.
@@ -276,18 +298,21 @@ Exact overlay strings and always/never rules: **`GUARDRAILS.md`**.
 - **Queue relocated folders:** never upload only `ExtractInfo.jsonURL` — use `manifestURL` (see Signs in `GUARDRAILS.md`).
 - **Progress `reset()` / wrong swatch label:** never `reset()` before swatch; never retitle to “Analysing swatch” until render will run. Skipped swatch must finish as **“Extract done”**, not **“Analysing swatch done”**. `await applyTaskAppearance` from `ColorPaletteRenderer` (MainActor).
 - **FCP timeline → Dock:** often pasteboard-only; Extract panel drop is the supported UI path for timelines.
-- **Alert icons:** chain `.appDialogIcon()` after every `.alert`. `MarkerDataAppIcon` is `@MainActor`; source is compiled `Marker-Data.icon`. Do not flatten the layer PNG into `AppIconSingle`. In the Workflow Extension header, load from the containing `Marker Data.app` — not the appex `AppIcon.appiconset`.
+- **Alert / confirmation icons:** chain `.appDialogIcon()` after every `.alert` and `.confirmationDialog`. `MarkerDataAppIcon` is `@MainActor`; source is compiled `Marker-Data.icon`. Do not flatten the layer PNG into `AppIconSingle`. In the Workflow Extension header, load from the containing `Marker Data.app` — not the appex `AppIcon.appiconset`.
 - **Dual Sparkle controllers:** both `Marker_DataApp` and `ApplicationDelegate` construct `SPUStandardUpdaterController`; update-available UI relies on `ApplicationDelegate.bestValidUpdate(...)` posting `.updateAvailable`. Don’t “simplify” without understanding that path.
 - **`OpenEventHandler`:** must re-register on `.FCPShareStart`; registration should stay on the main queue (see comments in that file).
+- **Shared `pbxproj` rows:** do not remove a second `DialogIcon.swift in Sources` (or other shared files) — the file is compiled into two targets.
+- **Persisted typos:** do not rename JSON key `plaform` without a migration.
+- **WE cache folder:** the extension does not `mkdir` Movies cache; a first-time drop can fail if the main app has never created `~/Movies/Marker Data Cache/`.
 
 ## Definition of done for most changes
-- App builds (Debug + Release) for **arm64** (Workflow Extension still embeds).
+- App builds **unsigned** Debug **and** Release for **arm64** (`CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO`; Workflow Extension still embeds).
 - Settings still load and migrate cleanly (`preferences.json` + `Configurations/*.json`).
 - Extraction works for `.fcpxml` and `.fcpxmld`, including FCP pasteboard / textClipping intake via `FCPXMLIntake`.
 - Drop overlays still work on main-app Extract / Roles / Queue **and** Workflow Extension Extract + Roles.
 - Queue scan/upload still works for folders containing `extract_info.json`, including **moved/copied** folders (`manifestURL`).
 - Skipped / no-media swatch finishes as **“Extract done”** (not **“Analysing swatch done”**).
-- Any new `.alert` uses `.appDialogIcon()` (`MarkerDataAppIcon` from compiled `Marker-Data.icon`).
+- Any new `.alert` or `.confirmationDialog` uses `.appDialogIcon()` (`MarkerDataAppIcon` from compiled `Marker-Data.icon`).
 - Workflow Extension header still shows the main-app Icon Composer icon (containing `Marker Data.app`); bundle/plugin `AppIcon.appiconset` unchanged.
 - If settings changed: version bumped + migration case + UI wired + export bridge if needed.
 - If behavior/architecture changed: update `AGENT.md`, `ARCHITECTURE.md`, `GUARDRAILS.md`, and `.cursorrules`.
