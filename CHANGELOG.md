@@ -6,8 +6,9 @@
 - TBA
 
 **🔨 Improvements:**
-- Updated Marker Data with a new application icon for macOS Tahoe
-- Updated Marker Data's Workflow Extension with a new application icon for macOS Tahoe
+- Updated Marker Data with a new application icon
+- Updated Marker Data's Workflow Extension with a new application icon
+- Updated Marker Data's Uninstaller with a new application icon
 - Updated core dependencies
 
 ---
