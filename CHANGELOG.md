@@ -11,6 +11,7 @@
 - Updated Marker Data with a new application icon
 - Updated Marker Data's Workflow Extension with a new application icon
 - Updated Marker Data's Uninstaller with a new application icon
+- Updated Marker Data's DMG icon
 - Updated core dependencies
 
 ---
