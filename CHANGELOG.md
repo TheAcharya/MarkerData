@@ -3,7 +3,7 @@
 ### 2.1.0 (24)
 
 **🎉 Released:**
-- TBA
+- 4th September 2026
 
 **Marker Data** update requires a fresh install, so please use the included Uninstaller to remove the previous version before installing, as configurations will need to be recreated afterwards.
 
@@ -13,6 +13,9 @@
 - Updated Marker Data's Uninstaller with a new application icon
 - Updated Marker Data's DMG icon
 - Updated core dependencies
+
+**🐞 Bug Fix:**
+- Fixed a typo in the settings variable
 
 ---
 
