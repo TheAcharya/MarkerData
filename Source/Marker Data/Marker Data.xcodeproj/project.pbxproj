@@ -97,6 +97,7 @@
 		4176E7E42F608D51001547D7 /* ApplyPickerSizing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4176E7E32F608D51001547D7 /* ApplyPickerSizing.swift */; };
 		4176E7E72F609243001547D7 /* OptionalKeyboardShortcut.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4176E7E62F609243001547D7 /* OptionalKeyboardShortcut.swift */; };
 		4176E7F02F7A0001001547D7 /* DialogIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4176E7F12F7A0001001547D7 /* DialogIcon.swift */; };
+		4176E7F22F7A0002001547D7 /* DialogIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4176E7F12F7A0001001547D7 /* DialogIcon.swift */; };
 		4176E7E92F61772A001547D7 /* FixedPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4176E7E82F61772A001547D7 /* FixedPicker.swift */; };
 		4176E7EA2F632E7F001547D7 /* OverlayHelpButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47411FDB2A3EA140005890FE /* OverlayHelpButton.swift */; };
 		4176E7EC2F632FA9001547D7 /* HelpButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4176E7EB2F632FA9001547D7 /* HelpButton.swift */; };
@@ -1264,6 +1265,7 @@
 				41A055702B8B7685006AC0E4 /* NotificationFrequency.swift in Sources */,
 				4155B7172B62E131008D3505 /* RolesSettingsView.swift in Sources */,
 				41A700012F7A10010001A00B /* DropTargetOverlay.swift in Sources */,
+				4176E7F22F7A0002001547D7 /* DialogIcon.swift in Sources */,
 				41A055752B8B776F006AC0E4 /* RolesManager.swift in Sources */,
 				41A055762B8B8442006AC0E4 /* URLExtension.swift in Sources */,
 				4155B7232B653D35008D3505 /* RoleModel.swift in Sources */,
@@ -1907,7 +1909,7 @@
 			repositoryURL = "https://github.com/TheAcharya/MarkersExtractor";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.4.7;
+				minimumVersion = 0.4.8;
 			};
 		};
 		4155B72A2B668C0D008D3505 /* XCRemoteSwiftPackageReference "swift-log-oslog" */ = {

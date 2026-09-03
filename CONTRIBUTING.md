@@ -91,7 +91,7 @@ We distribute the Release build `.app` directly from **Xcode's Derived Data** ra
 
 Yes — Archive strips debug info, resulting in smaller binaries. However:
 
-- Our final DMG is already **under 50MB**.
+- Our final DMG is already **under 100MB**.
 - The slight size gain isn’t worth sacrificing debug convenience.
 - We prioritise **debuggability and reproducibility** over minimal file size.
 

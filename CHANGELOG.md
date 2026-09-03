@@ -1,5 +1,21 @@
 # Changelog
 
+### 2.1.0 (24)
+
+**🎉 Released:**
+- TBA
+
+**Marker Data** update requires a fresh install, so please use the included Uninstaller to remove the previous version before installing, as configurations will need to be recreated afterwards.
+
+**🔨 Improvements:**
+- Updated Marker Data with a new application icon
+- Updated Marker Data's Workflow Extension with a new application icon
+- Updated Marker Data's Uninstaller with a new application icon
+- Updated Marker Data's DMG icon
+- Updated core dependencies
+
+---
+
 
 ### 2.0.6 (23)
 

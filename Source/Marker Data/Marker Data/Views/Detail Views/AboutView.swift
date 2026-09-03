@@ -10,8 +10,7 @@ import SwiftUI
 struct AboutView: View {
     var body: some View {
         VStack(spacing: 20) {
-            Image("AppIconSingle")
-                .resizable()
+            MarkerDataAppIcon.image()
                 .frame(width: 200, height: 200)
             
             Text("Marker Data")
