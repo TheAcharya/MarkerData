@@ -30,6 +30,8 @@
 - [Color swatch pipeline](#color-swatch-pipeline)
 - [Database profiles](#database-profiles)
 - [UI architecture](#ui-architecture)
+- [File menu](#file-menu)
+- [FCPXML UTTypes without Final Cut Pro](#fcpxml-uttypes-without-final-cut-pro)
 - [App icon and dialogs](#app-icon-and-dialogs)
 - [Notifications (full list)](#notifications-full-list)
 - [Entitlements / security model](#entitlements--security-model)
@@ -53,7 +55,7 @@ It also ships two Final Cut Pro integrations:
 - **Share Destination** — Media Asset Protocol / AppleScript so FCP exports media + FCPXML and opens them into Marker Data
 - **Workflow Extension** — ProExtensions-hosted UI: Extract tab handoff (overlay + Movies-cache FCPXML → open app) and Roles management (shared prefs + overlay)
 
-**Runtime requirements (product):** Apple silicon; macOS Sequoia **15.7+** (from 2.0.0; see README / CHANGELOG). Xcode `MACOSX_DEPLOYMENT_TARGET` is **15.0** — the 15.7 floor is a support policy, not the build setting. Final Cut Pro 12+ recommended. The app is expected to run from **`/Applications/Marker Data.app`**.
+**Runtime requirements (product):** Apple silicon; macOS Sequoia **15.7+** (from 2.0.0; see README / CHANGELOG). Xcode `MACOSX_DEPLOYMENT_TARGET` is **15.0** — the 15.7 floor is a support policy, not the build setting. Final Cut Pro 12+ recommended for extraction workflows, but the **app must launch without FCP installed** (App Preview / review Macs) — FCPXML `UTType`s use `importedAs` fallback. The app is expected to run from **`/Applications/Marker Data.app`**.
 
 For agent-oriented change checklists, see **`AGENT.md`**. For hard always/never constraints and learned pitfalls, see **`GUARDRAILS.md`**. For short Cursor enforcement, see **`.cursorrules`**.
 
@@ -72,7 +74,8 @@ Primary responsibilities:
 - Persistence of configurations, DB profiles, logs
 - Queue scanning/uploading previously extracted Notion/Airtable jobs (local-first `manifestURL`)
 - Installing FCP Share Destination templates
-- Hosting Pagemaker (WebView) for PDF generation
+- Hosting Pagemaker (WebView) for PDF generation (File menu **Open Pagemaker**, plus Extract footer after Notion/Airtable extract-only)
+- FCPXML UTTypes that resolve when Final Cut Pro is absent (`UTTypeExtension` + Info.plist imported types)
 - Embedding the Workflow Extension as `Contents/PlugIns/Workflow Extension.appex`
 
 ### Workflow Extension target
@@ -85,6 +88,7 @@ Primary responsibilities:
 Responsibilities:
 - SwiftUI UI inside `WorkflowExtensionViewController` (`NSHostingView`)
 - Extract tab: drag/drop `.fcpxml` + `DropTargetOverlay` (“Drop to Open Marker Data”) → write Movies-cache handoff file → open main app → DistributedNotification
+- SwiftUI frame is **600×400**; FCP host minimum comes from the **appex** `Info.plist` `ProExtensionAttributes` (**700×550**). Do not edit `ProExtensionAttributes` on `Marker-Data-Info.plist` (main app; leftover 400×600) expecting to size the extension.
 - Header: `MarkerDataAppIcon.image()` at 100×100 from the containing `Marker Data.app` (`DialogIcon.swift`); bundle/plugin icon remains `Assets.xcassets/AppIcon.appiconset`
 - Roles tab sharing `RolesSettingsView` / `RolesManager` / `DropTargetOverlay` / `ColorExtension` with the main app (same prefs file)
 - Extract/Roles `TabView` uses `.padding(.bottom, 40)` so the drop zone stays above the help “?”
@@ -94,7 +98,8 @@ Responsibilities:
 
 | Kind | Files |
 |------|--------|
-| Extension-only | `WorkflowExtensionView.swift`, `WorkflowExtensionViewController.swift` |
+| Extension-only | `WorkflowExtensionViewController.swift` |
+| Dual membership (appex UI; also in main-app Compile Sources — do not delete either row) | `WorkflowExtensionView.swift` |
 | Shared UI | `DropTargetOverlay.swift`, `ColorExtension.swift`, `DialogIcon.swift`, `HelpButton.swift`, `OverlayHelpButton.swift`, `RolesSettingsView.swift` |
 | Shared roles / settings (no `SettingsContainer` in the appex) | `RolesManager.swift`, `RolesManager+DropDelegate.swift`, `RoleModel.swift`, `SettingsStore.swift`, `SettingsModels.swift`, `ColorSwatchSettingsModel.swift`, `UnifiedExportProfile.swift`, `NotificationFrequency.swift`, `ExtractError.swift` |
 | Shared helpers | `URLExtension.swift`, `UTTypeExtension.swift`, `RoleExtension.swift`, `NotificationNameExtension.swift`, `MarkersExtractorModelExtensions.swift`, `ExportProfileFormatExtrension.swift`, `DeltaEFormulaExtension.swift` |
@@ -317,18 +322,19 @@ Changing the JSON shape of `roles` / `RoleModel` (or any `SettingsStore` key) mu
 
 **UI:** `DropTargetOverlay` while targeted and not extracting; hero caption under title describes FCP timeline / file drop. Overlay copy: see **`GUARDRAILS.md`**.
 
-Supported types: `UTType.fcpxml`, `UTType.fcpxmld` (`ExtractionModel.supportedContentTypes`).
+Supported types: `UTType.fcpxml`, `UTType.fcpxmld` (`ExtractionModel.supportedContentTypes`) — defined in `UTTypeExtension` so first Extract layout does not trap if Final Cut Pro is not installed.
 
 ```mermaid
 flowchart LR
   Drop[Drop / Open / Pasteboard]
+  UT["UTType.fcpxml / .fcpxmld"]
   Intake[FCPXMLIntake]
   EM[ExtractionModel]
   ME[MarkersExtractor]
   Swatch["ColorPaletteRenderer.render -> Bool"]
   Up[DatabaseUploader]
 
-  Drop --> Intake --> EM --> ME
+  Drop --> UT --> Intake --> EM --> ME
   ME --> Swatch
   ME --> Up
   Swatch -->|true: markAllProcessesFinished| Up
@@ -437,7 +443,7 @@ Roles tab: same `RolesSettingsView` + `DropTargetOverlay` as the main app (full 
 - Also invoked from `OpenEventHandler.init` and `Marker_DataApp` `.task`
 - `ExtractionModel.handleOpenDocument` validates type and starts extract / gate
 
-Info.plist advertises Media Asset Protocol and document types for asset media/description collections.
+Info.plist (`Source/Marker Data/Marker-Data-Info.plist`) advertises Media Asset Protocol, Sparkle, and document types for asset media/description collections. Keep **Asset Description File** as the FCPXML/`fcpxmld` `CFBundleTypeName` (`DocumentController` matches that string). Also declares `UTImportedTypeDeclarations` for `com.apple.finalcutpro.xml` / `.xmld` so Extract layout does not trap when FCP is missing.
 
 **Note:** FCP **timeline** drops onto the Dock icon are often pasteboard-only (no file URL). Prefer Extract panel drop, file Open With, Workflow Extension, or Share Destination for media+XML.
 
@@ -491,7 +497,7 @@ Notable modules under `Views/`:
 |------|--------|
 | Main | `ContentView`, `ExtractView` (drop overlay + `.fcpxmlDropDestination`) |
 | Detail | General (File/Roles/Notifications/Updates), Image, Label, Configurations, Databases, Queue (folder drop overlay), About |
-| Menu commands | App / File / Edit / Sidebar / Configuration / Help |
+| Menu commands | App / File (`FileCommands` replaces `.newItem` so system Close stays last) / Edit / SwiftUI `SidebarCommands` / Configuration / Help |
 | Onboarding | `@AppStorage("showOnboarding")` sheet |
 | Components | `DropTargetOverlay` (main app + WE), `FCPXMLDropModifier`, `HelpButton` / `OverlayHelpButton`, shared controls |
 | Extensions | **`MarkerDataAppIcon` / `.appDialogIcon()`** (`DialogIcon.swift`, `@MainActor`) — About, Workflow Extension header, alerts and confirmation dialogs; see **App icon and dialogs**. Also `ApplyPickerSizing`, `OptionalKeyboardShortcut`. |
@@ -508,6 +514,7 @@ flowchart TB
     EX[ExtractView]
     RO[RolesSettingsView]
     QU[QueueView]
+    FILE[FileCommands replacing newItem]
   end
 
   subgraph weUI [Workflow Extension]
@@ -523,7 +530,8 @@ flowchart TB
   WRO --> OV
 
   EX --> FM[FCPXMLDropModifier]
-  FM --> IN[FCPXMLIntake]
+  FM --> UT[UTType.fcpxml / .fcpxmld]
+  UT --> IN[FCPXMLIntake]
   IN --> EM[ExtractionModel]
 
   RO --> RMD[RolesManager DropDelegate]
@@ -543,6 +551,8 @@ flowchart TB
   subgraph disk [One file on disk]
     DI[DialogIcon.swift]
     DTO[DropTargetOverlay.swift]
+    WEV[WorkflowExtensionView.swift]
+    UT[UTTypeExtension.swift]
     RM[RolesManager.swift]
     SS[SettingsStore.swift]
   end
@@ -559,6 +569,10 @@ flowchart TB
   DI --> WSRC
   DTO --> MSRC
   DTO --> WSRC
+  WEV --> MSRC
+  WEV --> WSRC
+  UT --> MSRC
+  UT --> WSRC
   RM --> MSRC
   RM --> WSRC
   SS --> MSRC
@@ -578,6 +592,59 @@ flowchart LR
 
   Drop --> Overlay
   Drop --> Cache --> App --> DNC --> EM
+```
+
+---
+
+## File menu
+
+`Marker_DataApp` registers `FileCommands()` and does **not** empty `.newItem`. `FileCommands` **replaces** `.newItem` so custom items sit at the top of File and system **Close / Close All** stay last. Do not add a Close button. (`Marker_DataApp` does empty `.toolbar` — that only removes the default View-menu toolbar group, not File → Close.)
+
+| Order | Item | Notes |
+|-------|------|--------|
+| 1 | Open Pagemaker | `openWindow(id: "pagemaker")`, ⌘P |
+| 2 | Install FCP Share Destination… | `ShareDestinationInstaller.install()` |
+| 3 | Show Cache / Clean Cache | Movies cache folder; Clean is ⌘K |
+| last | Close / Close All | System — do not duplicate |
+
+Extract **Choose File** remains on `ExtractView` (`FilePicker`, ⌘O), not the File menu. SwiftUI `SidebarCommands` is the system sidebar group (no custom `SidebarCommands.swift`). A second **Open Pagemaker** control appears on the Extract completion footer when the profile is extract-only Notion or Airtable (`showPagemakerOpenButton`).
+
+```mermaid
+flowchart TB
+  FileMenu[File menu]
+  Custom["FileCommands replacing .newItem"]
+  SysClose[System Close / Close All]
+  FileMenu --> Custom
+  FileMenu --> SysClose
+  Custom --> PM[Open Pagemaker]
+  Custom --> SD[Install FCP Share Destination]
+  Custom --> Cache[Show Cache / Clean Cache]
+```
+
+---
+
+## FCPXML UTTypes without Final Cut Pro
+
+`com.apple.finalcutpro.xml` / `.xmld` are not in the UTI database unless Final Cut Pro is installed. `UTType("…")!` traps on first Extract layout (`FilePicker` / drop evaluate `.fcpxml` / `.fcpxmld`).
+
+**Public API:** `UTType.fcpxml` and `UTType.fcpxmld` (`UTTypeExtension.swift`). The helper `finalCutProType` is **private**: `UTType(identifier) ?? UTType(importedAs:identifier, conformingTo:)` with `.xml` for `.fcpxml` and `.package` for `.fcpxmld`. **Never** force-unwrap. Callers use `UTType.fcpxml` / `.fcpxmld` (e.g. `ExtractionModel.supportedContentTypes`, `FilePicker`, `FCPXMLDropModifier`, Workflow Extension `.onDrop`).
+
+**Declare** in `Source/Marker Data/Marker-Data-Info.plist`: `UTImportedTypeDeclarations` for both identifiers, plus `LSItemContentTypes` on the existing **Asset Description File** document type. Do **not** split or rename that type (Share Destination `DocumentController` matches `"Asset Description File"`). Do not add versioned pasteboard UTIs (`…xml.v1`–`v14`) or iPad `.fcpproj`.
+
+The Workflow Extension also compiles `UTTypeExtension.swift`; FCP is present in that host, but the same helper must stay `importedAs`-safe.
+
+```mermaid
+flowchart LR
+  UI["Extract FilePicker / drop / WE"]
+  UT["UTType.fcpxml / .fcpxmld"]
+  Lookup["UTType identifier"]
+  Import["UTType importedAs conformingTo"]
+  Plist["Marker-Data-Info.plist UTImportedTypeDeclarations"]
+
+  UI --> UT --> Lookup
+  Lookup -->|FCP installed| OK[Resolved]
+  Lookup -->|FCP absent nil| Import --> OK
+  Plist --> Lookup
 ```
 
 ---
@@ -664,7 +731,22 @@ Changing automation, sandbox, or extension behavior usually requires entitlement
 | Binary refresh workflows | `update_airlift_binary.yml`, `update_csv2notion_neo_binary.yml`, `update_pagemaker.yml` |
 
 ### Notable SPM dependencies (main app)
-MarkersExtractor, DominantColors, DockProgress, Sparkle, FilePicker, ColorWellKit, PasswordField, ButtonKit, WebViewKit, swift-collections, swift-log-oslog (and related logging).
+
+Minimum versions from `project.pbxproj` (`XCRemoteSwiftPackageReference`):
+
+| Package | Minimum |
+|---------|---------|
+| MarkersExtractor | **0.4.8** |
+| DominantColors | 1.2.2 |
+| DockProgress | 5.1.0 |
+| Sparkle | 2.9.0 |
+| FilePicker | 1.0.1 |
+| ColorWellKit | 1.1.2 |
+| PasswordField | 1.0.0 |
+| ButtonKit | 0.7.1 |
+| WebViewKit | 1.0.0 |
+| swift-collections | 1.4.0 |
+| swift-log-oslog | 0.2.2 |
 
 ---
 
@@ -705,7 +787,7 @@ Source/Marker Data/Marker Data/
   Views/
     Main/              # ContentView, ExtractView
     Detail Views/      # General, Image, Label, Configurations, Databases, QueueView, About
-    Menu Bar Commands/
+    Menu Bar Commands/ # FileCommands (replaces .newItem), AppCommands, EditCommands, ConfigurationCommands, HelpCommands
     Components/        # DropTargetOverlay, FCPXMLDropModifier, HelpButton, OverlayHelpButton, …
     Extensions/        # DialogIcon (@MainActor MarkerDataAppIcon + .appDialogIcon), ApplyPickerSizing
     Onboarding/, Other/  # FailedExtractionsView, ExportProfilePicker, …
@@ -713,7 +795,7 @@ Source/Marker Data/Marker Data/
     Install View/, Objective-C Code/, OpenEventHandler.swift
   Pagemaker/           # PagemakerView, PDF export handler, UIDelegate, WebViewStateManager
   Utilities/
-    Extensions/        # URL, Color (markerAccent, heroGradient), UTType, NotificationName, …
+    Extensions/        # URL, Color (markerAccent, heroGradient), UTType (`UTType.fcpxml` / `.fcpxmld`, never `!`), NotificationName, …
     Shell/, Notifications/,
     Other/             # FCPXMLIntake, TextClippingReader, LibraryFolders, FileWatcher, …
   Resources/
@@ -722,10 +804,15 @@ Source/Marker Data/Marker Data/
   Marker-Data.icon                     # Icon Composer (ASSETCATALOG_COMPILER_APPICON_NAME = Marker-Data)
   Assets.xcassets/                     # empty AppIcon.appiconset placeholder; no AppIconSingle
 
+Source/Marker Data/Marker-Data-Info.plist
+  # Sparkle, Media Asset Protocol, Share Destination document types (keep Asset Description File),
+  # UTImportedTypeDeclarations for com.apple.finalcutpro.xml / .xmld
+
 Source/Marker Data/Workflow Extension/
-  WorkflowExtensionView.swift          # Extract overlay + handoff; MarkerDataAppIcon header 100×100; hosts RolesSettingsView; TabView .padding(.bottom, 40)
-  WorkflowExtensionViewController.swift
-  Assets.xcassets/, Info.plist, entitlements, bridging header
+  WorkflowExtensionView.swift          # Extract overlay + handoff; MarkerDataAppIcon header 100×100; hosts RolesSettingsView; TabView .padding(.bottom, 40); SwiftUI frame 600×400; **two** Compile Sources rows (main app + appex)
+  WorkflowExtensionViewController.swift  # Appex-only
+  Info.plist                           # NSExtension WorkflowExtension; ProExtensionAttributes 700×550
+  Assets.xcassets/, entitlements, bridging header
   # Bundle/plugin icon remains AppIcon.appiconset (do not replace with Marker-Data.icon)
   # Header UI loads the containing Marker Data.app icon via DialogIcon.swift
   # Compile Sources: see Workflow Extension target table above (shared files = two pbxproj memberships)
@@ -753,4 +840,6 @@ Source/Marker Data/Marker Data Uninstaller/
 13. FCPXML pasteboard/clipping temps live under `~/Movies/Marker Data Cache/` (not App Support).
 14. Shared Swift sources appear twice in `project.pbxproj` Compile Sources (one file, two targets). Never “dedupe” those rows.
 15. Workflow Extension decodes `SettingsStore` without running migrations — main app must migrate on launch first.
-16. Definition of done: unsigned arm64 Debug+Release build; settings migrate; `.fcpxml`/`.fcpxmld` + pasteboard intake; WE Extract + Roles overlays; queue finds/uploads via `manifestURL`; agent docs (`AGENT.md` / `ARCHITECTURE.md` / `GUARDRAILS.md` / `.cursorrules`) stay aligned.
+16. FCPXML UTTypes must resolve without Final Cut Pro installed: public `UTType.fcpxml` / `.fcpxmld` (private `finalCutProType`: `UTType(identifier)` then `importedAs:conformingTo:`) plus `UTImportedTypeDeclarations` in `Marker-Data-Info.plist`. Never `UTType("com.apple.finalcutpro.xml")!`. Keep the Share Destination **Asset Description File** document type (do not rename/split it).
+17. File menu custom items replace `.newItem` (`FileCommands`). Do not empty `.newItem` in `Marker_DataApp` (puts system Close first) and do not add a second Close.
+18. Definition of done: unsigned arm64 Debug+Release build; settings migrate; `.fcpxml`/`.fcpxmld` + pasteboard intake; FCPXML UTTypes use `importedAs` fallback; File menu Close last; WE Extract + Roles overlays; queue finds/uploads via `manifestURL`; agent docs (`AGENT.md` / `ARCHITECTURE.md` / `GUARDRAILS.md` / `.cursorrules`) stay aligned.

@@ -4,6 +4,10 @@
 //
 //  Created by Milán Várady on 20/01/2024.
 //
+//
+//  File menu items replace the New group so system Close / Close All stay last.
+//  Do not duplicate Close here.
+//
 
 import Foundation
 import SwiftUI
@@ -12,7 +16,7 @@ struct FileCommands: Commands {
     @Environment(\.openWindow) var openWindow
 
     var body: some Commands {
-        CommandGroup(after: .importExport) {
+        CommandGroup(replacing: .newItem) {
             Button("Open Pagemaker") {
                 openWindow(id: "pagemaker")
             }
@@ -29,13 +33,13 @@ struct FileCommands: Commands {
                     }
                 }
             }
-            
+
             Divider()
-            
+
             Button("Show Cache") {
                 NSWorkspace.shared.open(URL.FCPExportCacheFolder)
             }
-            
+
             Button("Clean Cache") {
                 LibraryFolders.deleteCache()
             }

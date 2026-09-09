@@ -71,8 +71,50 @@
 			<string>Viewer</string>
 			<key>LSHandlerRank</key>
 			<string>Default</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>com.apple.finalcutpro.xml</string>
+				<string>com.apple.finalcutpro.xmld</string>
+			</array>
 			<key>NSDocumentClass</key>
 			<string></string>
+		</dict>
+	</array>
+	<key>UTImportedTypeDeclarations</key>
+	<array>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.xml</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>Final Cut Pro XML</string>
+			<key>UTTypeIdentifier</key>
+			<string>com.apple.finalcutpro.xml</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>fcpxml</string>
+				</array>
+			</dict>
+		</dict>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>com.apple.package</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>Final Cut Pro XML Bundle</string>
+			<key>UTTypeIdentifier</key>
+			<string>com.apple.finalcutpro.xmld</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>fcpxmld</string>
+				</array>
+			</dict>
 		</dict>
 	</array>
 	<key>NSAppleScriptEnabled</key>

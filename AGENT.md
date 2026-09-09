@@ -19,6 +19,7 @@
   - [New export fields / overlays](#new-export-fields--overlays)
   - [New database platform](#new-database-platform)
   - [FCP integrations](#fcp-integrations)
+  - [File menu](#file-menu)
   - [Drop overlay / shared Workflow Extension UI](#drop-overlay--shared-workflow-extension-ui)
   - [App icon / dialogs](#app-icon--dialogs)
   - [Uninstaller cleanup paths](#uninstaller-cleanup-paths)
@@ -58,7 +59,7 @@ For deeper module/data-flow detail, see **`ARCHITECTURE.md`**. For hard always/n
 
 | Concern | File |
 |---------|------|
-| `@main` app | `Source/Marker Data/Marker Data/Marker_DataApp.swift` — constructs `SettingsContainer`, `DatabaseManager`, `ExtractionModel`, `QueueModel`; menu commands; Failed Tasks + Pagemaker windows |
+| `@main` app | `Source/Marker Data/Marker Data/Marker_DataApp.swift` — constructs `SettingsContainer`, `DatabaseManager`, `ExtractionModel`, `QueueModel`; menu commands (`FileCommands` replaces `.newItem`); Failed Tasks + Pagemaker windows |
 | AppKit / Sparkle delegate | `Source/Marker Data/Marker Data/ApplicationDelegate.swift` |
 | Sidebar navigation | `Source/Marker Data/Marker Data/Views/Main/ContentView.swift` (`MainViews` enum) |
 | Extract UI | `Source/Marker Data/Marker Data/Views/Main/ExtractView.swift` |
@@ -66,8 +67,11 @@ For deeper module/data-flow detail, see **`ARCHITECTURE.md`**. For hard always/n
 | External handoffs (open / Workflow Extension) | `.../ExtractionModel_EventHandlers.swift` |
 | FCPXML intake (files / pasteboard / textClipping) | `Utilities/Other/FCPXMLIntake.swift`, `TextClippingReader.swift` |
 | Extract drop modifier | `Views/Components/FCPXMLDropModifier.swift` (`.fcpxmlDropDestination`) |
+| FCPXML UTTypes | `Utilities/Extensions/UTTypeExtension.swift` — public `UTType.fcpxml` / `.fcpxmld` via private `finalCutProType` (`UTType(identifier) ?? UTType(importedAs:identifier, conformingTo:)` — never `!`); `Source/Marker Data/Marker-Data-Info.plist` `UTImportedTypeDeclarations` + Asset Description File `LSItemContentTypes` |
+| File menu | `Views/Menu Bar Commands/FileCommands.swift` — replaces `.newItem` (Open Pagemaker ⌘P, Install Share Destination, Show/Clean Cache ⌘K); system Close stays last |
+| Info.plist | `Source/Marker Data/Marker-Data-Info.plist` — Sparkle, Share Destination document types (**Asset Description File** name is a contract), imported FCPXML UTIs |
 | Drop overlay (Extract / Roles / Queue + WE) | `Views/Components/DropTargetOverlay.swift` (also Workflow Extension Compile Sources) |
-| Workflow Extension UI | `Source/Marker Data/Workflow Extension/WorkflowExtensionView.swift` |
+| Workflow Extension UI | `Source/Marker Data/Workflow Extension/WorkflowExtensionView.swift` — Extract + Roles tabs; **two** Compile Sources rows (main app + appex — do not delete the main-app membership). `WorkflowExtensionViewController.swift` is appex-only. |
 | Color helpers (`markerAccent`, `heroGradient`) | `Utilities/Extensions/ColorExtension.swift` |
 | Queue UI | `Views/Detail Views/QueueView.swift` |
 | Queue scan/upload | `Models/Queue/QueueModel.swift` |
@@ -225,14 +229,21 @@ Also: getter for `colorSwatchSettings` **forces `enableSwatch = false` when extr
 - Note: existing property spelling is `plaform` on `DatabaseProfileModel` — keep consistent when extending.
 
 ### FCP integrations
-- Share Destination: `Resources/OSAScriptingDefinition.sdef` + Obj‑C under `FCP Share Destination/Objective-C Code/` + Swift `OpenEventHandler`.
-- Workflow Extension: DistributedNotificationCenter names + fixed Movies-cache FCPXML path; roles via `preferences.json`.
+- Share Destination: `Resources/OSAScriptingDefinition.sdef` + Obj‑C under `FCP Share Destination/Objective-C Code/` + Swift `OpenEventHandler`. Keep the **Asset Description File** document type name (`DocumentController` matches it).
+- Workflow Extension: DistributedNotificationCenter names + fixed Movies-cache FCPXML path; roles via `preferences.json`. Appex `Info.plist` `ProExtensionAttributes` are 700×550 (FCP host min); SwiftUI frame is 600×400. `WorkflowExtensionView.swift` has two Compile Sources rows.
 - Extract panel intake: `FCPXMLIntake` / `FCPXMLDropModifier` — keep Dock Open With (`OpenEventHandler`) and Share Destination paths distinct.
+- FCPXML UTTypes: public `UTType.fcpxml` / `.fcpxmld` (private `finalCutProType`, never `!`) + `Marker-Data-Info.plist` `UTImportedTypeDeclarations` / Asset Description File `LSItemContentTypes`.
+
+### File menu
+- Custom File items live in `FileCommands` as `CommandGroup(replacing: .newItem)`.
+- Do **not** also empty `.newItem` in `Marker_DataApp` (that puts system Close first). Emptying `.toolbar` in `Marker_DataApp` is unrelated (removes the default View-menu toolbar group).
+- Do **not** add a Close item — system Close / Close All remain last.
+- Current items (in order): **Open Pagemaker** (⌘P) → **Install FCP Share Destination…** → **Show Cache** / **Clean Cache** (⌘K). Extract **Choose File** still uses ⌘O on the Extract panel (`FilePicker`), not the File menu. Extract completion also shows **Open Pagemaker** when the profile is extract-only Notion or Airtable.
 
 ### Drop overlay / shared Workflow Extension UI
 - Update copy in **`GUARDRAILS.md`** (Drop overlay copy table) when changing messages.
 - Workflow Extension **Extract** (`WorkflowExtensionView`) and **Roles** (shared `RolesSettingsView`) both show overlays.
-- Shared types must stay in **both** targets’ Compile Sources (two `PBXBuildFile` rows, one `PBXFileReference`). Minimum shared UI: `DropTargetOverlay`, `ColorExtension`, `DialogIcon.swift`, `HelpButton`, `OverlayHelpButton`. Roles/settings files listed in **ARCHITECTURE.md**. Shared chrome uses `Color.markerAccent`.
+- Shared types must stay in **both** targets’ Compile Sources (two `PBXBuildFile` rows, one `PBXFileReference`). Minimum shared UI: `DropTargetOverlay`, `ColorExtension`, `DialogIcon.swift`, `HelpButton`, `OverlayHelpButton`. `WorkflowExtensionView.swift` is also dual-membership (appex UI; do not delete the main-app Compile Sources row). `WorkflowExtensionViewController.swift` is appex-only. Roles/settings files listed in **ARCHITECTURE.md**. Shared chrome uses `Color.markerAccent`.
 
 ### App icon / dialogs
 - Icon Composer **`Marker-Data.icon`** (`ASSETCATALOG_COMPILER_APPICON_NAME` = Marker-Data) lives beside the catalog — **not** inside `Assets.xcassets`. Main-app `AppIcon.appiconset` is an empty placeholder. Never flatten the layer PNG into `AppIconSingle` (imageset removed).
@@ -304,11 +315,15 @@ Exact overlay strings and always/never rules: **`GUARDRAILS.md`**.
 - **Shared `pbxproj` rows:** do not remove a second `DialogIcon.swift in Sources` (or other shared files) — the file is compiled into two targets.
 - **Persisted typos:** do not rename JSON key `plaform` without a migration.
 - **WE cache folder:** the extension does not `mkdir` Movies cache; a first-time drop can fail if the main app has never created `~/Movies/Marker Data Cache/`.
+- **FCPXML `UTType` force-unwrap:** `UTType("com.apple.finalcutpro.xml")!` traps on first Extract layout when Final Cut Pro is not installed (App Preview / machines without FCP). Resolve with `UTType(identifier) ?? UTType(importedAs:identifier, conformingTo:)` and keep `UTImportedTypeDeclarations` in `Marker-Data-Info.plist`. Do not split the Share Destination **Asset Description File** document type.
+- **File menu Close last:** custom File items replace `.newItem` (`FileCommands`). Do not empty `.newItem` (that puts system Close first) and do not add a second Close.
 
 ## Definition of done for most changes
 - App builds **unsigned** Debug **and** Release for **arm64** (`CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO`; Workflow Extension still embeds).
 - Settings still load and migrate cleanly (`preferences.json` + `Configurations/*.json`).
 - Extraction works for `.fcpxml` and `.fcpxmld`, including FCP pasteboard / textClipping intake via `FCPXMLIntake`.
+- FCPXML `UTType`s still use `importedAs` fallback (no `!`); Info.plist still has `UTImportedTypeDeclarations`; Share Destination **Asset Description File** type is unchanged.
+- File menu still replaces `.newItem` with app actions; system Close stays last (no second Close; do not empty `.newItem`).
 - Drop overlays still work on main-app Extract / Roles / Queue **and** Workflow Extension Extract + Roles.
 - Queue scan/upload still works for folders containing `extract_info.json`, including **moved/copied** folders (`manifestURL`).
 - Skipped / no-media swatch finishes as **“Extract done”** (not **“Analysing swatch done”**).

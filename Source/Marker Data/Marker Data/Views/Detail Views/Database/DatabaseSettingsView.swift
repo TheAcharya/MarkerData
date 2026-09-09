@@ -61,6 +61,7 @@ struct DatabaseSettingsView: View {
             
             Button("Cancel", role: .cancel) {}
         }
+        .appDialogIcon()
     }
     
     var tableView: some View {

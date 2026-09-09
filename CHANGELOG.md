@@ -1,5 +1,16 @@
 # Changelog
 
+### 2.1.1 (25)
+
+**🎉 Released:**
+- 9th September 2026
+
+**🐞 Bug Fix:**
+- Launch no longer crashes on Macs that do not have Final Cut Pro installed.
+- File menu now lists app actions first, with Close last.
+
+---
+
 ### 2.1.0 (24)
 
 **🎉 Released:**

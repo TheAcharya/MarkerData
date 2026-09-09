@@ -110,9 +110,6 @@ struct Marker_DataApp: App {
         .windowResizability(.contentSize)
         // Customise Menu Bar Commands
         .commands {
-            // Removes New Window Menu Item
-            CommandGroup(replacing: .newItem) {}
-            
             // Removes Toolbar Menu Items
             CommandGroup(replacing: .toolbar) {}
             
