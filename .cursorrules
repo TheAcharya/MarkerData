@@ -11,7 +11,7 @@ Keep these four files consistent when architecture or agent guidance changes.
 
 ## Project layout
 - Main app: `Source/Marker Data/Marker Data/`
-- Workflow Extension: `Source/Marker Data/Workflow Extension/` (`WorkflowExtensionView.swift` — Extract + Roles tabs)
+- Workflow Extension: `Source/Marker Data/Workflow Extension/` (`WorkflowExtensionView.swift` — Extract + Roles tabs; two Compile Sources rows including unused main-app membership — do not delete). `WorkflowExtensionViewController.swift` is appex-only.
 - Uninstaller: `Source/Marker Data/Marker Data Uninstaller/` (target **Uninstall Marker Data**; product `Uninstall Marker Data.app`; bundle ID `co.theacharya.MarkerData.Uninstaller`)
 - FCP Share Destination (Swift + Obj‑C): `Source/Marker Data/Marker Data/FCP Share Destination/`
 - Bundled binaries (do not modify internals): `Source/Marker Data/Marker Data/Resources/airlift`, `csv2notion_neo`
@@ -46,6 +46,8 @@ Keep these four files consistent when architecture or agent guidance changes.
 - **Queue:** scans for `extract_info.json` (Notion/Airtable + JSON manifest only) → upload via `QueueInstance.manifestURL` (local JSON beside folder preferred) → parallel re-upload; folder drop clears queue and disables auto-scan
 - **Workflow Extension:** Extract tab drops `.fcpxml` → Movies-cache handoff (does **not** mkdir the cache folder) → open `/Applications/Marker Data.app` → DistributedNotification `.workflowExtensionFileReceived`; both Extract and Roles show `DropTargetOverlay`. Shared sources have **two** `pbxproj` Compile Sources rows (one file, two targets) — never “dedupe”. Membership list: **ARCHITECTURE.md → Workflow Extension target**. Header uses `MarkerDataAppIcon.image()` at 100×100 from the **containing** `Marker Data.app` — not the appex `AppIcon.appiconset`. TabView keeps `.padding(.bottom, 40)` so the drop zone stays above the overlaid help “?”.
 - **Share Destination:** `OSAScriptingDefinition.sdef` + Obj‑C `MakeCommand` (cache `<name>/` then location `…/<name>/<name>`) → local `FCPShareStart` → Apple Event open → `.openFile`. `OpenEventHandler.setupHandler()` on init, `.FCPShareStart`, and `Marker_DataApp` `.task` (main queue).
+- **FCPXML UTTypes:** public `UTType.fcpxml` / `.fcpxmld` (`UTTypeExtension`; private `finalCutProType` = `UTType(identifier) ?? UTType(importedAs:identifier, conformingTo:)`). First Extract layout evaluates these types — never `!`. Keep `UTImportedTypeDeclarations` in `Marker-Data-Info.plist`. Do not split the Share Destination **Asset Description File** document type.
+- **File menu:** `FileCommands` replaces `.newItem` (Open Pagemaker ⌘P, Install Share Destination, Show/Clean Cache ⌘K). Do not empty `.newItem` in `Marker_DataApp` and do not add a second Close. Extract **Choose File** stays on `ExtractView` (`FilePicker`, ⌘O).
 
 ## Pitfalls to avoid
 - Do not remove or rename persisted settings keys without a migration.
@@ -61,10 +63,14 @@ Keep these four files consistent when architecture or agent guidance changes.
 - FCP timeline drops onto the Dock icon are often pasteboard-only; Extract panel drop is the supported timeline path.
 - Do not use `Color.accentColor` / `.accent` for shared chrome hosted in Final Cut Pro — use `Color.markerAccent`.
 - Do not delete a second `DialogIcon.swift in Sources` (or other shared files) from `project.pbxproj` — that is two-target membership, not a duplicate file.
+- Do not force-unwrap `UTType("com.apple.finalcutpro.xml")` / `.xmld` — resolve with `UTType(identifier) ?? UTType(importedAs:identifier, conformingTo:)` and keep `UTImportedTypeDeclarations` in `Marker-Data-Info.plist`. First Extract layout evaluates these types; FCP may be absent (App Preview). Do not split the Share Destination **Asset Description File** document type.
+- File menu custom items replace `.newItem` so system Close stays last — do not empty `.newItem` and do not add a second Close.
 
 ## Definition of done for code changes
 - App builds **unsigned** Debug and Release for arm64 (`CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO`; Workflow Extension still embeds).
 - Settings load and migrate; extraction works for `.fcpxml`/`.fcpxmld` (incl. FCP pasteboard / textClipping via `FCPXMLIntake`).
+- FCPXML `UTType`s still use `importedAs` fallback (no `!`); Info.plist still has `UTImportedTypeDeclarations`; Share Destination **Asset Description File** type is unchanged.
+- File menu still replaces `.newItem` with app actions; system Close stays last (no second Close; do not empty `.newItem`).
 - Drop overlays still work on main-app Extract / Roles / Queue **and** Workflow Extension Extract + Roles; queue still finds/uploads `extract_info.json` folders via `manifestURL`.
 - Skipped / no-media swatch finishes as “Extract done” (not “Analysing swatch done”).
 - New alerts **and** confirmation dialogs use `.appDialogIcon()`; Workflow Extension header still shows the main-app Icon Composer icon (not the appex `AppIcon.appiconset`); settings changes include version + migration + wiring as required above.

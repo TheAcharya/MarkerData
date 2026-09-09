@@ -31,6 +31,8 @@ Read with **`AGENT.md`** (how to change things), **`ARCHITECTURE.md`** (how it w
 | **Architecture** | Prefer Apple Silicon (`arm64`) only; CI uses `macos-26` + **Xcode 26.6.0**. |
 | **Opaque CLIs** | Treat `airlift` / `csv2notion_neo` as black boxes; only the args in `DatabaseUploader` / `DropboxSetupModel` are the contract. |
 | **App icon** | Main app: Icon Composer **`Marker-Data.icon`** (name matches `ASSETCATALOG_COMPILER_APPICON_NAME`). Keep the empty main-app `AppIcon.appiconset` placeholder. Do not flatten the layer PNG into `AppIconSingle`. Workflow Extension **header** loads the icon from the containing `Marker Data.app`. Do **not** replace the Workflow Extension bundle/plugin icon (`AppIcon.appiconset`). |
+| **FCPXML UTTypes** | Resolve `.fcpxml` / `.fcpxmld` with `UTType(identifier) ?? UTType(importedAs:identifier, conformingTo:)` (`.xml` / `.package`). Keep `UTImportedTypeDeclarations` and Asset Description File `LSItemContentTypes` in `Marker-Data-Info.plist`. |
+| **File menu** | Custom File items replace `.newItem` (`FileCommands`) so system Close / Close All stay last. |
 
 ---
 
@@ -51,6 +53,8 @@ Read with **`AGENT.md`** (how to change things), **`ARCHITECTURE.md`** (how it w
 | **Silent config overwrite** | Never replace an existing configuration file because the name already exists. |
 | **AppIconSingle flatten** | Never copy the Icon Composer layer PNG into `AppIconSingle` (skips glass / fill). |
 | **WE header icon** | Never use the appex `AppIcon.appiconset` / `applicationIconImage` for the Workflow Extension window header — that is the bundle/plugin icon (update separately). |
+| **FCPXML `UTType` unwrap** | Never force-unwrap `com.apple.finalcutpro.xml` / `.xmld`. Never split or rename the Share Destination **Asset Description File** document type. |
+| **File menu Close** | Never empty `.newItem` in `Marker_DataApp` (that puts system Close first). Never add a second Close item. |
 
 ---
 
@@ -82,8 +86,10 @@ Shared component: `Views/Components/DropTargetOverlay.swift` (main app + Workflo
 11. **`OpenEventHandler`** must re-register on `.FCPShareStart`; keep registration on the main queue. `setupHandler()` also runs from `init` and `Marker_DataApp` `.task`.
 12. **Failed Tasks table** (`FailedExtractionsView`): one-line truncate + `.help()` tooltips; min frame ~640×240.
 13. **Workflow Extension help vs drop:** `overlayHelpButton` is bottom-trailing. Keep Extract/Roles `TabView` `.padding(.bottom, 40)` so the drop overlay does not crowd the “?”.
-14. **Shared Compile Sources look duplicated in `pbxproj`.** One `DialogIcon.swift` (and other shared files) correctly appears twice as `PBXBuildFile` — main app + Workflow Extension. Deleting one membership breaks the extension.
+14. **Shared Compile Sources look duplicated in `pbxproj`.** One `DialogIcon.swift` (and other shared files, including `WorkflowExtensionView.swift`) correctly appears twice as `PBXBuildFile` — main app + Workflow Extension. Deleting one membership breaks the extension (or, for `WorkflowExtensionView`, still violates the two-row contract — leave the unused main-app row). `WorkflowExtensionViewController.swift` is the only appex-only Swift file.
 15. **Workflow Extension does not migrate settings.** `RolesManager` JSON-decodes `SettingsStore` with no `SettingsVersioningManager`. Open the main app after a schema bump.
+16. **FCPXML `UTType` force-unwrap** — `UTType("com.apple.finalcutpro.xml")!` traps on Extract first layout when Final Cut Pro is absent (App Preview / review Macs). Use `importedAs` fallback and Info.plist imported types. Do not copy the old Marker Data force-unwrap.
+17. **File menu Close last:** custom File items replace `.newItem`. Emptying `.newItem` makes system Close the first File item; do not duplicate Close.
 
 ---
 
@@ -92,6 +98,8 @@ Shared component: `Views/Components/DropTargetOverlay.swift` (main app + Workflo
 - [ ] Unsigned arm64 Debug + Release build succeeds (`CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO`; main app embeds Workflow Extension).
 - [ ] Settings load/migrate (`preferences.json` + `Configurations/*.json`).
 - [ ] Extract accepts `.fcpxml` / `.fcpxmld`, FCP pasteboard drop, and text clippings via `FCPXMLIntake`.
+- [ ] FCPXML `UTType`s still use `importedAs` fallback (no `!` on `com.apple.finalcutpro.xml` / `.xmld`); Info.plist still has `UTImportedTypeDeclarations`; Share Destination **Asset Description File** type is unchanged.
+- [ ] File menu still replaces `.newItem` with app actions; system Close stays last (no second Close; do not empty `.newItem`).
 - [ ] Drop overlays appear on main-app Extract / Roles / Queue **and** Workflow Extension Extract + Roles with the copy above.
 - [ ] Queue finds `extract_info.json` folders and uploads via `manifestURL` (relocated folders work).
 - [ ] No-media / skipped swatch finishes as **“Extract done”** (not **“Analysing swatch done”**); `ColorPaletteRenderer.render` → `Bool` drives finish path.
