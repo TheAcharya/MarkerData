@@ -134,16 +134,22 @@ final class ExtractionModel: ObservableObject, Sendable {
             }
 
             var exportResult: ExportResult? = nil
+            var extractionError: Error? = nil
             
             do {
                 // Do extraction
                 exportResult = try await extractor.extract()
             } catch {
                 Self.logger.error("Failed to extract: \(error.localizedDescription)")
-                failedTasks.append(ExtractionFailure(url: url, exitStatus: .failedToExtract, errorMessage: error.localizedDescription))
+                extractionError = error
             }
             
             observation.invalidate()
+
+            // Rethrow so the task group records this failure once, with the real message
+            if let extractionError {
+                throw extractionError
+            }
 
             guard let exportResult = exportResult else {
                 throw ExtractError.exportResultisNil

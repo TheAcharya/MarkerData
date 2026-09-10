@@ -354,6 +354,8 @@ Pipeline (`performExtraction`):
    - If DB profile selected: `DatabaseUploader.uploadToDatabase(jsonManifestPath, profile)`
 4. Aggregate `ExportExitStatus` + `ExtractionFailure[]`; notifications; optional Finder/Pagemaker open
 
+Failure recording: `extractAndUpdateProgress` **rethrows** the extractor error rather than appending, so each file contributes at most one `.failedToExtract` entry — appended by the task group `catch`, with the real message. `ExtractError.exportResultisNil` is a safety net that no longer fires. The upload block still runs after a failed extract, so a file can also contribute a `.failedToUpload` entry (`missingJsonFile`); `ExtractionFailure.id` is the URL, so those two rows share an identity in `FailedExtractionsView`.
+
 Cancellation: `cancelAll()` cancels extraction `Task` and terminates upload `Process`es.
 
 External file gate: if open/Workflow Extension arrives without a valid export folder, set `externalFileRecieved` / `externalFileURL` and wait for `processExternalFile` after the user picks a destination.
