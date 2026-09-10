@@ -92,21 +92,17 @@ class DatabaseManager: ObservableObject {
     }
     
     func duplicateProfile(profileName: String) throws {
-        Task {
-            try await MainActor.run {
-                guard let profile = self.profiles.first(where: { $0.name == profileName }) else {
-                    throw DatabaseProfileDuplicationError.noProfileFound
-                }
-                
-                guard let duplicate = profile.copy() else {
-                    throw DatabaseProfileDuplicationError.failedToDeepCopy
-                }
-                
-                duplicate.name += " copy"
-                
-                try self.addProfile(duplicate, saveToDisk: true)
-            }
+        guard let profile = self.profiles.first(where: { $0.name == profileName }) else {
+            throw DatabaseProfileDuplicationError.noProfileFound
         }
+        
+        guard let duplicate = profile.copy() else {
+            throw DatabaseProfileDuplicationError.failedToDeepCopy
+        }
+        
+        duplicate.name += " copy"
+        
+        try self.addProfile(duplicate, saveToDisk: true)
     }
     
     /// Saves a profile to disk

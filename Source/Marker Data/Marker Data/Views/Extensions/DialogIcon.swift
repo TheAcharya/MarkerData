@@ -55,6 +55,11 @@ enum MarkerDataAppIcon {
         Image(nsImage: displayIcon)
     }
 
+    /// AppKit counterpart of `.appDialogIcon()` for `NSAlert` (Pagemaker WebView panels).
+    static var alertImage: NSImage {
+        displayIcon
+    }
+
     /// Unsized icon content. Callers apply layout (About 200×200, Workflow Extension 100×100).
     static func image() -> some View {
         Image(nsImage: displayIcon)

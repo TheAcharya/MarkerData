@@ -109,3 +109,14 @@ enum DatabaseProfileDuplicationError: Error {
     case noProfileFound
     case failedToDeepCopy
 }
+
+extension DatabaseProfileDuplicationError: LocalizedError {
+    public var errorDescription: String? {
+        switch self {
+        case .noProfileFound:
+            "Could not find the selected profile"
+        case .failedToDeepCopy:
+            "Failed to copy the profile"
+        }
+    }
+}

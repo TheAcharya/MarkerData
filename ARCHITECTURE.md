@@ -479,6 +479,7 @@ Settings model: `ColorSwatchSettingsModel` (nested under SettingsStore, Codable)
 - Setting a DB profile forces the MarkersExtractor export format for that platform so a JSON manifest exists
 - Validation: unique profile names; must not collide with extract-only format display names
 - Property spelling **`plaform`** is intentional in current code — preserve when editing
+- `duplicateProfile(profileName:)` appends `" copy"` and runs `addProfile(saveToDisk: true)` synchronously on the main actor, so `DatabaseValidationError.nameAlreadyExists` reaches `DatabaseSettingsView`’s “Failed to duplicate profile” alert. Duplicating the same profile twice is refused by design (matching `ConfigurationsViewModel.duplicateConfiguration`, which also uses a flat `" copy"`); neither panel auto-increments.
 
 | Model | Notable fields |
 |-------|----------------|
@@ -502,9 +503,11 @@ Notable modules under `Views/`:
 | Components | `DropTargetOverlay` (main app + WE), `FCPXMLDropModifier`, `HelpButton` / `OverlayHelpButton`, shared controls |
 | Extensions | **`MarkerDataAppIcon` / `.appDialogIcon()`** (`DialogIcon.swift`, `@MainActor`) — About, Workflow Extension header, alerts and confirmation dialogs; see **App icon and dialogs**. Also `ApplyPickerSizing`, `OptionalKeyboardShortcut`. |
 | Other | `FailedExtractionsView` (truncate + `.help()` tooltips; min ~640×240) |
-| Pagemaker | `PagemakerView` WebView + `PagemakerPDFExportHandler` (JS → Swift PDF via `NSSavePanel`) |
+| Pagemaker | `PagemakerView` WebView + `PagemakerPDFExportHandler` (JS → Swift PDF via `NSSavePanel`) + `PagemakerUIDelegate` (JavaScript `alert` / `confirm` / folder picker) |
 
 Install-location warning: on appear, if not under `/Applications` and `@AppStorage("ignoreInstallLocation")` is false, show alert (with `.appDialogIcon()`).
+
+Pagemaker JavaScript panels are the app’s only `NSAlert`s. `PagemakerUIDelegate.makeAlert(message:)` is the single constructor: it sets `MarkerDataAppIcon.alertImage`, forces `.informational` (`NSAlert` defaults to `.warning`), and uses the JavaScript string as `messageText` — splitting at the first blank line so a trailing paragraph becomes `informativeText`. There is no generic “Alert” / “Confirm” / “Prompt” title. `present(_:)` sheets on `NSApp.keyWindow` and falls back to `runModal()`; `confirm` returns `.alertFirstButtonReturn`, so Cancel reaches JavaScript as `false`.
 
 Drop overlay copy and invariants: **`GUARDRAILS.md`**.
 
@@ -686,6 +689,7 @@ flowchart TB
 | About | `MarkerDataAppIcon.image()` — size **200×200** only in `AboutView` |
 | Workflow Extension header | `MarkerDataAppIcon.image()` — **100×100** in `WorkflowExtensionView` |
 | `.alert` / `.confirmationDialog` | `.appDialogIcon()` after every dialog. Call sites: `Marker_DataApp`, `ContentView`, `ExtractView` (×2), `ConfigurationSettingsView` (3 confirmations + alert), `DatabaseSettingsView` (×2 alerts + delete confirmation), `CreateDBProfileSheet`, `DropboxSetupView`, `InstallShareDestinationView`. Uninstaller uses `applicationIconImage`, not this helper. |
+| AppKit `NSAlert` | `MarkerDataAppIcon.alertImage` — the AppKit counterpart of `.appDialogIcon()`. Only call site is `PagemakerUIDelegate.makeAlert(message:)`, which serves the three `WKUIDelegate` JavaScript panels (alert / confirm / prompt). |
 
 `Marker-Data.icon` lives in `Source/Marker Data/Marker Data/` beside the catalog. Workflow Extension `ASSETCATALOG_COMPILER_APPICON_NAME` remains **AppIcon** (existing PNG `AppIcon.appiconset`) until that plugin icon is updated separately.
 

@@ -19,7 +19,7 @@ Read with **`AGENT.md`** (how to change things), **`ARCHITECTURE.md`** (how it w
 |------|------|
 | **Settings** | Bump `SettingsStore.version`, add a dict migration `case`, wire UI, and pass export-related fields through `markersExtractorSettings(fcpxmlFileUrl:)`. The Workflow Extension compiles `SettingsStore` and decodes prefs **without** running migrations — main app must launch after a schema bump. |
 | **Config names** | Throw `ConfigurationSaveError.nameAlreadyExists` on add / rename / duplicate collisions — never overwrite `{name}.json` silently. |
-| **Alerts** | Chain `.appDialogIcon()` after every `.alert` / `.confirmationDialog` (`DialogIcon.swift` → `@MainActor` `MarkerDataAppIcon` from compiled `Marker-Data.icon`). Uninstaller is a separate target and uses `applicationIconImage`. |
+| **Alerts** | Chain `.appDialogIcon()` after every `.alert` / `.confirmationDialog` (`DialogIcon.swift` → `@MainActor` `MarkerDataAppIcon` from compiled `Marker-Data.icon`). AppKit `NSAlert` uses the counterpart `MarkerDataAppIcon.alertImage`; Pagemaker’s JavaScript panels are the only ones, and must be built by `PagemakerUIDelegate.makeAlert(message:)`. Uninstaller is a separate target and uses `applicationIconImage`. |
 | **Extract intake** | Route Finder files, text clippings, and Final Cut Pro pasteboard drops through `FCPXMLIntake` → `ExtractionModel.receiveFiles` / `receiveItemProviders`. |
 | **Drop overlays** | Use shared `DropTargetOverlay` on main-app Extract / Roles / Queue **and** Workflow Extension Extract + Roles. Shared files have **two** Compile Sources memberships in `project.pbxproj` (one file, two targets) — never delete one row. Extension membership includes overlay + `ColorExtension` + `DialogIcon.swift` + `HelpButton` / `OverlayHelpButton` plus Roles/settings files listed in **ARCHITECTURE.md**. |
 | **Shared WE chrome color** | Use `Color.markerAccent` (system indigo) for overlay borders and other shared chrome hosted in FCP — not `Color.accentColor`. |
@@ -90,6 +90,8 @@ Shared component: `Views/Components/DropTargetOverlay.swift` (main app + Workflo
 15. **Workflow Extension does not migrate settings.** `RolesManager` JSON-decodes `SettingsStore` with no `SettingsVersioningManager`. Open the main app after a schema bump.
 16. **FCPXML `UTType` force-unwrap** — `UTType("com.apple.finalcutpro.xml")!` traps on Extract first layout when Final Cut Pro is absent (App Preview / review Macs). Use `importedAs` fallback and Info.plist imported types. Do not copy the old Marker Data force-unwrap.
 17. **File menu Close last:** custom File items replace `.newItem`. Emptying `.newItem` makes system Close the first File item; do not duplicate Close.
+18. **`Task { try await MainActor.run { … } }` inside a `throws` method swallows the error.** The task result is discarded, so the method always returns normally and the caller’s `catch` is dead. `DatabaseManager` is already `@MainActor` — call directly and let the error propagate. `duplicateProfile` was fixed this way; `setActiveProfile` and `loadProfilesFromDisk` still use the wrapper but throw nothing, so they are harmless. Do not reintroduce the pattern for anything that validates.
+19. **`NSAlert` does not pick up the Icon Composer icon**, and its `alertStyle` defaults to `.warning`. Pagemaker’s WebView JavaScript panels are the app’s only `NSAlert`s — route them through `PagemakerUIDelegate.makeAlert(message:)` (sets `MarkerDataAppIcon.alertImage`, `.informational`, message as `messageText`). Never re-add generic “Alert” / “Confirm” / “Prompt” titles; SwiftUI dialogs elsewhere have no such title. Keep `confirm` returning `.alertFirstButtonReturn` so Cancel reaches JavaScript as `false`.
 
 ---
 
@@ -103,7 +105,7 @@ Shared component: `Views/Components/DropTargetOverlay.swift` (main app + Workflo
 - [ ] Drop overlays appear on main-app Extract / Roles / Queue **and** Workflow Extension Extract + Roles with the copy above.
 - [ ] Queue finds `extract_info.json` folders and uploads via `manifestURL` (relocated folders work).
 - [ ] No-media / skipped swatch finishes as **“Extract done”** (not **“Analysing swatch done”**); `ColorPaletteRenderer.render` → `Bool` drives finish path.
-- [ ] New alerts **and** confirmation dialogs use `.appDialogIcon()` (`MarkerDataAppIcon` from compiled `Marker-Data.icon`).
+- [ ] New alerts **and** confirmation dialogs use `.appDialogIcon()` (`MarkerDataAppIcon` from compiled `Marker-Data.icon`); any `NSAlert` uses `MarkerDataAppIcon.alertImage` via `PagemakerUIDelegate.makeAlert(message:)`.
 - [ ] App icon still Icon Composer `Marker-Data.icon` for the **main app** (not inside `Assets.xcassets`; do not flatten layer PNG into `AppIconSingle`). Workflow Extension **header** uses the containing `Marker Data.app` icon; bundle/plugin icon stays `AppIcon.appiconset`.
 - [ ] Settings changes include version + migration + UI + export bridge when required.
 - [ ] New on-disk paths are reflected in the Uninstaller.
