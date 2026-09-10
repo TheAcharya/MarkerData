@@ -261,6 +261,7 @@ Migrations operate on `[String: Any]` — not Codable — so renames and nested 
 - **Unique names:** `configurationNameExists` checks in-memory list **and** on-disk file; collisions → `ConfigurationSaveError.nameAlreadyExists`. Illegal names: empty or `"Default"`.
 - Rename = duplicate-as-new + remove-old (`ConfigurationsViewModel.rename`); same-name rename is a no-op; sheets dismiss only on success.
 - `unsavedChanges`: Default compares to `defaults()`; named configs compare to on-disk file.
+- **Colour caveat:** `SettingsStore` gets synthesized `Equatable`, and its two `Color` properties (`fontColor`, `strokeColor`) are compared by the app’s **own** `Color ==` in `ColorExtension.swift`, which is tolerant (`isEqual(to:tolerance: 0.1)`) and shadows SwiftUI’s exact operator. Colour edits smaller than ~25/255 per channel therefore leave `unsavedChanges` false, disabling ⌘S / ⌘Z, even though the `$store` sink has already written `preferences.json`. See **GUARDRAILS.md → Signs** for the reason (truncating `Color.hex`) and the correct fix.
 - Optional ⌘1…⌘9 shortcuts via `@UserDefaultsArray("configurationShortcuts")`.
 
 #### Bridge to extraction (`markersExtractorSettings`)
@@ -668,7 +669,8 @@ flowchart TB
   MD["MarkerDataAppIcon.displayIcon"]
   ABOUT["AboutView 200×200"]
   WEH["WE header 100×100"]
-  ALERTS[".appDialogIcon"]
+  ALERTS["dialogImage<br/>.appDialogIcon (SwiftUI)"]
+  NSA["alertImage<br/>PagemakerUIDelegate.makeAlert (AppKit)"]
 
   DOC --> MD
   CAT -.->|not artwork source| MD
@@ -676,6 +678,9 @@ flowchart TB
   MD --> ABOUT
   MD --> WEH
   MD --> ALERTS
+  MD --> NSA
+  ALERTS -->|environment: one call covers a chain| DLG[".alert / .confirmationDialog"]
+  NSA --> JS["JS alert / confirm / prompt"]
 ```
 
 **Resolution:**
@@ -690,8 +695,10 @@ flowchart TB
 | Dock | `ASSETCATALOG_COMPILER_APPICON_NAME` = Marker-Data (`Marker-Data.icon`, not inside `Assets.xcassets`) |
 | About | `MarkerDataAppIcon.image()` — size **200×200** only in `AboutView` |
 | Workflow Extension header | `MarkerDataAppIcon.image()` — **100×100** in `WorkflowExtensionView` |
-| `.alert` / `.confirmationDialog` | `.appDialogIcon()` after every dialog. Call sites: `Marker_DataApp`, `ContentView`, `ExtractView` (×2), `ConfigurationSettingsView` (3 confirmations + alert), `DatabaseSettingsView` (×2 alerts + delete confirmation), `CreateDBProfileSheet`, `DropboxSetupView`, `InstallShareDestinationView`. Uninstaller uses `applicationIconImage`, not this helper. |
-| AppKit `NSAlert` | `MarkerDataAppIcon.alertImage` — the AppKit counterpart of `.appDialogIcon()`. Only call site is `PagemakerUIDelegate.makeAlert(message:)`, which serves the three `WKUIDelegate` JavaScript panels (alert / confirm / prompt). |
+| `.alert` / `.confirmationDialog` | `.appDialogIcon()` — wraps SwiftUI `.dialogIcon(_:)`, which propagates through the **environment**, so one call at the end of a modifier chain covers every dialog attached beneath it (see note below). Views with dialogs: `Marker_DataApp`, `ContentView`, `ExtractView` (2 alerts, 2 calls), `ConfigurationSettingsView` (3 confirmations + 1 alert, **1** trailing call), `DatabaseSettingsView` (2 alerts + delete confirmation, 3 calls), `CreateDBProfileSheet`, `DropboxSetupView`, `InstallShareDestinationView`. Uninstaller uses `applicationIconImage`, not this helper. |
+| AppKit `NSAlert` | `MarkerDataAppIcon.alertImage` — the AppKit counterpart of `.appDialogIcon()`. Only call site is `PagemakerUIDelegate.makeAlert(message:)`, which serves the three `WKUIDelegate` JavaScript panels (alert / confirm / prompt). The fourth `webView(_:runOpenPanelWith:…)` delegate method is an `NSOpenPanel` folder picker, not an `NSAlert`. |
+
+**Why the call counts differ.** `.appDialogIcon()` is not per-dialog bookkeeping — it sets an environment value, so a single trailing call covers every `.alert` / `.confirmationDialog` earlier in the same modifier chain. `ConfigurationSettingsView` therefore needs only **one** call for its four dialogs, and `DatabaseSettingsView`’s three calls are redundant but harmless. A view with dialogs and **zero** `.appDialogIcon()` anywhere in its chain is the only broken case. Guidance elsewhere says “chain it after every dialog” because that is the safe habit for new code, not because one-per-dialog is required.
 
 `Marker-Data.icon` lives in `Source/Marker Data/Marker Data/` beside the catalog. Workflow Extension `ASSETCATALOG_COMPILER_APPICON_NAME` remains **AppIcon** (existing PNG `AppIcon.appiconset`) until that plugin icon is updated separately.
 
@@ -801,7 +808,7 @@ Source/Marker Data/Marker Data/
     Install View/, Objective-C Code/, OpenEventHandler.swift
   Pagemaker/           # PagemakerView, PDF export handler, UIDelegate, WebViewStateManager
   Utilities/
-    Extensions/        # URL, Color (markerAccent, heroGradient), UTType (`UTType.fcpxml` / `.fcpxmld`, never `!`), NotificationName, …
+    Extensions/        # URL, Color (markerAccent, heroGradient, hex, Codable, tolerant `==` — see Signs), UTType (`UTType.fcpxml` / `.fcpxmld`, never `!`), NotificationName, …
     Shell/, Notifications/,
     Other/             # FCPXMLIntake, TextClippingReader, LibraryFolders, FileWatcher, …
   Resources/

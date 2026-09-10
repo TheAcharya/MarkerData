@@ -1,5 +1,17 @@
 # Changelog
 
+### 2.1.2 (26)
+
+**🎉 Released:**
+- 10th September 2026
+
+**🐞 Bug Fix:**
+- Pagemaker alerts now show the app icon instead of a generic “Alert” title.
+- Duplicating a database profile now reports why it failed.
+- Failed extractions now appear once in Failed Tasks, with the actual error.
+
+---
+
 ### 2.1.1 (25)
 
 **🎉 Released:**
