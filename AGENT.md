@@ -72,7 +72,7 @@ For deeper module/data-flow detail, see **`ARCHITECTURE.md`**. For hard always/n
 | Info.plist | `Source/Marker Data/Marker-Data-Info.plist` — Sparkle, Share Destination document types (**Asset Description File** name is a contract), imported FCPXML UTIs |
 | Drop overlay (Extract / Roles / Queue + WE) | `Views/Components/DropTargetOverlay.swift` (also Workflow Extension Compile Sources) |
 | Workflow Extension UI | `Source/Marker Data/Workflow Extension/WorkflowExtensionView.swift` — Extract + Roles tabs; **two** Compile Sources rows (main app + appex — do not delete the main-app membership). `WorkflowExtensionViewController.swift` is appex-only. |
-| Color helpers (`markerAccent`, `heroGradient`) | `Utilities/Extensions/ColorExtension.swift` |
+| Color helpers + `Color` persistence | `Utilities/Extensions/ColorExtension.swift` — `markerAccent`, `heroGradient`, `init(hex:)` / `hex`, `Codable` conformance (how `fontColor` / `strokeColor` reach `preferences.json`), and a tolerant `static func ==` that shadows SwiftUI’s exact operator (see **GUARDRAILS.md → Signs**) |
 | Queue UI | `Views/Detail Views/QueueView.swift` |
 | Queue scan/upload | `Models/Queue/QueueModel.swift` |
 | Queue row + local-first manifest | `Models/Queue/QueueInstance.swift` (`manifestURL`) |
@@ -85,7 +85,7 @@ For deeper module/data-flow detail, see **`ARCHITECTURE.md`**. For hard always/n
 | Settings migrations | `Source/Marker Data/Marker Data/Models/Settings/SettingsVersioningManager.swift` |
 | Canonical disk paths | `Source/Marker Data/Marker Data/Utilities/Extensions/URLExtension.swift` |
 | Notification names | `Source/Marker Data/Marker Data/Utilities/Extensions/NotificationNameExtension.swift` |
-| App / dialog icon | `Views/Extensions/DialogIcon.swift` — `@MainActor` `MarkerDataAppIcon` + `.appDialogIcon()`; Icon Composer `Marker-Data.icon` |
+| App / dialog icon | `Views/Extensions/DialogIcon.swift` — `@MainActor` `MarkerDataAppIcon` + `.appDialogIcon()` (SwiftUI) / `alertImage` (AppKit `NSAlert`); Icon Composer `Marker-Data.icon` |
 | About | `Views/Detail Views/AboutView.swift` — `MarkerDataAppIcon.image()` at 200×200 |
 | Workflow Extension header icon | Same `MarkerDataAppIcon.image()` at 100×100; in the appex, resolve from containing `Marker Data.app` |
 | Apple Event open | `FCP Share Destination/OpenEventHandler.swift` — `kAEOpen` → `.openFile`; re-register on `.FCPShareStart` (main queue) |
@@ -251,8 +251,10 @@ Also: getter for `colorSwatchSettings` **forces `enableSwatch = false` when extr
 - **Resolution (`displayIcon`):**
   1. If running as `.appex`: load from the containing `Marker Data.app` (`appex` → `PlugIns` → `Contents` → `.app`): `Bundle.image(forResource: "Marker-Data")`, else `NSWorkspace.icon(forFile:)`. Do **not** use the appex’s `applicationIconImage` (that is `AppIcon.appiconset`, or Final Cut Pro).
   2. Else: `NSImage(named: "Marker-Data")`, then `NSApplication.shared.applicationIconImage`.
-- **Surfaces:** About `MarkerDataAppIcon.image()` **200×200**; Workflow Extension header **100×100**; alerts **and** confirmation dialogs `.appDialogIcon()`.
+- **Surfaces:** About `MarkerDataAppIcon.image()` **200×200**; Workflow Extension header **100×100**; alerts **and** confirmation dialogs `.appDialogIcon()`; AppKit `NSAlert` `MarkerDataAppIcon.alertImage`.
 - **Main-app `.alert` / `.confirmationDialog` (chain `.appDialogIcon()`):** `Marker_DataApp` (library folders); `ContentView` (install location); `ExtractView` (extract + upload, ×2); `ConfigurationSettingsView` (unsaved-switch, unsaved-add, and delete confirmations + alert); `DatabaseSettingsView` (remove + duplicate alerts, ×2, plus delete-profile confirmation); `CreateDBProfileSheet`; `DropboxSetupView`; `InstallShareDestinationView`.
+- `.appDialogIcon()` wraps SwiftUI `.dialogIcon(_:)` and **propagates through the environment**: one trailing call covers every dialog earlier in the same modifier chain. `ConfigurationSettingsView` deliberately has four dialogs and one call; `DatabaseSettingsView` has three calls (redundant, harmless). Add one per dialog in new code, but do not treat an existing single trailing call as a missing icon.
+- **AppKit `NSAlert`:** only Pagemaker’s JavaScript panels. Build them through `PagemakerUIDelegate.makeAlert(message:)` — it applies `MarkerDataAppIcon.alertImage`, forces `.informational`, and puts the message in `messageText` (no generic “Alert” / “Confirm” title). Do not add bare `NSAlert()`s elsewhere; use SwiftUI `.alert` + `.appDialogIcon()`.
 - Uninstaller is a **separate target**: `UninstallerView` uses `NSApplication.shared.applicationIconImage`, not `MarkerDataAppIcon`.
 - Do **not** change the Workflow Extension’s bundle/plugin icon (`ASSETCATALOG_COMPILER_APPICON_NAME` = AppIcon, existing `AppIcon.appiconset`).
 - Workflow Extension Compile Sources must include `DialogIcon.swift` (header UI). Keep Extract/Roles `TabView` `.padding(.bottom, 40)` so `overlayHelpButton` does not sit on the drop zone.
@@ -309,7 +311,7 @@ Exact overlay strings and always/never rules: **`GUARDRAILS.md`**.
 - **Queue relocated folders:** never upload only `ExtractInfo.jsonURL` — use `manifestURL` (see Signs in `GUARDRAILS.md`).
 - **Progress `reset()` / wrong swatch label:** never `reset()` before swatch; never retitle to “Analysing swatch” until render will run. Skipped swatch must finish as **“Extract done”**, not **“Analysing swatch done”**. `await applyTaskAppearance` from `ColorPaletteRenderer` (MainActor).
 - **FCP timeline → Dock:** often pasteboard-only; Extract panel drop is the supported UI path for timelines.
-- **Alert / confirmation icons:** chain `.appDialogIcon()` after every `.alert` and `.confirmationDialog`. `MarkerDataAppIcon` is `@MainActor`; source is compiled `Marker-Data.icon`. Do not flatten the layer PNG into `AppIconSingle`. In the Workflow Extension header, load from the containing `Marker Data.app` — not the appex `AppIcon.appiconset`.
+- **Alert / confirmation icons:** chain `.appDialogIcon()` after every `.alert` and `.confirmationDialog`; AppKit `NSAlert` needs `MarkerDataAppIcon.alertImage` instead (it does not inherit the Icon Composer icon on its own). `MarkerDataAppIcon` is `@MainActor`; source is compiled `Marker-Data.icon`. Do not flatten the layer PNG into `AppIconSingle`. In the Workflow Extension header, load from the containing `Marker Data.app` — not the appex `AppIcon.appiconset`.
 - **Dual Sparkle controllers:** both `Marker_DataApp` and `ApplicationDelegate` construct `SPUStandardUpdaterController`; update-available UI relies on `ApplicationDelegate.bestValidUpdate(...)` posting `.updateAvailable`. Don’t “simplify” without understanding that path.
 - **`OpenEventHandler`:** must re-register on `.FCPShareStart`; registration should stay on the main queue (see comments in that file).
 - **Shared `pbxproj` rows:** do not remove a second `DialogIcon.swift in Sources` (or other shared files) — the file is compiled into two targets.
@@ -317,6 +319,8 @@ Exact overlay strings and always/never rules: **`GUARDRAILS.md`**.
 - **WE cache folder:** the extension does not `mkdir` Movies cache; a first-time drop can fail if the main app has never created `~/Movies/Marker Data Cache/`.
 - **FCPXML `UTType` force-unwrap:** `UTType("com.apple.finalcutpro.xml")!` traps on first Extract layout when Final Cut Pro is not installed (App Preview / machines without FCP). Resolve with `UTType(identifier) ?? UTType(importedAs:identifier, conformingTo:)` and keep `UTImportedTypeDeclarations` in `Marker-Data-Info.plist`. Do not split the Share Destination **Asset Description File** document type.
 - **File menu Close last:** custom File items replace `.newItem` (`FileCommands`). Do not empty `.newItem` (that puts system Close first) and do not add a second Close.
+- **Pagemaker `confirm` is unreachable in-app:** the only `confirm(` in bundled `Resources/Pagemaker.html` sits behind `isMacOSSafari()`, and WKWebView’s default user agent has no `Safari` token. Keep the delegate correct, but you cannot exercise it from the UI — and `update_pagemaker.yml` can change that HTML upstream.
+- **Tolerant `Color ==`:** `ColorExtension.swift` overrides `Color ==` with a 0.1-per-channel tolerance that shadows SwiftUI’s and drives `SettingsStore` equality, so small colour edits do not mark a configuration dirty. It is not transitive — never put `Color` or `SettingsStore` in a `Set`, key a dictionary on them, or dedupe an array. Full reasoning in **GUARDRAILS.md → Signs**.
 
 ## Definition of done for most changes
 - App builds **unsigned** Debug **and** Release for **arm64** (`CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO`; Workflow Extension still embeds).
@@ -327,7 +331,7 @@ Exact overlay strings and always/never rules: **`GUARDRAILS.md`**.
 - Drop overlays still work on main-app Extract / Roles / Queue **and** Workflow Extension Extract + Roles.
 - Queue scan/upload still works for folders containing `extract_info.json`, including **moved/copied** folders (`manifestURL`).
 - Skipped / no-media swatch finishes as **“Extract done”** (not **“Analysing swatch done”**).
-- Any new `.alert` or `.confirmationDialog` uses `.appDialogIcon()` (`MarkerDataAppIcon` from compiled `Marker-Data.icon`).
+- Any new `.alert` or `.confirmationDialog` uses `.appDialogIcon()` (`MarkerDataAppIcon` from compiled `Marker-Data.icon`); any `NSAlert` goes through `PagemakerUIDelegate.makeAlert(message:)` / `MarkerDataAppIcon.alertImage`.
 - Workflow Extension header still shows the main-app Icon Composer icon (containing `Marker Data.app`); bundle/plugin `AppIcon.appiconset` unchanged.
 - If settings changed: version bumped + migration case + UI wired + export bridge if needed.
 - If behavior/architecture changed: update `AGENT.md`, `ARCHITECTURE.md`, `GUARDRAILS.md`, and `.cursorrules`.

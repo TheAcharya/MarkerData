@@ -20,6 +20,7 @@ struct DatabaseSettingsView: View {
     
     @State var showProfileRemoveAlert = false
     @State var showDuplicationAlert = false
+    @State var duplicationErrorMessage = ""
     
     @State var showDeleteConfirm = false
     
@@ -46,7 +47,9 @@ struct DatabaseSettingsView: View {
         }
         .alert("Failed to remove profile", isPresented: $showProfileRemoveAlert) { }
         .appDialogIcon()
-        .alert("Failed to duplicate profile", isPresented: $showDuplicationAlert) { }
+        .alert("Failed to duplicate profile", isPresented: $showDuplicationAlert) { } message: {
+            Text(duplicationErrorMessage)
+        }
         .appDialogIcon()
         .confirmationDialog("Delete profile \(selection?.quoted ?? "")? This action cannot be undone.", isPresented: $showDeleteConfirm) {
             Button("Delete", role: .destructive) {
@@ -117,6 +120,7 @@ struct DatabaseSettingsView: View {
                         do {
                             try databaseManager.duplicateProfile(profileName: profileName)
                         } catch {
+                            duplicationErrorMessage = error.localizedDescription
                             showDuplicationAlert = true
                         }
                     }
