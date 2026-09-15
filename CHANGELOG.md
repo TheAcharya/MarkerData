@@ -6,7 +6,7 @@
 - 15th September 2026
 
 **🐞 Bug Fix:**
-- Fixed build warnings that appeared in Xcode 27
+- Fixed build warnings that appeared in Xcode 27.
 
 ---
 
