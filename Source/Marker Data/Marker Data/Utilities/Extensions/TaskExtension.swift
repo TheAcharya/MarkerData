@@ -14,9 +14,16 @@ extension Task where Failure == Error {
     static func synchronous(priority: TaskPriority? = nil, operation: @escaping @Sendable () async throws -> Success) {
         let semaphore = DispatchSemaphore(value: 0)
 
-        Task(priority: priority) {
+        // Explicit non-throwing Task so Xcode 27 does not warn about a discarded
+        // throwing unstructured task (#NoUseUnstructuredThrowingTask). Errors
+        // cannot be rethrown across the semaphore wait; the only caller is
+        // settings migration, which does not throw.
+        Task<Void, Never>(priority: priority) {
             defer { semaphore.signal() }
-            return try await operation()
+
+            do {
+                _ = try await operation()
+            } catch {}
         }
 
         semaphore.wait()

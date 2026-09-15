@@ -63,7 +63,12 @@ class SettingsContainer: ObservableObject {
             .dropFirst() // Ignore initial value
             .sink { _ in
                 Task(priority: .background) { @MainActor in
-                    try await self.store.saveAsCurrent()
+                    do {
+                        try await self.store.saveAsCurrent()
+                    } catch {
+                        Self.logger.error("Failed to save store: \(error.localizedDescription, privacy: .public)")
+                    }
+
                     await self.checkForUnsavedChanges()
                 }
             }

@@ -30,7 +30,7 @@ class QueueModel: ObservableObject {
         self.databaseManager = databaseManager
     }
     
-    func scanFolder(at url: URL, append: Bool = false) async throws {
+    func scanFolder(at url: URL, append: Bool = false) async {
         // Skip if upload is in progress
         if self.uploadInProgress {
             return
@@ -84,10 +84,10 @@ class QueueModel: ObservableObject {
             throw QueueError.missingOutputDirectory
         }
 
-        try await self.scanFolder(at: exportFolder)
+        await self.scanFolder(at: exportFolder)
     }
 
-    func upload() async throws {
+    func upload() async {
         defer {
             self.uploadInProgress = false
             self.taskGroup = nil
@@ -148,7 +148,7 @@ class QueueModel: ObservableObject {
             // Check file type
             if url.hasDirectoryPath {
                 Task { [weak self] in
-                    try await self?.scanFolder(at: url, append: true)
+                    await self?.scanFolder(at: url, append: true)
                 }
             } else {
                 Self.logger.notice("Skipping file \(url.path(percentEncoded: false)). Not supported.")

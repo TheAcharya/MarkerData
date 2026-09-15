@@ -483,6 +483,7 @@ Settings model: `ColorSwatchSettingsModel` (nested under SettingsStore, Codable)
 - Validation: unique profile names; must not collide with extract-only format display names
 - Property spelling **`plaform`** is intentional in current code — preserve when editing
 - `duplicateProfile(profileName:)` appends `" copy"` and runs `addProfile(saveToDisk: true)` synchronously on the main actor, so `DatabaseValidationError.nameAlreadyExists` reaches `DatabaseSettingsView`’s “Failed to duplicate profile” alert. Duplicating the same profile twice is refused by design (matching `ConfigurationsViewModel.duplicateConfiguration`, which also uses a flat `" copy"`); neither panel auto-increments.
+- `loadProfilesFromDisk()` still defers `addProfile(..., saveToDisk: false)` with a non-throwing `Task { await MainActor.run }` so profiles can appear after `init` (same launch timing as before). Do not put `try` on that task.
 
 | Model | Notable fields |
 |-------|----------------|
@@ -855,4 +856,5 @@ Source/Marker Data/Marker Data Uninstaller/
 15. Workflow Extension decodes `SettingsStore` without running migrations — main app must migrate on launch first.
 16. FCPXML UTTypes must resolve without Final Cut Pro installed: public `UTType.fcpxml` / `.fcpxmld` (private `finalCutProType`: `UTType(identifier)` then `importedAs:conformingTo:`) plus `UTImportedTypeDeclarations` in `Marker-Data-Info.plist`. Never `UTType("com.apple.finalcutpro.xml")!`. Keep the Share Destination **Asset Description File** document type (do not rename/split it).
 17. File menu custom items replace `.newItem` (`FileCommands`). Do not empty `.newItem` in `Marker_DataApp` (puts system Close first) and do not add a second Close.
-18. Definition of done: unsigned arm64 Debug+Release build; settings migrate; `.fcpxml`/`.fcpxmld` + pasteboard intake; FCPXML UTTypes use `importedAs` fallback; File menu Close last; WE Extract + Roles overlays; queue finds/uploads via `manifestURL`; agent docs (`AGENT.md` / `ARCHITECTURE.md` / `GUARDRAILS.md` / `.cursorrules`) stay aligned.
+18. Do not discard throwing unstructured `Task { try await … }` (Xcode 27 `#NoUseUnstructuredThrowingTask`). Catch inside, drop a spurious `throws`/`try`, or call `@MainActor` methods directly. `loadProfilesFromDisk` may keep a **non-throwing** deferred `Task { await MainActor.run }` so launch timing stays unchanged.
+19. Definition of done: unsigned arm64 Debug+Release build; settings migrate; `.fcpxml`/`.fcpxmld` + pasteboard intake; FCPXML UTTypes use `importedAs` fallback; File menu Close last; WE Extract + Roles overlays; queue finds/uploads via `manifestURL`; agent docs (`AGENT.md` / `ARCHITECTURE.md` / `GUARDRAILS.md` / `.cursorrules`) stay aligned.

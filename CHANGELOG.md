@@ -1,5 +1,15 @@
 # Changelog
 
+### 2.1.4 (28)
+
+**🎉 Released:**
+- 15th September 2026
+
+**🐞 Bug Fix:**
+- Fixed build warnings that appeared in Xcode 27
+
+---
+
 ### 2.1.3 (27)
 
 **🎉 Released:**

@@ -73,8 +73,12 @@ extension RolesManager: DropDelegate {
                             return
                         }
 
-                        if let extractedRoles = await self.getRoles(fcpxml: try FCPXMLFile(at: urlUnwrapped)) {
-                            await self.setRoles(extractedRoles)
+                        do {
+                            if let extractedRoles = await self.getRoles(fcpxml: try FCPXMLFile(at: urlUnwrapped)) {
+                                await self.setRoles(extractedRoles)
+                            }
+                        } catch {
+                            Self.logger.error("Failed to load FCPXMLD: \(error.localizedDescription, privacy: .public)")
                         }
                     }
                 }

@@ -321,6 +321,7 @@ Exact overlay strings and always/never rules: **`GUARDRAILS.md`**.
 - **File menu Close last:** custom File items replace `.newItem` (`FileCommands`). Do not empty `.newItem` (that puts system Close first) and do not add a second Close.
 - **Pagemaker `confirm` is unreachable in-app:** the only `confirm(` in bundled `Resources/Pagemaker.html` sits behind `isMacOSSafari()`, and WKWebView’s default user agent has no `Safari` token. Keep the delegate correct, but you cannot exercise it from the UI — and `update_pagemaker.yml` can change that HTML upstream.
 - **Tolerant `Color ==`:** `ColorExtension.swift` overrides `Color ==` with a 0.1-per-channel tolerance that shadows SwiftUI’s and drives `SettingsStore` equality, so small colour edits do not mark a configuration dirty. It is not transitive — never put `Color` or `SettingsStore` in a `Set`, key a dictionary on them, or dedupe an array. Full reasoning in **GUARDRAILS.md → Signs**.
+- **Unused throwing unstructured `Task`:** Xcode 27 (`#NoUseUnstructuredThrowingTask`) warns when `Task { try await … }` is discarded — those errors were already being swallowed. Catch inside, drop a spurious `throws`/`try`, or call `@MainActor` methods directly. Do not silence with `_ = Task`. `DatabaseManager.loadProfilesFromDisk` keeps a **non-throwing** deferred `Task { await MainActor.run }` so profiles still appear after `init`.
 
 ## Definition of done for most changes
 - App builds **unsigned** Debug **and** Release for **arm64** (`CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO`; Workflow Extension still embeds).
