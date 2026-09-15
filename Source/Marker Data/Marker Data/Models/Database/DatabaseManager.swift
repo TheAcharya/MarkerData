@@ -130,10 +130,14 @@ class DatabaseManager: ObservableObject {
                     do {
                         let data = try Data(contentsOf: url)
                         let decoded: DatabaseProfileModel = try decoder.decode(T.self, from: data)
-                        
+
+                        // Same deferred MainActor hop as before: decode here, append
+                        // after init returns. Non-throwing Task so Xcode 27 does not
+                        // warn (#NoUseUnstructuredThrowingTask). saveToDisk: false
+                        // does not throw.
                         Task {
-                            try await MainActor.run {
-                                try self.addProfile(decoded, saveToDisk: false)
+                            await MainActor.run {
+                                try? self.addProfile(decoded, saveToDisk: false)
                             }
                         }
                     } catch {

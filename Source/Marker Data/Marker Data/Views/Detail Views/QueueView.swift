@@ -106,7 +106,7 @@ struct QueueView: View {
             // Start upload button
             Button {
                 Task {
-                    try await queueModel.upload()
+                    await queueModel.upload()
                 }
             } label: {
                 Label("Start Upload", systemImage: "square.and.arrow.up")

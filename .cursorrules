@@ -67,6 +67,7 @@ Keep these four files consistent when architecture or agent guidance changes.
 - Do not delete a second `DialogIcon.swift in Sources` (or other shared files) from `project.pbxproj` — that is two-target membership, not a duplicate file.
 - Do not force-unwrap `UTType("com.apple.finalcutpro.xml")` / `.xmld` — resolve with `UTType(identifier) ?? UTType(importedAs:identifier, conformingTo:)` and keep `UTImportedTypeDeclarations` in `Marker-Data-Info.plist`. First Extract layout evaluates these types; FCP may be absent (App Preview). Do not split the Share Destination **Asset Description File** document type.
 - File menu custom items replace `.newItem` so system Close stays last — do not empty `.newItem` and do not add a second Close.
+- Do not discard `Task { try await … }` — Xcode 27 warns (`#NoUseUnstructuredThrowingTask`) because those errors are swallowed. Catch inside, drop a spurious `throws`/`try`, or call `@MainActor` methods directly (not `_ = Task`).
 
 ## Definition of done for code changes
 - App builds **unsigned** Debug and Release for arm64 (`CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO`; Workflow Extension still embeds).
