@@ -738,7 +738,7 @@ Changing automation, sandbox, or extension behavior usually requires entitlement
 | Item | Detail |
 |------|--------|
 | Project | `Source/Marker Data/Marker Data.xcodeproj` |
-| CI runner / Xcode | `macos-26` / **Xcode 26.6.0** |
+| CI runner / Xcode | `xcode-27` / **Xcode 27.2.0** |
 | Workflow Extension SDK | `SDK/Workflow_Extensions_1.0.3.dmg` (CI). An older `1.0.2` DMG may sit beside it; do not use it. |
 | DMG | `appdmg` + `Distribution/dmg-builds/build-marker-data-dmg.json` |
 | Sparkle feed | `appcast.xml`; generator `Distribution/dmg-builds/sparkle/generate_appcast_script.py` |

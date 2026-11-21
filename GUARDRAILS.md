@@ -28,7 +28,7 @@ Read with **`AGENT.md`** (how to change things), **`ARCHITECTURE.md`** (how it w
 | **No-media / empty swatch** | `ColorPaletteRenderer.render` returns `false` without retitling; finish the extract URL with `markProcessAsFinished` so the bar never shows **“Analysing swatch done”**. |
 | **Install location** | Keep the `/Applications` warning; Workflow Extension opens `/Applications/Marker Data.app`. |
 | **Uninstaller** | If the app gains new on-disk paths, update `MarkerDataUninstaller.run()` cleanup list. |
-| **Architecture** | Prefer Apple Silicon (`arm64`) only; CI uses `macos-26` + **Xcode 26.6.0**. |
+| **Architecture** | Prefer Apple Silicon (`arm64`) only; CI uses `xcode-27` + **Xcode 27.2.0**. |
 | **Opaque CLIs** | Treat `airlift` / `csv2notion_neo` as black boxes; only the args in `DatabaseUploader` / `DropboxSetupModel` are the contract. |
 | **App icon** | Main app: Icon Composer **`Marker-Data.icon`** (name matches `ASSETCATALOG_COMPILER_APPICON_NAME`). Keep the empty main-app `AppIcon.appiconset` placeholder. Do not flatten the layer PNG into `AppIconSingle`. Workflow Extension **header** loads the icon from the containing `Marker Data.app`. Do **not** replace the Workflow Extension bundle/plugin icon (`AppIcon.appiconset`). |
 | **FCPXML UTTypes** | Resolve `.fcpxml` / `.fcpxmld` with `UTType(identifier) ?? UTType(importedAs:identifier, conformingTo:)` (`.xml` / `.package`). Keep `UTImportedTypeDeclarations` and Asset Description File `LSItemContentTypes` in `Marker-Data-Info.plist`. |

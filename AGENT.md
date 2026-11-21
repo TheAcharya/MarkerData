@@ -118,8 +118,8 @@ CI installs the Workflow Extensions SDK from `SDK/Workflow_Extensions_1.0.3.dmg`
 
 | Fact | Value |
 |------|--------|
-| Runner | `macos-26` |
-| Xcode (workflows) | **`Xcode_26.6.0`** (`sudo xcode-select -s /Applications/Xcode_26.6.0.app/...`) |
+| Runner | `xcode-27` |
+| Xcode (workflows) | **`Xcode_27.2.0`** (`sudo xcode-select -s /Applications/Xcode_27.2.0.app/...`) |
 | Architecture | `arch=arm64`, `EXCLUDED_ARCHS=x86_64` |
 | PR/push build | `.github/workflows/build.yml` |
 | Test (notarized) builds | `test_build.yml`, `test_build_debug.yml` |

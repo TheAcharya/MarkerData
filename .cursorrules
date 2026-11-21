@@ -16,7 +16,7 @@ Keep these four files consistent when architecture or agent guidance changes.
 - FCP Share Destination (Swift + Obj‑C): `Source/Marker Data/Marker Data/FCP Share Destination/`
 - Bundled binaries (do not modify internals): `Source/Marker Data/Marker Data/Resources/airlift`, `csv2notion_neo`
 - Build: open `Source/Marker Data/Marker Data.xcodeproj`, scheme **Marker Data**, **Apple Silicon** (`arm64`) only. After code or agent-doc changes, unsigned Debug **and** Release: `CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO`, `EXCLUDED_ARCHS=x86_64`.
-- CI: `macos-26` runners with **Xcode 26.6.0**; Workflow Extensions SDK from `SDK/Workflow_Extensions_1.0.3.dmg` (ignore unused `1.0.2` DMG in that folder)
+- CI: `xcode-27` runners with **Xcode 27.2.0**; Workflow Extensions SDK from `SDK/Workflow_Extensions_1.0.3.dmg` (ignore unused `1.0.2` DMG in that folder)
 
 ## Swift / SwiftUI conventions
 - Format Swift with SwiftFormat (see `CONTRIBUTING.md`).

@@ -1,5 +1,17 @@
 # Changelog
 
+### 2.2.0 (29)
+
+**🎉 Released:**
+- 21st November 2026
+
+**🔨 Improvements:**
+- Added support for FCPXML 1.15
+- Verified and tested with Final Cut Pro 13
+- Updated core dependencies
+- Updated Notion Module CSV2Notion Neo to version 2.2.2
+- Updated Airtable Module Airlift to version 1.4.3
+
 ### 2.1.4 (28)
 
 **🎉 Released:**
