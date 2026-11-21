@@ -12,6 +12,8 @@
 - Updated Notion Module CSV2Notion Neo to version 2.2.2
 - Updated Airtable Module Airlift to version 1.4.3
 
+---
+
 ### 2.1.4 (28)
 
 **🎉 Released:**
