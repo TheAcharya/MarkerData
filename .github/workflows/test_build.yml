@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    runs-on: macos-26
+    runs-on: xcode-27
 
     steps:
     - name: Checkout Repository
@@ -21,8 +21,8 @@ jobs:
       
     # Always check against the latest macOS runner image / preinstalled Xcode:
     # https://github.com/actions/runner-images
-    - name: Select Xcode 26.6.0
-      run: sudo xcode-select -s /Applications/Xcode_26.6.0.app/Contents/Developer
+    - name: Select Xcode 27.2.0
+      run: sudo xcode-select -s /Applications/Xcode_27.2.0.app/Contents/Developer
     
     - name: Change to Xcode Project Directory
       run: cd Source/Marker\ Data
